@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Família L5R — Ficha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=EB+Garamond:ital@0;1&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Paleta inspirada em Rokugan: papel washi, tinta sumi, laca vermelha, jade e ouro envelhecido — serena, não estridente. */
+  :root{
+    --bg:#efe6d1;--panel:#f9f3e5;--panel2:#efe1c5;--line:#cdb98c;
+    --ink:#2c2620;--ink2:#5c5140;--muted-tx:#8a7d63;
+    --accent:#96742f;--seal:#a13c2f;--good:#5b7a52;--bad:#a13c2f;--warn:#bb7f2e;--info:#4d6f7a;--radius:10px;
+    --font-display:"Shippori Mincho",Georgia,"Hiragino Mincho ProN",serif;
+    --font-body:"Noto Sans JP",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-voice:"EB Garamond",Georgia,serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--ink);font-family:var(--font-body);line-height:1.6;font-size:15px;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,255,255,.55), transparent 55%),
+      radial-gradient(circle at 85% 90%, rgba(44,38,32,.05), transparent 60%),
+      url('img/washi_textura.png'),
+      var(--bg);
+    background-repeat:no-repeat,no-repeat,repeat,no-repeat;
+    background-size:auto,auto,460px 460px,auto;
+    background-attachment:fixed,fixed,fixed,fixed}
+  h1,h2,h3{font-weight:600;margin:0;font-family:var(--font-display)}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px}
+
+  .herobanner{width:100%;height:190px;position:relative;
+    clip-path:polygon(0 0,100% 0,100% 86%,0 100%);
+    background:url('img/hero_banner.png') center 40%/cover no-repeat,var(--panel);margin-bottom:8px}
+  .crestbig{position:absolute;left:30px;bottom:26px;width:82px;height:82px;border-radius:50%;
+    background:url('img/selo_vazio.png') center/cover no-repeat,var(--panel2);
+    display:flex;align-items:center;justify-content:center;color:#f7ece0;text-shadow:0 1px 2px rgba(0,0,0,.4);
+    font-size:24px;font-family:var(--font-display);overflow:hidden;box-shadow:0 2px 6px rgba(20,16,10,.3)}
+  .crestbig img{width:78%;height:78%;object-fit:contain}
+  .herotitles{position:absolute;left:126px;bottom:24px;max-width:70%}
+  .herotitles h1{font-size:38px;letter-spacing:.5px;color:#2b2419;text-shadow:0 1px 0 rgba(255,255,255,.35)}
+  .herotitles .tag{font-family:var(--font-voice);font-style:italic;font-size:14.5px;color:#4a4230;margin-top:2px;display:block}
+
+  .topbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:6px 4px 14px;border-bottom:1px solid var(--line)}
+  .btnicon{font-size:12px;padding:3px 8px;margin-left:8px;vertical-align:middle}
+
+  .ringcluster{display:flex;justify-content:center;align-items:center;gap:10px;margin:26px 0}
+  .ringcluster img{width:22px;height:22px;object-fit:contain;opacity:.85}
+  .ringcluster img.mid{width:28px;height:28px;opacity:1}
+  .ringcluster .ln{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line) 15%,var(--line) 85%,transparent)}
+
+  .divisor{width:100%;height:26px;background:url('img/divisor_nuvens.png') center/contain no-repeat;opacity:.5;margin:10px 0}
+  .spacer{flex:1}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0;align-items:center}
+  .controls .grp{display:flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:6px 10px;font-size:13px;color:var(--ink2)}
+  select,button,input[type=text],input[type=number]{font:inherit;color:var(--ink);background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+  button{cursor:pointer} button.primary{background:var(--seal);color:#faf3e6;border-color:var(--seal);font-weight:600}
+  button.primary:hover{filter:brightness(1.08)} button:disabled{opacity:.45;cursor:not-allowed} button.ghost{background:transparent}
+  button.ghost:hover{border-color:var(--accent);color:var(--accent)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px}
+  .panel h2{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 12px;font-size:23px;color:var(--ink);margin-bottom:16px;font-weight:600;letter-spacing:.2px}
+  .panel h2 .kan{font-size:27px;color:var(--seal);line-height:1;font-weight:600}
+  .panel h2 .sub{flex-basis:100%;margin:2px 0 0 39px;letter-spacing:1.1px;text-transform:uppercase;font-size:11px;color:var(--muted-tx);font-weight:400;font-family:var(--font-body)}
+  .tag{font-size:12px;color:var(--muted-tx)}
+  .hint{font-size:12px;color:var(--muted-tx);margin-top:8px}
+  .foot{margin-top:16px;font-size:11px;color:var(--muted-tx);text-align:center}
+  .log{max-height:150px;overflow:auto;font-size:13px;color:var(--ink2);border:1px dashed var(--line);
+    border-radius:8px;padding:10px;margin-bottom:0;background:rgba(44,38,32,.035)}
+  .log p{margin:0 0 5px} .log .beat{color:var(--seal);font-weight:600}
+
+  .ledger{display:flex;flex-direction:column}
+  .ledgerline{display:flex;align-items:baseline;gap:8px;padding:7px 0;border-bottom:1px dotted var(--line)}
+  .ledgerline:last-child{border-bottom:none}
+  .ledgerline .lbl{font-size:13.5px;color:var(--ink2);white-space:nowrap}
+  .ledgerline .fill{flex:1;border-bottom:1px dotted var(--line);margin-bottom:4px;min-width:16px}
+  .ledgerline .val{font-family:var(--font-display);font-size:19px;color:var(--seal);white-space:nowrap}
+  .ledgerline .val.small{font-size:14px;color:var(--ink)}
+  .ledgerline .val.good{color:var(--good)} .ledgerline .val.bad{color:var(--bad)}
+
+  .rolesrow{display:flex;gap:26px;margin-top:16px;padding:12px 4px 2px;flex-wrap:wrap;justify-content:center}
+  .rolewrap{text-align:center}
+  .rolewrap img{width:40px;height:40px;object-fit:contain;display:block;margin:0 auto 4px;border-radius:50%}
+  .rolewrap .n{font-family:var(--font-display);font-size:17px;color:var(--seal)}
+  .rolewrap .l{font-size:10.5px;color:var(--muted-tx);letter-spacing:.4px}
+
+  /* Revelação por hover: modificadores/números ficam discretos até o mouse passar por cima — sensação menos mecânica */
+  .reveal{opacity:0;max-height:0;overflow:hidden;pointer-events:none;transition:opacity .18s ease}
+  .attrrow:hover .reveal,.origem:hover .reveal,.torncard:hover .reveal{opacity:1;max-height:200px;pointer-events:auto;margin-top:6px}
+
+  .attrlist{display:flex;flex-direction:column}
+  .attrrow{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .attrrow:first-child{border-top:1px solid var(--line)}
+  .attrrow .ic{width:38px;height:38px;object-fit:contain}
+  .attrrow .name{font-family:var(--font-display);font-size:16px}
+  .attrrow .desc{font-family:var(--font-voice);font-style:italic;font-size:12.5px;color:var(--muted-tx);margin-top:1px}
+  .attrrow .num{font-family:var(--font-display);font-size:25px;color:var(--seal);text-align:right;font-variant-numeric:tabular-nums}
+  .attrrow .brk{grid-column:1/-1;display:flex;gap:6px;font-size:11px;color:var(--muted-tx);flex-wrap:wrap;align-items:center;font-family:var(--font-body);border-top:1px dashed var(--line);padding-top:6px;margin-top:2px}
+  .attrrow .brk input{width:48px;padding:3px 4px;font-size:11.5px;text-align:center}
+  .attrrow .brk b{color:var(--ink2)}
+  .attrrow .pool{grid-column:1/-1;font-size:11px;color:var(--muted-tx);margin-top:-2px}
+  .attrrow .pool .rest.bad{color:var(--bad);font-weight:600}
+  .attrrow .pool .rest.good{color:var(--good);font-weight:600}
+
+  .saldos{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .saldo{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;color:var(--muted-tx)}
+  .saldo b{font-variant-numeric:tabular-nums;font-family:var(--font-display)}
+  .saldo b.good{color:var(--good)} .saldo b.bad{color:var(--bad)}
+
+  .ctab{width:100%;border-collapse:collapse;font-size:12.5px;font-family:var(--font-body)}
+  .ctab th{text-align:left;color:var(--muted-tx);font-weight:500;padding:4px 6px 8px;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--line)}
+  .ctab td{padding:7px 6px;border-bottom:1px dotted var(--line)}
+  .ctab tr:last-child td{border-bottom:none}
+  .ctab input,.ctab select{width:100%;padding:5px 6px;font-size:12.5px;background:transparent;border:1px solid transparent}
+  .ctab input:hover,.ctab select:hover,.ctab input:focus,.ctab select:focus{border-color:var(--line);background:var(--panel2)}
+  .ctab td b{font-family:var(--font-display);color:var(--seal);font-weight:600}
+  .tabwrap{overflow-x:auto}
+
+  .terrainlist{display:flex;flex-direction:column}
+  .terrainrow{display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .terrainrow:first-child{border-top:1px solid var(--line)}
+  .terrainrow img.tic{width:46px;height:46px;object-fit:contain;flex-shrink:0;border-radius:6px}
+  .terrainrow .tbody{flex:1;min-width:220px}
+  .terrainrow .trow1{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+  .terrainrow .trow2{display:flex;gap:6px;flex-wrap:wrap}
+  .terrainrow select,.terrainrow input{background:transparent;border:1px solid transparent;font-size:12.5px;padding:3px 5px}
+  .terrainrow select:hover,.terrainrow input:hover,.terrainrow select:focus,.terrainrow input:focus{border-color:var(--line);background:var(--panel2)}
+  .terrainrow .tname{font-family:var(--font-display);font-size:14.5px;min-width:120px}
+  .terrainrow .costs{margin-left:auto;display:flex;gap:14px;font-size:11.5px;color:var(--ink2);white-space:nowrap;align-self:center}
+  .terrainrow .costs b{font-family:var(--font-display);color:var(--seal);font-size:16px}
+  .terrainrow .fromevent{font-size:11px;color:var(--muted-tx);margin-top:2px;flex-basis:100%}
+
+  /* Ficha do personagem: cartões em vez de tabelas apertadas — menos "planilha", mais ficha de mesa */
+  .fichapanel{background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-top:12px}
+  .fichapanel h2{font-size:15px;color:var(--accent);font-family:var(--font-display);margin-bottom:10px;
+    padding-bottom:6px;border-bottom:1px solid var(--line);letter-spacing:.3px}
+  .linhas{display:flex;flex-direction:column;gap:7px}
+  .linha{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);
+    border-radius:8px;padding:7px 10px}
+  .linha input,.linha select{background:transparent;border:1px solid transparent;padding:4px 6px;font-size:12.5px}
+  .linha input:hover,.linha select:hover,.linha input:focus,.linha select:focus{border-color:var(--line);background:var(--panel2)}
+  .linha .campo-nome{flex:2;min-width:120px}
+  .linha .campo-curto{width:56px;flex:none;text-align:center}
+  .linha .campo-medio{flex:1;min-width:90px}
+  .linha .del{margin-left:auto;flex-shrink:0}
+  .linha-vazia{font-size:12.5px;color:var(--muted-tx);font-style:italic;padding:6px 2px}
+
+  .anelRow{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+  .anelIcon{width:38px;height:38px;object-fit:contain;flex-shrink:0}
+  .anelRow .nome{font-family:var(--font-display);font-weight:600;font-size:13px;margin-bottom:4px;display:flex;justify-content:space-between}
+  .anelRow .nome .val{color:var(--seal)}
+  .anelRow .tracos{display:flex;gap:6px}
+  .anelRow .tracos .grp{padding:3px 6px}
+  .anelRow .tracos input{width:42px;padding:3px 4px;text-align:center}
+
+  .feridastab{width:100%;border-collapse:separate;border-spacing:0 4px;font-size:12.5px}
+  .feridastab td{padding:6px 10px;background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .feridastab td:first-child{border-left:1px solid var(--line);border-radius:8px 0 0 8px}
+  .feridastab td:last-child{border-right:1px solid var(--line);border-radius:0 8px 8px 0}
+  .feridastab tr.atual td{background:var(--seal);color:#faf3e6;border-color:var(--seal)}
+
+  .eventgrid{display:flex;flex-direction:column;gap:4px;max-height:560px;overflow:auto;padding-right:6px}
+  .torncard{position:relative;background:var(--panel);padding:14px 16px 12px;cursor:pointer;transition:background .15s}
+  .torncard::before{content:"";position:absolute;left:6px;right:6px;top:-3px;height:6px;
+    background:linear-gradient(115deg,transparent 48%,var(--bg) 49% 51%,transparent 52%) 0 0/20px 6px repeat-x}
+  .torncard:hover{background:#f4ecd9}
+  .torncard.sel{background:#f4e9cd;box-shadow:inset 3px 0 0 var(--seal)}
+  .torncard.dis{opacity:.4;cursor:not-allowed}
+  .torncard.escolhido{cursor:default}
+  .origem.escolhido{cursor:default}
+  .torncard .en{font-size:14.5px;font-weight:600;margin-bottom:4px;font-family:var(--font-display)}
+  .torncard .ed{font-size:12.5px;color:var(--ink2);line-height:1.5;font-family:var(--font-voice);font-style:italic}
+  .torncard .gift{display:inline-block;margin-top:8px;font-size:11.5px;color:var(--seal)}
+  .torncard .em{font-size:10.5px;color:var(--muted-tx);display:flex;flex-wrap:wrap;gap:4px;border-top:1px dashed var(--line);padding-top:6px}
+  .torncard .em span{background:rgba(44,38,32,.06);border-radius:4px;padding:1px 5px}
+  .torncard .em span.pos{color:var(--good)} .torncard .em span.neg{color:var(--bad)}
+
+  .origens{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:6px}
+  .origem{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px;cursor:pointer;font-size:12px}
+  .monimg{width:36px;height:36px;object-fit:contain;display:block;margin-bottom:4px}
+  .tabbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .tabbtn{background:var(--panel2);border:1px solid var(--line);border-radius:8px 8px 0 0;padding:8px 14px;font-size:13px;color:var(--ink2);cursor:pointer;font-family:var(--font-display)}
+  .tabbtn.on{background:var(--panel);color:var(--ink);border-bottom:2px solid var(--seal);font-weight:600}
+  .samgroup{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px}
+  .samgroup .saldo{cursor:default}
+  .origem:hover{border-color:var(--accent)} .origem.sel{border-color:var(--seal);box-shadow:0 0 0 1px var(--seal) inset;background:#f4e9cd}
+  .origem .on{font-weight:600;margin-bottom:3px;font-family:var(--font-display)}
+  .origem .mote{font-size:10.5px;color:var(--muted-tx);font-style:italic;margin-bottom:3px}
+  .origem .om{font-size:10px;color:var(--muted-tx);display:flex;flex-wrap:wrap;gap:3px}
+
+  .charhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;justify-content:space-between}
+  .charhead .cap{font-size:12.5px;color:var(--ink2)} .charhead .cap b{color:var(--seal)}
+  .inv{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0}
+  .inv .it{font-size:11px;background:rgba(44,38,32,.05);border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--ink2);display:inline-flex;align-items:center;gap:4px}
+  .inv .it.on{background:#e3ead9;border-color:#a9c39c;color:#3f5c38}
+  .inv .it button{background:none;border:none;color:inherit;cursor:pointer;padding:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="herobanner">
+    <div class="crestbig" id="crest">家</div>
+    <div class="herotitles"><h1 id="familiaNome">Família</h1><span class="tag" id="claLab">Clã: —</span></div>
+  </div>
+  <div class="topbar">
+    <button class="ghost btnicon" id="btnRename">✎ renomear</button>
+    <div class="spacer"></div>
+    <button class="ghost btnicon" id="btnHardReset" title="apagar tudo e recomeçar">⟲ resetar tudo</button>
+  </div>
+
+  <div class="controls">
+    <div class="grp">Papel <select id="papelSel"><option value="mestre">Mestre</option><option value="jogador">Jogador (só leitura)</option></select></div>
+    <div class="grp">☁ Sala <input type="text" id="salaInput" placeholder="código da família" style="width:150px;padding:4px 6px"></div>
+    <button class="ghost" id="btnConectar">Conectar / criar</button>
+    <button class="ghost" id="btnDesconectar">Desconectar</button>
+    <span class="tag" id="syncStatus">nuvem: —</span>
+  </div>
+
+  <div class="tabbar" id="mainTabs">
+    <button class="tabbtn on" id="tabBtnFamilia" onclick="setAbaPrincipal('familia')">家 Família</button>
+    <button class="tabbtn" id="tabBtnPersonagens" onclick="setAbaPrincipal('personagens')">Personagens <span class="tag" id="tabPersonagensCount"></span></button>
+  </div>
+
+  <div id="viewFamilia">
+  <div class="panel">
+    <h2><span class="kan">家</span>Informações da Família</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+      <div class="grp">Nome <input type="text" id="nomeInput" placeholder="Nome da família" style="width:170px"></div>
+      <div class="grp">Daimyo <input type="text" id="daimyoInput" placeholder="Nome do Daimyo" style="width:150px"></div>
+      <div class="grp">Ramo Familiar <input type="text" id="ramoInput" placeholder="ex.: um ramo da família Kakita" style="width:220px" list="ramoSugestoes"><datalist id="ramoSugestoes"></datalist></div>
+      <div class="grp">Idade da Família
+        <select id="idadeSel">
+          <option value="recente">Recente (2 eventos)</option>
+          <option value="jovem">Jovem (4 eventos)</option>
+          <option value="estabelecida">Estabelecida (6 eventos)</option>
+          <option value="antiga">Antiga (8 eventos)</option>
+          <option value="anciã">Anciã (10 eventos)</option>
+        </select>
+      </div>
+      <div class="grp">Sacrifício da Honra <input type="number" id="sacrificioInput" style="width:60px"></div>
+    </div>
+    <div class="hint" style="margin-bottom:6px">Clã — define os modificadores de base da família.</div>
+    <div class="origens" id="clasList"></div>
+  </div>
+
+  <div class="ringcluster">
+    <span class="ln"></span>
+    <img src="img/aneis/ar.png" alt=""><img src="img/aneis/agua.png" alt="">
+    <img class="mid" src="img/aneis/vazio.png" alt="">
+    <img src="img/aneis/fogo.png" alt=""><img src="img/aneis/terra.png" alt="">
+    <span class="ln"></span>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="panel"><h2><span class="kan">運</span>Status e Fortuna<span class="sub">resultado do que a família é</span></h2>
+        <div class="ledger" id="meters"></div>
+      </div>
+      <div class="panel"><h2><span class="kan">性</span>Atributos<span class="sub">o que a família é, e o que ela faz</span></h2>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+          <button class="ghost" id="btnRolarTudo">🎲 Rolar a base de tudo</button>
+          <span class="tag">com <input type="number" id="numDadosInput" value="7" min="1" max="15" style="width:44px;padding:3px 4px;text-align:center"> d10 por atributo</span>
+        </div>
+        <div class="attrlist" id="attrs"></div>
+      </div>
+      <div class="panel"><h2><span class="kan">記</span>Registro<span class="sub">o que mudou</span></h2>
+        <div class="log" id="log"></div>
+      </div>
+    </div>
+    <div>
+      <div class="panel"><h2><span class="kan">史</span>Eventos Históricos<span class="sub" id="eventosSub">0/0 escolhidos</span></h2>
+        <button class="ghost" id="btnSortearEventos" style="margin-bottom:8px">🎲 sortear os que faltam</button>
+        <button class="ghost" id="btnLimparEventos" style="margin-bottom:8px">limpar escolhidos</button>
+        <div class="eventgrid" id="eventos"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divisor"></div>
+
+  <div class="panel"><h2><span class="kan">地</span>Terras e Defesa<span class="sub">gasta Terras e Defesa; gera Fortuna de manutenção</span></h2>
+    <div class="saldos" id="terrenosSaldo"></div>
+    <div class="terrainlist" id="terrenosTab"></div>
+    <button class="ghost" id="btnAddTerreno" style="margin-top:8px">+ terreno</button>
+  </div>
+
+  <div class="panel"><h2><span class="kan">人</span>Personagens<span class="sub">gasta Influência</span></h2>
+    <div class="saldos" id="personagensSaldo"></div>
+    <div class="tabwrap"><table class="ctab" id="personagensTab"></table></div>
+    <button class="ghost" id="btnAddPersonagem" style="margin-top:8px">+ personagem</button>
+  </div>
+
+  <div class="panel"><h2><span class="kan">兵</span>Tropa e Liderança<span class="sub">gasta Poder</span></h2>
+    <div class="saldos" id="tropasSaldo"></div>
+    <div class="tabwrap"><table class="ctab" id="tropasTab"></table></div>
+    <button class="ghost" id="btnAddTropa" style="margin-top:8px">+ tropa</button>
+  </div>
+
+  <div class="panel"><h2><span class="kan">換</span>Conversão de Recursos<span class="sub">trocar um atributo por outro, a uma taxa</span></h2>
+    <div class="tabwrap"><table class="ctab" id="conversoesTab"></table></div>
+    <button class="ghost" id="btnAddConversao" style="margin-top:8px">+ conversão</button>
+    <div class="hint">Taxa = quanto do atributo de origem custa para ganhar 1 do atributo de destino. Defesa, Ordem e Espiritualidade não podem ser origem de conversão.</div>
+  </div>
+  </div>
+
+  <div id="viewPersonagens" style="display:none">
+    <div class="panel">
+      <h2><span class="kan">人</span>Personagens<span class="sub">ficha de cada personagem, vinculada ao gasto de Influência</span></h2>
+      <div class="hint" style="margin-bottom:10px">Quem cria e paga o papel de um personagem (o custo em Influência) é o Mestre, na aba Família → painel "Personagens". Aqui cada personagem tem sua própria ficha — um jogador pode ter mais de um.</div>
+      <div class="tabbar" id="charTabs"></div>
+      <div id="charSheet"></div>
+    </div>
+  </div>
+
+  <div class="foot">Família L5R — ficha de família e território · protótipo · inspirado na planilha "Familias L5R" · salvo no navegador.</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="l5r_4e_data.js"></script>
+<script>
+/* ======================================================================
+   CONFIG SUPABASE — isolada e trocável (mesmo padrão do app Kingdom).
+   Reaproveita o mesmo projeto do Kingdom, mas numa tabela própria
+   (l5r_familias) para não colidir com os reinos.
+   ====================================================================== */
+const SUPA_URL="https://kgsjicurnunadwivoxnb.supabase.co";
+const SUPA_KEY="sb_publishable_iNSaREevcuph_RCBCWYGXg_vpO-rsKp"; /* Publishable key (pública) */
+const SUPA_TABELA="l5r_familias";
+
+/* ============ DADOS (extraídos da planilha Familias L5R.xlsx) ============ */
+const ATRIBUTOS=[["defesa","Defesa"],["influencia","Influência"],["terras","Terras"],["ordem","Ordem"],
+  ["populacao","População"],["poder","Poder"],["riqueza","Riqueza"],["honra","Honra"],["espiritualidade","Espiritualidade"]];
+const POOL_ATTRS={defesa:1,influencia:1,terras:1,poder:1}; /* atributos que funcionam como "pontos" gastáveis */
+
+const IDADE={recente:2,jovem:4,estabelecida:6,antiga:8,"anciã":10};
+const IDADE_LABEL={recente:"Recente",jovem:"Jovem",estabelecida:"Estabelecida",antiga:"Antiga","anciã":"Anciã"};
+
+/* tier: "maior" (Grandes Clãs), "menor" (Clãs Menores), "imperial" (Famílias Imperiais).
+   familias: ramos/famílias reais daquele clã, na 4ª edição — usadas só como sugestão de nome
+   para o ramo familiar do jogador (ex.: "um ramo da família Kakita"), sem efeito mecânico. */
+const CLAS=[
+ {id:"caranguejo",nome:"Caranguejo",tier:"maior",mote:"“Coragem. Dever. Sacrifício.”",familias:["Hida","Hiruma","Kaiu","Kuni","Yasuki"],mods:{defesa:15,influencia:-10,terras:5,ordem:5,populacao:0,poder:10,riqueza:0,honra:10,espiritualidade:5}},
+ {id:"garca",nome:"Garça",tier:"maior",mote:"“Há uma técnica adequada para todas as coisas.”",familias:["Doji","Kakita","Asahina","Daidoji"],mods:{defesa:-5,influencia:15,terras:10,ordem:0,populacao:10,poder:-5,riqueza:10,honra:10,espiritualidade:-5}},
+ {id:"dragao",nome:"Dragão",tier:"maior",mote:"“Encontre seu próprio caminho.”",familias:["Togashi","Mirumoto","Kitsuki","Tamori"],mods:{defesa:10,influencia:-10,terras:0,ordem:10,populacao:-10,poder:10,riqueza:5,honra:15,espiritualidade:10}},
+ {id:"leao",nome:"Leão",tier:"maior",mote:"“Por meus ancestrais!”",familias:["Akodo","Matsu","Ikoma","Kitsu"],mods:{defesa:5,influencia:5,terras:0,ordem:5,populacao:5,poder:15,riqueza:-5,honra:10,espiritualidade:0}},
+ {id:"fenix",nome:"Fênix",tier:"maior",mote:"“Domine os elementos e renasça.”",familias:["Shiba","Isawa","Asako","Agasha"],mods:{defesa:5,influencia:5,terras:5,ordem:5,populacao:0,poder:-10,riqueza:5,honra:10,espiritualidade:15}},
+ {id:"escorpiao",nome:"Escorpião",tier:"maior",mote:"“Serei seu vilão, Hantei.”",familias:["Bayushi","Shosuro","Yogo"],mods:{defesa:5,influencia:15,terras:5,ordem:0,populacao:5,poder:10,riqueza:10,honra:-5,espiritualidade:-5}},
+ {id:"unicornio",nome:"Unicórnio",tier:"maior",mote:"“Ninguém pode capturar o vento.”",familias:["Moto","Ide","Utaku","Shinjo","Iuchi"],mods:{defesa:-5,influencia:-5,terras:15,ordem:-5,populacao:10,poder:5,riqueza:15,honra:5,espiritualidade:5}},
+ {id:"louva",nome:"Louva-a-Deus",tier:"maior",mote:"“O mar não perdoa os fracos.”",familias:["Yoritomo","Moshi","Kitsune","Tsuruchi"],mods:{defesa:5,influencia:5,terras:5,ordem:5,populacao:5,poder:0,riqueza:15,honra:0,espiritualidade:0}},
+ {id:"texugo",nome:"Texugo",tier:"menor",mods:{defesa:10,influencia:-5,terras:-5,ordem:10,populacao:0,poder:5,riqueza:5,honra:5,espiritualidade:0}},
+ {id:"gato",nome:"Gato",tier:"menor",mods:{defesa:5,influencia:10,terras:-5,ordem:5,populacao:0,poder:5,riqueza:5,honra:-5,espiritualidade:5}},
+ {id:"centopeia",nome:"Centopeia",tier:"menor",mods:{defesa:0,influencia:5,terras:0,ordem:0,populacao:0,poder:5,riqueza:0,honra:5,espiritualidade:10}},
+ {id:"libelula",nome:"Libélula",tier:"menor",mods:{defesa:5,influencia:5,terras:-5,ordem:5,populacao:-5,poder:5,riqueza:0,honra:10,espiritualidade:5}},
+ {id:"falcao",nome:"Falcão",tier:"menor",mods:{defesa:5,influencia:5,terras:0,ordem:0,populacao:0,poder:5,riqueza:0,honra:0,espiritualidade:10}},
+ {id:"raposa",nome:"Raposa",tier:"menor",mods:{defesa:5,influencia:5,terras:-5,ordem:0,populacao:-5,poder:0,riqueza:10,honra:5,espiritualidade:10}},
+ {id:"lebre",nome:"Lebre",tier:"menor",mods:{defesa:0,influencia:0,terras:0,ordem:0,populacao:0,poder:10,riqueza:5,honra:10,espiritualidade:0}},
+ {id:"pardal",nome:"Pardal",tier:"menor",mods:{defesa:5,influencia:5,terras:0,ordem:0,populacao:5,poder:5,riqueza:-10,honra:10,espiritualidade:5}},
+ {id:"tartaruga",nome:"Tartaruga",tier:"menor",mods:{defesa:5,influencia:0,terras:5,ordem:5,populacao:5,poder:5,riqueza:10,honra:-10,espiritualidade:0}},
+ {id:"vespa",nome:"Vespa",tier:"menor",mods:{defesa:10,influencia:5,terras:0,ordem:0,populacao:-5,poder:10,riqueza:0,honra:5,espiritualidade:0}},
+ {id:"imperial",nome:"Família Imperial",tier:"imperial",familias:["Miya","Seppun","Otomo"],mods:{defesa:0,influencia:0,terras:0,ordem:0,populacao:0,poder:0,riqueza:0,honra:0,espiritualidade:0}}
+];
+const TIER_LABEL={maior:"Grande Clã",menor:"Clã Menor",imperial:"Família Imperial"};
+
+/* Eventos históricos: id, nome, mods (colunas Defesa..Espiritualidade da planilha) */
+const EVENTOS=[
+ {id:"fundacao_decreto",nome:"Fundação por Decreto Imperial",mods:{influencia:10,honra:10}},
+ {id:"recompensa_militar",nome:"Recompensa por Serviço Militar",mods:{poder:10,honra:10}},
+ {id:"terras_conflito",nome:"Terras Concedidas após Conflito",mods:{defesa:5,terras:10,ordem:-5,poder:-5,riqueza:10,honra:5,espiritualidade:-3},
+  concede:{tipo:"terreno",terreno:"planicies",c1:"campo_batalha",nomeSugerido:"Campos de Kessen-no-Hara"}},
+ {id:"alianca_casamento",nome:"Aliança de Casamento Estratégico",mods:{influencia:10,riqueza:5,honra:5}},
+ {id:"ramo_elevado",nome:"Ramo Elevado de Grande Família",mods:{influencia:10,defesa:3,terras:10,ordem:-5,honra:10},
+  concede:{tipo:"terreno",terreno:"planicies",c1:"vila",nomeSugerido:"Vila-Dote da Grande Casa"}},
+ {id:"ascensao_heroi",nome:"Ascensão de Herói Local",mods:{populacao:5,poder:10,honra:5}},
+ {id:"fundacao_religiosa",nome:"Fundação Religiosa ou Profética",mods:{ordem:5,honra:5,espiritualidade:10}},
+ {id:"funcao_administrativa",nome:"Criação para Função Administrativa",mods:{influencia:5,ordem:10,riqueza:5}},
+ {id:"adocao_familia",nome:"Adoção da Família",mods:{influencia:5,ordem:5,poder:5,honra:5}},
+ {id:"usurpacao_terras",nome:"Usurpação ou Apropriação de Terras",mods:{defesa:5,influencia:-10,terras:5,ordem:-5,poder:5,honra:-10}},
+ {id:"vitoria_torneio",nome:"Vitória em Torneio",mods:{influencia:5,honra:10}},
+ {id:"refem_prestigio",nome:"Refém de Prestígio",mods:{influencia:5,riqueza:-5,honra:5}},
+ {id:"rivalidade_juramentada",nome:"Rivalidade Juramentada",mods:{ordem:-5,poder:5,honra:-5}},
+ {id:"acordo_comercial",nome:"Acordo Comercial Duradouro",mods:{influencia:5,terras:15,riqueza:10,honra:-3},
+  concede:{tipo:"terreno",terreno:"costa",c1:"porto",nomeSugerido:"Porto de Shiro-Minato"}},
+ {id:"artesao_renomado",nome:"Ascensão de um Artesão Renomado",mods:{populacao:5,riqueza:10,honra:5}},
+ {id:"escola_artistica",nome:"Escola Artística ou Estilo Famoso",mods:{influencia:10,riqueza:5,honra:5}},
+ {id:"construcao_fortaleza",nome:"Construção de Fortaleza",mods:{defesa:21,influencia:5,ordem:10,riqueza:-10,honra:5,espiritualidade:-5},
+  concede:{tipo:"terreno",terreno:"colinas",c1:"shiro",c2:"area_impura",nomeSugerido:"Shiro da Bruma Esquecida"}},
+ {id:"desastre_natural",nome:"Desastre Natural",mods:{terras:-5,populacao:-10,riqueza:-10,espiritualidade:5}},
+ {id:"fome_prolongada",nome:"Fome Prolongada",mods:{influencia:-5,ordem:-5,populacao:-10}},
+ {id:"era_prosperidade",nome:"Era de Prosperidade",mods:{ordem:-5,populacao:10,riqueza:15}},
+ {id:"magistrado_renome",nome:"Magistrado de Renome",mods:{influencia:10,ordem:10,honra:10}},
+ {id:"corrupcao_escandalo",nome:"Corrupção ou Escândalo",mods:{influencia:-10,honra:-15,espiritualidade:-5}},
+ {id:"gloria_batalha",nome:"Glória em Batalha",mods:{poder:10,honra:5}},
+ {id:"derrota_marcante",nome:"Derrota Marcante",mods:{poder:-10,honra:-5}},
+ {id:"contato_terras_sombrias",nome:"Contato com as Terras Sombrias",mods:{poder:5,honra:-5,espiritualidade:-10}},
+ {id:"bencao_kami",nome:"Bênção dos Kami",mods:{espiritualidade:10}},
+ {id:"templo_importante",nome:"Templo ou Santuário Importante",mods:{defesa:3,terras:13,ordem:-3,honra:5,espiritualidade:5},
+  concede:{tipo:"terreno",terreno:"planicies",c1:"templo_santuario",c2:"peregrinacao",nomeSugerido:"Santuário do Véu Sereno"}},
+ {id:"intervencao_senhor",nome:"Intervenção de um Grande Senhor",mods:{influencia:-5,ordem:5,poder:-5,honra:-5}},
+ {id:"guerra_prolongada",nome:"Guerra Prolongada",mods:{influencia:-5,terras:-5,ordem:-10,populacao:-10,poder:5,riqueza:-5}},
+ {id:"segredo_guardado",nome:"Segredo Guardado",mods:{influencia:10,poder:5,riqueza:5,honra:5,espiritualidade:5}},
+ {id:"reforma_interna",nome:"Reforma Interna Bem-Sucedida",mods:{influencia:5,ordem:10,populacao:5,honra:5}},
+ {id:"revolta_camponesa",nome:"Revolta Camponesa",mods:{ordem:-10,populacao:-10,poder:5,riqueza:-5,honra:-5}},
+ {id:"migracao_massa",nome:"Migração em Massa para as Terras",mods:{terras:-10,ordem:-10,populacao:15,riqueza:5}},
+ {id:"recurso_valioso",nome:"Descoberta de Recurso Valioso",mods:{influencia:5,defesa:7,terras:16,populacao:5,riqueza:15,ordem:-5},
+  concede:{tipo:"terreno",terreno:"montanhas",c1:"minas",nomeSugerido:"Veio de Kaiu-zan"}},
+ {id:"isolamento_deliberado",nome:"Isolamento Deliberado",mods:{defesa:5,influencia:-10,ordem:5,populacao:-5,riqueza:-10,honra:-5,espiritualidade:5}},
+ {id:"tradicao_marcial",nome:"Tradição Marcial Distinta",mods:{defesa:5,poder:10,honra:5}},
+ {id:"decadencia_administrativa",nome:"Decadência Administrativa",mods:{influencia:-5,ordem:-10,populacao:-5,riqueza:-10,honra:-5}},
+ {id:"figura_espiritual",nome:"Ascensão de Figura Espiritual",mods:{influencia:10,defesa:7,terras:17,ordem:5,riqueza:-5,honra:10,espiritualidade:15},
+  concede:{tipo:"terreno",terreno:"montanhas",c1:"templo_santuario",c2:"peregrinacao",nomeSugerido:"Retiro do Iluminado"}},
+ {id:"perda_territorio",nome:"Perda de Território",mods:{defesa:-5,terras:-10,ordem:-5,populacao:-5,poder:-5,riqueza:-5,honra:-5}},
+ {id:"reconstrucao_pos_guerra",nome:"Reconstrução Pós-Guerra",mods:{defesa:5,terras:-5,ordem:-5,populacao:5,honra:5}},
+ {id:"heranca_castelo_amaldicoado",nome:"Herança de um Castelo Amaldiçoado",mods:{defesa:23,ordem:-3,honra:8,espiritualidade:-8},
+  concede:{tipo:"terreno",terreno:"montanhas",c1:"shiro",c2:"area_impura",nomeSugerido:"Kage no Shiro, o Castelo da Sombra"}},
+ {id:"ruinas_ancestrais_descobertas",nome:"Descoberta de Ruínas Ancestrais",mods:{terras:7,riqueza:-3,honra:3,espiritualidade:8},
+  concede:{tipo:"terreno",terreno:"floresta_densa",c1:"ruinas_antigas",nomeSugerido:"Ruínas de Tsuki-no-Mura"}},
+ {id:"porto_herdado_afogados",nome:"Porto Herdado de Aliados Afogados",mods:{terras:15,riqueza:12,honra:5,espiritualidade:-5},
+  concede:{tipo:"terreno",terreno:"costa",c1:"porto",nomeSugerido:"Porto de Nami-Nageki"}},
+ {id:"fortaleza_cedida_cla",nome:"Fortaleza Cedida pelo Clã",mods:{defesa:27,terras:7,ordem:10,poder:5,riqueza:-15,honra:10},
+  concede:{tipo:"terreno",terreno:"montanhas",c1:"kyuden",nomeSugerido:"Kyuden da Linhagem"}}
+];
+
+/* Descrições narrativas dos eventos (do L5R RPG.docx) — mostradas no card no lugar dos números */
+const EVENTO_DESC={
+ vitoria_torneio:"Em um torneio digno de memória, um membro da família alcançou vitória incontestável, superando rivais diante de olhares atentos da corte. Desde então, o nome da família ecoa com prestígio, mas também atrai a inveja daqueles que foram derrotados.",
+ refem_prestigio:"Por dever político, um herdeiro foi enviado à corte de outro senhor, vivendo não como prisioneiro, mas como garantia de lealdade. Retornou transformado — nem totalmente de casa, nem totalmente de fora.",
+ rivalidade_juramentada:"Uma ofensa jamais esquecida deu origem a uma rivalidade formal, selada por palavras que nenhum dos lados pode retirar. A honra da família está sempre à prova diante de seu adversário.",
+ acordo_comercial:"Por meio de negociação cuidadosa, a família firmou um acordo que trouxe riqueza estável ao longo dos anos — e com ele, o direito de erguer um porto próprio nas costas negociadas. Mas a prosperidade depende de parceiros estrangeiros, e há quem veja a proximidade com forasteiros como uma mancha na reputação da casa. Concede: um porto (fortificação Porto sobre terreno de Costa).",
+ artesao_renomado:"Um artesão da família alcançou tal maestria que suas obras passaram a ser desejadas em toda a região, transformando a casa em referência cultural.",
+ escola_artistica:"Das mãos e da mente de seus membros nasceu uma tradição artística própria, reconhecida e respeitada — símbolo da família, mas também disputa silenciosa com outras tradições.",
+ construcao_fortaleza:"Em resposta às incertezas do mundo, a família ergueu um shiro sobre um terreno que ninguém mais queria — dizem que ali um exército inteiro desapareceu numa só noite, séculos atrás. O castelo é real e formidável, mas os camponeses se recusam a lavrar suas terras próximas, e algo no ar ainda parece errado depois do anoitecer. Concede: um Shiro sobre terreno amaldiçoado (Colinas, com Área Impura).",
+ desastre_natural:"Os céus se fecharam e a terra respondeu, trazendo destruição que nenhum guerreiro poderia enfrentar. A família ainda carrega as marcas desse tempo.",
+ fome_prolongada:"Durante anos difíceis, os campos deixaram de sustentar o povo, e a fome espalhou-se silenciosa e cruel pelas terras.",
+ era_prosperidade:"Houve um tempo em que tudo floresceu: campos férteis, cofres cheios, povo numeroso — mas esse período também plantou sementes de excessos e complacência.",
+ magistrado_renome:"Um membro da família destacou-se como juiz exemplar, conduzindo casos complexos com sabedoria e firmeza, sob constante escrutínio.",
+ corrupcao_escandalo:"Nem toda fama é honrosa. Um escândalo veio à tona, manchando o nome da família e expondo falhas que muitos preferiam ignorar.",
+ gloria_batalha:"Em campo aberto, a família provou seu valor, conquistando vitória que ecoou entre aliados e inimigos — e a expectativa de estar sempre à altura desse passado.",
+ derrota_marcante:"Nem todas as batalhas foram vencidas. Uma derrota severa deixou cicatrizes profundas e a necessidade constante de provar que tal falha não a define.",
+ contato_terras_sombrias:"Em algum momento, a família esteve próxima da corrupção que habita além das fronteiras seguras. A sombra desse contato permanece.",
+ bencao_kami:"Diz-se que os próprios espíritos voltaram seus olhos à família, concedendo-lhes favor em momento de necessidade — motivo de orgulho, e de responsabilidade.",
+ templo_importante:"Um local sagrado ergue-se sob proteção da família, com uma rota de peregrinação que atravessa suas terras. Os peregrinos trazem reverência e um fluxo constante de visitantes — mas também tumulto, mendicância e disputas que a guarda local precisa apaziguar sem ferir a santidade do lugar. Concede: um Templo/Santuário com rota de peregrinação (sobre Planícies).",
+ intervencao_senhor:"Em determinado momento, um senhor poderoso interveio nos assuntos da família, alterando seu curso — bênção ou imposição.",
+ guerra_prolongada:"Durante anos, a família esteve presa em conflito contínuo, drenando seus recursos e seu povo — mais resistente, ou mais marcada pelas perdas.",
+ segredo_guardado:"Há algo que não pode ser dito, algo que a família protege a qualquer custo. Sua revelação poderia mudar tudo.",
+ reforma_interna:"Diante de falhas, a família reorganizou-se com disciplina e visão, restaurando a ordem e fortalecendo suas bases.",
+ revolta_camponesa:"O povo, pressionado além do limite, levantou-se contra seus senhores. A revolta foi contida, mas deixou marcas na relação entre governantes e governados.",
+ migracao_massa:"Novos habitantes chegaram em grande número, trazendo costumes, esperanças e desafios. A família cresceu em população, e em complexidade.",
+ recurso_valioso:"Uma veia de minério raro foi encontrada nas montanhas da família, e uma mina próspera já opera sobre ela. O ouro que sai de lá sustenta gerações — mas rivais, bandidos e até funcionários corruptos do próprio clã disputam o controle da extração, e manter a ordem na região se tornou um problema constante. Concede: uma Mina (sobre terreno de Montanhas).",
+ isolamento_deliberado:"Por escolha ou necessidade, a família afastou-se do restante do mundo. A decisão preservou sua identidade, mas custou influência e confiança externa.",
+ tradicao_marcial:"Ao longo do tempo, a família desenvolveu um estilo de combate próprio, refletindo seus valores e sua história — motivo de orgulho e reconhecimento.",
+ decadencia_administrativa:"A ordem interna começou a falhar, seja por negligência ou corrupção, abrindo espaço para crises e interferências externas.",
+ figura_espiritual:"Um líder espiritual emergiu entre eles — tão venerado que um retiro de peregrinação foi erguido em sua homenagem, guiando não apenas rituais, mas o próprio destino da família. Sustentar o fluxo de fiéis e esmolas drena os cofres, e seitas rivais já cochicham inveja contra o santo vivo da casa. Concede: um Templo/Santuário com peregrinação (sobre Montanhas).",
+ perda_territorio:"Parte das terras foi perdida, seja por guerra ou acordo forçado. A família encolheu, mas a memória do que foi perdido permanece viva.",
+ reconstrucao_pos_guerra:"Após a destruição, a família dedicou-se a reconstruir o que restou, redefinindo suas prioridades.",
+ terras_conflito:"Terras foram concedidas à família como recompensa após um conflito sangrento, incluindo o próprio campo onde a batalha decisiva aconteceu. A vitória rendeu prestígio e riqueza, mas dizem que em noites sem lua ainda se ouvem tambores de guerra vindos de lugar nenhum — os mortos daquele dia não descansam em paz. Concede: um antigo Campo de Batalha (sobre Planícies).",
+ ramo_elevado:"Um ramo secundário da família foi elevado por uma grande casa, recebendo como dote uma vila inteira para administrar. A honra é imensa, mas a grande casa nunca deixa a família esquecer a quem deve lealdade — e seus pedidos chegam com a força de uma ordem, não de um favor. Concede: uma Vila (sobre Planícies).",
+ heranca_castelo_amaldicoado:"Um ramo distante da família desapareceu sem deixar rastro, e seu castelo passou à linhagem principal por direito de sangue. Ninguém mais quis reivindicar aquelas terras — os camponeses evitam a região, e servos juram ouvir passos nos corredores vazios à noite. Ainda assim, é um Shiro de verdade, com muralhas que já resistiram a cercos, e poucos rivais arriscariam atacar um lugar com fama tão sinistra. Concede: um Shiro sobre terreno amaldiçoado (Colinas/Montanhas, com Área Impura).",
+ ruinas_ancestrais_descobertas:"Nas profundezas de uma floresta pertencente à família, exploradores encontraram ruínas de uma era anterior à fundação da própria casa — talvez de uma civilização esquecida, talvez de uma linhagem ancestral perdida no tempo. O local desperta orgulho e fascínio espiritual, mas escavá-lo custa recursos, e ninguém sabe ao certo o que mais pode estar enterrado ali embaixo, esperando para ser descoberto por aventureiros audazes. Concede: Ruínas Antigas (sobre Floresta Densa).",
+ porto_herdado_afogados:"Uma família aliada foi tragada pelo mar numa tempestade que ninguém esqueceu, e por um antigo pacto de casamento, seu porto passou às mãos desta família. O comércio ali é próspero e constante, mas marinheiros locais insistem que às vezes, na neblina da madrugada, avistam velas fantasmas voltando para casa. Concede: um Porto (sobre Costa).",
+ fortaleza_cedida_cla:"Em reconhecimento por serviços prestados, o próprio clã cedeu à família uma grande fortaleza ancestral, um Kyuden erguido para durar séculos. É um símbolo imenso de confiança e prestígio — mas também uma coleira: o clã espera que a família responda a qualquer chamado às armas, sem hesitação e sem exceção, custe o que custar. Concede: um Kyuden (sobre Montanhas)."
+};
+
+/* Subtítulo poético + descrição de cada atributo (do L5R RPG.docx) */
+const ATTR_FLAVOR={
+ defesa:{sub:"A solidez das muralhas e a firmeza daqueles que as guardam.",desc:"Reflete a capacidade da família de resistir a ameaças, sejam exércitos inimigos ou perigos vindos das sombras além das fronteiras."},
+ influencia:{sub:"A extensão da voz da família nos salões do poder.",desc:"Mede sua presença na corte, seus laços com outras casas e sua habilidade de moldar decisões sem recorrer à espada."},
+ terras:{sub:"O solo sobre o qual repousa o dever da família.",desc:"Representa a extensão, a riqueza e a importância estratégica de seus domínios."},
+ ordem:{sub:"A harmonia — ou sua ausência — dentro das fronteiras da família.",desc:"Indica o grau de controle, disciplina e estabilidade em suas terras."},
+ populacao:{sub:"As vidas confiadas ao cuidado da família.",desc:"Reflete o número e a vitalidade daqueles que vivem sob seu estandarte — camponeses, artesãos e servos."},
+ poder:{sub:"A força que a família pode convocar quando o aço fala mais alto que as palavras.",desc:"Inclui seus exércitos, seus comandantes e sua prontidão para a guerra."},
+ riqueza:{sub:"Os recursos que fluem através da família como um rio constante.",desc:"Mede sua prosperidade material: colheitas, comércio e reservas."},
+ honra:{sub:"O peso invisível do nome da família.",desc:"Expressa sua fidelidade ao Bushidō, sua retidão e a confiança que inspira nos outros. Não pode ser comprada — apenas conquistada, ou perdida."},
+ espiritualidade:{sub:"A sintonia da família com os Kami e as Fortunas.",desc:"Reflete sua pureza, sua devoção e o equilíbrio entre o mundo material e o espiritual."}
+};
+
+/* Cada atributo remete a um dos Cinco Anéis, como nos livros de L5R — usado para escolher o ícone na ficha. */
+const ATTR_RING={defesa:"terra",terras:"terra",populacao:"terra",riqueza:"agua",influencia:"ar",ordem:"ar",poder:"fogo",honra:"vazio",espiritualidade:"vazio"};
+
+/* Curva de atributo bruto -> valor suavizado (mesma tabela de X para Honra/Espiritualidade/Ordem/População) */
+const CURVA_X=[-101,-91,-81,-71,-61,-51,-41,-31,-21,-11,-1,0,1,11,21,31,41,51,61,71,81,91,101,111,121,131,141,151,161,171,181,191,201];
+const HONRA_Y=[-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,-3,-2,1,3,5,7,10,15,20,30,35,40,45,50,55,60,65,70,75,80];
+const ESPIRIT_Y=[-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,-3,-2,1,3,5,7,10,15,20,30,35,40,45,50,55,60,65,70,75,80];
+const EQUILIBRIO_Y=[15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0,-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15,-16,-17];
+const ORDEM_Y=[-75,-70,-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-10,-5,-2,-1,0,1,2,5,10,15,20,25,30,35,40,45,50,55,60,65,70];
+const POPULACAO_Y=[-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,1,3,1,0,-5,-10,-15,-20,-25,-30,-35,-40,-45,-50,-55,-60,-65,-70,-75];
+const AUGURIO_Y=["","","","","","","","","","","","","","","","Sussurros","Sussurros","Sensações","Sensações","Fragmentos","Fragmentos","Enigmas","Visão","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação"];
+const HONRA_RANK_X=[0,20,30,40,50,60,70];
+const HONRA_RANK_Y=["Rank 0","Rank 1","Rank 2","Rank 3","Rank 4","Rank 5","Rank 6"];
+
+function curvaLookup(xs,ys,x){let idx=-1;for(let i=0;i<xs.length;i++){if(xs[i]<=x)idx=i;else break;}return idx>=0?ys[idx]:ys[0];}
+
+/* Terras e Defesa */
+const TERRENOS_BASE=[
+ {id:"planicies",nome:"Planícies",custo:3},
+ {id:"colinas",nome:"Colinas",custo:5},
+ {id:"montanhas",nome:"Montanhas",custo:7},
+ {id:"alagadas",nome:"Terras Alagadas",custo:1}
+];
+const CARACTERISTICAS=[
+ {id:"aldeia",nome:"Aldeia",custo:3,fortuna:1},
+ {id:"vila",nome:"Vila",custo:7,fortuna:2},
+ {id:"grande_vila",nome:"Grande Vila",custo:10,fortuna:3},
+ {id:"cidade",nome:"Cidade",custo:15,fortuna:4},
+ {id:"grande_cidade",nome:"Grande Cidade",custo:20,fortuna:6},
+ {id:"campos_arroz",nome:"Campos de Arroz",custo:5,fortuna:3},
+ {id:"terras_cultivaveis",nome:"Terras Cultiváveis Diversas",custo:3,fortuna:1},
+ {id:"pastagens",nome:"Pastagens",custo:3,fortuna:1},
+ {id:"riachos",nome:"Riachos",custo:2,fortuna:1},
+ {id:"lagos",nome:"Lagos",custo:3,fortuna:1},
+ {id:"rio_navegavel",nome:"Rio Navegável",custo:5,fortuna:2},
+ {id:"floresta_leve",nome:"Floresta Leve",custo:2,fortuna:1},
+ {id:"floresta_densa",nome:"Floresta Densa",custo:4,fortuna:1},
+ {id:"minas",nome:"Minas",custo:7,fortuna:3},
+ {id:"costa",nome:"Costa",custo:5,fortuna:2},
+ {id:"ilha",nome:"Ilha",custo:5,fortuna:1},
+ {id:"rota_comercial",nome:"Rota Comercial Externa",custo:7,fortuna:3},
+ {id:"porto",nome:"Porto",custo:10,fortuna:4},
+ {id:"estrada",nome:"Estrada Pavimentada",custo:5,fortuna:-2},
+ {id:"ponte",nome:"Ponte",custo:3,fortuna:-1},
+ {id:"mercado_regional",nome:"Mercado Regional",custo:7,fortuna:3},
+ {id:"templo_santuario",nome:"Templo ou Santuário",custo:5,fortuna:-1},
+ {id:"peregrinacao",nome:"Local de Peregrinação",custo:5,fortuna:0},
+ {id:"ruinas_antigas",nome:"Ruínas Antigas",custo:3,fortuna:0},
+ {id:"campo_batalha",nome:"Campo de Batalha Antigo",custo:1,fortuna:0},
+ {id:"area_impura",nome:"Área Impura",custo:-10,fortuna:-4}
+];
+const FORTIFICACOES=[
+ {id:"terreno_defensivo",nome:"Terreno Defensivo",custo:2,attrition:-1,dificuldade:4,fortuna:0},
+ {id:"acampamento_fortificado",nome:"Acampamento Fortificado",custo:4,attrition:-1,dificuldade:5,fortuna:-1},
+ {id:"torre_vigia",nome:"Torre de Vigia",custo:6,attrition:-2,dificuldade:6,fortuna:-1},
+ {id:"posto_avancado",nome:"Posto Avançado",custo:8,attrition:-2,dificuldade:6,fortuna:-2},
+ {id:"muralha_campo",nome:"Muralha de Campo",custo:10,attrition:-2,dificuldade:7,fortuna:-2},
+ {id:"fortaleza_menor",nome:"Fortaleza Menor",custo:12,attrition:-3,dificuldade:8,fortuna:-3},
+ {id:"shiro",nome:"Shiro",custo:16,attrition:-3,dificuldade:10,fortuna:-4},
+ {id:"kyuden",nome:"Kyuden",custo:20,attrition:-4,dificuldade:12,fortuna:-5},
+ {id:"fortaleza_imperial",nome:"Fortaleza Imperial",custo:25,attrition:-4,dificuldade:14,fortuna:-6}
+];
+
+/* Personagens (Influência) */
+const PERSONAGEM_PAPEL=[
+ {nome:"Senhor menor, domínio limitado",custo:10,efeito:"fortuna",valor:1},
+ {nome:"Daimyō de cidade ou família vassala",custo:20,efeito:"fortuna",valor:2},
+ {nome:"Governante regional",custo:30,efeito:"fortuna",valor:3},
+ {nome:"Figura importante dentro do clã",custo:40,efeito:"fortuna",valor:5},
+ {nome:"Bushi Jovem",custo:5,efeito:"defesa",valor:1},
+ {nome:"Bushi Experiente",custo:10,efeito:"defesa",valor:3},
+ {nome:"Bushi Veterano",custo:20,efeito:"defesa",valor:5},
+ {nome:"Cortesão Jovem",custo:5,efeito:"ordem",valor:1},
+ {nome:"Cortesão Experiente",custo:10,efeito:"ordem",valor:3},
+ {nome:"Cortesão Veterano",custo:20,efeito:"ordem",valor:5},
+ {nome:"Shugenja Jovem",custo:15,efeito:"espiritualidade",valor:1},
+ {nome:"Shugenja Experiente",custo:25,efeito:"espiritualidade",valor:3},
+ {nome:"Shugenja Veterano",custo:40,efeito:"espiritualidade",valor:5},
+ {nome:"Monge Jovem",custo:10,efeito:"espiritualidade",valor:1},
+ {nome:"Monge Experiente",custo:15,efeito:"espiritualidade",valor:3},
+ {nome:"Monge Veterano",custo:25,efeito:"espiritualidade",valor:5}
+];
+const ESTADO_PERSONAGEM=["Vivo","Ferido","Refém","Morto","Ausente"];
+
+/* Tropa e Liderança (Poder) */
+const TROPA_TIPOS={
+ camponesa:{nome:"Camponesa",forca:35,disciplina:20,custo:10},
+ ashigaru:{nome:"Ashigaru",forca:55,disciplina:30,custo:15},
+ samurai:{nome:"Samurai",forca:50,disciplina:45,custo:30}
+};
+const TROPA_ESPEC={
+ disciplinado:{nome:"Disciplinado",disciplina:5,custo:10},
+ fortalecido:{nome:"Fortalecido",forca:5,custo:10}
+};
+const TROPA_EQUIP=[
+ {id:"bagagem",nome:"Trem de Bagagem",custo:15},
+ {id:"suprimentos",nome:"Suprimentos Médicos",custo:5},
+ {id:"nagae",nome:"Nagae Yari",custo:5},
+ {id:"tetsubishi",nome:"Tetsubishi",custo:10},
+ {id:"armaduras",nome:"Armaduras Aprimoradas",custo:20}
+];
+const TROPA_ESTADO={
+ patrulha:{nome:"Patrulha",ordem:3,populacao:0,honra:1,fortuna:-1},
+ mobilizado:{nome:"Mobilizado",ordem:-2,populacao:-2,honra:2,fortuna:-2},
+ refem:{nome:"Refém",ordem:-2,populacao:-2,honra:-3,fortuna:-2},
+ ferido:{nome:"Ferido",ordem:-2,populacao:-2,honra:-2,fortuna:-3},
+ derrotado:{nome:"Derrotado",ordem:0,populacao:-2,honra:-5,fortuna:0}
+};
+const MULT_TROPA={camponesa:1,ashigaru:2,samurai:3};
+
+/* Conversão de recursos: origem -> {destinos, taxa} */
+const CONVERSAO_REGRAS={
+ defesa:{destinos:[],taxa:1},
+ influencia:{destinos:["ordem"],taxa:1},
+ terras:{destinos:["defesa"],taxa:1},
+ ordem:{destinos:[],taxa:1},
+ populacao:{destinos:["poder"],taxa:1},
+ poder:{destinos:["influencia","ordem","populacao"],taxa:1},
+ riqueza:{destinos:["defesa","influencia","terras","ordem","populacao","poder"],taxa:2},
+ honra:{destinos:["riqueza","influencia"],taxa:2},
+ espiritualidade:{destinos:[],taxa:1}
+};
+
+/* ============ ESTADO ============ */
+function uid(){return Math.random().toString(36).slice(2,8);}
+function esc(s){return(s||"").toString().replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
+function estadoInicial(){return{
+  nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",idade:"recente",sacrificioHonra:0,numDados:7,
+  base:{defesa:0,influencia:0,terras:0,ordem:0,populacao:0,poder:0,riqueza:0,honra:0,espiritualidade:0},
+  eventos:[],terrenos:[],personagens:[],tropas:[],conversoes:[],feed:[]
+};}
+function d10(){return 1+Math.floor(Math.random()*10);}
+function rollAllAttrs(){
+  if(bloqueadoLeitura())return;
+  const n=Math.max(1,Math.min(15,parseInt(S.numDados)||7));
+  const partes=[];
+  ATRIBUTOS.forEach(([k,l])=>{
+    let soma=0;for(let i=0;i<n;i++)soma+=d10();
+    S.base[k]=soma;partes.push(l+" "+soma);
+  });
+  feedPush("Os dados falam pela família (base, "+n+"d10 cada): "+partes.join(", ")+".");
+  salvar();render();
+}
+function setNumDados(v){if(bloqueadoLeitura())return;S.numDados=Math.max(1,Math.min(15,parseInt(v)||7));salvar();}
+function salvarLocal(){try{localStorage.setItem("l5r_familia_v1",JSON.stringify(S));}catch(e){}}
+function salvar(){salvarLocal();agendarPush();}
+function carregar(){try{const r=localStorage.getItem("l5r_familia_v1");return r?JSON.parse(r):null;}catch(e){return null;}}
+let S=carregar()||estadoInicial();
+let papel="mestre";
+/* estado só de tela (não salva): se a lista de clãs/eventos aparece cheia ou só o que já foi escolhido */
+let verTodosClas=!S.cla;
+let verTodosEventos=S.eventos.length<maxEventos();
+
+/* ============ MOTOR DE CÁLCULO ============ */
+function claAtual(){return CLAS.find(c=>c.id===S.cla);}
+function claMod(attr){const c=claAtual();return c?(c.mods[attr]||0):0;}
+function eventosMod(attr){let s=0;S.eventos.forEach(id=>{const e=EVENTOS.find(x=>x.id===id);if(e)s+=(e.mods[attr]||0);});return s;}
+function personagemMod(attr){let s=0;S.personagens.forEach(p=>{const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito===attr)s+=papel.valor;});return s;}
+function fortunaPersonagem(){let s=0;S.personagens.forEach(p=>{const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito==="fortuna")s+=papel.valor;});return s;}
+function personagemCusto(cat){const p=PERSONAGEM_PAPEL.find(x=>x.nome===cat);return p?p.custo:0;}
+function personagensCustoTotal(){return S.personagens.reduce((s,p)=>s+personagemCusto(p.categoria),0);}
+function mortosBonusHonra(){let s=0;S.personagens.forEach(p=>{if(p.estado==="Morto")s+=Math.floor((Number(p.honra)||0)/10);});return s;}
+
+function conversaoGanho(attr){let s=0;S.conversoes.forEach(c=>{if(c.destino===attr)s+=(Number(c.usos)||0);});return s;}
+function conversaoGasto(attr){let s=0;S.conversoes.forEach(c=>{if(c.origem===attr){const r=CONVERSAO_REGRAS[attr];const taxa=r?r.taxa||1:1;s+=(Number(c.usos)||0)*taxa;}});return s;}
+
+function tropaLinhaCalc(row){
+  const tipo=TROPA_TIPOS[row.tipo],esp=TROPA_ESPEC[row.especializacao];
+  let forca=0,disciplina=0,custo=0;
+  if(tipo){forca+=tipo.forca;disciplina+=tipo.disciplina;custo+=tipo.custo;}
+  if(esp){forca+=esp.forca||0;disciplina+=esp.disciplina||0;custo+=esp.custo||0;}
+  (row.equipamento||[]).forEach(id=>{const eq=TROPA_EQUIP.find(x=>x.id===id);if(eq)custo+=eq.custo;});
+  return{forca,disciplina,custo};
+}
+function tropasCustoTotal(){return S.tropas.reduce((s,t)=>s+tropaLinhaCalc(t).custo,0);}
+function tropaMod(attr){let s=0;S.tropas.forEach(t=>{const est=TROPA_ESTADO[t.estado],mult=MULT_TROPA[t.tipo]||1;if(est)s+=(est[attr]||0)*mult;});return s;}
+function fortunaTropa(){let s=0;S.tropas.forEach(t=>{const est=TROPA_ESTADO[t.estado],mult=MULT_TROPA[t.tipo]||1;if(est)s+=(est.fortuna||0)*mult;});return s;}
+
+function terrenoLinhaCalc(row){
+  const base=TERRENOS_BASE.find(t=>t.id===row.terreno);
+  let custoDefesa=0,custoTerras=0,fortuna=0;
+  if(base){custoDefesa+=base.custo;custoTerras+=base.custo;}
+  [row.c1,row.c2,row.c3,row.c4].forEach(id=>{
+    if(!id)return;
+    const forte=FORTIFICACOES.find(x=>x.id===id),carac=CARACTERISTICAS.find(x=>x.id===id);
+    if(forte){custoDefesa+=forte.custo;fortuna+=forte.fortuna;}
+    if(carac){custoTerras+=carac.custo;fortuna+=carac.fortuna;}
+  });
+  return{custoDefesa,custoTerras,fortuna};
+}
+function terrenosTotais(){let cd=0,ct=0,f=0;S.terrenos.forEach(r=>{const x=terrenoLinhaCalc(r);cd+=x.custoDefesa;ct+=x.custoTerras;f+=x.fortuna;});return{custoDefesa:cd,custoTerras:ct,fortuna:f};}
+
+function modificador(attr){
+  let m=personagemMod(attr)+conversaoGanho(attr)-conversaoGasto(attr);
+  if(attr==="ordem"||attr==="populacao"||attr==="honra")m+=tropaMod(attr);
+  if(attr==="honra")m+=mortosBonusHonra()-(Number(S.sacrificioHonra)||0)*5;
+  return m;
+}
+function totalAttr(attr){return(Number(S.base[attr])||0)+claMod(attr)+eventosMod(attr)+modificador(attr);}
+function poolGasto(attr){
+  if(attr==="defesa")return terrenosTotais().custoDefesa;
+  if(attr==="terras")return terrenosTotais().custoTerras;
+  if(attr==="influencia")return personagensCustoTotal();
+  if(attr==="poder")return tropasCustoTotal();
+  return 0;
+}
+function poolRestante(attr){return totalAttr(attr)-poolGasto(attr);}
+
+function fortunas(){
+  return fortunaTropa()+terrenosTotais().fortuna+
+    curvaLookup(CURVA_X,ORDEM_Y,totalAttr("ordem"))+
+    curvaLookup(CURVA_X,POPULACAO_Y,totalAttr("populacao"))+
+    curvaLookup(CURVA_X,ESPIRIT_Y,totalAttr("espiritualidade"))+
+    curvaLookup(CURVA_X,HONRA_Y,totalAttr("honra"))+
+    fortunaPersonagem();
+}
+function favorDasFortunas(){return fortunas()>=50;}
+function equilibrioEspiritual(){return curvaLookup(CURVA_X,EQUILIBRIO_Y,totalAttr("espiritualidade"));}
+function augurioKami(){return curvaLookup(CURVA_X,AUGURIO_Y,totalAttr("espiritualidade"));}
+function dojo(){const h=totalAttr("honra");if(h<20)return"—";return curvaLookup(HONRA_RANK_X,HONRA_RANK_Y,h);}
+function maxEventos(){return IDADE[S.idade]||0;}
+function contarPapel(re){return S.personagens.filter(p=>re.test(p.categoria||"")).length;}
+function rosterCounts(){
+  const bushi=contarPapel(/Bushi/),monge=contarPapel(/Monge/),
+    cortesao=contarPapel(/Cortesão/),shugenja=contarPapel(/Shugenja/);
+  return{bushi,monge,cortesao,shugenja,samurai:bushi+monge+cortesao+shugenja};
+}
+
+/* ============ REGISTRO ============ */
+function feedPush(txt){S.feed=S.feed||[];S.feed.unshift(txt);if(S.feed.length>40)S.feed.pop();}
+let hintTimer;
+function flashHint(m){console.log(m);} /* placeholder simples: avisos aparecem no registro também */
+
+/* ============ SUPABASE (mesmo padrão do Kingdom) ============ */
+let sb=null,sbCanal=null,sala=null,sbStatus="off",presentes=[],pushTimer=null;
+function sbPronto(){return!!(window.supabase&&SUPA_URL&&SUPA_KEY&&SUPA_URL.startsWith("http"));}
+function sbInit(){if(!sb&&sbPronto())sb=window.supabase.createClient(SUPA_URL,SUPA_KEY);}
+function bloqueadoLeitura(){if(papel==="jogador"){flashHint("Você está em modo Jogador (só leitura).");return true;}return false;}
+async function conectarSala(codigo){
+  if(!codigo||!codigo.trim())return;sbInit();if(!sb){sbStatus="sem config";renderSync();return;}
+  sala=codigo.trim().toLowerCase();sbStatus="conectando…";renderSync();
+  const{data,error}=await sb.from(SUPA_TABELA).select("data").eq("codigo",sala).maybeSingle();
+  if(!error&&data&&data.data){S=data.data;salvarLocal();render();}
+  else{await sb.from(SUPA_TABELA).upsert({codigo:sala,data:S});}
+  assinarSala();sbStatus="conectado";renderSync();
+}
+function assinarSala(){
+  if(!sb||!sala)return;
+  sbCanal=sb.channel("sala_"+sala,{config:{presence:{key:uid()}}});
+  sbCanal.on("postgres_changes",{event:"UPDATE",schema:"public",table:SUPA_TABELA,filter:"codigo=eq."+sala},payload=>{
+    if(payload.new&&payload.new.data){S=payload.new.data;salvarLocal();render();}
+  });
+  sbCanal.on("presence",{event:"sync"},()=>{
+    const st=sbCanal.presenceState();presentes=Object.values(st).flat();renderSync();
+  });
+  sbCanal.subscribe(status=>{if(status==="SUBSCRIBED")sbCanal.track({papel,em:Date.now()});});
+}
+function pushCloud(){if(!sb||!sala)return;sb.from(SUPA_TABELA).upsert({codigo:sala,data:S}).then(()=>{});}
+function agendarPush(){if(!sala)return;clearTimeout(pushTimer);pushTimer=setTimeout(pushCloud,600);}
+function desconectar(){if(sbCanal&&sb)sb.removeChannel(sbCanal);sbCanal=null;sala=null;presentes=[];sbStatus="off";renderSync();}
+function mudarPapel(p){papel=p;if(sbCanal)sbCanal.track({papel,em:Date.now()});render();}
+function renderSync(){
+  const s=document.getElementById("syncStatus");if(!s)return;
+  const base=!SUPA_KEY?"cole a chave no topo do index.html":(sala?("conectado · sala “"+sala+"”"):(sbStatus==="off"?"pronta — digite uma sala e conecte":sbStatus));
+  let quem="";
+  if(sala&&presentes.length){const nm=presentes.filter(p=>p.papel==="mestre").length,nj=presentes.filter(p=>p.papel==="jogador").length;
+    quem=" · online: "+presentes.length+" ("+nm+" mestre, "+nj+" jogador"+(nj===1?"":"es")+")";}
+  s.textContent="nuvem: "+base+quem;
+}
+
+/* ============ AÇÕES ============ */
+function selecionarCla(id){if(bloqueadoLeitura())return;S.cla=id;verTodosClas=false;feedPush("Clã definido: "+(claAtual()?claAtual().nome:id)+".");salvar();render();}
+function trocarCla(){if(bloqueadoLeitura())return;verTodosClas=true;render();}
+function setBase(attr,val){if(bloqueadoLeitura())return;S.base[attr]=parseFloat(val)||0;salvar();render();}
+function setIdade(v){if(bloqueadoLeitura())return;S.idade=v;
+  if(S.eventos.length>maxEventos()){
+    S.eventos.slice(maxEventos()).forEach(id=>removerConcessaoEvento(id));
+    S.eventos=S.eventos.slice(0,maxEventos());
+  }
+  verTodosEventos=S.eventos.length<maxEventos();
+  feedPush("Idade da família: "+IDADE_LABEL[v]+" ("+maxEventos()+" eventos históricos).");salvar();render();}
+function setNome(v){if(bloqueadoLeitura())return;S.nome=(v||"Família").trim()||"Família";salvar();render();}
+function setDaimyo(v){if(bloqueadoLeitura())return;S.daimyo=v;salvar();render();}
+function setRamoFamiliar(v){if(bloqueadoLeitura())return;S.ramoFamiliar=v;salvar();render();}
+function setSacrificio(v){if(bloqueadoLeitura())return;S.sacrificioHonra=Math.max(0,parseInt(v)||0);feedPush("Sacrifício da Honra ajustado para "+S.sacrificioHonra+".");salvar();render();}
+
+function toggleEvento(id){
+  if(bloqueadoLeitura())return;
+  const i=S.eventos.indexOf(id);
+  if(i>=0){S.eventos.splice(i,1);verTodosEventos=true;removerConcessaoEvento(id);}
+  else{
+    if(S.eventos.length>=maxEventos()){flashHint("Sem vagas de evento — aumente a Idade da Família ou remova outro.");return;}
+    S.eventos.push(id);
+    if(S.eventos.length>=maxEventos())verTodosEventos=false;
+    aplicarConcessaoEvento(id);
+  }
+  const e=EVENTOS.find(x=>x.id===id);
+  feedPush((i>=0?"Removido: ":"Adicionado: ")+(e?e.nome:id)+".");
+  salvar();render();
+}
+function sortearEventosFaltantes(){
+  if(bloqueadoLeitura())return;
+  const restantes=EVENTOS.filter(e=>!S.eventos.includes(e.id));
+  let vagas=maxEventos()-S.eventos.length;
+  while(vagas>0&&restantes.length){
+    const i=Math.floor(Math.random()*restantes.length);
+    S.eventos.push(restantes[i].id);aplicarConcessaoEvento(restantes[i].id);restantes.splice(i,1);vagas--;
+  }
+  verTodosEventos=false;
+  feedPush("Sorteados eventos históricos até completar "+maxEventos()+".");
+  salvar();render();
+}
+function limparEventos(){
+  if(bloqueadoLeitura())return;
+  S.eventos.forEach(id=>removerConcessaoEvento(id));
+  S.eventos=[];verTodosEventos=true;feedPush("Eventos históricos limpos.");salvar();render();
+}
+function verEventosCompletos(){if(bloqueadoLeitura())return;verTodosEventos=true;render();}
+
+function addTerreno(){if(bloqueadoLeitura())return;S.terrenos.push({id:uid(),nome:"",terreno:"planicies",c1:"",c2:"",c3:"",c4:""});salvar();render();}
+function setTerreno(id,campo,val){if(bloqueadoLeitura())return;const r=S.terrenos.find(x=>x.id===id);if(!r)return;r[campo]=val;salvar();render();}
+function delTerreno(id){if(bloqueadoLeitura())return;S.terrenos=S.terrenos.filter(x=>x.id!==id);salvar();render();}
+
+/* ============ CONCESSÕES DE EVENTOS HISTÓRICOS ============
+   Alguns eventos concedem um bem concreto (um terreno já com uma fortificação
+   ou característica, tipo um Shiro) em vez de só números soltos. O custo desse
+   bem já está embutido nos mods do próprio evento (por isso "sai de graça" —
+   quem paga é a história, não o jogador). O bem fica marcado com origemEvento
+   para poder ser removido de volta se o evento for desfeito. */
+function aplicarConcessaoEvento(eventId){
+  const e=EVENTOS.find(x=>x.id===eventId);
+  if(!e||!e.concede||e.concede.tipo!=="terreno")return;
+  const c=e.concede;
+  S.terrenos.push({id:uid(),nome:c.nomeSugerido||"",terreno:c.terreno,c1:c.c1||"",c2:c.c2||"",c3:c.c3||"",c4:c.c4||"",origemEvento:eventId});
+  feedPush("A história trouxe consigo "+(c.nomeSugerido||"uma nova posse")+".");
+}
+function removerConcessaoEvento(eventId){
+  const tinha=S.terrenos.some(t=>t.origemEvento===eventId);
+  S.terrenos=S.terrenos.filter(t=>t.origemEvento!==eventId);
+  if(tinha)feedPush("A posse ligada a esse capítulo da história foi removida junto com ele.");
+}
+
+function addPersonagem(){if(bloqueadoLeitura())return;S.personagens.push(fichaBase({id:uid(),nome:"Novo personagem",categoria:"",estado:"Vivo",jogador:"",experiencia:"",honra:0,notas:"",cla4e:"",familia4e:"",escola4e:""}));salvar();render();}
+/* Mudar o papel/categoria altera o custo em Influência — isso continua sendo decisão do Mestre.
+   Os demais campos (nome, estado, honra, experiência, notas...) são a ficha narrativa do
+   personagem e podem ser preenchidos pelo próprio jogador, mesmo em modo só-leitura. */
+function bloqueadoCampoPersonagem(campo){
+  if(campo==="categoria"&&papel==="jogador"){flashHint("Só o Mestre pode mudar o papel/categoria — isso afeta o gasto de Influência.");return true;}
+  return false;
+}
+function setPersonagem(id,campo,val){if(bloqueadoCampoPersonagem(campo))return;const p=S.personagens.find(x=>x.id===id);if(!p)return;p[campo]=(campo==="honra")?(parseFloat(val)||0):val;salvar();render();}
+function delPersonagem(id){if(bloqueadoLeitura())return;S.personagens=S.personagens.filter(x=>x.id!==id);salvar();render();}
+
+function addTropa(){if(bloqueadoLeitura())return;S.tropas.push({id:uid(),tipo:"camponesa",estado:"patrulha",local:"",especializacao:"",equipamento:[]});salvar();render();}
+function setTropa(id,campo,val){if(bloqueadoLeitura())return;const t=S.tropas.find(x=>x.id===id);if(!t)return;t[campo]=val;salvar();render();}
+function toggleTropaEquip(id,eqId){if(bloqueadoLeitura())return;const t=S.tropas.find(x=>x.id===id);if(!t)return;t.equipamento=t.equipamento||[];
+  const i=t.equipamento.indexOf(eqId);if(i>=0)t.equipamento.splice(i,1);else t.equipamento.push(eqId);salvar();render();}
+function delTropa(id){if(bloqueadoLeitura())return;S.tropas=S.tropas.filter(x=>x.id!==id);salvar();render();}
+
+function addConversao(){if(bloqueadoLeitura())return;S.conversoes.push({id:uid(),origem:"",destino:"",usos:0});salvar();render();}
+function setConversao(id,campo,val){if(bloqueadoLeitura())return;const c=S.conversoes.find(x=>x.id===id);if(!c)return;
+  c[campo]=(campo==="usos")?(parseFloat(val)||0):val;if(campo==="origem")c.destino="";salvar();render();}
+function delConversao(id){if(bloqueadoLeitura())return;S.conversoes=S.conversoes.filter(x=>x.id!==id);salvar();render();}
+
+function hardReset(){if(!confirm("Apagar TUDO e recomeçar do zero?"))return;try{localStorage.removeItem("l5r_familia_v1");}catch(e){}S=estadoInicial();salvar();render();}
+
+/* ============ RENDER ============ */
+function render(){
+  document.getElementById("familiaNome").textContent=S.nome||"Família";
+  document.getElementById("nomeInput").value=S.nome||"";
+  document.getElementById("daimyoInput").value=S.daimyo||"";
+  if(document.activeElement!==document.getElementById("ramoInput"))document.getElementById("ramoInput").value=S.ramoFamiliar||"";
+  const c0=claAtual();
+  document.getElementById("ramoSugestoes").innerHTML=(c0&&c0.familias?c0.familias:[]).map(f=>"<option value=\""+esc(f)+"\">").join("");
+  document.getElementById("idadeSel").value=S.idade||"recente";
+  document.getElementById("sacrificioInput").value=S.sacrificioHonra||0;
+  if(document.activeElement!==document.getElementById("numDadosInput"))document.getElementById("numDadosInput").value=S.numDados||7;
+  document.getElementById("claLab").textContent="Clã: "+(claAtual()?claAtual().nome:"—");
+  const claDoCrest=claAtual();
+  document.getElementById("crest").innerHTML=claDoCrest?("<img src=\"img/mons/"+claDoCrest.id+".png\" alt=\"\" onerror=\"this.parentNode.textContent='家'\">"):"家";
+  renderClas();renderMeters();renderAttrs();renderEventos();renderTerrenos();renderPersonagens();renderTropas();renderConversoes();renderFeed();renderSync();
+  document.getElementById("tabPersonagensCount").textContent=S.personagens.length?("("+S.personagens.length+")"):"";
+  if(abaPrincipal==="personagens")renderCharTabs();
+}
+function renderClas(){
+  const box=document.getElementById("clasList");
+  if(S.cla&&!verTodosClas){
+    const c=claAtual();
+    if(!c){verTodosClas=true;renderClas();return;}
+    const chips=ATRIBUTOS.filter(([k])=>c.mods[k]).map(([k,l])=>"<span>"+l.slice(0,3)+" "+(c.mods[k]>0?"+":"")+c.mods[k]+"</span>").join("");
+    const mote=c.mote?"<div class=\"mote\">"+esc(c.mote)+"</div>":"";
+    const tier=c.tier?"<div class=\"tag\" style=\"margin-top:4px\">"+TIER_LABEL[c.tier]+"</div>":"";
+    const img="<img class=\"monimg\" src=\"img/mons/"+c.id+".png\" alt=\"\" onerror=\"this.style.display='none'\">";
+    box.innerHTML="<div class=\"origem sel escolhido\" title=\"passe o mouse para ver os modificadores\">"+img+"<div class=\"on\">"+esc(c.nome)+"</div>"+mote+tier+"<div class=\"om reveal\">"+chips+"</div></div>"+
+      "<button class=\"ghost\" onclick=\"trocarCla()\">trocar clã</button>";
+    return;
+  }
+  box.innerHTML=CLAS.map(c=>{
+    const chips=ATRIBUTOS.filter(([k])=>c.mods[k]).map(([k,l])=>"<span>"+l.slice(0,3)+" "+(c.mods[k]>0?"+":"")+c.mods[k]+"</span>").join("");
+    const mote=c.mote?"<div class=\"mote\">"+esc(c.mote)+"</div>":"";
+    const tier=c.tier?"<div class=\"tag\" style=\"margin-top:4px\">"+TIER_LABEL[c.tier]+"</div>":"";
+    const img="<img class=\"monimg\" src=\"img/mons/"+c.id+".png\" alt=\"\" onerror=\"this.style.display='none'\">";
+    return "<div class=\"origem "+(S.cla===c.id?"sel":"")+"\" title=\"passe o mouse para ver os modificadores\" onclick=\"selecionarCla('"+c.id+"')\">"+img+"<div class=\"on\">"+esc(c.nome)+"</div>"+mote+tier+"<div class=\"om reveal\">"+chips+"</div></div>";
+  }).join("");
+}
+const METER_INFO={
+  fortunas:"Soma das curvas de Honra, Espiritualidade, Ordem e População, mais o bônus de personagens com título ou posição — mede o prestígio geral da família.",
+  favor:"Quando as Fortunas somam 50 ou mais, diz-se que a família goza do favor das Fortunas — eventos e testes sociais tendem a soprar a favor dela.",
+  dojo:"Quantos alunos o dojo da família pode formar por temporada, de acordo com o Rank de Honra alcançado.",
+  equilibrio:"Mede o quanto a espiritualidade da família está em harmonia. Valores muito extremos, para mais ou para menos, chamam a atenção de kami, espíritos ou forças sombrias.",
+  augurio:"Um presságio sobre como os kami veem a espiritualidade atual da família, de maus agouros a sinais muito favoráveis.",
+  samurai:"Total de personagens ativos a serviço desta família, somando os quatro papéis abaixo — todos são samurai, cada um a seu jeito."
+};
+function renderMeters(){
+  const f=fortunas(),favor=favorDasFortunas(),r=rosterCounts();
+  const linha=(lbl,val,titulo,cls)=>"<div class=\"ledgerline\" title=\""+esc(titulo)+"\"><span class=\"lbl\">"+lbl+"</span><span class=\"fill\"></span><span class=\"val"+(cls?" "+cls:"")+"\">"+val+"</span></div>";
+  document.getElementById("meters").innerHTML=
+    linha("Fortunas",f.toFixed(0),METER_INFO.fortunas)+
+    linha("Favor das Fortunas",favor?"sim":"não",METER_INFO.favor,favor?"good small":"small")+
+    linha("Dojo — alunos por temporada",dojo(),METER_INFO.dojo)+
+    linha("Equilíbrio Espiritual",equilibrioEspiritual().toFixed(0),METER_INFO.equilibrio)+
+    linha("Augúrio dos Kami",augurioKami()||"—",METER_INFO.augurio,"small")+
+    "<div class=\"rolesrow\" title=\""+esc(METER_INFO.samurai)+"\">"+
+      "<div class=\"rolewrap\" title=\"Guerreiros que defendem a família em combate.\"><img src=\"img/papeis/bushi.png\" alt=\"\" onerror=\"this.style.display='none'\"><div class=\"n\">"+r.bushi+"</div><div class=\"l\">bushi</div></div>"+
+      "<div class=\"rolewrap\" title=\"Diplomatas que representam a família na corte e nas alianças.\"><img src=\"img/papeis/cortesao.png\" alt=\"\" onerror=\"this.style.display='none'\"><div class=\"n\">"+r.cortesao+"</div><div class=\"l\">cortesão</div></div>"+
+      "<div class=\"rolewrap\" title=\"Cuida do equilíbrio espiritual e da tradição da família.\"><img src=\"img/papeis/monge.png\" alt=\"\" onerror=\"this.style.display='none'\"><div class=\"n\">"+r.monge+"</div><div class=\"l\">monge</div></div>"+
+      "<div class=\"rolewrap\" title=\"Canaliza o poder dos kami em nome da família.\"><img src=\"img/papeis/shugenja.png\" alt=\"\" onerror=\"this.style.display='none'\"><div class=\"n\">"+r.shugenja+"</div><div class=\"l\">shugenja</div></div>"+
+    "</div>";
+}
+function renderAttrs(){
+  document.getElementById("attrs").innerHTML=ATRIBUTOS.map(([k,l])=>{
+    const base=S.base[k]||0,cla=claMod(k),ev=eventosMod(k),mod=modificador(k),tot=totalAttr(k);
+    const flavor=ATTR_FLAVOR[k];
+    let poolHtml="";
+    if(POOL_ATTRS[k]){
+      const gasto=poolGasto(k),rest=poolRestante(k);
+      poolHtml="<div class=\"pool reveal\">"+(rest<0?"além do que a família pode sustentar: ":"ainda disponível: ")+"<span class=\"rest "+(rest<0?"bad":"good")+"\">"+rest.toFixed(0)+"</span></div>";
+    }
+    const tip=flavor?(flavor.sub+" "+flavor.desc):"passe o mouse para ver o cálculo";
+    const ring=ATTR_RING[k]||"vazio";
+    const icon="<img class=\"ic\" src=\"img/aneis/"+ring+".png\" alt=\"\" onerror=\"this.style.visibility='hidden'\">";
+    return "<div class=\"attrrow\" title=\""+esc(tip)+"\">"+icon+
+      "<div><div class=\"name\">"+l+"</div>"+(flavor?"<div class=\"desc\">"+esc(flavor.sub)+"</div>":"")+"</div>"+
+      "<div class=\"num\">"+tot.toFixed(0)+"</div>"+
+      "<div class=\"brk reveal\"><b>Base</b><input type=\"number\" value=\""+base+"\" onchange=\"setBase('"+k+"',this.value)\">"+
+      "<b>Clã</b>"+cla.toFixed(0)+" <b>Eventos</b>"+ev.toFixed(0)+" <b>Mod</b>"+mod.toFixed(0)+"</div>"+poolHtml+"</div>";
+  }).join("");
+}
+function eventoCardHTML(e,opts){
+  opts=opts||{};
+  const sel=S.eventos.includes(e.id);
+  const cheio=!sel&&S.eventos.length>=maxEventos();
+  const chips=ATRIBUTOS.filter(([k])=>e.mods[k]).map(([k,l])=>{
+    const v=e.mods[k];return "<span class=\""+(v>0?"pos":"neg")+"\">"+l.slice(0,3)+" "+(v>0?"+":"")+v+"</span>";
+  }).join("");
+  const desc=EVENTO_DESC[e.id]||"Um capítulo da história da família, com marcas que ecoam até hoje.";
+  const presente=e.concede?"<div class=\"gift\" title=\"este evento concede um bem concreto, já incluso\">🎁 concede "+esc(e.concede.nomeSugerido||"uma posse")+"</div>":"";
+  const remover=opts.comRemover?"<button class=\"ghost\" style=\"margin-top:6px\" onclick=\"event.stopPropagation();toggleEvento('"+e.id+"')\">✕ remover</button>":"";
+  const onclick=opts.comRemover?"":(cheio?"":"toggleEvento('"+e.id+"')");
+  return "<div class=\""+(opts.compact?"torncard sel escolhido":"torncard "+(sel?"sel":"")+(cheio?" dis":""))+"\" title=\"passe o mouse para ver os modificadores\" "+(onclick?"onclick=\""+onclick+"\"":"")+">"+
+    "<div class=\"en\">"+esc(e.nome)+"</div><div class=\"ed\">"+esc(desc)+"</div>"+presente+"<div class=\"em reveal\">"+chips+"</div>"+remover+"</div>";
+}
+function renderEventos(){
+  const max=maxEventos();
+  document.getElementById("eventosSub").textContent=S.eventos.length+"/"+max+" escolhidos ("+IDADE_LABEL[S.idade]+")";
+  const box=document.getElementById("eventos");
+  if(S.eventos.length>0&&!verTodosEventos){
+    const escolhidos=S.eventos.map(id=>EVENTOS.find(e=>e.id===id)).filter(Boolean);
+    box.innerHTML=escolhidos.map(e=>eventoCardHTML(e,{compact:true,comRemover:true})).join("")+
+      "<div class=\"torncard\" style=\"display:flex;align-items:center;justify-content:center;cursor:pointer\" onclick=\"verEventosCompletos()\"><div class=\"en\">👁 ver lista completa / trocar</div></div>";
+    return;
+  }
+  box.innerHTML=EVENTOS.map(e=>eventoCardHTML(e)).join("");
+}
+function opcoesTerreno(sel){return TERRENOS_BASE.map(t=>"<option value=\""+t.id+"\" "+(sel===t.id?"selected":"")+">"+t.nome+"</option>").join("");}
+function opcoesFeature(sel){
+  let out="<option value=\"\">—</option>";
+  out+="<optgroup label=\"Características\">"+CARACTERISTICAS.map(c=>"<option value=\""+c.id+"\" "+(sel===c.id?"selected":"")+">"+c.nome+"</option>").join("")+"</optgroup>";
+  out+="<optgroup label=\"Fortificações\">"+FORTIFICACOES.map(f=>"<option value=\""+f.id+"\" "+(sel===f.id?"selected":"")+">"+f.nome+"</option>").join("")+"</optgroup>";
+  return out;
+}
+function saldoChip(attr){
+  const l=(ATRIBUTOS.find(a=>a[0]===attr)||[attr,attr])[1];
+  const rest=poolRestante(attr);
+  return "<div class=\"saldo\">"+l+" disponível: <b class=\""+(rest<0?"bad":"good")+"\">"+rest.toFixed(0)+"</b></div>";
+}
+function renderTerrenos(){
+  document.getElementById("terrenosSaldo").innerHTML=saldoChip("terras")+saldoChip("defesa");
+  const tot=terrenosTotais();
+  const rows=S.terrenos.map(r=>{
+    const c=terrenoLinhaCalc(r);
+    const origem=r.origemEvento?"<div class=\"fromevent\">🎁 "+esc((EVENTOS.find(e=>e.id===r.origemEvento)||{}).nome||"evento")+"</div>":"";
+    return "<div class=\"terrainrow\">"+
+      "<img class=\"tic\" src=\"img/terrenos/"+esc(r.terreno)+".png\" alt=\"\" onerror=\"this.style.visibility='hidden'\">"+
+      "<div class=\"tbody\">"+
+        "<div class=\"trow1\">"+
+          "<input class=\"tname\" placeholder=\"nome (opcional)\" value=\""+esc(r.nome||"")+"\" onchange=\"setTerreno('"+r.id+"','nome',this.value)\">"+
+          "<select onchange=\"setTerreno('"+r.id+"','terreno',this.value)\">"+opcoesTerreno(r.terreno)+"</select>"+
+          "<div class=\"costs\">defesa <b>"+c.custoDefesa.toFixed(0)+"</b> terras <b>"+c.custoTerras.toFixed(0)+"</b> fortuna <b>"+c.fortuna.toFixed(0)+"</b>"+
+          "<button class=\"ghost\" onclick=\"delTerreno('"+r.id+"')\">✕</button></div>"+
+        "</div>"+
+        "<div class=\"trow2\">"+
+          "<select onchange=\"setTerreno('"+r.id+"','c1',this.value)\">"+opcoesFeature(r.c1)+"</select>"+
+          "<select onchange=\"setTerreno('"+r.id+"','c2',this.value)\">"+opcoesFeature(r.c2)+"</select>"+
+          "<select onchange=\"setTerreno('"+r.id+"','c3',this.value)\">"+opcoesFeature(r.c3)+"</select>"+
+          "<select onchange=\"setTerreno('"+r.id+"','c4',this.value)\">"+opcoesFeature(r.c4)+"</select>"+
+        "</div>"+origem+
+      "</div></div>";
+  }).join("");
+  document.getElementById("terrenosTab").innerHTML=(rows||"<div class=\"hint\">Nenhum terreno ainda.</div>")+
+    "<div class=\"ledgerline\"><span class=\"lbl\"><b>Total</b></span><span class=\"fill\"></span>"+
+    "<span class=\"val small\">defesa "+tot.custoDefesa.toFixed(0)+" · terras "+tot.custoTerras.toFixed(0)+" · fortuna "+tot.fortuna.toFixed(0)+"</span></div>";
+}
+function opcoesCategoria(sel){
+  let out="<option value=\"\">—</option>";
+  out+="<optgroup label=\"Título / Posição\">"+PERSONAGEM_PAPEL.filter(p=>p.efeito==="fortuna").map(p=>"<option value=\""+esc(p.nome)+"\" "+(sel===p.nome?"selected":"")+">"+esc(p.nome)+" ("+p.custo+")</option>").join("")+"</optgroup>";
+  out+="<optgroup label=\"Papel\">"+PERSONAGEM_PAPEL.filter(p=>p.efeito!=="fortuna").map(p=>"<option value=\""+esc(p.nome)+"\" "+(sel===p.nome?"selected":"")+">"+esc(p.nome)+" ("+p.custo+")</option>").join("")+"</optgroup>";
+  return out;
+}
+function renderPersonagens(){
+  document.getElementById("personagensSaldo").innerHTML=saldoChip("influencia");
+  const rows=S.personagens.map(p=>{
+    const custo=personagemCusto(p.categoria);
+    return "<tr><td><input value=\""+esc(p.nome)+"\" onchange=\"setPersonagem('"+p.id+"','nome',this.value)\"></td>"+
+      "<td><select onchange=\"setPersonagem('"+p.id+"','categoria',this.value)\">"+opcoesCategoria(p.categoria)+"</select></td>"+
+      "<td><select onchange=\"setPersonagem('"+p.id+"','estado',this.value)\">"+ESTADO_PERSONAGEM.map(e=>"<option "+(p.estado===e?"selected":"")+">"+e+"</option>").join("")+"</select></td>"+
+      "<td><input value=\""+esc(p.jogador)+"\" placeholder=\"jogador\" onchange=\"setPersonagem('"+p.id+"','jogador',this.value)\"></td>"+
+      "<td><input value=\""+esc(p.experiencia)+"\" placeholder=\"experiência\" onchange=\"setPersonagem('"+p.id+"','experiencia',this.value)\"></td>"+
+      "<td><input type=\"number\" style=\"width:56px\" value=\""+(Number(p.honra)||0)+"\" onchange=\"setPersonagem('"+p.id+"','honra',this.value)\"></td>"+
+      "<td>"+custo+"</td><td><button class=\"ghost\" onclick=\"delPersonagem('"+p.id+"')\">✕</button></td></tr>";
+  }).join("");
+  document.getElementById("personagensTab").innerHTML=
+    "<thead><tr><th>Nome</th><th>Categoria</th><th>Estado</th><th>Jogador</th><th>Experiência</th><th>Honra</th><th>Custo</th><th></th></tr></thead>"+
+    "<tbody>"+(rows||"<tr><td colspan=\"8\" class=\"hint\">Nenhum personagem ainda.</td></tr>")+
+    "<tr><td colspan=\"6\"><b>Total gasto de Influência</b></td><td><b>"+personagensCustoTotal().toFixed(0)+"</b></td><td></td></tr></tbody>";
+}
+/* Navegação por abas no topo do app (Família / Personagens) — estado só de tela,
+   não é salvo em S nem sincronizado. */
+let abaPrincipal="familia";
+function setAbaPrincipal(a){
+  abaPrincipal=a;
+  document.getElementById("viewFamilia").style.display=(a==="familia")?"":"none";
+  document.getElementById("viewPersonagens").style.display=(a==="personagens")?"":"none";
+  document.getElementById("tabBtnFamilia").className="tabbtn"+(a==="familia"?" on":"");
+  document.getElementById("tabBtnPersonagens").className="tabbtn"+(a==="personagens"?" on":"");
+  if(a==="personagens")renderCharTabs();
+}
+/* Qual personagem está aberto na aba Personagens — também é estado só de tela;
+   cada personagem tem sua própria sub-aba, então um jogador com vários personagens
+   simplesmente troca entre as abas deles. */
+let personagemAtivoId=null;
+function setPersonagemAtivo(id){personagemAtivoId=id;renderCharTabs();}
+function renderCharTabs(){
+  document.getElementById("tabPersonagensCount").textContent=S.personagens.length?("("+S.personagens.length+")"):"";
+  const box=document.getElementById("charTabs");
+  if(!S.personagens.length){
+    box.innerHTML="";
+    document.getElementById("charSheet").innerHTML="<div class=\"hint\">Nenhum personagem criado ainda. Vá em Família → painel \"Personagens\" e adicione um (isso gasta Influência).</div>";
+    return;
+  }
+  if(!personagemAtivoId||!S.personagens.some(p=>p.id===personagemAtivoId))personagemAtivoId=S.personagens[0].id;
+  box.innerHTML=S.personagens.map(p=>"<button class=\"tabbtn "+(p.id===personagemAtivoId?"on":"")+"\" onclick=\"setPersonagemAtivo('"+p.id+"')\">"+esc(p.nome||"(sem nome)")+(p.jogador?" <span class=\"tag\">"+esc(p.jogador)+"</span>":"")+"</button>").join("");
+  renderCharSheet();
+}
+/* Ficha 4ª edição — usa a base L5R4E (extraída dos data packs do L5RCM/OpenNingia,
+   LGPL3) para oferecer Clã/Família/Escola reais, com o traço bonificado, a honra
+   inicial da escola e a técnica de rank 1. Guardado como cla4e/familia4e/escola4e
+   no próprio personagem, ao lado dos campos narrativos. */
+const TRACO_PT={reflexes:"Reflexos",awareness:"Percepção",stamina:"Vigor",willpower:"Força de Vontade",
+  agility:"Agilidade",intelligence:"Inteligência",strength:"Força",perception:"Consciência"};
+function l5r4ePronto(){return typeof L5R4E!=="undefined";}
+/* Liga o id de clã da 4ª ed. (inglês, ex. "crab") ao arquivo de mon que já temos
+   em img/mons (nomes em português, do array CLAS). Clãs sem mon próprio (Bat,
+   Boar, Monkey, Ronin etc.) simplesmente não mostram imagem — sem erro. */
+const MON_POR_CLA_4E={crab:"caranguejo",crane:"garca",dragon:"dragao",lion:"leao",phoenix:"fenix",
+  scorpion:"escorpiao",unicorn:"unicornio",mantis:"louva",badger:"texugo",cat:"gato",centipede:"centopeia",
+  dragonfly:"libelula",falcon:"falcao",fox:"raposa",hare:"lebre",sparrow:"pardal",tortoise:"tartaruga",
+  wasp:"vespa",imperial:"imperial"};
+function claIdParaMon(claId4e){return MON_POR_CLA_4E[claId4e]||claId4e;}
+function familiasDoCla4e(claId){return l5r4ePronto()?L5R4E.familias.filter(f=>f.clanId===claId):[];}
+function escolasDoCla4e(claId){return l5r4ePronto()?L5R4E.escolas.filter(e=>e.clanId===claId):[];}
+function pericia4eNome(id){if(!l5r4ePronto())return id;const s=L5R4E.skills.find(x=>x.id===id);return s?s.nome:id;}
+function escolhaCla4e(id,claId){
+  const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  p.cla4e=claId;p.familia4e="";p.escola4e="";
+  salvar();render();
+}
+function escolhaFamilia4e(id,familiaId){
+  const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  p.familia4e=familiaId;
+  const esc=l5r4ePronto()?L5R4E.escolas.find(e=>e.clanId===p.cla4e&&e.id.indexOf(familiaId+"_")===0):null;
+  p.escola4e=esc?esc.id:"";
+  salvar();render();
+}
+function renderFicha4e(p){
+  if(!l5r4ePronto())return "<div class=\"hint\" style=\"margin-bottom:10px\">Base de dados da 4ª edição não carregada (l5r_4e_data.js).</div>";
+  const clas=L5R4E.clans.slice().sort((a,b)=>a.nome.localeCompare(b.nome));
+  const familias=familiasDoCla4e(p.cla4e).sort((a,b)=>a.nome.localeCompare(b.nome));
+  const escolasCla=escolasDoCla4e(p.cla4e).sort((a,b)=>a.nome.localeCompare(b.nome));
+  const escola=L5R4E.escolas.find(e=>e.id===p.escola4e);
+  let card="";
+  if(escola){
+    const tec1=escola.tecnicas.find(t=>t.rank===1);
+    const pericias=escola.pericias.map(s=>pericia4eNome(s.id)+(s.enfase?" ("+s.enfase+")":"")).join(", ");
+    card="<div class=\"fichapanel\" style=\"margin-top:8px;margin-bottom:0\">"+
+      "<div><b>"+esc(escola.nome)+"</b>"+(escola.traco?" · traço bonificado: "+esc(TRACO_PT[escola.traco]||escola.traco):"")+(escola.honra?" · honra inicial: "+esc(escola.honra):"")+"</div>"+
+      (pericias?"<div class=\"hint\" style=\"margin-top:4px\">Perícias iniciais: "+esc(pericias)+"</div>":"")+
+      (tec1?"<div style=\"margin-top:6px\"><b>"+esc(tec1.nome)+"</b> (rank 1)<div class=\"hint\">"+esc(tec1.descricao)+"</div></div>":"")+
+      "</div>";
+  }
+  const monImg=p.cla4e?"<img class=\"monimg\" style=\"width:28px;height:28px;margin:0 6px 0 0;vertical-align:middle\" src=\"img/mons/"+claIdParaMon(p.cla4e)+".png\" alt=\"\" onerror=\"this.style.display='none'\">":"";
+  return "<div style=\"display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px;align-items:center\">"+
+    monImg+
+    "<div class=\"grp\">Clã (4ª ed.) <select onchange=\"escolhaCla4e('"+p.id+"',this.value)\"><option value=\"\">—</option>"+
+      clas.map(c=>"<option value=\""+c.id+"\" "+(p.cla4e===c.id?"selected":"")+">"+esc(c.nome)+"</option>").join("")+"</select></div>"+
+    "<div class=\"grp\">Família <select onchange=\"escolhaFamilia4e('"+p.id+"',this.value)\" "+(!p.cla4e?"disabled":"")+"><option value=\"\">—</option>"+
+      familias.map(f=>"<option value=\""+f.id+"\" "+(p.familia4e===f.id?"selected":"")+">"+esc(f.nome)+"</option>").join("")+"</select></div>"+
+    "<div class=\"grp\">Escola <select onchange=\"setPersonagem('"+p.id+"','escola4e',this.value)\" "+(!p.cla4e?"disabled":"")+"><option value=\"\">—</option>"+
+      escolasCla.map(e=>"<option value=\""+e.id+"\" "+(p.escola4e===e.id?"selected":"")+">"+esc(e.nome)+"</option>").join("")+"</select></div>"+
+    "</div>"+card;
+}
+/* ============ FICHA COMPLETA DO PERSONAGEM (4ª edição) ============
+   Reproduz a ficha oficial de papel (traços/anéis, honra/glória/status/mancha
+   individuais, iniciativa, TN de armadura, feridas, cura, armas, equipamento,
+   dinheiro e técnicas da escola por rank). Guardado por personagem em S. */
+const TRACOS_PARES={terra:["stamina","willpower"],ar:["reflexes","awareness"],
+  agua:["strength","perception"],fogo:["agility","intelligence"]};
+const ANEL_NOME={terra:"Terra",ar:"Ar",agua:"Água",fogo:"Fogo",vazio:"Vazio"};
+function fichaBase(p){
+  if(!p.traits)p.traits={reflexes:2,awareness:2,stamina:2,willpower:2,agility:2,intelligence:2,strength:2,perception:2,vazio:2};
+  if(!p.pericias)p.pericias=[];
+  if(!p.armas)p.armas=[];
+  if(!p.armadura)p.armadura={tipo:"",reducao:0,notas:""};
+  if(!p.equipamento)p.equipamento=[];
+  if(!p.dinheiro)p.dinheiro={koku:0,bu:0,zeni:0};
+  if(!p.tecnicasAprendidas)p.tecnicasAprendidas=[];
+  if(!p.substituicoesTecnica)p.substituicoesTecnica={};
+  if(!p.tecnicasExtras)p.tecnicasExtras=[];
+  if(!p.vantagens)p.vantagens=[];
+  if(!p.desvantagens)p.desvantagens=[];
+  if(!p.katasConhecidos)p.katasConhecidos=[];
+  if(!p.kihosConhecidos)p.kihosConhecidos=[];
+  if(!p.feiticosConhecidos)p.feiticosConhecidos=[];
+  if(!p.espacosMagia)p.espacosMagia={ar:0,terra:0,fogo:0,agua:0,vazio:0};
+  if(p.xp===undefined)p.xp=0;
+  if(p.tnAjuste===undefined)p.tnAjuste=0;
+  if(p.danoAtual===undefined)p.danoAtual=0;
+  ["honorRank","gloriaRank","statusRank","taintRank"].forEach(k=>{if(p[k]===undefined)p[k]=0;});
+  return p;
+}
+function anelPersonagem(p,par){const[a,b]=TRACOS_PARES[par];return Math.min(Number(p.traits[a])||0,Number(p.traits[b])||0);}
+function aneisPersonagem(p){return{terra:anelPersonagem(p,"terra"),ar:anelPersonagem(p,"ar"),
+  agua:anelPersonagem(p,"agua"),fogo:anelPersonagem(p,"fogo"),vazio:Number(p.traits.vazio)||0};}
+function insightPersonagem(p){const a=aneisPersonagem(p);const somaAneis=a.terra+a.ar+a.agua+a.fogo+a.vazio;
+  const somaPericias=(p.pericias||[]).reduce((s,x)=>s+(Number(x.rank)||0),0);return somaAneis*10+somaPericias;}
+function rankPersonagem(p){return Math.max(1,Math.floor((insightPersonagem(p)-125)/25));}
+function iniciativaPersonagem(p){const a=aneisPersonagem(p);const rank=rankPersonagem(p);return(rank+a.ar)+"k"+a.ar;}
+function tnBasePersonagem(p){return 5*(Number(p.traits.reflexes)||0);}
+function tnAtualPersonagem(p){return tnBasePersonagem(p)+(Number(p.tnAjuste)||0);}
+const FERIDAS_DEF=[["Sadio",0],["Machucado",3],["Arranhado",5],["Ferido",10],["Contundido",15],["Mutilado",20],["Caído",40],["Fora de Combate",null]];
+function feridasNiveis(p){const earth=aneisPersonagem(p).terra;
+  return FERIDAS_DEF.map(([nome,pen],i)=>({nome,penalidade:pen,total:earth*5+i*earth*2}));}
+function taxaCuraPersonagem(p){return 2*(Number(p.traits.stamina)||0)+rankPersonagem(p);}
+function setTraco(id,campo,val){const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  p.traits[campo]=Math.max(1,Math.min(10,parseInt(val)||1));salvar();render();}
+function setStatusInd(id,campo,val){const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  p[campo]=Math.max(0,Math.min(10,parseFloat(val)||0));salvar();render();}
+function setArmadura(id,campo,val){const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  p.armadura[campo]=(campo==="reducao")?(parseFloat(val)||0):val;salvar();render();}
+function setDinheiro(id,campo,val){const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  p.dinheiro[campo]=parseFloat(val)||0;salvar();render();}
+function addArma(id){const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  p.armas.push({id:uid(),tipo:"",ataque:"",dano:"",bonus:"",notas:""});salvar();render();}
+function setArma(id,armaId,campo,val){const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  const a=p.armas.find(x=>x.id===armaId);if(!a)return;a[campo]=val;salvar();render();}
+function delArma(id,armaId){const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  p.armas=p.armas.filter(x=>x.id!==armaId);salvar();render();}
+function addEquip(id){const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  p.equipamento.push({id:uid(),nome:"",consigo:true,casa:false});salvar();render();}
+function setEquip(id,itemId,campo,val){const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  const it=p.equipamento.find(x=>x.id===itemId);if(!it)return;it[campo]=val;salvar();render();}
+function delEquip(id,itemId){const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  p.equipamento=p.equipamento.filter(x=>x.id!==itemId);salvar();render();}
+function addPericia(id){const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  p.pericias.push({id:uid(),skill:"",rank:0,enfase:""});salvar();render();}
+function setPericia(id,periciaId,campo,val){const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  const s=p.pericias.find(x=>x.id===periciaId);if(!s)return;s[campo]=(campo==="rank")?(parseInt(val)||0):val;salvar();render();}
+function delPericia(id,periciaId){const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  p.pericias=p.pericias.filter(x=>x.id!==periciaId);salvar();render();}
+function toggleTecnicaAprendida(id,techId){const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  const i=p.tecnicasAprendidas.indexOf(techId);if(i>=0)p.tecnicasAprendidas.splice(i,1);else p.tecnicasAprendidas.push(techId);
+  salvar();render();}
+/* --- Caminhos alternativos: uma "escola" com a tag "alternate" que substitui uma
+   técnica de rank específico da escola original (ex.: Crab Berserker substitui a
+   técnica de rank 2 de qualquer escola Bushi do Caranguejo). Elegibilidade é
+   checada pelas tags da escola do personagem batendo com o requisito do caminho;
+   os demais requisitos (anéis, perícias etc.) ficam só como texto para o Mestre
+   e o jogador conferirem, sem bloqueio automático. */
+function caminhosElegiveis(p){
+  if(!l5r4ePronto())return[];
+  const escola=L5R4E.escolas.find(e=>e.id===p.escola4e);
+  const tagsEscola=escola?escola.tags:[];
+  return L5R4E.caminhos.filter(c=>c.clanId==="imperial"||c.requisitos.some(r=>{
+    if(r.tipo!=="school"&&r.tipo!=="tag")return false;
+    const campo=(r.campo||"").replace(/^\*/,"");
+    return tagsEscola.includes(campo);
+  }));
+}
+function setSubstituicaoTecnica(id,rank,caminhoTechId){
+  const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  if(caminhoTechId)p.substituicoesTecnica[rank]=caminhoTechId;else delete p.substituicoesTecnica[rank];
+  salvar();render();
+}
+/* --- Técnicas extras: um jogador pode aprender técnicas de OUTRAS escolas/caminhos
+   (gaijin, ensinamentos de aliados, prêmios narrativos etc.), fora da progressão
+   normal da própria escola. É só uma lista livre referenciando o catálogo completo. */
+function todasTecnicasComOrigem(){
+  if(!l5r4ePronto())return[];
+  const out=[];
+  L5R4E.escolas.forEach(e=>e.tecnicas.forEach(t=>out.push({id:t.id,nome:t.nome,rank:t.rank,descricao:t.descricao,origem:e.nome})));
+  L5R4E.caminhos.forEach(c=>c.tecnicas.forEach(t=>out.push({id:t.id,nome:t.nome,rank:t.rank,descricao:t.descricao,origem:c.nome+" (caminho)"})));
+  return out;
+}
+function addTecnicaExtra(id,techId){
+  const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  if(techId&&!p.tecnicasExtras.includes(techId))p.tecnicasExtras.push(techId);
+  salvar();render();
+}
+function delTecnicaExtra(id,techId){
+  const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  p.tecnicasExtras=p.tecnicasExtras.filter(x=>x!==techId);
+  salvar();render();
+}
+/* --- Vantagens / Desvantagens: nome com sugestão automática (preenche custo se
+   bater com o catálogo oficial); também aceita entradas customizadas. --- */
+function addVantagem(id){const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);p.vantagens.push({id:uid(),nome:"",custo:0});salvar();render();}
+function addDesvantagem(id){const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);p.desvantagens.push({id:uid(),nome:"",custo:0});salvar();render();}
+function setVantagemCampo(lista,id,itemId,campo,val){
+  const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  const arr=p[lista];const it=arr.find(x=>x.id===itemId);if(!it)return;
+  if(campo==="nome"){
+    it.nome=val;
+    const catalogo=lista==="vantagens"?L5R4E.vantagens:L5R4E.desvantagens;
+    const m=l5r4ePronto()?catalogo.find(c=>c.nome.toLowerCase()===val.toLowerCase()):null;
+    if(m)it.custo=m.custo;
+  }else{
+    it.custo=parseFloat(val)||0;
+  }
+  salvar();render();
+}
+function delVantagemCampo(lista,id,itemId){
+  const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  p[lista]=p[lista].filter(x=>x.id!==itemId);salvar();render();
+}
+/* --- Kata / Kiho / Magias conhecidas: listas simples referenciando o catálogo. --- */
+function addConhecido(campo,id,itemId){
+  const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  if(itemId&&!p[campo].includes(itemId))p[campo].push(itemId);
+  salvar();render();
+}
+function delConhecido(campo,id,itemId){
+  const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  p[campo]=p[campo].filter(x=>x!==itemId);salvar();render();
+}
+function setEspacoMagia(id,elemento,val){
+  const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  p.espacosMagia[elemento]=Math.max(0,parseInt(val)||0);salvar();render();
+}
+/* --- Sub-abas dentro da ficha do personagem (só estado de tela) --- */
+let fichaSubAba="geral";
+function setFichaSubAba(a){fichaSubAba=a;renderCharSheet();}
+const ANEL_ICONE={terra:"img/aneis/terra.png",ar:"img/aneis/ar.png",agua:"img/aneis/agua.png",fogo:"img/aneis/fogo.png",vazio:"img/aneis/vazio.png"};
+function renderFichaCompleta(p){
+  fichaBase(p);
+  const a=aneisPersonagem(p),insight=insightPersonagem(p),rank=rankPersonagem(p),feridas=feridasNiveis(p);
+  const T=p.traits;
+  const anelIcon=k=>"<img class=\"anelIcon\" src=\""+ANEL_ICONE[k]+"\" alt=\"\" onerror=\"this.style.visibility='hidden'\">";
+  const tracoInput=(campo,label)=>"<span class=\"grp\">"+label+" <input type=\"number\" min=\"1\" max=\"10\" value=\""+(Number(T[campo])||0)+"\" onchange=\"setTraco('"+p.id+"','"+campo+"',this.value)\"></span>";
+  let out="<div class=\"fichapanel\">";
+  out+="<h2>Traços e Anéis</h2>";
+  out+="<div style=\"display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:10px\">"+
+    "<div class=\"anelRow\">"+anelIcon("terra")+"<div style=\"flex:1\"><div class=\"nome\">Terra <span class=\"val\">"+a.terra+"</span></div><div class=\"tracos\">"+tracoInput("stamina","Vigor")+tracoInput("willpower","F.Vontade")+"</div></div></div>"+
+    "<div class=\"anelRow\">"+anelIcon("ar")+"<div style=\"flex:1\"><div class=\"nome\">Ar <span class=\"val\">"+a.ar+"</span></div><div class=\"tracos\">"+tracoInput("reflexes","Reflexos")+tracoInput("awareness","Percepção")+"</div></div></div>"+
+    "<div class=\"anelRow\">"+anelIcon("agua")+"<div style=\"flex:1\"><div class=\"nome\">Água <span class=\"val\">"+a.agua+"</span></div><div class=\"tracos\">"+tracoInput("strength","Força")+tracoInput("perception","Consciência")+"</div></div></div>"+
+    "<div class=\"anelRow\">"+anelIcon("fogo")+"<div style=\"flex:1\"><div class=\"nome\">Fogo <span class=\"val\">"+a.fogo+"</span></div><div class=\"tracos\">"+tracoInput("agility","Agilidade")+tracoInput("intelligence","Inteligência")+"</div></div></div>"+
+    "<div class=\"anelRow\">"+anelIcon("vazio")+"<div style=\"flex:1\"><div class=\"nome\">Vazio</div><div class=\"tracos\">"+tracoInput("vazio","Vazio")+"</div></div></div>"+
+    "</div>";
+  out+="<div class=\"saldos\"><div class=\"saldo\">Insight <b>"+insight.toFixed(0)+"</b></div><div class=\"saldo\">Rank <b>"+rank+"</b></div>"+
+    "<div class=\"saldo\">XP <input type=\"number\" style=\"width:50px;border:none;background:transparent\" value=\""+(Number(p.xp)||0)+"\" onchange=\"setPersonagem('"+p.id+"','xp',this.value)\"></div></div>";
+  out+="</div>";
+
+  out+="<div class=\"fichapanel\">";
+  out+="<h2>Honra, Glória, Status e Mancha</h2>";
+  out+="<div style=\"display:flex;gap:16px;flex-wrap:wrap\">"+
+    ["honorRank","gloriaRank","statusRank","taintRank"].map((k,i)=>{
+      const labels=["Honra","Glória","Status","Mancha das Sombras"];
+      return "<div class=\"grp\">"+labels[i]+" <input type=\"number\" min=\"0\" max=\"10\" step=\"0.1\" style=\"width:60px\" value=\""+(Number(p[k])||0).toFixed(1)+"\" onchange=\"setStatusInd('"+p.id+"','"+k+"',this.value)\"></div>";
+    }).join("")+"</div><div class=\"hint\">Escala individual de 0.0 a 10.0 — a marca pessoal deste samurai, separada da Honra que a família carrega como um todo.</div>";
+  out+="</div>";
+
+  out+="<div class=\"fichapanel\">";
+  out+="<h2>Combate</h2>";
+  out+="<div class=\"saldos\">"+
+    "<div class=\"saldo\">Iniciativa <b>"+iniciativaPersonagem(p)+"</b></div>"+
+    "<div class=\"saldo\">TN base <b>"+tnBasePersonagem(p)+"</b></div>"+
+    "<div class=\"saldo\">Ajuste de TN <input type=\"number\" style=\"width:50px;border:none;background:transparent\" value=\""+(Number(p.tnAjuste)||0)+"\" onchange=\"setPersonagem('"+p.id+"','tnAjuste',this.value)\"></div>"+
+    "<div class=\"saldo\">TN atual <b>"+tnAtualPersonagem(p)+"</b></div>"+
+    "<div class=\"saldo\">Taxa de cura <b>"+taxaCuraPersonagem(p)+"</b>/dia</div>"+
+    "</div>";
+  out+="<div style=\"display:flex;gap:10px;flex-wrap:wrap;margin:10px 0\">"+
+    "<div class=\"grp\">Armadura <input type=\"text\" placeholder=\"tipo\" style=\"width:120px\" value=\""+esc(p.armadura.tipo)+"\" onchange=\"setArmadura('"+p.id+"','tipo',this.value)\"></div>"+
+    "<div class=\"grp\">Redução <input type=\"number\" style=\"width:60px\" value=\""+(Number(p.armadura.reducao)||0)+"\" onchange=\"setArmadura('"+p.id+"','reducao',this.value)\"></div>"+
+    "<div class=\"grp\">Notas <input type=\"text\" style=\"width:160px\" value=\""+esc(p.armadura.notas)+"\" onchange=\"setArmadura('"+p.id+"','notas',this.value)\"></div>"+
+    "</div>";
+  out+="<table class=\"feridastab\"><tbody>"+
+    feridas.map(f=>{const atual=(Number(p.danoAtual)||0)>=f.total&&f.penalidade!==null;
+      return "<tr"+(atual?" class=\"atual\"":"")+"><td>"+f.nome+"</td><td>"+(f.penalidade===null?"não pode agir":"+"+f.penalidade)+"</td><td style=\"text-align:right\">"+f.total+"</td></tr>";
+    }).join("")+"</tbody></table>"+
+    "<div class=\"grp\" style=\"margin-top:8px\">Dano atual <input type=\"number\" style=\"width:70px\" value=\""+(Number(p.danoAtual)||0)+"\" onchange=\"setPersonagem('"+p.id+"','danoAtual',this.value)\"></div>";
+  out+="</div>";
+
+  out+="<div class=\"fichapanel\">";
+  out+="<h2>Perícias</h2>";
+  out+="<div class=\"linhas\">"+
+    (p.pericias.map(s=>"<div class=\"linha\"><input class=\"campo-nome\" list=\"periciaSugestoes\" placeholder=\"perícia\" value=\""+esc(s.skill)+"\" onchange=\"setPericia('"+p.id+"','"+s.id+"','skill',this.value)\"></input>"+
+      "<span class=\"tag\">rank</span><input class=\"campo-curto\" type=\"number\" value=\""+(Number(s.rank)||0)+"\" onchange=\"setPericia('"+p.id+"','"+s.id+"','rank',this.value)\">"+
+      "<input class=\"campo-medio\" placeholder=\"ênfase\" value=\""+esc(s.enfase)+"\" onchange=\"setPericia('"+p.id+"','"+s.id+"','enfase',this.value)\">"+
+      "<button class=\"ghost del\" onclick=\"delPericia('"+p.id+"','"+s.id+"')\">✕</button></div>").join("")||"<div class=\"linha-vazia\">Nenhuma perícia anotada ainda.</div>")+
+    "</div>"+
+    "<datalist id=\"periciaSugestoes\">"+(l5r4ePronto()?L5R4E.skills.map(s=>"<option value=\""+esc(s.nome)+"\">"):[]).join("")+"</datalist>"+
+    "<button class=\"ghost\" style=\"margin-top:8px\" onclick=\"addPericia('"+p.id+"')\">+ perícia</button>";
+  out+="</div>";
+
+  out+="<div class=\"fichapanel\">";
+  out+="<h2>Armas</h2>";
+  out+="<div class=\"linhas\">"+
+    (p.armas.map(a=>"<div class=\"linha\"><input class=\"campo-nome\" placeholder=\"arma\" value=\""+esc(a.tipo)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','tipo',this.value)\">"+
+      "<span class=\"tag\">ataque</span><input class=\"campo-medio\" value=\""+esc(a.ataque)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','ataque',this.value)\">"+
+      "<span class=\"tag\">dano</span><input class=\"campo-medio\" value=\""+esc(a.dano)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','dano',this.value)\">"+
+      "<span class=\"tag\">bônus</span><input class=\"campo-curto\" value=\""+esc(a.bonus)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','bonus',this.value)\">"+
+      "<input class=\"campo-nome\" placeholder=\"notas\" value=\""+esc(a.notas)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','notas',this.value)\">"+
+      "<button class=\"ghost del\" onclick=\"delArma('"+p.id+"','"+a.id+"')\">✕</button></div>").join("")||"<div class=\"linha-vazia\">Nenhuma arma ainda.</div>")+
+    "</div><button class=\"ghost\" style=\"margin-top:8px\" onclick=\"addArma('"+p.id+"')\">+ arma</button>";
+  out+="</div>";
+
+  out+="<div class=\"fichapanel\">";
+  out+="<h2>Equipamento e Dinheiro</h2>";
+  out+="<div class=\"linhas\">"+
+    (p.equipamento.map(it=>"<div class=\"linha\"><input class=\"campo-nome\" placeholder=\"item\" value=\""+esc(it.nome)+"\" onchange=\"setEquip('"+p.id+"','"+it.id+"','nome',this.value)\">"+
+      "<label class=\"tag\"><input type=\"checkbox\" "+(it.consigo?"checked":"")+" onchange=\"setEquip('"+p.id+"','"+it.id+"','consigo',this.checked)\"> comigo</label>"+
+      "<label class=\"tag\"><input type=\"checkbox\" "+(it.casa?"checked":"")+" onchange=\"setEquip('"+p.id+"','"+it.id+"','casa',this.checked)\"> em casa</label>"+
+      "<button class=\"ghost del\" onclick=\"delEquip('"+p.id+"','"+it.id+"')\">✕</button></div>").join("")||"<div class=\"linha-vazia\">Nenhum item ainda.</div>")+
+    "</div><button class=\"ghost\" style=\"margin:8px 0 12px\" onclick=\"addEquip('"+p.id+"')\">+ item</button>";
+  out+="<div style=\"display:flex;gap:10px;flex-wrap:wrap\">"+
+    "<div class=\"grp\">Koku <input type=\"number\" style=\"width:60px\" value=\""+(Number(p.dinheiro.koku)||0)+"\" onchange=\"setDinheiro('"+p.id+"','koku',this.value)\"></div>"+
+    "<div class=\"grp\">Bu <input type=\"number\" style=\"width:60px\" value=\""+(Number(p.dinheiro.bu)||0)+"\" onchange=\"setDinheiro('"+p.id+"','bu',this.value)\"></div>"+
+    "<div class=\"grp\">Zeni <input type=\"number\" style=\"width:60px\" value=\""+(Number(p.dinheiro.zeni)||0)+"\" onchange=\"setDinheiro('"+p.id+"','zeni',this.value)\"></div>"+
+    "<div class=\"hint\">1 Koku = 5 Bu = 50 Zeni · 1 Bu = 10 Zeni</div></div>";
+  out+="</div>";
+
+  const escola=l5r4ePronto()?L5R4E.escolas.find(e=>e.id===p.escola4e):null;
+  if(escola&&escola.tecnicas.length){
+    const caminhos=caminhosElegiveis(p);
+    out+="<div class=\"fichapanel\">";
+    out+="<h2>Técnicas de "+esc(escola.nome)+"</h2>";
+    out+=escola.tecnicas.map(t=>{
+      const aprendida=p.tecnicasAprendidas.includes(t.id);
+      const subId=p.substituicoesTecnica[t.rank];
+      const sub=subId?todasTecnicasComOrigem().find(x=>x.id===subId):null;
+      const opcoes=caminhos.filter(c=>c.tecnicas.some(ct=>ct.rank===t.rank));
+      const ativo=sub||t;
+      return "<div style=\"margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)\">"+
+        "<label style=\"cursor:pointer\"><input type=\"checkbox\" "+(aprendida?"checked":"")+" onchange=\"toggleTecnicaAprendida('"+p.id+"','"+t.id+"')\"> "+
+        "<b>"+esc(ativo.nome)+"</b> <span class=\"tag\">rank "+t.rank+"</span>"+(sub?" <span class=\"tag\">substitui a original</span>":"")+"</label>"+
+        "<div class=\"hint\" style=\"margin-top:3px\">"+esc(ativo.descricao)+"</div>"+
+        (opcoes.length?"<div style=\"margin-top:6px\"><select onchange=\"setSubstituicaoTecnica('"+p.id+"','"+t.rank+"',this.value)\">"+
+          "<option value=\"\">— manter técnica original de rank "+t.rank+"</option>"+
+          opcoes.map(c=>c.tecnicas.filter(ct=>ct.rank===t.rank).map(ct=>"<option value=\""+ct.id+"\" "+(subId===ct.id?"selected":"")+">"+esc(c.nome)+" — "+esc(ct.nome)+"</option>").join("")).join("")+
+          "</select> <span class=\"hint\">caminho alternativo</span></div>":"")+
+        "</div>";
+    }).join("");
+    if(caminhos.length){
+      out+="<div class=\"hint\">Requisitos dos caminhos elegíveis (confira com o Mestre): "+
+        caminhos.map(c=>esc(c.nome)+" — "+c.requisitos.map(r=>esc(r.texto)).join("; ")).join(" · ")+"</div>";
+    }
+    out+="</div>";
+  }
+
+  out+="<div class=\"fichapanel\">";
+  out+="<h2>Técnicas de outras escolas</h2>";
+  out+="<div class=\"hint\" style=\"margin-bottom:8px\">Aprendidas fora da progressão normal da própria escola — gaijin, ensinamentos de aliados, recompensas de aventura.</div>";
+  const extras=p.tecnicasExtras.map(id=>todasTecnicasComOrigem().find(t=>t.id===id)).filter(Boolean);
+  out+=extras.map(t=>"<div style=\"margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)\">"+
+    "<b>"+esc(t.nome)+"</b> <span class=\"tag\">"+esc(t.origem)+" · rank "+t.rank+"</span>"+
+    " <button class=\"ghost\" onclick=\"delTecnicaExtra('"+p.id+"','"+t.id+"')\">✕</button>"+
+    "<div class=\"hint\" style=\"margin-top:3px\">"+esc(t.descricao)+"</div></div>").join("");
+  out+="<select id=\"extraTecSel_"+p.id+"\" style=\"width:100%;margin-bottom:8px\"><option value=\"\">— escolha uma técnica de qualquer escola —</option>"+
+    (l5r4ePronto()?todasTecnicasComOrigem().map(t=>"<option value=\""+t.id+"\">"+esc(t.origem)+" — "+esc(t.nome)+" (rank "+t.rank+")</option>").join(""):"")+
+    "</select><button class=\"ghost\" onclick=\"addTecnicaExtra('"+p.id+"',document.getElementById('extraTecSel_"+p.id+"').value)\">+ adicionar técnica</button>";
+  out+="</div>";
+
+  out+="<div class=\"fichapanel\">";
+  const custoVant=p.vantagens.reduce((s,v)=>s+(Number(v.custo)||0),0);
+  const custoDesv=p.desvantagens.reduce((s,v)=>s+(Number(v.custo)||0),0);
+  out+="<h2>Vantagens e Desvantagens</h2>";
+  out+="<div style=\"display:flex;gap:20px;flex-wrap:wrap\">";
+  out+="<div style=\"flex:1;min-width:260px\"><b>Vantagens</b> <span class=\"tag\">"+custoVant+" pontos</span>"+
+    "<div class=\"linhas\" style=\"margin-top:6px\">"+
+    (p.vantagens.map(v=>"<div class=\"linha\"><input class=\"campo-nome\" list=\"vantagensSugestoes\" placeholder=\"vantagem\" value=\""+esc(v.nome)+"\" onchange=\"setVantagemCampo('vantagens','"+p.id+"','"+v.id+"','nome',this.value)\">"+
+      "<input class=\"campo-curto\" type=\"number\" value=\""+(Number(v.custo)||0)+"\" onchange=\"setVantagemCampo('vantagens','"+p.id+"','"+v.id+"','custo',this.value)\">"+
+      "<button class=\"ghost del\" onclick=\"delVantagemCampo('vantagens','"+p.id+"','"+v.id+"')\">✕</button></div>").join("")||"<div class=\"linha-vazia\">Nenhuma vantagem ainda.</div>")+
+    "</div><button class=\"ghost\" style=\"margin-top:8px\" onclick=\"addVantagem('"+p.id+"')\">+ vantagem</button></div>";
+  out+="<div style=\"flex:1;min-width:260px\"><b>Desvantagens</b> <span class=\"tag\">"+custoDesv+" pontos</span>"+
+    "<div class=\"linhas\" style=\"margin-top:6px\">"+
+    (p.desvantagens.map(v=>"<div class=\"linha\"><input class=\"campo-nome\" list=\"desvantagensSugestoes\" placeholder=\"desvantagem\" value=\""+esc(v.nome)+"\" onchange=\"setVantagemCampo('desvantagens','"+p.id+"','"+v.id+"','nome',this.value)\">"+
+      "<input class=\"campo-curto\" type=\"number\" value=\""+(Number(v.custo)||0)+"\" onchange=\"setVantagemCampo('desvantagens','"+p.id+"','"+v.id+"','custo',this.value)\">"+
+      "<button class=\"ghost del\" onclick=\"delVantagemCampo('desvantagens','"+p.id+"','"+v.id+"')\">✕</button></div>").join("")||"<div class=\"linha-vazia\">Nenhuma desvantagem ainda.</div>")+
+    "</div><button class=\"ghost\" style=\"margin-top:8px\" onclick=\"addDesvantagem('"+p.id+"')\">+ desvantagem</button></div>";
+  out+="</div>";
+  out+="<datalist id=\"vantagensSugestoes\">"+(l5r4ePronto()?L5R4E.vantagens.map(v=>"<option value=\""+esc(v.nome)+"\">"):[]).join("")+"</datalist>";
+  out+="<datalist id=\"desvantagensSugestoes\">"+(l5r4ePronto()?L5R4E.desvantagens.map(v=>"<option value=\""+esc(v.nome)+"\">"):[]).join("")+"</datalist>";
+  out+="</div>";
+  return out;
+}
+function renderKataKihoMagia(p){
+  fichaBase(p);
+  function secao(titulo,campo,catalogo,extraCols){
+    const conhecidos=(p[campo]||[]).map(id=>catalogo.find(x=>x.id===id)).filter(Boolean);
+    let s="<div class=\"fichapanel\"><h2>"+titulo+"</h2>";
+    s+=conhecidos.map(k=>"<div style=\"margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)\">"+
+      "<b>"+esc(k.nome)+"</b> <span class=\"tag\">mastery "+esc(k.mastery)+" · "+esc(k.elemento||"")+"</span>"+(extraCols?extraCols(k):"")+
+      " <button class=\"ghost\" onclick=\"delConhecido('"+campo+"','"+p.id+"','"+k.id+"')\">✕</button>"+
+      "<div class=\"hint\" style=\"margin-top:3px\">"+esc(k.descricao)+"</div></div>").join("")||"<div class=\"linha-vazia\" style=\"margin-bottom:8px\">Nenhum(a) "+titulo.toLowerCase()+" conhecido(a) ainda.</div>";
+    s+="<select id=\"sel_"+campo+"_"+p.id+"\" style=\"width:100%;margin-bottom:8px\"><option value=\"\">— escolher —</option>"+
+      (l5r4ePronto()?catalogo.map(k=>"<option value=\""+k.id+"\">"+esc(k.nome)+" (mastery "+esc(k.mastery)+")</option>").join(""):"")+
+      "</select><button class=\"ghost\" onclick=\"addConhecido('"+campo+"','"+p.id+"',document.getElementById('sel_"+campo+"_"+p.id+"').value)\">+ adicionar</button>";
+    s+="</div>";
+    return s;
+  }
+  let out="";
+  out+=secao("Kata",  "katasConhecidos",  l5r4ePronto()?L5R4E.katas:[]);
+  out+=secao("Kiho",  "kihosConhecidos",  l5r4ePronto()?L5R4E.kihos:[]);
+  out+=secao("Magias","feiticosConhecidos",l5r4ePronto()?L5R4E.feiticos:[],
+    k=>" <span class=\"tag\">"+esc(k.area||"")+" · alcance "+esc(k.alcance||"")+" · duração "+esc(k.duracao||"")+"</span>");
+  out+="<div class=\"fichapanel\"><h2>Espaços de Magia</h2>";
+  out+="<div style=\"display:flex;gap:14px;flex-wrap:wrap\">"+
+    [["ar","Ar"],["terra","Terra"],["fogo","Fogo"],["agua","Água"],["vazio","Vazio"]].map(([k,l])=>
+      "<div class=\"anelRow\" style=\"width:auto\">"+"<img class=\"anelIcon\" style=\"width:28px;height:28px\" src=\""+ANEL_ICONE[k]+"\" alt=\"\" onerror=\"this.style.visibility='hidden'\">"+
+      "<span class=\"grp\">"+l+" <input type=\"number\" min=\"0\" style=\"width:50px\" value=\""+(Number(p.espacosMagia[k])||0)+"\" onchange=\"setEspacoMagia('"+p.id+"','"+k+"',this.value)\"></span></div>").join("")+
+    "</div><div class=\"hint\">Preencha manualmente conforme o rank de Insight e a escola do personagem.</div></div>";
+  return out;
+}
+function renderCharSheet(){
+  const box=document.getElementById("charSheet");
+  const p=S.personagens.find(x=>x.id===personagemAtivoId);
+  if(!p){box.innerHTML="";return;}
+  const custo=personagemCusto(p.categoria);
+  const papelInfo=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);
+  const efeitoLabel=papelInfo?(ATRIBUTOS.find(a=>a[0]===papelInfo.efeito)||[papelInfo.efeito,papelInfo.efeito])[1]:"";
+  box.innerHTML=
+    "<div style=\"display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px\">"+
+      "<div class=\"grp\">Nome <input type=\"text\" value=\""+esc(p.nome)+"\" style=\"width:180px\" onchange=\"setPersonagem('"+p.id+"','nome',this.value)\"></div>"+
+      "<div class=\"grp\">Papel <select onchange=\"setPersonagem('"+p.id+"','categoria',this.value)\" title=\"muda o custo em Influência — só o Mestre altera\">"+opcoesCategoria(p.categoria)+"</select></div>"+
+      "<div class=\"grp\">Estado <select onchange=\"setPersonagem('"+p.id+"','estado',this.value)\">"+ESTADO_PERSONAGEM.map(e=>"<option "+(p.estado===e?"selected":"")+">"+e+"</option>").join("")+"</select></div>"+
+      "<div class=\"grp\">Jogador <input type=\"text\" value=\""+esc(p.jogador)+"\" placeholder=\"quem joga\" style=\"width:140px\" onchange=\"setPersonagem('"+p.id+"','jogador',this.value)\"></div>"+
+      "<div class=\"grp\">Honra <input type=\"number\" value=\""+(Number(p.honra)||0)+"\" style=\"width:70px\" onchange=\"setPersonagem('"+p.id+"','honra',this.value)\"></div>"+
+    "</div>"+
+    "<div class=\"hint\" style=\"margin-bottom:10px\">Custo pago em Influência: <b>"+custo+"</b>"+(efeitoLabel?" · dá +"+(papelInfo?papelInfo.valor:0)+" em "+efeitoLabel:"")+"</div>"+
+    renderFicha4e(p)+
+    "<div class=\"tabbar\" style=\"margin-top:12px\">"+
+      "<button class=\"tabbtn "+(fichaSubAba==="geral"?"on":"")+"\" onclick=\"setFichaSubAba('geral')\">Ficha</button>"+
+      "<button class=\"tabbtn "+(fichaSubAba==="magia"?"on":"")+"\" onclick=\"setFichaSubAba('magia')\">Kata, Kiho e Magia</button>"+
+    "</div>"+
+    (fichaSubAba==="magia"?renderKataKihoMagia(p):renderFichaCompleta(p))+
+    "<div class=\"grp\" style=\"display:block;margin-bottom:8px;margin-top:10px\">Marcas de experiência (texto livre)<br><input type=\"text\" style=\"width:100%\" value=\""+esc(p.experiencia)+"\" onchange=\"setPersonagem('"+p.id+"','experiencia',this.value)\"></div>"+
+    "<div class=\"grp\" style=\"display:block\">História e notas<br><textarea rows=\"6\" style=\"width:100%;font-family:var(--font-body);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px;color:var(--ink)\" onchange=\"setPersonagem('"+p.id+"','notas',this.value)\">"+esc(p.notas||"")+"</textarea></div>"+
+    "<button class=\"ghost\" style=\"margin-top:10px\" onclick=\"delPersonagemAtivo()\">✕ remover este personagem</button>";
+}
+function delPersonagemAtivo(){if(!personagemAtivoId)return;delPersonagem(personagemAtivoId);personagemAtivoId=null;}
+function renderTropas(){
+  document.getElementById("tropasSaldo").innerHTML=saldoChip("poder");
+  const rows=S.tropas.map(t=>{
+    const c=tropaLinhaCalc(t);
+    const eq=(t.equipamento||[]);
+    const eqHtml=TROPA_EQUIP.map(e=>"<span class=\"it "+(eq.includes(e.id)?"on":"")+"\" onclick=\"toggleTropaEquip('"+t.id+"','"+e.id+"')\">"+e.nome+"</span>").join("");
+    return "<tr><td><select onchange=\"setTropa('"+t.id+"','tipo',this.value)\">"+Object.keys(TROPA_TIPOS).map(k=>"<option value=\""+k+"\" "+(t.tipo===k?"selected":"")+">"+TROPA_TIPOS[k].nome+"</option>").join("")+"</select></td>"+
+      "<td><select onchange=\"setTropa('"+t.id+"','estado',this.value)\">"+Object.keys(TROPA_ESTADO).map(k=>"<option value=\""+k+"\" "+(t.estado===k?"selected":"")+">"+TROPA_ESTADO[k].nome+"</option>").join("")+"</select></td>"+
+      "<td><input value=\""+esc(t.local)+"\" placeholder=\"localização\" onchange=\"setTropa('"+t.id+"','local',this.value)\"></td>"+
+      "<td><select onchange=\"setTropa('"+t.id+"','especializacao',this.value)\"><option value=\"\">—</option>"+Object.keys(TROPA_ESPEC).map(k=>"<option value=\""+k+"\" "+(t.especializacao===k?"selected":"")+">"+TROPA_ESPEC[k].nome+"</option>").join("")+"</select></td>"+
+      "<td>"+c.forca.toFixed(0)+"</td><td>"+c.disciplina.toFixed(0)+"</td><td>"+c.custo.toFixed(0)+"</td>"+
+      "<td><div class=\"inv\">"+eqHtml+"</div></td><td><button class=\"ghost\" onclick=\"delTropa('"+t.id+"')\">✕</button></td></tr>";
+  }).join("");
+  document.getElementById("tropasTab").innerHTML=
+    "<thead><tr><th>Tipo</th><th>Estado</th><th>Localização</th><th>Especialização</th><th>Força</th><th>Disciplina</th><th>Custo</th><th>Equipamento</th><th></th></tr></thead>"+
+    "<tbody>"+(rows||"<tr><td colspan=\"9\" class=\"hint\">Nenhuma tropa ainda.</td></tr>")+
+    "<tr><td colspan=\"6\"><b>Total gasto de Poder</b></td><td><b>"+tropasCustoTotal().toFixed(0)+"</b></td><td colspan=\"2\"></td></tr></tbody>";
+}
+function opcoesOrigemConversao(sel){
+  return "<option value=\"\">—</option>"+ATRIBUTOS.filter(([k])=>(CONVERSAO_REGRAS[k]&&CONVERSAO_REGRAS[k].destinos.length))
+    .map(([k,l])=>"<option value=\""+k+"\" "+(sel===k?"selected":"")+">"+l+"</option>").join("");
+}
+function opcoesDestinoConversao(origem,sel){
+  const r=CONVERSAO_REGRAS[origem];if(!r)return"<option value=\"\">—</option>";
+  return "<option value=\"\">—</option>"+r.destinos.map(k=>{
+    const l=(ATRIBUTOS.find(a=>a[0]===k)||[k,k])[1];
+    return "<option value=\""+k+"\" "+(sel===k?"selected":"")+">"+l+"</option>";
+  }).join("");
+}
+function renderConversoes(){
+  const rows=S.conversoes.map(c=>{
+    const r=CONVERSAO_REGRAS[c.origem];const taxa=r?r.taxa:"—";
+    const custoTotal=c.destino?((Number(c.usos)||0)*(r?r.taxa:1)):0;
+    return "<tr><td><select onchange=\"setConversao('"+c.id+"','origem',this.value)\">"+opcoesOrigemConversao(c.origem)+"</select></td>"+
+      "<td><select onchange=\"setConversao('"+c.id+"','destino',this.value)\">"+opcoesDestinoConversao(c.origem,c.destino)+"</select></td>"+
+      "<td>"+(c.origem&&c.destino?taxa+":1":"—")+"</td>"+
+      "<td><input type=\"number\" style=\"width:56px\" value=\""+(Number(c.usos)||0)+"\" onchange=\"setConversao('"+c.id+"','usos',this.value)\"></td>"+
+      "<td>"+(c.destino?("+"+ (Number(c.usos)||0)+" "+c.destino):"—")+"</td>"+
+      "<td>"+(c.origem?("−"+custoTotal.toFixed(0)+" "+c.origem):"—")+"</td>"+
+      "<td><button class=\"ghost\" onclick=\"delConversao('"+c.id+"')\">✕</button></td></tr>";
+  }).join("");
+  document.getElementById("conversoesTab").innerHTML=
+    "<thead><tr><th>Origem</th><th>Destino</th><th>Taxa</th><th>Usos</th><th>Ganho</th><th>Custo</th><th></th></tr></thead>"+
+    "<tbody>"+(rows||"<tr><td colspan=\"7\" class=\"hint\">Nenhuma conversão ainda.</td></tr>")+"</tbody>";
+}
+function renderFeed(){
+  const l=document.getElementById("log");
+  const f=S.feed||[];
+  l.innerHTML=f.length?f.map(t=>"<p>"+esc(t)+"</p>").join(""):"<p style=\"color:var(--muted-tx)\">Sem registros ainda.</p>";
+}
+
+/* ============ EVENTOS DE UI ============ */
+document.getElementById("btnRename").onclick=()=>{const n=prompt("Nome da família:",S.nome);if(n&&n.trim())setNome(n);};
+document.getElementById("nomeInput").onchange=e=>setNome(e.target.value);
+document.getElementById("daimyoInput").onchange=e=>setDaimyo(e.target.value);
+document.getElementById("ramoInput").onchange=e=>setRamoFamiliar(e.target.value);
+document.getElementById("idadeSel").onchange=e=>setIdade(e.target.value);
+document.getElementById("sacrificioInput").onchange=e=>setSacrificio(e.target.value);
+document.getElementById("btnHardReset").onclick=hardReset;
+document.getElementById("btnSortearEventos").onclick=sortearEventosFaltantes;
+document.getElementById("btnRolarTudo").onclick=rollAllAttrs;
+document.getElementById("numDadosInput").onchange=e=>setNumDados(e.target.value);
+document.getElementById("btnLimparEventos").onclick=limparEventos;
+document.getElementById("btnAddTerreno").onclick=addTerreno;
+document.getElementById("btnAddPersonagem").onclick=addPersonagem;
+document.getElementById("btnAddTropa").onclick=addTropa;
+document.getElementById("btnAddConversao").onclick=addConversao;
+document.getElementById("btnConectar").onclick=()=>conectarSala(document.getElementById("salaInput").value);
+document.getElementById("btnDesconectar").onclick=desconectar;
+document.getElementById("papelSel").onchange=e=>mudarPapel(e.target.value);
+
+render();
+</script>
+</body>
+</html>

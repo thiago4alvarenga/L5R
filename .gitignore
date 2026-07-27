@@ -1,0 +1,17 @@
+# Material de referência/rascunho — não faz parte do site publicado
+app de ficha/
+614771253-L5R-4th-Blank-Char-Sheet.pdf
+preview_redesign.html
+
+# Imagens originais/brutas usadas só para gerar os recortes finais em img/
+img/ChatGPT Image*.png
+img/Copilot_*.png
+img/Anéis (imagem única com todos).png
+img/estilo de imagem*.jpeg
+img/l5c_logo_transparent.png
+
+# arquivos de sistema
+.DS_Store
+Thumbs.db
+img/mons/ChatGPT Image*.png
+img/mons/imagem única com vários mons.jpg
