@@ -65,6 +65,21 @@
   .mapaViewport.dragging{cursor:grabbing}
   .mapaViewport img{max-width:100%;max-height:100%;object-fit:contain;transform-origin:center center;
     user-select:none;-webkit-user-drag:none;pointer-events:none;will-change:transform}
+  /* Tabuleiro de raias de engajamento (§13) — duas colunas (família/inimigo) por fileira,
+     inspirado em Shogi: só a profundidade de sempre, agora visual, clicável pra ciclar. */
+  .tabuleiro{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:10px}
+  .tabuleiroLinha{display:grid;grid-template-columns:110px 1fr 1fr;min-height:44px;border-top:1px solid var(--line)}
+  .tabuleiroLinha:first-child{border-top:none}
+  .tabuleiroRotulo{display:flex;align-items:center;padding:6px 10px;font-size:11px;text-transform:uppercase;
+    letter-spacing:.5px;color:var(--muted-tx);background:var(--panel2)}
+  .tabuleiroLado{display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:6px 8px}
+  .tabuleiroLado.ladoInimigo{background:rgba(140,40,40,.05)}
+  .tabuleiroLado.ladoFamilia{background:rgba(40,80,140,.05)}
+  .chip{display:inline-block;padding:3px 9px;border-radius:14px;font-size:12px;cursor:pointer;border:1px solid var(--line);
+    background:var(--panel);white-space:nowrap}
+  .chip:hover{filter:brightness(1.08)}
+  .chipFamilia{border-color:#3f6ca6;color:#274a78}
+  .chipInimigo{border-color:#a63f3f;color:#782727}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
   @media(max-width:900px){.grid{grid-template-columns:1fr}}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px}
@@ -396,7 +411,7 @@ const SUPA_TABELA="l5r_familias";
 
 /* ============ DADOS (extraídos da planilha Familias L5R.xlsx) ============ */
 const ATRIBUTOS=[["dominio","Domínio"],["riqueza","Riqueza"],["influencia","Influência"],["autoridade","Autoridade"],["vazio","Vazio"]];
-const POOL_ATTRS={dominio:1,influencia:1,autoridade:1}; /* atributos que funcionam como "pontos" gastáveis */
+const POOL_ATTRS={dominio:1,influencia:1,autoridade:1,riqueza:1}; /* atributos que funcionam como "pontos" gastáveis: o total é histórico (não encolhe sozinho), só a disponibilidade (pool) é gasta */
 
 const IDADE={recente:2,jovem:4,estabelecida:6,antiga:8,"anciã":10};
 const IDADE_LABEL={recente:"Recente",jovem:"Jovem",estabelecida:"Estabelecida",antiga:"Antiga","anciã":"Anciã"};
@@ -404,85 +419,98 @@ const IDADE_LABEL={recente:"Recente",jovem:"Jovem",estabelecida:"Estabelecida",a
 /* tier: "maior" (Grandes Clãs), "menor" (Clãs Menores), "imperial" (Famílias Imperiais).
    familias: ramos/famílias reais daquele clã, na 4ª edição — usadas só como sugestão de nome
    para o ramo familiar do jogador (ex.: "um ramo da família Kakita"), sem efeito mecânico. */
+/* Vazio dos clãs comprimido em 2026-07-28 (calibração por simulação, fator ~2.3x): a faixa
+   antiga (-10..+25) fazia o Vazio — que sozinho decide Dojo, Equilíbrio Espiritual, Augúrio
+   dos Kami e Favor das Fortunas — variar demais só pela escolha de clã (Dragão/Fênix tiravam
+   3.7 alunos de dojo em média contra 0.9 de Escorpião/Tartaruga). Nova faixa -5..+10 preserva
+   a ordem (Dragão/Fênix continuam os mais espirituais) mas encolhe a distância. Domínio/
+   Influência/Autoridade/Riqueza não mudaram — o líquido deles já era igual por tier (todo clã
+   maior soma +40, todo menor soma +25), não era o problema. Valores antigos no histórico do git. */
 const CLAS=[
- {id:"caranguejo",nome:"Caranguejo",tier:"maior",mote:"“Coragem. Dever. Sacrifício.”",familias:["Hida","Hiruma","Kaiu","Kuni","Yasuki"],mods:{dominio:20,influencia:-10,autoridade:15,riqueza:0,vazio:15}},
- {id:"garca",nome:"Garça",tier:"maior",mote:"“Há uma técnica adequada para todas as coisas.”",familias:["Doji","Kakita","Asahina","Daidoji"],mods:{dominio:15,influencia:15,autoridade:-5,riqueza:10,vazio:5}},
- {id:"dragao",nome:"Dragão",tier:"maior",mote:"“Encontre seu próprio caminho.”",familias:["Togashi","Mirumoto","Kitsuki","Tamori"],mods:{dominio:0,influencia:-10,autoridade:20,riqueza:5,vazio:25}},
- {id:"leao",nome:"Leão",tier:"maior",mote:"“Por meus ancestrais!”",familias:["Akodo","Matsu","Ikoma","Kitsu"],mods:{dominio:10,influencia:5,autoridade:20,riqueza:-5,vazio:10}},
- {id:"fenix",nome:"Fênix",tier:"maior",mote:"“Domine os elementos e renasça.”",familias:["Shiba","Isawa","Asako","Agasha"],mods:{dominio:10,influencia:5,autoridade:-5,riqueza:5,vazio:25}},
- {id:"escorpiao",nome:"Escorpião",tier:"maior",mote:"“Serei seu vilão, Hantei.”",familias:["Bayushi","Shosuro","Yogo"],mods:{dominio:15,influencia:15,autoridade:10,riqueza:10,vazio:-10}},
- {id:"unicornio",nome:"Unicórnio",tier:"maior",mote:"“Ninguém pode capturar o vento.”",familias:["Moto","Ide","Utaku","Shinjo","Iuchi"],mods:{dominio:20,influencia:-5,autoridade:0,riqueza:15,vazio:10}},
- {id:"louva",nome:"Louva-a-Deus",tier:"maior",mote:"“O mar não perdoa os fracos.”",familias:["Yoritomo","Moshi","Kitsune","Tsuruchi"],mods:{dominio:15,influencia:5,autoridade:5,riqueza:15,vazio:0}},
- {id:"texugo",nome:"Texugo",tier:"menor",mods:{dominio:5,influencia:-5,autoridade:15,riqueza:5,vazio:5}},
- {id:"gato",nome:"Gato",tier:"menor",mods:{dominio:0,influencia:10,autoridade:10,riqueza:5,vazio:0}},
- {id:"centopeia",nome:"Centopeia",tier:"menor",mods:{dominio:0,influencia:5,autoridade:5,riqueza:0,vazio:15}},
- {id:"libelula",nome:"Libélula",tier:"menor",mods:{dominio:-5,influencia:5,autoridade:10,riqueza:0,vazio:15}},
- {id:"falcao",nome:"Falcão",tier:"menor",mods:{dominio:5,influencia:5,autoridade:5,riqueza:0,vazio:10}},
- {id:"raposa",nome:"Raposa",tier:"menor",mods:{dominio:-5,influencia:5,autoridade:0,riqueza:10,vazio:15}},
- {id:"lebre",nome:"Lebre",tier:"menor",mods:{dominio:0,influencia:0,autoridade:10,riqueza:5,vazio:10}},
- {id:"pardal",nome:"Pardal",tier:"menor",mods:{dominio:10,influencia:5,autoridade:5,riqueza:-10,vazio:15}},
- {id:"tartaruga",nome:"Tartaruga",tier:"menor",mods:{dominio:15,influencia:0,autoridade:10,riqueza:10,vazio:-10}},
- {id:"vespa",nome:"Vespa",tier:"menor",mods:{dominio:5,influencia:5,autoridade:10,riqueza:0,vazio:5}},
+ {id:"caranguejo",nome:"Caranguejo",tier:"maior",mote:"“Coragem. Dever. Sacrifício.”",familias:["Hida","Hiruma","Kaiu","Kuni","Yasuki"],mods:{dominio:20,influencia:-10,autoridade:15,riqueza:0,vazio:6}},
+ {id:"garca",nome:"Garça",tier:"maior",mote:"“Há uma técnica adequada para todas as coisas.”",familias:["Doji","Kakita","Asahina","Daidoji"],mods:{dominio:15,influencia:15,autoridade:-5,riqueza:10,vazio:1}},
+ {id:"dragao",nome:"Dragão",tier:"maior",mote:"“Encontre seu próprio caminho.”",familias:["Togashi","Mirumoto","Kitsuki","Tamori"],mods:{dominio:0,influencia:-10,autoridade:20,riqueza:5,vazio:10}},
+ {id:"leao",nome:"Leão",tier:"maior",mote:"“Por meus ancestrais!”",familias:["Akodo","Matsu","Ikoma","Kitsu"],mods:{dominio:10,influencia:5,autoridade:20,riqueza:-5,vazio:4}},
+ {id:"fenix",nome:"Fênix",tier:"maior",mote:"“Domine os elementos e renasça.”",familias:["Shiba","Isawa","Asako","Agasha"],mods:{dominio:10,influencia:5,autoridade:-5,riqueza:5,vazio:10}},
+ {id:"escorpiao",nome:"Escorpião",tier:"maior",mote:"“Serei seu vilão, Hantei.”",familias:["Bayushi","Shosuro","Yogo"],mods:{dominio:15,influencia:15,autoridade:10,riqueza:10,vazio:-5}},
+ {id:"unicornio",nome:"Unicórnio",tier:"maior",mote:"“Ninguém pode capturar o vento.”",familias:["Moto","Ide","Utaku","Shinjo","Iuchi"],mods:{dominio:20,influencia:-5,autoridade:0,riqueza:15,vazio:4}},
+ {id:"louva",nome:"Louva-a-Deus",tier:"maior",mote:"“O mar não perdoa os fracos.”",familias:["Yoritomo","Moshi","Kitsune","Tsuruchi"],mods:{dominio:15,influencia:5,autoridade:5,riqueza:15,vazio:-1}},
+ {id:"texugo",nome:"Texugo",tier:"menor",mods:{dominio:5,influencia:-5,autoridade:15,riqueza:5,vazio:1}},
+ {id:"gato",nome:"Gato",tier:"menor",mods:{dominio:0,influencia:10,autoridade:10,riqueza:5,vazio:-1}},
+ {id:"centopeia",nome:"Centopeia",tier:"menor",mods:{dominio:0,influencia:5,autoridade:5,riqueza:0,vazio:6}},
+ {id:"libelula",nome:"Libélula",tier:"menor",mods:{dominio:-5,influencia:5,autoridade:10,riqueza:0,vazio:6}},
+ {id:"falcao",nome:"Falcão",tier:"menor",mods:{dominio:5,influencia:5,autoridade:5,riqueza:0,vazio:4}},
+ {id:"raposa",nome:"Raposa",tier:"menor",mods:{dominio:-5,influencia:5,autoridade:0,riqueza:10,vazio:6}},
+ {id:"lebre",nome:"Lebre",tier:"menor",mods:{dominio:0,influencia:0,autoridade:10,riqueza:5,vazio:4}},
+ {id:"pardal",nome:"Pardal",tier:"menor",mods:{dominio:10,influencia:5,autoridade:5,riqueza:-10,vazio:6}},
+ {id:"tartaruga",nome:"Tartaruga",tier:"menor",mods:{dominio:15,influencia:0,autoridade:10,riqueza:10,vazio:-5}},
+ {id:"vespa",nome:"Vespa",tier:"menor",mods:{dominio:5,influencia:5,autoridade:10,riqueza:0,vazio:1}},
  {id:"imperial",nome:"Família Imperial",tier:"imperial",familias:["Miya","Seppun","Otomo"],mods:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0}}
 ];
 const TIER_LABEL={maior:"Grande Clã",menor:"Clã Menor",imperial:"Família Imperial"};
 
 /* Eventos históricos: id, nome, mods (colunas Defesa..Espiritualidade da planilha) */
+/* Mods rescalados em 2026-07-28 por fator 0.4x (calibração por simulação, não por palpite —
+   ver metodologia de DOJO_X/EQUILIBRIO_X/FAVOR_FORTUNAS_X). Antes, mesmo uma família Recente
+   (2 eventos) já tinha variação de eventos 1.45x maior que a variação da base rolada (7d10),
+   e uma família Anciã (10 eventos) chegava a 3.38x — a base rolada virava ruído. Com 0.4x,
+   Estabelecida (6 eventos, o meio da curva) empata com a base (~1.0x) e só Anciã passa um
+   pouco à frente (~1.35x). Números antigos preservados no histórico do git se precisar reverter. */
 const EVENTOS=[
- {id:"fundacao_decreto",nome:"Fundação por Decreto Imperial",mods:{influencia:10,vazio:10}},
- {id:"recompensa_militar",nome:"Recompensa por Serviço Militar",mods:{autoridade:10,vazio:10}},
- {id:"terras_conflito",nome:"Terras Concedidas após Conflito",mods:{dominio:15,autoridade:-10,riqueza:10,vazio:2},
+ {id:"fundacao_decreto",nome:"Fundação por Decreto Imperial",mods:{influencia:4,vazio:4}},
+ {id:"recompensa_militar",nome:"Recompensa por Serviço Militar",mods:{autoridade:4,vazio:4}},
+ {id:"terras_conflito",nome:"Terras Concedidas após Conflito",mods:{dominio:6,autoridade:-4,riqueza:4,vazio:1},
   concede:{tipo:"terreno",terreno:"planicies",c1:"campo_batalha",nomeSugerido:"Campos de Kessen-no-Hara"}},
- {id:"alianca_casamento",nome:"Aliança de Casamento Estratégico",mods:{influencia:10,riqueza:5,vazio:5}},
- {id:"ramo_elevado",nome:"Ramo Elevado de Grande Família",mods:{dominio:13,influencia:10,autoridade:-5,vazio:10},
+ {id:"alianca_casamento",nome:"Aliança de Casamento Estratégico",mods:{influencia:4,riqueza:2,vazio:2}},
+ {id:"ramo_elevado",nome:"Ramo Elevado de Grande Família",mods:{dominio:5,influencia:4,autoridade:-2,vazio:4},
   concede:{tipo:"terreno",terreno:"planicies",c1:"vila",nomeSugerido:"Vila-Dote da Grande Casa"}},
- {id:"ascensao_heroi",nome:"Ascensão de Herói Local",mods:{dominio:5,autoridade:10,vazio:5}},
- {id:"fundacao_religiosa",nome:"Fundação Religiosa ou Profética",mods:{autoridade:5,vazio:15}},
- {id:"funcao_administrativa",nome:"Criação para Função Administrativa",mods:{influencia:5,autoridade:10,riqueza:5}},
- {id:"adocao_familia",nome:"Adoção da Família",mods:{influencia:5,autoridade:10,vazio:5}},
- {id:"usurpacao_terras",nome:"Usurpação ou Apropriação de Terras",mods:{dominio:10,influencia:-10,vazio:-10}},
- {id:"vitoria_torneio",nome:"Vitória em Torneio",mods:{influencia:5,vazio:10}},
- {id:"refem_prestigio",nome:"Refém de Prestígio",mods:{influencia:5,riqueza:-5,vazio:5}},
- {id:"rivalidade_juramentada",nome:"Rivalidade Juramentada",mods:{vazio:-5}},
- {id:"acordo_comercial",nome:"Acordo Comercial Duradouro",mods:{dominio:15,influencia:5,riqueza:10,vazio:-3},
+ {id:"ascensao_heroi",nome:"Ascensão de Herói Local",mods:{dominio:2,autoridade:4,vazio:2}},
+ {id:"fundacao_religiosa",nome:"Fundação Religiosa ou Profética",mods:{autoridade:2,vazio:6}},
+ {id:"funcao_administrativa",nome:"Criação para Função Administrativa",mods:{influencia:2,autoridade:4,riqueza:2}},
+ {id:"adocao_familia",nome:"Adoção da Família",mods:{influencia:2,autoridade:4,vazio:2}},
+ {id:"usurpacao_terras",nome:"Usurpação ou Apropriação de Terras",mods:{dominio:4,influencia:-4,vazio:-4}},
+ {id:"vitoria_torneio",nome:"Vitória em Torneio",mods:{influencia:2,vazio:4}},
+ {id:"refem_prestigio",nome:"Refém de Prestígio",mods:{influencia:2,riqueza:-2,vazio:2}},
+ {id:"rivalidade_juramentada",nome:"Rivalidade Juramentada",mods:{vazio:-2}},
+ {id:"acordo_comercial",nome:"Acordo Comercial Duradouro",mods:{dominio:6,influencia:2,riqueza:4,vazio:-1},
   concede:{tipo:"terreno",terreno:"costa",c1:"porto",nomeSugerido:"Porto de Shiro-Minato"}},
- {id:"artesao_renomado",nome:"Ascensão de um Artesão Renomado",mods:{dominio:5,riqueza:10,vazio:5}},
- {id:"escola_artistica",nome:"Escola Artística ou Estilo Famoso",mods:{influencia:10,riqueza:5,vazio:5}},
- {id:"construcao_fortaleza",nome:"Construção de Fortaleza",mods:{dominio:21,influencia:5,autoridade:10,riqueza:-10},
+ {id:"artesao_renomado",nome:"Ascensão de um Artesão Renomado",mods:{dominio:2,riqueza:4,vazio:2}},
+ {id:"escola_artistica",nome:"Escola Artística ou Estilo Famoso",mods:{influencia:4,riqueza:2,vazio:2}},
+ {id:"construcao_fortaleza",nome:"Construção de Fortaleza",mods:{dominio:8,influencia:2,autoridade:4,riqueza:-4},
   concede:{tipo:"terreno",terreno:"colinas",c1:"shiro",c2:"area_impura",nomeSugerido:"Shiro da Bruma Esquecida"}},
- {id:"desastre_natural",nome:"Desastre Natural",mods:{dominio:-15,riqueza:-10,vazio:5}},
- {id:"fome_prolongada",nome:"Fome Prolongada",mods:{dominio:-10,influencia:-5,autoridade:-5}},
- {id:"era_prosperidade",nome:"Era de Prosperidade",mods:{dominio:10,autoridade:-5,riqueza:15}},
- {id:"magistrado_renome",nome:"Magistrado de Renome",mods:{influencia:10,autoridade:10,vazio:10}},
- {id:"corrupcao_escandalo",nome:"Corrupção ou Escândalo",mods:{influencia:-10,vazio:-20}},
- {id:"gloria_batalha",nome:"Glória em Batalha",mods:{autoridade:10,vazio:5}},
- {id:"derrota_marcante",nome:"Derrota Marcante",mods:{autoridade:-10,vazio:-5}},
- {id:"contato_terras_sombrias",nome:"Contato com as Terras Sombrias",mods:{autoridade:5,vazio:-15}},
- {id:"bencao_kami",nome:"Bênção dos Kami",mods:{vazio:10}},
- {id:"templo_importante",nome:"Templo ou Santuário Importante",mods:{dominio:16,autoridade:-3,vazio:10},
+ {id:"desastre_natural",nome:"Desastre Natural",mods:{dominio:-6,riqueza:-4,vazio:2}},
+ {id:"fome_prolongada",nome:"Fome Prolongada",mods:{dominio:-4,influencia:-2,autoridade:-2}},
+ {id:"era_prosperidade",nome:"Era de Prosperidade",mods:{dominio:4,autoridade:-2,riqueza:6}},
+ {id:"magistrado_renome",nome:"Magistrado de Renome",mods:{influencia:4,autoridade:4,vazio:4}},
+ {id:"corrupcao_escandalo",nome:"Corrupção ou Escândalo",mods:{influencia:-4,vazio:-8}},
+ {id:"gloria_batalha",nome:"Glória em Batalha",mods:{autoridade:4,vazio:2}},
+ {id:"derrota_marcante",nome:"Derrota Marcante",mods:{autoridade:-4,vazio:-2}},
+ {id:"contato_terras_sombrias",nome:"Contato com as Terras Sombrias",mods:{autoridade:2,vazio:-6}},
+ {id:"bencao_kami",nome:"Bênção dos Kami",mods:{vazio:4}},
+ {id:"templo_importante",nome:"Templo ou Santuário Importante",mods:{dominio:6,autoridade:-1,vazio:4},
   concede:{tipo:"terreno",terreno:"planicies",c1:"templo_santuario",c2:"peregrinacao",nomeSugerido:"Santuário do Véu Sereno"}},
- {id:"intervencao_senhor",nome:"Intervenção de um Grande Senhor",mods:{influencia:-5,vazio:-5}},
- {id:"guerra_prolongada",nome:"Guerra Prolongada",mods:{dominio:-15,influencia:-5,autoridade:-5,riqueza:-5}},
- {id:"segredo_guardado",nome:"Segredo Guardado",mods:{influencia:10,autoridade:5,riqueza:5,vazio:10}},
- {id:"reforma_interna",nome:"Reforma Interna Bem-Sucedida",mods:{dominio:5,influencia:5,autoridade:10,vazio:5}},
- {id:"revolta_camponesa",nome:"Revolta Camponesa",mods:{dominio:-10,autoridade:-5,riqueza:-5,vazio:-5}},
- {id:"migracao_massa",nome:"Migração em Massa para as Terras",mods:{dominio:5,autoridade:-10,riqueza:5}},
- {id:"recurso_valioso",nome:"Descoberta de Recurso Valioso",mods:{dominio:28,influencia:5,autoridade:-5,riqueza:15},
+ {id:"intervencao_senhor",nome:"Intervenção de um Grande Senhor",mods:{influencia:-2,vazio:-2}},
+ {id:"guerra_prolongada",nome:"Guerra Prolongada",mods:{dominio:-6,influencia:-2,autoridade:-2,riqueza:-2}},
+ {id:"segredo_guardado",nome:"Segredo Guardado",mods:{influencia:4,autoridade:2,riqueza:2,vazio:4}},
+ {id:"reforma_interna",nome:"Reforma Interna Bem-Sucedida",mods:{dominio:2,influencia:2,autoridade:4,vazio:2}},
+ {id:"revolta_camponesa",nome:"Revolta Camponesa",mods:{dominio:-4,autoridade:-2,riqueza:-2,vazio:-2}},
+ {id:"migracao_massa",nome:"Migração em Massa para as Terras",mods:{dominio:2,autoridade:-4,riqueza:2}},
+ {id:"recurso_valioso",nome:"Descoberta de Recurso Valioso",mods:{dominio:11,influencia:2,autoridade:-2,riqueza:6},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"minas",nomeSugerido:"Veio de Kaiu-zan"}},
- {id:"isolamento_deliberado",nome:"Isolamento Deliberado",mods:{influencia:-10,autoridade:5,riqueza:-10}},
- {id:"tradicao_marcial",nome:"Tradição Marcial Distinta",mods:{dominio:5,autoridade:10,vazio:5}},
- {id:"decadencia_administrativa",nome:"Decadência Administrativa",mods:{dominio:-5,influencia:-5,autoridade:-10,riqueza:-10,vazio:-5}},
- {id:"figura_espiritual",nome:"Ascensão de Figura Espiritual",mods:{dominio:24,influencia:10,autoridade:5,riqueza:-5,vazio:25},
+ {id:"isolamento_deliberado",nome:"Isolamento Deliberado",mods:{influencia:-4,autoridade:2,riqueza:-4}},
+ {id:"tradicao_marcial",nome:"Tradição Marcial Distinta",mods:{dominio:2,autoridade:4,vazio:2}},
+ {id:"decadencia_administrativa",nome:"Decadência Administrativa",mods:{dominio:-2,influencia:-2,autoridade:-4,riqueza:-4,vazio:-2}},
+ {id:"figura_espiritual",nome:"Ascensão de Figura Espiritual",mods:{dominio:10,influencia:4,autoridade:2,riqueza:-2,vazio:10},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"templo_santuario",c2:"peregrinacao",nomeSugerido:"Retiro do Iluminado"}},
- {id:"perda_territorio",nome:"Perda de Território",mods:{dominio:-20,autoridade:-10,riqueza:-5,vazio:-5}},
- {id:"reconstrucao_pos_guerra",nome:"Reconstrução Pós-Guerra",mods:{dominio:5,autoridade:-5,vazio:5}},
- {id:"heranca_castelo_amaldicoado",nome:"Herança de um Castelo Amaldiçoado",mods:{dominio:23,autoridade:-3},
+ {id:"perda_territorio",nome:"Perda de Território",mods:{dominio:-8,autoridade:-4,riqueza:-2,vazio:-2}},
+ {id:"reconstrucao_pos_guerra",nome:"Reconstrução Pós-Guerra",mods:{dominio:2,autoridade:-2,vazio:2}},
+ {id:"heranca_castelo_amaldicoado",nome:"Herança de um Castelo Amaldiçoado",mods:{dominio:9,autoridade:-1},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"shiro",c2:"area_impura",nomeSugerido:"Kage no Shiro, o Castelo da Sombra"}},
- {id:"ruinas_ancestrais_descobertas",nome:"Descoberta de Ruínas Ancestrais",mods:{dominio:7,riqueza:-3,vazio:11},
+ {id:"ruinas_ancestrais_descobertas",nome:"Descoberta de Ruínas Ancestrais",mods:{dominio:3,riqueza:-1,vazio:4},
   concede:{tipo:"terreno",terreno:"floresta_densa",c1:"ruinas_antigas",nomeSugerido:"Ruínas de Tsuki-no-Mura"}},
- {id:"porto_herdado_afogados",nome:"Porto Herdado de Aliados Afogados",mods:{dominio:15,riqueza:12},
+ {id:"porto_herdado_afogados",nome:"Porto Herdado de Aliados Afogados",mods:{dominio:6,riqueza:5},
   concede:{tipo:"terreno",terreno:"costa",c1:"porto",nomeSugerido:"Porto de Nami-Nageki"}},
- {id:"fortaleza_cedida_cla",nome:"Fortaleza Cedida pelo Clã",mods:{dominio:34,autoridade:15,riqueza:-15,vazio:10},
+ {id:"fortaleza_cedida_cla",nome:"Fortaleza Cedida pelo Clã",mods:{dominio:14,autoridade:6,riqueza:-6,vazio:4},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"kyuden",nomeSugerido:"Kyuden da Linhagem"}}
 ];
 
@@ -890,6 +918,14 @@ if(S.batalhaAtual){
   if(ba.proprioBonusProximoTurno===undefined)ba.proprioBonusProximoTurno=0;
   if(ba.inimigoBonusProximoTurno===undefined)ba.inimigoBonusProximoTurno=0;
   (ba.participantes||[]).forEach(pt=>{if(!pt.ordemId)pt.ordemId="manter";if(!pt.posturaId)pt.posturaId="ataque";});
+  /* Migração v3: tropas inimigas, tabuleiro de raias, moral, postura por tropa, modo de rolagem. */
+  if(ba.moral===undefined)ba.moral=10;
+  if(!ba.tropasInimigas)ba.tropasInimigas=[];
+  if(!ba.modoRolagem)ba.modoRolagem="app";
+  if(!ba.posturasTropa)ba.posturasTropa={};
+  if(!ba.comandantesTropa)ba.comandantesTropa={};
+  if(!ba.raiasTropa)ba.raiasTropa={};
+  (ba.participantes||[]).forEach(pt=>{if(pt.tropaId===undefined)pt.tropaId=null;});
 }
 /* Migração: famílias salvas antes da fusão pros 5 atributos (5 anéis) tinham
    defesa/terras/ordem/populacao/poder/honra/espiritualidade separados. Soma cada
@@ -963,17 +999,26 @@ function terrenosTotais(){let cd=0,ct=0,f=0;S.terrenos.forEach(r=>{const x=terre
 function honraSacrificadaTotal(){return(S.sacrificios||[]).reduce((s,x)=>s+(Number(x.valor)||0),0);}
 function sacrificioProgressoMod(attr){let s=0;(S.sacrificios||[]).forEach(x=>{if(x.tipo==="progresso"&&x.attrGanho===attr)s+=(Number(x.attrValor)||0);});return s;}
 function modificador(attr){
-  let m=personagemMod(attr)+conversaoGanho(attr)-conversaoGasto(attr)+sacrificioProgressoMod(attr);
+  /* Conversões: o GANHO (destino) é crescimento real e sempre soma ao total.
+     O GASTO (origem) só é abatido direto do total se o atributo NÃO for um "pool"
+     (Domínio/Influência/Autoridade/Riqueza) — pra esses, o gasto de conversão
+     conta como pool gasto (ver poolGasto), não como perda histórica do atributo. */
+  let m=personagemMod(attr)+conversaoGanho(attr)+sacrificioProgressoMod(attr);
+  if(!POOL_ATTRS[attr])m-=conversaoGasto(attr);
   if(attr==="autoridade"||attr==="dominio"||attr==="vazio")m+=tropaMod(attr);
   if(attr==="vazio")m+=personagensHonraBonus()-honraSacrificadaTotal()*5;
   return m;
 }
 function totalAttr(attr){return(Number(S.base[attr])||0)+claMod(attr)+eventosMod(attr)+conquistasMod(attr)+modificador(attr);}
 function poolGasto(attr){
-  if(attr==="dominio")return terrenosTotais().custoDefesa+terrenosTotais().custoTerras;
-  if(attr==="influencia")return personagensCustoTotal();
-  if(attr==="autoridade")return tropasCustoTotal();
-  return 0;
+  /* Riqueza/Domínio/Influência/Autoridade registram o total histórico (nunca encolhe
+     sozinho) — o que de fato "gasta" é a disponibilidade: custo de terrenos/personagens/
+     tropas mantidos, mais qualquer conversão que tenha usado o atributo como origem. */
+  let g=POOL_ATTRS[attr]?conversaoGasto(attr):0;
+  if(attr==="dominio")g+=terrenosTotais().custoDefesa+terrenosTotais().custoTerras;
+  if(attr==="influencia")g+=personagensCustoTotal();
+  if(attr==="autoridade")g+=tropasCustoTotal();
+  return g;
 }
 function poolRestante(attr){return totalAttr(attr)-poolGasto(attr);}
 
@@ -1226,28 +1271,104 @@ function iniciarBatalha(){if(bloqueadoLeitura())return;
   S.batalhaAtual={id:uid(),nome:"",inimigo:"",desfecho:"",criada:(ESTACOES[S.estacaoIdx||0])+" ano "+(S.anoEstacao||1),
     turno:0,generalProprioBonus:0,generalInimigoBonus:0,generalId:null,
     proprioBonusProximoTurno:0,inimigoBonusProximoTurno:0,
-    status:null,ultimoContest:null,statusHistorico:[],
+    status:null,ultimoContest:null,statusHistorico:[],moral:10,
     tropasComprometidas:[],fortificacao:null,resultado:null,
+    tropasInimigas:[],modoRolagem:"app",posturasTropa:{},comandantesTropa:{},raiasTropa:{},
     participantes:[],log:[]};
   feedPush("A família entra em campo de batalha.");salvar();render();}
 function setBatalhaCampo(campo,val){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   S.batalhaAtual[campo]=(campo==="generalProprioBonus"||campo==="generalInimigoBonus")?(parseInt(val)||0):val;salvar();render();}
 function toggleParticipante(personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const list=S.batalhaAtual.participantes;const i=list.findIndex(x=>x.personagemId===personagemId);
-  if(i>=0)list.splice(i,1);else list.push({personagemId,engajamentoIdx:1,ordemId:"manter",posturaId:"ataque"});salvar();render();}
+  if(i>=0)list.splice(i,1);else list.push({personagemId,engajamentoIdx:1,ordemId:"manter",posturaId:"ataque",tropaId:null});salvar();render();}
 function setEngajamento(personagemId,idx){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
   part.engajamentoIdx=Math.max(0,Math.min(3,parseInt(idx)||0));salvar();render();}
+function ciclarRaiaParticipante(personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
+  part.engajamentoIdx=((Number(part.engajamentoIdx)||0)+1)%4;salvar();render();}
+function ciclarRaiaTropaFamilia(tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  S.batalhaAtual.raiasTropa=S.batalhaAtual.raiasTropa||{};
+  S.batalhaAtual.raiasTropa[tropaId]=((Number(S.batalhaAtual.raiasTropa[tropaId])||0)+1)%4;salvar();render();}
+function ciclarRaiaTropaInimiga(tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const t=(S.batalhaAtual.tropasInimigas||[]).find(x=>x.id===tropaId);if(!t)return;
+  t.raia=((Number(t.raia)||0)+1)%4;salvar();render();}
 function setOrdem(personagemId,ordemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
   part.ordemId=ordemId;salvar();render();}
-function setPostura(personagemId,posturaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+function setParticipanteTropa(personagemId,tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
-  part.posturaId=posturaId;salvar();render();}
+  part.tropaId=tropaId||null;salvar();render();}
 function toggleTropaBatalha(tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   if(!S.batalhaAtual.tropasComprometidas)S.batalhaAtual.tropasComprometidas=[];
   const list=S.batalhaAtual.tropasComprometidas;const i=list.indexOf(tropaId);
   if(i>=0)list.splice(i,1);else list.push(tropaId);salvar();render();}
+/* Tropas inimigas — ao contrário de S.tropas (cadastro permanente da família), estas só
+   existem dentro da batalha atual e somem quando ela é encerrada. */
+function addTropaInimiga(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  S.batalhaAtual.tropasInimigas=S.batalhaAtual.tropasInimigas||[];
+  S.batalhaAtual.tropasInimigas.push({id:uid(),nome:"",tipo:"ashigaru",estado:"mobilizado",raia:2,postura:"ataque",comandanteId:null});
+  salvar();render();}
+function setTropaInimiga(id,campo,val){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const t=(S.batalhaAtual.tropasInimigas||[]).find(x=>x.id===id);if(!t)return;
+  t[campo]=val;salvar();render();}
+function delTropaInimiga(id){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  S.batalhaAtual.tropasInimigas=(S.batalhaAtual.tropasInimigas||[]).filter(x=>x.id!==id);salvar();render();}
+/* Postura por Tropa (§16) — comandante de uma tropa da família ou inimiga tenta mudar a
+   Postura dela num turno com d10+Água+Batalha contra a Moral da Batalha atual (§15). Sem
+   comandante, a tropa fica travada em "Ataque". */
+function tropaFamiliaPostura(tropaId){return(S.batalhaAtual&&S.batalhaAtual.posturasTropa&&S.batalhaAtual.posturasTropa[tropaId])||"ataque";}
+function setComandanteTropa(tropaId,lado,personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const b=S.batalhaAtual;
+  if(lado==="familia"){b.comandantesTropa=b.comandantesTropa||{};b.comandantesTropa[tropaId]=personagemId||null;}
+  else{const t=(b.tropasInimigas||[]).find(x=>x.id===tropaId);if(t)t.comandanteId=personagemId||null;}
+  salvar();render();}
+function testarPosturaTropa(tropaId,lado,novaPostura){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const b=S.batalhaAtual;let comandanteId=null,tropaNome="tropa";
+  if(lado==="familia"){
+    comandanteId=(b.comandantesTropa&&b.comandantesTropa[tropaId])||null;
+    const t=S.tropas.find(x=>x.id===tropaId);if(t)tropaNome=(TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo)+(t.local?(" ("+t.local+")"):"");
+  }else{
+    const t=(b.tropasInimigas||[]).find(x=>x.id===tropaId);if(!t)return;
+    comandanteId=t.comandanteId;tropaNome=t.nome||"tropa inimiga";
+  }
+  if(!comandanteId){flashHint("Essa tropa não tem comandante designado — sem comandante, a postura fica travada em Ataque.");return;}
+  const p=S.personagens.find(x=>x.id===comandanteId);if(!p){flashHint("Comandante não encontrado.");return;}
+  fichaBase(p);
+  const agua=aneisPersonagem(p).agua||0,skill=personagemBattleSkill(p);
+  const moral=(b.moral===undefined?10:Number(b.moral));
+  const dado=d10(),total=dado+agua+skill,sucesso=total>=moral;
+  const nomePostura=(POSTURAS_BATALHA.find(x=>x.id===novaPostura)||{}).nome||novaPostura;
+  b.log.unshift({turno:b.turno,texto:esc(p.nome||"comandante")+" tenta mudar a postura de "+esc(tropaNome)+" pra "+nomePostura+": rolou "+total+" (d10 "+dado+"+Água "+agua+"+Batalha "+skill+") contra Moral "+moral+" — "+(sucesso?"sucesso!":"falhou, mantém a postura anterior.")});
+  if(sucesso){
+    if(lado==="familia"){b.posturasTropa=b.posturasTropa||{};b.posturasTropa[tropaId]=novaPostura;}
+    else{const t=(b.tropasInimigas||[]).find(x=>x.id===tropaId);if(t)t.postura=novaPostura;}
+  }
+  salvar();render();}
+function setModoRolagem(modo){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  S.batalhaAtual.modoRolagem=modo;salvar();render();}
+function setManualResultado(personagemId,campo,val){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
+  if(campo==="especial")part._manualEspecial=val||null;
+  else if(campo==="dano")part._manualDano=parseFloat(val)||0;
+  else if(campo==="gloria")part._manualGloria=parseFloat(val)||0;
+  salvar();}
+function confirmarTurnoManual(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const b=S.batalhaAtual;
+  if(!b.status){flashHint("Rode ou registre o contest dos generais primeiro.");return;}
+  if(!b.participantes.length){flashHint("Nenhum personagem participando desta batalha ainda.");return;}
+  b.participantes.forEach(part=>{
+    const p=S.personagens.find(x=>x.id===part.personagemId);if(!p)return;
+    fichaBase(p);
+    const dano=Number(part._manualDano)||0,gloria=Number(part._manualGloria)||0,especial=part._manualEspecial||null;
+    p.danoAtual=(Number(p.danoAtual)||0)+dano;
+    p.gloriaRank=(Number(p.gloriaRank)||0)+gloria;
+    let txt=esc(p.nome||"sem nome")+" (resultado da mesa): "+dano+" dano, "+gloria+" Glória";
+    if(especial)txt+=" — "+ESP_LABEL[especial]+"!";
+    b.log.unshift({turno:b.turno,texto:txt});
+    delete part._manualDano;delete part._manualGloria;delete part._manualEspecial;
+  });
+  salvar();render();}
 function setGeneralId(personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   S.batalhaAtual.generalId=personagemId||null;salvar();render();}
 function recalcularBonusGeneral(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
@@ -1286,8 +1407,14 @@ function rodarContesteBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)
   const c=rolarContesteGenerais(bonusProprioEfetivo,bonusInimigoEfetivo);
   b.turno=(b.turno||0)+1;b.status=c.status;b.ultimoContest=c;
   b.statusHistorico=b.statusHistorico||[];b.statusHistorico.push(c.status);
+  /* Moral da Batalha (§15): acumula turno a turno pela diferença do Contest, não é só o
+     status do turno atual — uma família que vem ganhando contest após contest sobe a Moral
+     de verdade, uma que vem perdendo desce e fica mais difícil de recuperar rápido. É a TN
+     usada pra testar mudança de Postura de uma tropa (testarPosturaTropa). */
+  const moralAntes=(b.moral===undefined?10:Number(b.moral));
+  b.moral=Math.max(0,Math.min(20,moralAntes+Math.round(c.dif/2)));
   const statusNome=STATUS_BATALHA.find(s=>s.id===c.status).nome;
-  let txt="Turno "+b.turno+" — contest dos generais: "+c.proprio+" x "+c.inimigo+" → família "+statusNome+".";
+  let txt="Turno "+b.turno+" — contest dos generais: "+c.proprio+" x "+c.inimigo+" → família "+statusNome+". Moral "+moralAntes+"→"+b.moral+".";
   if(b.proprioBonusProximoTurno)txt+=" (bônus pendente aplicado: "+(b.proprioBonusProximoTurno>0?"+":"")+b.proprioBonusProximoTurno+")";
   if(b.inimigoBonusProximoTurno)txt+=" (penalidade pendente no inimigo aplicada: "+b.inimigoBonusProximoTurno+")";
   b.proprioBonusProximoTurno=0;b.inimigoBonusProximoTurno=0;
@@ -1295,6 +1422,7 @@ function rodarContesteBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)
   salvar();render();}
 function rodarTurnoBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const b=S.batalhaAtual;
+  if(b.modoRolagem==="mesa"){flashHint("Modo Mesa está ativo — use \"confirmar turno\" com os resultados digitados, em vez de rolar no app.");return;}
   if(!b.status){flashHint("Rode o contest dos generais primeiro, pra saber quem está vencendo.");return;}
   if(!b.participantes.length){flashHint("Nenhum personagem está participando desta batalha ainda.");return;}
   const statusShift=STATUS_BATALHA.find(s=>s.id===b.status).shift;
@@ -1306,7 +1434,10 @@ function rodarTurnoBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)ret
     const p=S.personagens.find(x=>x.id===part.personagemId);if(!p)return;
     fichaBase(p);
     const ordem=ORDENS_BATALHA.find(o=>o.id===(part.ordemId||"manter"))||ORDENS_BATALHA[1];
-    const postura=POSTURAS_BATALHA.find(x=>x.id===(part.posturaId||"ataque"))||POSTURAS_BATALHA[0];
+    /* Postura agora vem da tropa vinculada ao personagem (§16), não mais de uma escolha
+       pessoal — sem tropa vinculada, o personagem rola sem modificador de postura (Ataque). */
+    const posturaIdEfetiva=part.tropaId?tropaFamiliaPostura(part.tropaId):"ataque";
+    const postura=POSTURAS_BATALHA.find(x=>x.id===posturaIdEfetiva)||POSTURAS_BATALHA[0];
     if(postura.semRoloEsteTurno){
       part._bonusCentroProximo=aneisPersonagem(p).vazio||0;
       b.log.unshift({turno:b.turno,texto:esc(p.nome||"sem nome")+" — Centro: concentra energia pro próximo turno (+"+part._bonusCentroProximo+" no próximo total)."});
@@ -2243,6 +2374,28 @@ function renderConversoes(){
 }
 
 /* ============ BATALHA EM MASSA — render ============ */
+function tabuleiroHTML(b){
+  const fam=[];
+  b.participantes.forEach(part=>{
+    const p=S.personagens.find(x=>x.id===part.personagemId);if(!p)return;
+    fam.push({label:esc(p.nome||"sem nome")+" 👤",raia:Number(part.engajamentoIdx)||0,onclick:"ciclarRaiaParticipante('"+part.personagemId+"')"});
+  });
+  (b.tropasComprometidas||[]).forEach(tid=>{
+    const t=S.tropas.find(x=>x.id===tid);if(!t)return;
+    const raia=Number(b.raiasTropa&&b.raiasTropa[tid])||0;
+    fam.push({label:esc(TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo)+(t.local?(" ("+esc(t.local)+")"):""),raia,onclick:"ciclarRaiaTropaFamilia('"+tid+"')"});
+  });
+  const inimigo=(b.tropasInimigas||[]).map(t=>({label:esc(t.nome||"tropa inimiga"),raia:Number(t.raia)||0,onclick:"ciclarRaiaTropaInimiga('"+t.id+"')"}));
+  let html="<div class=\"tabuleiro\">";
+  for(let nivel=3;nivel>=0;nivel--){
+    html+="<div class=\"tabuleiroLinha\"><div class=\"tabuleiroRotulo\">"+ENGAJAMENTO[nivel].nome+"</div>"+
+      "<div class=\"tabuleiroLado ladoFamilia\">"+fam.filter(x=>x.raia===nivel).map(x=>"<span class=\"chip chipFamilia\" onclick=\""+x.onclick+"\">"+x.label+"</span>").join("")+"</div>"+
+      "<div class=\"tabuleiroLado ladoInimigo\">"+inimigo.filter(x=>x.raia===nivel).map(x=>"<span class=\"chip chipInimigo\" onclick=\""+x.onclick+"\">"+x.label+"</span>").join("")+"</div>"+
+      "</div>";
+  }
+  html+="</div>";
+  return html;
+}
 function renderBatalha(){
   const box=document.getElementById("batalhaAtualBox");
   if(!box)return;
@@ -2254,24 +2407,55 @@ function renderBatalha(){
     const statusCor=b.status==="vencendo"?"var(--good)":(b.status==="perdendo"?"var(--bad)":"var(--ink)");
     const perfil=perfilExercitoComprometido();
     const fort=b.fortificacao;
+    const moral=(b.moral===undefined?10:Number(b.moral));
     let out="";
     out+="<div class=\"linha\"><input class=\"campo-medio\" value=\""+esc(b.nome)+"\" placeholder=\"nome da batalha (ex: Cerco de Shiro Kaiu)\" onchange=\"setBatalhaCampo('nome',this.value)\">"+
       "<input class=\"campo-medio\" value=\""+esc(b.inimigo)+"\" placeholder=\"contra quem\" onchange=\"setBatalhaCampo('inimigo',this.value)\"></div>";
-    out+="<div class=\"hint\" style=\"margin:8px 0\">Iniciada em "+esc(b.criada)+" · Turno "+(b.turno||0)+" · status atual: <b style=\"color:"+statusCor+"\">"+(statusInfo?statusInfo.nome:"— rode o contest dos generais")+"</b></div>";
+    out+="<div class=\"hint\" style=\"margin:8px 0\">Iniciada em "+esc(b.criada)+" · Turno "+(b.turno||0)+" · status atual: <b style=\"color:"+statusCor+"\">"+(statusInfo?statusInfo.nome:"— rode o contest dos generais")+"</b> · Moral da Batalha: <b>"+moral+"</b>/20 <span class=\"tag\" title=\"TN pra testar mudança de Postura de uma tropa — sobe quando a família vem ganhando, desce quando vem perdendo\">(TN de Postura)</span></div>";
 
-    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Tropas comprometidas nesta batalha</div>";
+    out+="<div class=\"linha\" style=\"margin-bottom:10px\"><span class=\"tag\">Rolagem:</span>"+
+      "<button class=\"ghost"+(b.modoRolagem!=="mesa"?" on":"")+"\" onclick=\"setModoRolagem('app')\">🎲 no App</button>"+
+      "<button class=\"ghost"+(b.modoRolagem==="mesa"?" on":"")+"\" onclick=\"setModoRolagem('mesa')\">📋 na Mesa (Mestre digita o resultado)</button></div>";
+
+    out+="<div class=\"tag\" style=\"display:block;margin:6px 0\">Tabuleiro (clique num token pra mudar de fileira)</div>";
+    out+=tabuleiroHTML(b);
+
+    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Tropas da família comprometidas</div>";
     if(!S.tropas.length){
       out+="<div class=\"hint\">Nenhuma tropa cadastrada ainda (aba Família → Tropa e Liderança).</div>";
     }else{
-      out+="<div class=\"linhas\">"+S.tropas.map(t=>{
+      out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th></th><th>Tropa</th><th>Comandante</th><th>Postura</th><th>Mudar pra</th><th></th></tr></thead><tbody>"+
+      S.tropas.map(t=>{
         const comprometida=(b.tropasComprometidas||[]).includes(t.id);
         const tipoNome=TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo;
         const estadoNome=TROPA_ESTADO[t.estado]?TROPA_ESTADO[t.estado].nome:t.estado;
-        return "<label style=\"display:flex;align-items:center;gap:6px;font-size:13px\"><input type=\"checkbox\" "+(comprometida?"checked":"")+" onchange=\"toggleTropaBatalha('"+t.id+"')\">"+esc(tipoNome)+(t.local?(" — "+esc(t.local)):"")+" <span class=\"tag\">("+esc(estadoNome)+")</span></label>";
-      }).join("")+"</div>";
+        const comandanteId=(b.comandantesTropa&&b.comandantesTropa[t.id])||"";
+        const posturaAtual=tropaFamiliaPostura(t.id);
+        return "<tr><td><input type=\"checkbox\" "+(comprometida?"checked":"")+" onchange=\"toggleTropaBatalha('"+t.id+"')\"></td>"+
+          "<td>"+esc(tipoNome)+(t.local?(" — "+esc(t.local)):"")+" <span class=\"tag\">("+esc(estadoNome)+")</span></td>"+
+          "<td>"+(comprometida?("<select onchange=\"setComandanteTropa('"+t.id+"','familia',this.value)\"><option value=\"\">— sem comandante —</option>"+S.personagens.map(p=>"<option value=\""+p.id+"\" "+(comandanteId===p.id?"selected":"")+">"+esc(p.nome||"sem nome")+"</option>").join("")+"</select>"):"—")+"</td>"+
+          "<td>"+(comprometida?("<b>"+(POSTURAS_BATALHA.find(x=>x.id===posturaAtual)||{}).nome+"</b>"):"—")+"</td>"+
+          "<td>"+(comprometida?("<select id=\"novaPostura_"+t.id+"\">"+POSTURAS_BATALHA.map(ps=>"<option value=\""+ps.id+"\" title=\""+esc(ps.desc)+"\">"+esc(ps.nome)+"</option>").join("")+"</select> <button class=\"ghost\" onclick=\"testarPosturaTropa('"+t.id+"','familia',document.getElementById('novaPostura_"+t.id+"').value)\">testar</button>"):"—")+"</td>"+
+          "<td></td></tr>";
+      }).join("")+"</tbody></table></div>";
     }
     out+=perfil.n?("<div class=\"hint\" style=\"margin-top:6px\">"+perfil.n+" unidade(s) comprometida(s) — força média "+perfil.forcaMedia.toFixed(0)+" (nível efetivo "+(perfil.forcaShift>0?"+1, exército fraco expõe mais":perfil.forcaShift<0?"−1, a massa absorve o impacto":"sem ajuste")+"), disciplina média "+perfil.disciplinaMedia.toFixed(0)+" (bônus do General "+(perfil.modGeneral>0?"+1":perfil.modGeneral<0?"−1":"sem ajuste")+").</div>")
       :"<div class=\"hint\" style=\"margin-top:6px\">Nenhuma tropa comprometida — a batalha roda em RAW puro, sem os ajustes de exército.</div>";
+
+    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Tropas inimigas</div>";
+    out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th>Nome</th><th>Tipo</th><th>Estado</th><th>Comandante</th><th>Postura</th><th>Mudar pra</th><th></th></tr></thead><tbody>"+
+      (b.tropasInimigas&&b.tropasInimigas.length?b.tropasInimigas.map(t=>{
+        const posturaNome=(POSTURAS_BATALHA.find(x=>x.id===(t.postura||"ataque"))||{}).nome;
+        return "<tr><td><input value=\""+esc(t.nome)+"\" placeholder=\"nome da unidade\" onchange=\"setTropaInimiga('"+t.id+"','nome',this.value)\"></td>"+
+          "<td><select onchange=\"setTropaInimiga('"+t.id+"','tipo',this.value)\">"+Object.keys(TROPA_TIPOS).map(k=>"<option value=\""+k+"\" "+(t.tipo===k?"selected":"")+">"+TROPA_TIPOS[k].nome+"</option>").join("")+"</select></td>"+
+          "<td><select onchange=\"setTropaInimiga('"+t.id+"','estado',this.value)\">"+Object.keys(TROPA_ESTADO).map(k=>"<option value=\""+k+"\" "+(t.estado===k?"selected":"")+">"+TROPA_ESTADO[k].nome+"</option>").join("")+"</select></td>"+
+          "<td><select onchange=\"setComandanteTropa('"+t.id+"','inimiga',this.value)\"><option value=\"\">—</option>"+S.personagens.map(p=>"<option value=\""+p.id+"\" "+(t.comandanteId===p.id?"selected":"")+">"+esc(p.nome||"sem nome")+"</option>").join("")+"</select></td>"+
+          "<td><b>"+posturaNome+"</b></td>"+
+          "<td><select id=\"novaPosturaInimiga_"+t.id+"\">"+POSTURAS_BATALHA.map(ps=>"<option value=\""+ps.id+"\" title=\""+esc(ps.desc)+"\">"+esc(ps.nome)+"</option>").join("")+"</select> <button class=\"ghost\" onclick=\"testarPosturaTropa('"+t.id+"','inimiga',document.getElementById('novaPosturaInimiga_"+t.id+"').value)\">testar</button></td>"+
+          "<td><button class=\"ghost\" onclick=\"delTropaInimiga('"+t.id+"')\">✕</button></td></tr>";
+      }).join(""):"<tr><td colspan=\"7\" class=\"hint\">Nenhuma tropa inimiga cadastrada — o Mestre acrescenta as unidades que aparecem nesta batalha.</td></tr>")+
+      "</tbody></table></div>";
+    out+="<button class=\"ghost\" style=\"margin-top:6px\" onclick=\"addTropaInimiga()\">+ tropa inimiga</button>";
 
     out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">General da família</div>";
     out+="<div class=\"linha\"><select onchange=\"setGeneralId(this.value)\"><option value=\"\">— sem general designado —</option>"+
@@ -2295,28 +2479,40 @@ function renderBatalha(){
     }
 
     out+="<div style=\"margin:10px 0;display:flex;gap:8px;flex-wrap:wrap\">"+
-      "<button onclick=\"rodarContesteBatalha()\">🎲 Rodar contest dos generais (novo turno)</button>"+
-      "<button onclick=\"rodarTurnoBatalha()\">🎲 Rodar Tabela de Batalha pros participantes</button></div>";
+      "<button onclick=\"rodarContesteBatalha()\">🎲 Rodar contest dos generais (novo turno)</button>";
+    if(b.modoRolagem!=="mesa")out+="<button onclick=\"rodarTurnoBatalha()\">🎲 Rodar Tabela de Batalha pros participantes</button>";
+    else out+="<button onclick=\"confirmarTurnoManual()\">✔ Confirmar turno (resultados digitados abaixo)</button>";
+    out+="</div>";
 
     out+="<div class=\"tag\" style=\"display:block;margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Participantes</div>";
-    out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th></th><th>Personagem</th><th>Engajamento</th><th>Ordem</th><th>Postura</th><th>Dano</th><th>Glória</th><th></th></tr></thead><tbody>";
+    const colsManuais=b.modoRolagem==="mesa"?"<th>Dano (mesa)</th><th>Glória (mesa)</th><th>Especial (mesa)</th>":"";
+    out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th></th><th>Personagem</th><th>Engajamento</th><th>Ordem</th><th>Tropa vinculada</th>"+colsManuais+"<th>Dano</th><th>Glória</th><th></th></tr></thead><tbody>";
     if(!S.personagens.length){
-      out+="<tr><td colspan=\"8\" class=\"hint\">Nenhum personagem criado ainda.</td></tr>";
+      out+="<tr><td colspan=\"9\" class=\"hint\">Nenhum personagem criado ainda.</td></tr>";
     }else{
       const ordensDisponiveis=ORDENS_BATALHA.filter(o=>!o.assaltaFortificacao||(fort&&fort.ocupante!=="propria"));
       S.personagens.forEach(p=>{
         const part=b.participantes.find(x=>x.personagemId===p.id);
+        let manuaisTd="";
+        if(b.modoRolagem==="mesa"){
+          manuaisTd="<td><input type=\"number\" style=\"width:56px\" value=\""+(part?(part._manualDano||0):0)+"\" onchange=\"setManualResultado('"+p.id+"','dano',this.value)\" "+(part?"":"disabled")+"></td>"+
+            "<td><input type=\"number\" style=\"width:56px\" value=\""+(part?(part._manualGloria||0):0)+"\" onchange=\"setManualResultado('"+p.id+"','gloria',this.value)\" "+(part?"":"disabled")+"></td>"+
+            "<td><select onchange=\"setManualResultado('"+p.id+"','especial',this.value)\" "+(part?"":"disabled")+"><option value=\"\">nenhum</option><option value=\"duelo\" "+(part&&part._manualEspecial==="duelo"?"selected":"")+">Duelo</option><option value=\"heroica\" "+(part&&part._manualEspecial==="heroica"?"selected":"")+">Oportunidade Heroica</option></select></td>";
+        }
         out+="<tr><td><input type=\"checkbox\" "+(part?"checked":"")+" onchange=\"toggleParticipante('"+p.id+"')\"></td>"+
           "<td>"+esc(p.nome||"sem nome")+(b.generalId===p.id?" <span class=\"tag\">(general)</span>":"")+"</td>"+
           "<td>"+(part?("<select onchange=\"setEngajamento('"+p.id+"',this.value)\">"+ENGAJAMENTO.map(e=>"<option value=\""+e.idx+"\" "+(part.engajamentoIdx===e.idx?"selected":"")+" title=\""+esc(e.desc)+"\">"+esc(e.nome)+"</option>").join("")+"</select>"):"—")+"</td>"+
           "<td>"+(part?("<select onchange=\"setOrdem('"+p.id+"',this.value)\">"+ordensDisponiveis.map(o=>"<option value=\""+o.id+"\" "+((part.ordemId||"manter")===o.id?"selected":"")+" title=\""+esc(o.desc)+"\">"+esc(o.nome)+"</option>").join("")+"</select>"):"—")+"</td>"+
-          "<td>"+(part?("<select onchange=\"setPostura('"+p.id+"',this.value)\">"+POSTURAS_BATALHA.map(ps=>"<option value=\""+ps.id+"\" "+((part.posturaId||"ataque")===ps.id?"selected":"")+" title=\""+esc(ps.desc)+"\">"+esc(ps.nome)+"</option>").join("")+"</select>"):"—")+"</td>"+
+          "<td>"+(part?("<select onchange=\"setParticipanteTropa('"+p.id+"',this.value)\"><option value=\"\">— nenhuma —</option>"+(b.tropasComprometidas||[]).map(tid=>{const t=S.tropas.find(x=>x.id===tid);if(!t)return"";return"<option value=\""+tid+"\" "+(part.tropaId===tid?"selected":"")+">"+esc(TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo)+(t.local?(" — "+esc(t.local)):"")+"</option>";}).join("")+"</select>"):"—")+"</td>"+
+          manuaisTd+
           "<td>"+(Number(p.danoAtual)||0)+"</td>"+
           "<td>"+(Number(p.gloriaRank)||0).toFixed(1)+"</td>"+
           "<td>"+(part?"<button class=\"ghost\" title=\"Retirada definitiva — custa Honra (e Glória se testemunhado)\" onclick=\"confirmarRetirada('"+p.id+"')\">retirar-se</button>":"")+"</td></tr>";
       });
     }
     out+="</tbody></table></div>";
+    if(b.modoRolagem==="mesa")out+="<div class=\"hint\" style=\"margin-top:4px\">Modo Mesa: o grupo rolou fisicamente — digite dano e Glória de cada participante e clique em \"Confirmar turno\" acima.</div>";
+    out+="<div class=\"hint\" style=\"margin-top:4px\">Postura agora é da tropa (veja acima) — vincule o personagem a uma tropa comprometida pra herdar o modificador dela no roll.</div>";
 
     const sugestao=sugerirResultadoBatalha(b);
     const resultadoAtual=b.resultado||sugestao;
