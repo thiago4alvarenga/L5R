@@ -59,6 +59,12 @@
   button{cursor:pointer} button.primary{background:var(--seal);color:#faf3e6;border-color:var(--seal);font-weight:600}
   button.primary:hover{filter:brightness(1.08)} button:disabled{opacity:.45;cursor:not-allowed} button.ghost{background:transparent}
   button.ghost:hover{border-color:var(--accent);color:var(--accent)}
+  button.ghost.on{background:var(--panel);border-color:var(--seal);color:var(--seal);font-weight:600}
+  .mapaViewport{width:100%;height:70vh;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;
+    background:#161310;border:1px solid var(--line);border-radius:var(--radius);cursor:grab;touch-action:none}
+  .mapaViewport.dragging{cursor:grabbing}
+  .mapaViewport img{max-width:100%;max-height:100%;object-fit:contain;transform-origin:center center;
+    user-select:none;-webkit-user-drag:none;pointer-events:none;will-change:transform}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
   @media(max-width:900px){.grid{grid-template-columns:1fr}}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px}
@@ -223,6 +229,7 @@
     <button class="tabbtn on" id="tabBtnFamilia" onclick="setAbaPrincipal('familia')">家 Família</button>
     <button class="tabbtn" id="tabBtnPersonagens" onclick="setAbaPrincipal('personagens')">Personagens <span class="tag" id="tabPersonagensCount"></span></button>
     <button class="tabbtn" id="tabBtnBatalha" onclick="setAbaPrincipal('batalha')">兵 Batalha em Massa</button>
+    <button class="tabbtn" id="tabBtnMapa" onclick="setAbaPrincipal('mapa')">図 Mapa de Rokugan</button>
   </div>
 
   <div id="viewFamilia">
@@ -349,6 +356,26 @@
       <h2><span class="kan">巻</span>Referência para o Mestre<span class="sub">oportunidades heroicas</span></h2>
       <div class="hint" style="margin-bottom:10px">Quando a Tabela de Batalha indica "Oportunidade Heroica", escolha uma destas situações (ou invente outra) pro personagem viver.</div>
       <div class="linhas" id="oportunidadesBox"></div>
+    </div>
+  </div>
+
+  <div id="viewMapa" style="display:none">
+    <div class="panel">
+      <h2><span class="kan">図</span>Mapa de Rokugan<span class="sub">arraste pra mover · roda do mouse ou botões pra zoom</span></h2>
+      <div class="hint" style="margin-bottom:10px">Duas versões: a ilustrada dá o clima pra mesa, a política/detalhada traz os nomes dos castelos e vilas com escala em milhas — boa referência de distância pro hexcrawl.</div>
+      <div style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="ghost on" id="mapaBtnIlustrado" onclick="mapaSetVariante('ilustrado')">Ilustrado</button>
+        <button class="ghost" id="mapaBtnPolitico" onclick="mapaSetVariante('politico')">Político / Detalhado</button>
+        <button class="ghost" onclick="mapaZoom(0.3)">➕ Zoom</button>
+        <button class="ghost" onclick="mapaZoom(-0.3)">➖ Zoom</button>
+        <button class="ghost" onclick="mapaReset()">↺ Resetar</button>
+      </div>
+      <div class="mapaViewport" id="mapaViewport"
+        onmousedown="mapaDragStart(event)" onmousemove="mapaDragMove(event)" onmouseup="mapaDragEnd()" onmouseleave="mapaDragEnd()"
+        ontouchstart="mapaDragStart(event)" ontouchmove="mapaDragMove(event)" ontouchend="mapaDragEnd()"
+        onwheel="mapaOnWheel(event)" ondblclick="mapaReset()">
+        <img id="mapaImg" src="" alt="Mapa de Rokugan" draggable="false">
+      </div>
     </div>
   </div>
 
@@ -1389,11 +1416,56 @@ function setAbaPrincipal(a){
   document.getElementById("viewFamilia").style.display=(a==="familia")?"":"none";
   document.getElementById("viewPersonagens").style.display=(a==="personagens")?"":"none";
   document.getElementById("viewBatalha").style.display=(a==="batalha")?"":"none";
+  document.getElementById("viewMapa").style.display=(a==="mapa")?"":"none";
   document.getElementById("tabBtnFamilia").className="tabbtn"+(a==="familia"?" on":"");
   document.getElementById("tabBtnPersonagens").className="tabbtn"+(a==="personagens"?" on":"");
   document.getElementById("tabBtnBatalha").className="tabbtn"+(a==="batalha"?" on":"");
+  document.getElementById("tabBtnMapa").className="tabbtn"+(a==="mapa"?" on":"");
   if(a==="personagens")renderCharTabs();
   if(a==="batalha")renderBatalha();
+  if(a==="mapa")renderMapa();
+}
+
+/* ============ MAPA DE ROKUGAN (visor com zoom/pan, só estado de tela — não salva em S) ============
+   Duas imagens locais (Familia L5R App/img/mapa_rokugan_*.jpg): a ilustrada veio de um PDF vetorial
+   (rokugan_map.pdf) rasterizado em alta resolução; a política/detalhada é o mapa clássico com nomes
+   de castelo e escala em milhas que o Thiago já tinha na pasta. Zoom/pan é feito com transform CSS
+   simples (translate+scale) — sem biblioteca, consistente com o resto do arquivo. */
+let mapaState={variante:"ilustrado",zoom:1,x:0,y:0,dragging:false,lastX:0,lastY:0};
+function mapaImgSrc(){return mapaState.variante==="politico"?"img/mapa_rokugan_politico.jpg":"img/mapa_rokugan_ilustrado.jpg";}
+function mapaAplicarTransform(){
+  const img=document.getElementById("mapaImg");if(!img)return;
+  img.style.transform="translate("+mapaState.x+"px,"+mapaState.y+"px) scale("+mapaState.zoom+")";
+}
+function renderMapa(){
+  const img=document.getElementById("mapaImg");if(!img)return;
+  const novoSrc=mapaImgSrc();
+  if(img.getAttribute("src")!==novoSrc)img.src=novoSrc;
+  mapaAplicarTransform();
+  document.getElementById("mapaBtnIlustrado").className="ghost"+(mapaState.variante==="ilustrado"?" on":"");
+  document.getElementById("mapaBtnPolitico").className="ghost"+(mapaState.variante==="politico"?" on":"");
+}
+function mapaSetVariante(v){mapaState.variante=v;mapaState.zoom=1;mapaState.x=0;mapaState.y=0;renderMapa();}
+function mapaZoom(delta){mapaState.zoom=Math.max(1,Math.min(6,mapaState.zoom+delta));mapaAplicarTransform();}
+function mapaReset(){mapaState.zoom=1;mapaState.x=0;mapaState.y=0;mapaAplicarTransform();}
+function mapaOnWheel(e){e.preventDefault();mapaZoom(e.deltaY<0?0.3:-0.3);}
+function mapaDragStart(e){
+  mapaState.dragging=true;
+  const p=e.touches?e.touches[0]:e;
+  mapaState.lastX=p.clientX;mapaState.lastY=p.clientY;
+  const vp=document.getElementById("mapaViewport");if(vp)vp.classList.add("dragging");
+}
+function mapaDragMove(e){
+  if(!mapaState.dragging)return;
+  const p=e.touches?e.touches[0]:e;
+  mapaState.x+=p.clientX-mapaState.lastX;mapaState.y+=p.clientY-mapaState.lastY;
+  mapaState.lastX=p.clientX;mapaState.lastY=p.clientY;
+  mapaAplicarTransform();
+  if(e.touches)e.preventDefault();
+}
+function mapaDragEnd(){
+  mapaState.dragging=false;
+  const vp=document.getElementById("mapaViewport");if(vp)vp.classList.remove("dragging");
 }
 /* Qual personagem está aberto na aba Personagens — também é estado só de tela;
    cada personagem tem sua própria sub-aba, então um jogador com vários personagens
