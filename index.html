@@ -33,21 +33,21 @@
   .herobanner{width:100%;height:190px;position:relative;
     clip-path:polygon(0 0,100% 0,100% 86%,0 100%);
     background:url('img/hero_banner.png') center 40%/cover no-repeat,var(--panel);margin-bottom:8px}
-  .crestbig{position:absolute;left:30px;bottom:26px;width:82px;height:82px;border-radius:50%;
+  .crestbig{position:absolute;left:30px;bottom:24px;width:104px;height:104px;border-radius:50%;
     background:url('img/selo_vazio.png') center/cover no-repeat,var(--panel2);
     display:flex;align-items:center;justify-content:center;color:#f7ece0;text-shadow:0 1px 2px rgba(0,0,0,.4);
-    font-size:24px;font-family:var(--font-display);overflow:hidden;box-shadow:0 2px 6px rgba(20,16,10,.3)}
+    font-size:30px;font-family:var(--font-display);overflow:hidden;box-shadow:0 2px 6px rgba(20,16,10,.3)}
   .crestbig img{width:78%;height:78%;object-fit:contain}
-  .herotitles{position:absolute;left:126px;bottom:24px;max-width:70%}
+  .herotitles{position:absolute;left:154px;bottom:26px;max-width:65%}
   .herotitles h1{font-size:38px;letter-spacing:.5px;color:#2b2419;text-shadow:0 1px 0 rgba(255,255,255,.35)}
   .herotitles .tag{font-family:var(--font-voice);font-style:italic;font-size:14.5px;color:#4a4230;margin-top:2px;display:block}
 
   .topbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:6px 4px 14px;border-bottom:1px solid var(--line)}
   .btnicon{font-size:12px;padding:3px 8px;margin-left:8px;vertical-align:middle}
 
-  .ringcluster{display:flex;justify-content:center;align-items:center;gap:10px;margin:26px 0}
-  .ringcluster img{width:22px;height:22px;object-fit:contain;opacity:.85}
-  .ringcluster img.mid{width:28px;height:28px;opacity:1}
+  .ringcluster{display:flex;justify-content:center;align-items:center;gap:14px;margin:26px 0}
+  .ringcluster img{width:30px;height:30px;object-fit:contain;opacity:.85}
+  .ringcluster img.mid{width:38px;height:38px;opacity:1}
   .ringcluster .ln{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line) 15%,var(--line) 85%,transparent)}
 
   .divisor{width:100%;height:26px;background:url('img/divisor_nuvens.png') center/contain no-repeat;opacity:.5;margin:10px 0}
@@ -81,23 +81,23 @@
   .ledgerline .val.small{font-size:14px;color:var(--ink)}
   .ledgerline .val.good{color:var(--good)} .ledgerline .val.bad{color:var(--bad)}
 
-  .rolesrow{display:flex;gap:26px;margin-top:16px;padding:12px 4px 2px;flex-wrap:wrap;justify-content:center}
+  .rolesrow{display:flex;gap:34px;margin-top:16px;padding:12px 4px 2px;flex-wrap:wrap;justify-content:center}
   .rolewrap{text-align:center}
-  .rolewrap img{width:40px;height:40px;object-fit:contain;display:block;margin:0 auto 4px;border-radius:50%}
-  .rolewrap .n{font-family:var(--font-display);font-size:17px;color:var(--seal)}
-  .rolewrap .l{font-size:10.5px;color:var(--muted-tx);letter-spacing:.4px}
+  .rolewrap img{width:60px;height:60px;object-fit:contain;display:block;margin:0 auto 6px;border-radius:50%}
+  .rolewrap .n{font-family:var(--font-display);font-size:19px;color:var(--seal)}
+  .rolewrap .l{font-size:11.5px;color:var(--muted-tx);letter-spacing:.4px}
 
   /* Revelação por hover: modificadores/números ficam discretos até o mouse passar por cima — sensação menos mecânica */
   .reveal{opacity:0;max-height:0;overflow:hidden;pointer-events:none;transition:opacity .18s ease}
   .attrrow:hover .reveal,.origem:hover .reveal,.torncard:hover .reveal{opacity:1;max-height:200px;pointer-events:auto;margin-top:6px}
 
   .attrlist{display:flex;flex-direction:column}
-  .attrrow{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .attrrow{display:grid;grid-template-columns:60px 1fr auto;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}
   .attrrow:first-child{border-top:1px solid var(--line)}
-  .attrrow .ic{width:38px;height:38px;object-fit:contain}
-  .attrrow .name{font-family:var(--font-display);font-size:16px}
-  .attrrow .desc{font-family:var(--font-voice);font-style:italic;font-size:12.5px;color:var(--muted-tx);margin-top:1px}
-  .attrrow .num{font-family:var(--font-display);font-size:25px;color:var(--seal);text-align:right;font-variant-numeric:tabular-nums}
+  .attrrow .ic{width:52px;height:52px;object-fit:contain}
+  .attrrow .name{font-family:var(--font-display);font-size:17px}
+  .attrrow .desc{font-family:var(--font-voice);font-style:italic;font-size:13px;color:var(--muted-tx);margin-top:1px}
+  .attrrow .num{font-family:var(--font-display);font-size:27px;color:var(--seal);text-align:right;font-variant-numeric:tabular-nums}
   .attrrow .brk{grid-column:1/-1;display:flex;gap:6px;font-size:11px;color:var(--muted-tx);flex-wrap:wrap;align-items:center;font-family:var(--font-body);border-top:1px dashed var(--line);padding-top:6px;margin-top:2px}
   .attrrow .brk input{width:48px;padding:3px 4px;font-size:11.5px;text-align:center}
   .attrrow .brk b{color:var(--ink2)}
@@ -122,7 +122,7 @@
   .terrainlist{display:flex;flex-direction:column}
   .terrainrow{display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
   .terrainrow:first-child{border-top:1px solid var(--line)}
-  .terrainrow img.tic{width:46px;height:46px;object-fit:contain;flex-shrink:0;border-radius:6px}
+  .terrainrow img.tic{width:68px;height:68px;object-fit:contain;flex-shrink:0;border-radius:8px}
   .terrainrow .tbody{flex:1;min-width:220px}
   .terrainrow .trow1{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
   .terrainrow .trow2{display:flex;gap:6px;flex-wrap:wrap}
@@ -148,8 +148,8 @@
   .linha .del{margin-left:auto;flex-shrink:0}
   .linha-vazia{font-size:12.5px;color:var(--muted-tx);font-style:italic;padding:6px 2px}
 
-  .anelRow{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
-  .anelIcon{width:38px;height:38px;object-fit:contain;flex-shrink:0}
+  .anelRow{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .anelIcon{width:54px;height:54px;object-fit:contain;flex-shrink:0}
   .anelRow .nome{font-family:var(--font-display);font-weight:600;font-size:13px;margin-bottom:4px;display:flex;justify-content:space-between}
   .anelRow .nome .val{color:var(--seal)}
   .anelRow .tracos{display:flex;gap:6px}
@@ -172,15 +172,15 @@
   .torncard.escolhido{cursor:default}
   .origem.escolhido{cursor:default}
   .torncard .en{font-size:14.5px;font-weight:600;margin-bottom:4px;font-family:var(--font-display)}
-  .torncard .ed{font-size:12.5px;color:var(--ink2);line-height:1.5;font-family:var(--font-voice);font-style:italic}
+  .torncard .ed{font-size:15px;color:var(--ink2);line-height:1.6;font-family:var(--font-voice);font-style:italic}
   .torncard .gift{display:inline-block;margin-top:8px;font-size:11.5px;color:var(--seal)}
   .torncard .em{font-size:10.5px;color:var(--muted-tx);display:flex;flex-wrap:wrap;gap:4px;border-top:1px dashed var(--line);padding-top:6px}
   .torncard .em span{background:rgba(44,38,32,.06);border-radius:4px;padding:1px 5px}
   .torncard .em span.pos{color:var(--good)} .torncard .em span.neg{color:var(--bad)}
 
-  .origens{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:6px}
-  .origem{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px;cursor:pointer;font-size:12px}
-  .monimg{width:36px;height:36px;object-fit:contain;display:block;margin-bottom:4px}
+  .origens{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:8px}
+  .origem{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;font-size:12.5px}
+  .monimg{width:56px;height:56px;object-fit:cover;object-position:center;border-radius:50%;overflow:hidden;display:block;margin-bottom:6px;background:var(--panel2)}
   .tabbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
   .tabbtn{background:var(--panel2);border:1px solid var(--line);border-radius:8px 8px 0 0;padding:8px 14px;font-size:13px;color:var(--ink2);cursor:pointer;font-family:var(--font-display)}
   .tabbtn.on{background:var(--panel);color:var(--ink);border-bottom:2px solid var(--seal);font-weight:600}
@@ -227,6 +227,9 @@
   <div id="viewFamilia">
   <div class="panel">
     <h2><span class="kan">家</span>Informações da Família</h2>
+    <div style="margin-bottom:10px">
+      <button class="ghost" onclick="randomizarFamilia()" title="Sorteia clã, ramo familiar, atributos base e eventos históricos — tudo de uma vez, do zero">🎲 Sortear família inteira</button>
+    </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
       <div class="grp">Nome <input type="text" id="nomeInput" placeholder="Nome da família" style="width:170px"></div>
       <div class="grp">Daimyo <input type="text" id="daimyoInput" placeholder="Nome do Daimyo" style="width:150px"></div>
@@ -240,7 +243,6 @@
           <option value="anciã">Anciã (10 eventos)</option>
         </select>
       </div>
-      <div class="grp">Sacrifício da Honra <input type="number" id="sacrificioInput" style="width:60px"></div>
     </div>
     <div class="hint" style="margin-bottom:6px">Clã — define os modificadores de base da família.</div>
     <div class="origens" id="clasList"></div>
@@ -257,6 +259,10 @@
   <div class="grid">
     <div>
       <div class="panel"><h2><span class="kan">運</span>Status e Fortuna<span class="sub">resultado do que a família é</span></h2>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+          <button class="ghost" id="btnAvancarEstacao" title="Rola o teste de Fortunas da estação atual e empurra os atributos que ela favorece">🌸 Avançar estação</button>
+          <span class="tag" id="estacaoLabel"></span>
+        </div>
         <div class="ledger" id="meters"></div>
       </div>
       <div class="panel"><h2><span class="kan">性</span>Atributos<span class="sub">o que a família é, e o que ela faz</span></h2>
@@ -269,19 +275,32 @@
       <div class="panel"><h2><span class="kan">記</span>Registro<span class="sub">o que mudou</span></h2>
         <div class="log" id="log"></div>
       </div>
+      <div class="panel"><h2><span class="kan">犠</span>Sacrifícios de Honra<span class="sub" id="sacrificiosTotal">nada sacrificado ainda</span></h2>
+        <div class="hint" style="margin-bottom:8px">Dois jeitos de gastar a Honra da família: um jogador queima Honra por um bônus durante a aventura (fica registrado quem e quando), ou a família faz algo desonroso pra progredir mais rápido, trocando Honra por pontos em outro atributo.</div>
+        <div class="linhas" id="sacrificios"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="ghost" id="btnAddSacrificioRolamento">+ rolamento em jogo</button>
+          <button class="ghost" id="btnAddSacrificioProgresso">+ progresso desonroso</button>
+        </div>
+      </div>
     </div>
     <div>
       <div class="panel"><h2><span class="kan">史</span>Eventos Históricos<span class="sub" id="eventosSub">0/0 escolhidos</span></h2>
         <button class="ghost" id="btnSortearEventos" style="margin-bottom:8px">🎲 sortear os que faltam</button>
         <button class="ghost" id="btnLimparEventos" style="margin-bottom:8px">limpar escolhidos</button>
         <div class="eventgrid" id="eventos"></div>
+        <div style="margin-top:16px;padding-top:12px;border-top:1px dashed var(--line)">
+          <div class="tag" style="display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-size:11px">Conquistas registradas pelo Mestre</div>
+          <div class="linhas" id="conquistas"></div>
+          <button class="ghost" id="btnAddConquista" style="margin-top:8px">+ registrar conquista</button>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="divisor"></div>
 
-  <div class="panel"><h2><span class="kan">地</span>Terras e Defesa<span class="sub">gasta Terras e Defesa; gera Fortuna de manutenção</span></h2>
+  <div class="panel"><h2><span class="kan">地</span>Terras e Defesa<span class="sub">gasta Domínio; gera Fortuna de manutenção</span></h2>
     <div class="saldos" id="terrenosSaldo"></div>
     <div class="terrainlist" id="terrenosTab"></div>
     <button class="ghost" id="btnAddTerreno" style="margin-top:8px">+ terreno</button>
@@ -293,7 +312,7 @@
     <button class="ghost" id="btnAddPersonagem" style="margin-top:8px">+ personagem</button>
   </div>
 
-  <div class="panel"><h2><span class="kan">兵</span>Tropa e Liderança<span class="sub">gasta Poder</span></h2>
+  <div class="panel"><h2><span class="kan">兵</span>Tropa e Liderança<span class="sub">gasta Autoridade</span></h2>
     <div class="saldos" id="tropasSaldo"></div>
     <div class="tabwrap"><table class="ctab" id="tropasTab"></table></div>
     <button class="ghost" id="btnAddTropa" style="margin-top:8px">+ tropa</button>
@@ -331,9 +350,8 @@ const SUPA_KEY="sb_publishable_iNSaREevcuph_RCBCWYGXg_vpO-rsKp"; /* Publishable 
 const SUPA_TABELA="l5r_familias";
 
 /* ============ DADOS (extraídos da planilha Familias L5R.xlsx) ============ */
-const ATRIBUTOS=[["defesa","Defesa"],["influencia","Influência"],["terras","Terras"],["ordem","Ordem"],
-  ["populacao","População"],["poder","Poder"],["riqueza","Riqueza"],["honra","Honra"],["espiritualidade","Espiritualidade"]];
-const POOL_ATTRS={defesa:1,influencia:1,terras:1,poder:1}; /* atributos que funcionam como "pontos" gastáveis */
+const ATRIBUTOS=[["dominio","Domínio"],["riqueza","Riqueza"],["influencia","Influência"],["autoridade","Autoridade"],["vazio","Vazio"]];
+const POOL_ATTRS={dominio:1,influencia:1,autoridade:1}; /* atributos que funcionam como "pontos" gastáveis */
 
 const IDADE={recente:2,jovem:4,estabelecida:6,antiga:8,"anciã":10};
 const IDADE_LABEL={recente:"Recente",jovem:"Jovem",estabelecida:"Estabelecida",antiga:"Antiga","anciã":"Anciã"};
@@ -342,84 +360,84 @@ const IDADE_LABEL={recente:"Recente",jovem:"Jovem",estabelecida:"Estabelecida",a
    familias: ramos/famílias reais daquele clã, na 4ª edição — usadas só como sugestão de nome
    para o ramo familiar do jogador (ex.: "um ramo da família Kakita"), sem efeito mecânico. */
 const CLAS=[
- {id:"caranguejo",nome:"Caranguejo",tier:"maior",mote:"“Coragem. Dever. Sacrifício.”",familias:["Hida","Hiruma","Kaiu","Kuni","Yasuki"],mods:{defesa:15,influencia:-10,terras:5,ordem:5,populacao:0,poder:10,riqueza:0,honra:10,espiritualidade:5}},
- {id:"garca",nome:"Garça",tier:"maior",mote:"“Há uma técnica adequada para todas as coisas.”",familias:["Doji","Kakita","Asahina","Daidoji"],mods:{defesa:-5,influencia:15,terras:10,ordem:0,populacao:10,poder:-5,riqueza:10,honra:10,espiritualidade:-5}},
- {id:"dragao",nome:"Dragão",tier:"maior",mote:"“Encontre seu próprio caminho.”",familias:["Togashi","Mirumoto","Kitsuki","Tamori"],mods:{defesa:10,influencia:-10,terras:0,ordem:10,populacao:-10,poder:10,riqueza:5,honra:15,espiritualidade:10}},
- {id:"leao",nome:"Leão",tier:"maior",mote:"“Por meus ancestrais!”",familias:["Akodo","Matsu","Ikoma","Kitsu"],mods:{defesa:5,influencia:5,terras:0,ordem:5,populacao:5,poder:15,riqueza:-5,honra:10,espiritualidade:0}},
- {id:"fenix",nome:"Fênix",tier:"maior",mote:"“Domine os elementos e renasça.”",familias:["Shiba","Isawa","Asako","Agasha"],mods:{defesa:5,influencia:5,terras:5,ordem:5,populacao:0,poder:-10,riqueza:5,honra:10,espiritualidade:15}},
- {id:"escorpiao",nome:"Escorpião",tier:"maior",mote:"“Serei seu vilão, Hantei.”",familias:["Bayushi","Shosuro","Yogo"],mods:{defesa:5,influencia:15,terras:5,ordem:0,populacao:5,poder:10,riqueza:10,honra:-5,espiritualidade:-5}},
- {id:"unicornio",nome:"Unicórnio",tier:"maior",mote:"“Ninguém pode capturar o vento.”",familias:["Moto","Ide","Utaku","Shinjo","Iuchi"],mods:{defesa:-5,influencia:-5,terras:15,ordem:-5,populacao:10,poder:5,riqueza:15,honra:5,espiritualidade:5}},
- {id:"louva",nome:"Louva-a-Deus",tier:"maior",mote:"“O mar não perdoa os fracos.”",familias:["Yoritomo","Moshi","Kitsune","Tsuruchi"],mods:{defesa:5,influencia:5,terras:5,ordem:5,populacao:5,poder:0,riqueza:15,honra:0,espiritualidade:0}},
- {id:"texugo",nome:"Texugo",tier:"menor",mods:{defesa:10,influencia:-5,terras:-5,ordem:10,populacao:0,poder:5,riqueza:5,honra:5,espiritualidade:0}},
- {id:"gato",nome:"Gato",tier:"menor",mods:{defesa:5,influencia:10,terras:-5,ordem:5,populacao:0,poder:5,riqueza:5,honra:-5,espiritualidade:5}},
- {id:"centopeia",nome:"Centopeia",tier:"menor",mods:{defesa:0,influencia:5,terras:0,ordem:0,populacao:0,poder:5,riqueza:0,honra:5,espiritualidade:10}},
- {id:"libelula",nome:"Libélula",tier:"menor",mods:{defesa:5,influencia:5,terras:-5,ordem:5,populacao:-5,poder:5,riqueza:0,honra:10,espiritualidade:5}},
- {id:"falcao",nome:"Falcão",tier:"menor",mods:{defesa:5,influencia:5,terras:0,ordem:0,populacao:0,poder:5,riqueza:0,honra:0,espiritualidade:10}},
- {id:"raposa",nome:"Raposa",tier:"menor",mods:{defesa:5,influencia:5,terras:-5,ordem:0,populacao:-5,poder:0,riqueza:10,honra:5,espiritualidade:10}},
- {id:"lebre",nome:"Lebre",tier:"menor",mods:{defesa:0,influencia:0,terras:0,ordem:0,populacao:0,poder:10,riqueza:5,honra:10,espiritualidade:0}},
- {id:"pardal",nome:"Pardal",tier:"menor",mods:{defesa:5,influencia:5,terras:0,ordem:0,populacao:5,poder:5,riqueza:-10,honra:10,espiritualidade:5}},
- {id:"tartaruga",nome:"Tartaruga",tier:"menor",mods:{defesa:5,influencia:0,terras:5,ordem:5,populacao:5,poder:5,riqueza:10,honra:-10,espiritualidade:0}},
- {id:"vespa",nome:"Vespa",tier:"menor",mods:{defesa:10,influencia:5,terras:0,ordem:0,populacao:-5,poder:10,riqueza:0,honra:5,espiritualidade:0}},
- {id:"imperial",nome:"Família Imperial",tier:"imperial",familias:["Miya","Seppun","Otomo"],mods:{defesa:0,influencia:0,terras:0,ordem:0,populacao:0,poder:0,riqueza:0,honra:0,espiritualidade:0}}
+ {id:"caranguejo",nome:"Caranguejo",tier:"maior",mote:"“Coragem. Dever. Sacrifício.”",familias:["Hida","Hiruma","Kaiu","Kuni","Yasuki"],mods:{dominio:20,influencia:-10,autoridade:15,riqueza:0,vazio:15}},
+ {id:"garca",nome:"Garça",tier:"maior",mote:"“Há uma técnica adequada para todas as coisas.”",familias:["Doji","Kakita","Asahina","Daidoji"],mods:{dominio:15,influencia:15,autoridade:-5,riqueza:10,vazio:5}},
+ {id:"dragao",nome:"Dragão",tier:"maior",mote:"“Encontre seu próprio caminho.”",familias:["Togashi","Mirumoto","Kitsuki","Tamori"],mods:{dominio:0,influencia:-10,autoridade:20,riqueza:5,vazio:25}},
+ {id:"leao",nome:"Leão",tier:"maior",mote:"“Por meus ancestrais!”",familias:["Akodo","Matsu","Ikoma","Kitsu"],mods:{dominio:10,influencia:5,autoridade:20,riqueza:-5,vazio:10}},
+ {id:"fenix",nome:"Fênix",tier:"maior",mote:"“Domine os elementos e renasça.”",familias:["Shiba","Isawa","Asako","Agasha"],mods:{dominio:10,influencia:5,autoridade:-5,riqueza:5,vazio:25}},
+ {id:"escorpiao",nome:"Escorpião",tier:"maior",mote:"“Serei seu vilão, Hantei.”",familias:["Bayushi","Shosuro","Yogo"],mods:{dominio:15,influencia:15,autoridade:10,riqueza:10,vazio:-10}},
+ {id:"unicornio",nome:"Unicórnio",tier:"maior",mote:"“Ninguém pode capturar o vento.”",familias:["Moto","Ide","Utaku","Shinjo","Iuchi"],mods:{dominio:20,influencia:-5,autoridade:0,riqueza:15,vazio:10}},
+ {id:"louva",nome:"Louva-a-Deus",tier:"maior",mote:"“O mar não perdoa os fracos.”",familias:["Yoritomo","Moshi","Kitsune","Tsuruchi"],mods:{dominio:15,influencia:5,autoridade:5,riqueza:15,vazio:0}},
+ {id:"texugo",nome:"Texugo",tier:"menor",mods:{dominio:5,influencia:-5,autoridade:15,riqueza:5,vazio:5}},
+ {id:"gato",nome:"Gato",tier:"menor",mods:{dominio:0,influencia:10,autoridade:10,riqueza:5,vazio:0}},
+ {id:"centopeia",nome:"Centopeia",tier:"menor",mods:{dominio:0,influencia:5,autoridade:5,riqueza:0,vazio:15}},
+ {id:"libelula",nome:"Libélula",tier:"menor",mods:{dominio:-5,influencia:5,autoridade:10,riqueza:0,vazio:15}},
+ {id:"falcao",nome:"Falcão",tier:"menor",mods:{dominio:5,influencia:5,autoridade:5,riqueza:0,vazio:10}},
+ {id:"raposa",nome:"Raposa",tier:"menor",mods:{dominio:-5,influencia:5,autoridade:0,riqueza:10,vazio:15}},
+ {id:"lebre",nome:"Lebre",tier:"menor",mods:{dominio:0,influencia:0,autoridade:10,riqueza:5,vazio:10}},
+ {id:"pardal",nome:"Pardal",tier:"menor",mods:{dominio:10,influencia:5,autoridade:5,riqueza:-10,vazio:15}},
+ {id:"tartaruga",nome:"Tartaruga",tier:"menor",mods:{dominio:15,influencia:0,autoridade:10,riqueza:10,vazio:-10}},
+ {id:"vespa",nome:"Vespa",tier:"menor",mods:{dominio:5,influencia:5,autoridade:10,riqueza:0,vazio:5}},
+ {id:"imperial",nome:"Família Imperial",tier:"imperial",familias:["Miya","Seppun","Otomo"],mods:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0}}
 ];
 const TIER_LABEL={maior:"Grande Clã",menor:"Clã Menor",imperial:"Família Imperial"};
 
 /* Eventos históricos: id, nome, mods (colunas Defesa..Espiritualidade da planilha) */
 const EVENTOS=[
- {id:"fundacao_decreto",nome:"Fundação por Decreto Imperial",mods:{influencia:10,honra:10}},
- {id:"recompensa_militar",nome:"Recompensa por Serviço Militar",mods:{poder:10,honra:10}},
- {id:"terras_conflito",nome:"Terras Concedidas após Conflito",mods:{defesa:5,terras:10,ordem:-5,poder:-5,riqueza:10,honra:5,espiritualidade:-3},
+ {id:"fundacao_decreto",nome:"Fundação por Decreto Imperial",mods:{influencia:10,vazio:10}},
+ {id:"recompensa_militar",nome:"Recompensa por Serviço Militar",mods:{autoridade:10,vazio:10}},
+ {id:"terras_conflito",nome:"Terras Concedidas após Conflito",mods:{dominio:15,autoridade:-10,riqueza:10,vazio:2},
   concede:{tipo:"terreno",terreno:"planicies",c1:"campo_batalha",nomeSugerido:"Campos de Kessen-no-Hara"}},
- {id:"alianca_casamento",nome:"Aliança de Casamento Estratégico",mods:{influencia:10,riqueza:5,honra:5}},
- {id:"ramo_elevado",nome:"Ramo Elevado de Grande Família",mods:{influencia:10,defesa:3,terras:10,ordem:-5,honra:10},
+ {id:"alianca_casamento",nome:"Aliança de Casamento Estratégico",mods:{influencia:10,riqueza:5,vazio:5}},
+ {id:"ramo_elevado",nome:"Ramo Elevado de Grande Família",mods:{dominio:13,influencia:10,autoridade:-5,vazio:10},
   concede:{tipo:"terreno",terreno:"planicies",c1:"vila",nomeSugerido:"Vila-Dote da Grande Casa"}},
- {id:"ascensao_heroi",nome:"Ascensão de Herói Local",mods:{populacao:5,poder:10,honra:5}},
- {id:"fundacao_religiosa",nome:"Fundação Religiosa ou Profética",mods:{ordem:5,honra:5,espiritualidade:10}},
- {id:"funcao_administrativa",nome:"Criação para Função Administrativa",mods:{influencia:5,ordem:10,riqueza:5}},
- {id:"adocao_familia",nome:"Adoção da Família",mods:{influencia:5,ordem:5,poder:5,honra:5}},
- {id:"usurpacao_terras",nome:"Usurpação ou Apropriação de Terras",mods:{defesa:5,influencia:-10,terras:5,ordem:-5,poder:5,honra:-10}},
- {id:"vitoria_torneio",nome:"Vitória em Torneio",mods:{influencia:5,honra:10}},
- {id:"refem_prestigio",nome:"Refém de Prestígio",mods:{influencia:5,riqueza:-5,honra:5}},
- {id:"rivalidade_juramentada",nome:"Rivalidade Juramentada",mods:{ordem:-5,poder:5,honra:-5}},
- {id:"acordo_comercial",nome:"Acordo Comercial Duradouro",mods:{influencia:5,terras:15,riqueza:10,honra:-3},
+ {id:"ascensao_heroi",nome:"Ascensão de Herói Local",mods:{dominio:5,autoridade:10,vazio:5}},
+ {id:"fundacao_religiosa",nome:"Fundação Religiosa ou Profética",mods:{autoridade:5,vazio:15}},
+ {id:"funcao_administrativa",nome:"Criação para Função Administrativa",mods:{influencia:5,autoridade:10,riqueza:5}},
+ {id:"adocao_familia",nome:"Adoção da Família",mods:{influencia:5,autoridade:10,vazio:5}},
+ {id:"usurpacao_terras",nome:"Usurpação ou Apropriação de Terras",mods:{dominio:10,influencia:-10,vazio:-10}},
+ {id:"vitoria_torneio",nome:"Vitória em Torneio",mods:{influencia:5,vazio:10}},
+ {id:"refem_prestigio",nome:"Refém de Prestígio",mods:{influencia:5,riqueza:-5,vazio:5}},
+ {id:"rivalidade_juramentada",nome:"Rivalidade Juramentada",mods:{vazio:-5}},
+ {id:"acordo_comercial",nome:"Acordo Comercial Duradouro",mods:{dominio:15,influencia:5,riqueza:10,vazio:-3},
   concede:{tipo:"terreno",terreno:"costa",c1:"porto",nomeSugerido:"Porto de Shiro-Minato"}},
- {id:"artesao_renomado",nome:"Ascensão de um Artesão Renomado",mods:{populacao:5,riqueza:10,honra:5}},
- {id:"escola_artistica",nome:"Escola Artística ou Estilo Famoso",mods:{influencia:10,riqueza:5,honra:5}},
- {id:"construcao_fortaleza",nome:"Construção de Fortaleza",mods:{defesa:21,influencia:5,ordem:10,riqueza:-10,honra:5,espiritualidade:-5},
+ {id:"artesao_renomado",nome:"Ascensão de um Artesão Renomado",mods:{dominio:5,riqueza:10,vazio:5}},
+ {id:"escola_artistica",nome:"Escola Artística ou Estilo Famoso",mods:{influencia:10,riqueza:5,vazio:5}},
+ {id:"construcao_fortaleza",nome:"Construção de Fortaleza",mods:{dominio:21,influencia:5,autoridade:10,riqueza:-10},
   concede:{tipo:"terreno",terreno:"colinas",c1:"shiro",c2:"area_impura",nomeSugerido:"Shiro da Bruma Esquecida"}},
- {id:"desastre_natural",nome:"Desastre Natural",mods:{terras:-5,populacao:-10,riqueza:-10,espiritualidade:5}},
- {id:"fome_prolongada",nome:"Fome Prolongada",mods:{influencia:-5,ordem:-5,populacao:-10}},
- {id:"era_prosperidade",nome:"Era de Prosperidade",mods:{ordem:-5,populacao:10,riqueza:15}},
- {id:"magistrado_renome",nome:"Magistrado de Renome",mods:{influencia:10,ordem:10,honra:10}},
- {id:"corrupcao_escandalo",nome:"Corrupção ou Escândalo",mods:{influencia:-10,honra:-15,espiritualidade:-5}},
- {id:"gloria_batalha",nome:"Glória em Batalha",mods:{poder:10,honra:5}},
- {id:"derrota_marcante",nome:"Derrota Marcante",mods:{poder:-10,honra:-5}},
- {id:"contato_terras_sombrias",nome:"Contato com as Terras Sombrias",mods:{poder:5,honra:-5,espiritualidade:-10}},
- {id:"bencao_kami",nome:"Bênção dos Kami",mods:{espiritualidade:10}},
- {id:"templo_importante",nome:"Templo ou Santuário Importante",mods:{defesa:3,terras:13,ordem:-3,honra:5,espiritualidade:5},
+ {id:"desastre_natural",nome:"Desastre Natural",mods:{dominio:-15,riqueza:-10,vazio:5}},
+ {id:"fome_prolongada",nome:"Fome Prolongada",mods:{dominio:-10,influencia:-5,autoridade:-5}},
+ {id:"era_prosperidade",nome:"Era de Prosperidade",mods:{dominio:10,autoridade:-5,riqueza:15}},
+ {id:"magistrado_renome",nome:"Magistrado de Renome",mods:{influencia:10,autoridade:10,vazio:10}},
+ {id:"corrupcao_escandalo",nome:"Corrupção ou Escândalo",mods:{influencia:-10,vazio:-20}},
+ {id:"gloria_batalha",nome:"Glória em Batalha",mods:{autoridade:10,vazio:5}},
+ {id:"derrota_marcante",nome:"Derrota Marcante",mods:{autoridade:-10,vazio:-5}},
+ {id:"contato_terras_sombrias",nome:"Contato com as Terras Sombrias",mods:{autoridade:5,vazio:-15}},
+ {id:"bencao_kami",nome:"Bênção dos Kami",mods:{vazio:10}},
+ {id:"templo_importante",nome:"Templo ou Santuário Importante",mods:{dominio:16,autoridade:-3,vazio:10},
   concede:{tipo:"terreno",terreno:"planicies",c1:"templo_santuario",c2:"peregrinacao",nomeSugerido:"Santuário do Véu Sereno"}},
- {id:"intervencao_senhor",nome:"Intervenção de um Grande Senhor",mods:{influencia:-5,ordem:5,poder:-5,honra:-5}},
- {id:"guerra_prolongada",nome:"Guerra Prolongada",mods:{influencia:-5,terras:-5,ordem:-10,populacao:-10,poder:5,riqueza:-5}},
- {id:"segredo_guardado",nome:"Segredo Guardado",mods:{influencia:10,poder:5,riqueza:5,honra:5,espiritualidade:5}},
- {id:"reforma_interna",nome:"Reforma Interna Bem-Sucedida",mods:{influencia:5,ordem:10,populacao:5,honra:5}},
- {id:"revolta_camponesa",nome:"Revolta Camponesa",mods:{ordem:-10,populacao:-10,poder:5,riqueza:-5,honra:-5}},
- {id:"migracao_massa",nome:"Migração em Massa para as Terras",mods:{terras:-10,ordem:-10,populacao:15,riqueza:5}},
- {id:"recurso_valioso",nome:"Descoberta de Recurso Valioso",mods:{influencia:5,defesa:7,terras:16,populacao:5,riqueza:15,ordem:-5},
+ {id:"intervencao_senhor",nome:"Intervenção de um Grande Senhor",mods:{influencia:-5,vazio:-5}},
+ {id:"guerra_prolongada",nome:"Guerra Prolongada",mods:{dominio:-15,influencia:-5,autoridade:-5,riqueza:-5}},
+ {id:"segredo_guardado",nome:"Segredo Guardado",mods:{influencia:10,autoridade:5,riqueza:5,vazio:10}},
+ {id:"reforma_interna",nome:"Reforma Interna Bem-Sucedida",mods:{dominio:5,influencia:5,autoridade:10,vazio:5}},
+ {id:"revolta_camponesa",nome:"Revolta Camponesa",mods:{dominio:-10,autoridade:-5,riqueza:-5,vazio:-5}},
+ {id:"migracao_massa",nome:"Migração em Massa para as Terras",mods:{dominio:5,autoridade:-10,riqueza:5}},
+ {id:"recurso_valioso",nome:"Descoberta de Recurso Valioso",mods:{dominio:28,influencia:5,autoridade:-5,riqueza:15},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"minas",nomeSugerido:"Veio de Kaiu-zan"}},
- {id:"isolamento_deliberado",nome:"Isolamento Deliberado",mods:{defesa:5,influencia:-10,ordem:5,populacao:-5,riqueza:-10,honra:-5,espiritualidade:5}},
- {id:"tradicao_marcial",nome:"Tradição Marcial Distinta",mods:{defesa:5,poder:10,honra:5}},
- {id:"decadencia_administrativa",nome:"Decadência Administrativa",mods:{influencia:-5,ordem:-10,populacao:-5,riqueza:-10,honra:-5}},
- {id:"figura_espiritual",nome:"Ascensão de Figura Espiritual",mods:{influencia:10,defesa:7,terras:17,ordem:5,riqueza:-5,honra:10,espiritualidade:15},
+ {id:"isolamento_deliberado",nome:"Isolamento Deliberado",mods:{influencia:-10,autoridade:5,riqueza:-10}},
+ {id:"tradicao_marcial",nome:"Tradição Marcial Distinta",mods:{dominio:5,autoridade:10,vazio:5}},
+ {id:"decadencia_administrativa",nome:"Decadência Administrativa",mods:{dominio:-5,influencia:-5,autoridade:-10,riqueza:-10,vazio:-5}},
+ {id:"figura_espiritual",nome:"Ascensão de Figura Espiritual",mods:{dominio:24,influencia:10,autoridade:5,riqueza:-5,vazio:25},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"templo_santuario",c2:"peregrinacao",nomeSugerido:"Retiro do Iluminado"}},
- {id:"perda_territorio",nome:"Perda de Território",mods:{defesa:-5,terras:-10,ordem:-5,populacao:-5,poder:-5,riqueza:-5,honra:-5}},
- {id:"reconstrucao_pos_guerra",nome:"Reconstrução Pós-Guerra",mods:{defesa:5,terras:-5,ordem:-5,populacao:5,honra:5}},
- {id:"heranca_castelo_amaldicoado",nome:"Herança de um Castelo Amaldiçoado",mods:{defesa:23,ordem:-3,honra:8,espiritualidade:-8},
+ {id:"perda_territorio",nome:"Perda de Território",mods:{dominio:-20,autoridade:-10,riqueza:-5,vazio:-5}},
+ {id:"reconstrucao_pos_guerra",nome:"Reconstrução Pós-Guerra",mods:{dominio:5,autoridade:-5,vazio:5}},
+ {id:"heranca_castelo_amaldicoado",nome:"Herança de um Castelo Amaldiçoado",mods:{dominio:23,autoridade:-3},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"shiro",c2:"area_impura",nomeSugerido:"Kage no Shiro, o Castelo da Sombra"}},
- {id:"ruinas_ancestrais_descobertas",nome:"Descoberta de Ruínas Ancestrais",mods:{terras:7,riqueza:-3,honra:3,espiritualidade:8},
+ {id:"ruinas_ancestrais_descobertas",nome:"Descoberta de Ruínas Ancestrais",mods:{dominio:7,riqueza:-3,vazio:11},
   concede:{tipo:"terreno",terreno:"floresta_densa",c1:"ruinas_antigas",nomeSugerido:"Ruínas de Tsuki-no-Mura"}},
- {id:"porto_herdado_afogados",nome:"Porto Herdado de Aliados Afogados",mods:{terras:15,riqueza:12,honra:5,espiritualidade:-5},
+ {id:"porto_herdado_afogados",nome:"Porto Herdado de Aliados Afogados",mods:{dominio:15,riqueza:12},
   concede:{tipo:"terreno",terreno:"costa",c1:"porto",nomeSugerido:"Porto de Nami-Nageki"}},
- {id:"fortaleza_cedida_cla",nome:"Fortaleza Cedida pelo Clã",mods:{defesa:27,terras:7,ordem:10,poder:5,riqueza:-15,honra:10},
+ {id:"fortaleza_cedida_cla",nome:"Fortaleza Cedida pelo Clã",mods:{dominio:34,autoridade:15,riqueza:-15,vazio:10},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"kyuden",nomeSugerido:"Kyuden da Linhagem"}}
 ];
 
@@ -463,32 +481,40 @@ const EVENTO_DESC={
  fortaleza_cedida_cla:"Em reconhecimento por serviços prestados, o próprio clã cedeu à família uma grande fortaleza ancestral, um Kyuden erguido para durar séculos. É um símbolo imenso de confiança e prestígio — mas também uma coleira: o clã espera que a família responda a qualquer chamado às armas, sem hesitação e sem exceção, custe o que custar. Concede: um Kyuden (sobre Montanhas)."
 };
 
-/* Subtítulo poético + descrição de cada atributo (do L5R RPG.docx) */
+/* Subtítulo poético + descrição de cada atributo — agora um por Anel, cada um explicando
+   tanto o que o atributo mede na família quanto o que o Anel representa na filosofia de L5R. */
 const ATTR_FLAVOR={
- defesa:{sub:"A solidez das muralhas e a firmeza daqueles que as guardam.",desc:"Reflete a capacidade da família de resistir a ameaças, sejam exércitos inimigos ou perigos vindos das sombras além das fronteiras."},
- influencia:{sub:"A extensão da voz da família nos salões do poder.",desc:"Mede sua presença na corte, seus laços com outras casas e sua habilidade de moldar decisões sem recorrer à espada."},
- terras:{sub:"O solo sobre o qual repousa o dever da família.",desc:"Representa a extensão, a riqueza e a importância estratégica de seus domínios."},
- ordem:{sub:"A harmonia — ou sua ausência — dentro das fronteiras da família.",desc:"Indica o grau de controle, disciplina e estabilidade em suas terras."},
- populacao:{sub:"As vidas confiadas ao cuidado da família.",desc:"Reflete o número e a vitalidade daqueles que vivem sob seu estandarte — camponeses, artesãos e servos."},
- poder:{sub:"A força que a família pode convocar quando o aço fala mais alto que as palavras.",desc:"Inclui seus exércitos, seus comandantes e sua prontidão para a guerra."},
- riqueza:{sub:"Os recursos que fluem através da família como um rio constante.",desc:"Mede sua prosperidade material: colheitas, comércio e reservas."},
- honra:{sub:"O peso invisível do nome da família.",desc:"Expressa sua fidelidade ao Bushidō, sua retidão e a confiança que inspira nos outros. Não pode ser comprada — apenas conquistada, ou perdida."},
- espiritualidade:{sub:"A sintonia da família com os Kami e as Fortunas.",desc:"Reflete sua pureza, sua devoção e o equilíbrio entre o mundo material e o espiritual."}
+ dominio:{sub:"O Anel da Terra: resistência, permanência, o chão que não cede.",desc:"Une as muralhas que protegem a família, a extensão e a importância estratégica de suas posses, e a gente que vive sob seu estandarte — camponeses, artesãos, servos. É a base física e material sobre a qual tudo mais se apoia. Domínio esvaziado ou estufado demais pesa contra a família."},
+ riqueza:{sub:"O Anel da Água: fluidez, adaptação, o caminho que sempre encontra uma saída.",desc:"Mede a prosperidade material da família — colheitas, comércio, reservas — e sua capacidade de se adaptar às circunstâncias, escoando recursos para onde são mais necessários."},
+ influencia:{sub:"O Anel do Ar: percepção, presença, a voz que chega antes da espada.",desc:"Mede a extensão da voz da família nos salões do poder — sua presença na corte, seus laços com outras casas, sua habilidade de moldar decisões sem recorrer à força."},
+ autoridade:{sub:"O Anel do Fogo: paixão, ação, a vontade imposta sem hesitar.",desc:"Une a força que a família pode convocar quando o aço fala mais alto que as palavras — exércitos, comandantes, prontidão para a guerra — ao controle e à disciplina que mantêm tudo isso sob uma só vontade."},
+ vazio:{sub:"O Anel do Vazio: aquilo que une e transcende os outros quatro.",desc:"Expressa a fidelidade da família ao Bushidō e sua sintonia com os Kami e as Fortunas — retidão e devoção como uma só coisa. Não pode ser comprado — apenas conquistado, cultivado, ou perdido."}
 };
 
-/* Cada atributo remete a um dos Cinco Anéis, como nos livros de L5R — usado para escolher o ícone na ficha. */
-const ATTR_RING={defesa:"terra",terras:"terra",populacao:"terra",riqueza:"agua",influencia:"ar",ordem:"ar",poder:"fogo",honra:"vazio",espiritualidade:"vazio"};
+/* Agora cada atributo É um dos Cinco Anéis — mapeamento 1:1, sem sobra. */
+const ATTR_RING={dominio:"terra",riqueza:"agua",influencia:"ar",autoridade:"fogo",vazio:"vazio"};
 
 /* Curva de atributo bruto -> valor suavizado (mesma tabela de X para Honra/Espiritualidade/Ordem/População) */
 const CURVA_X=[-101,-91,-81,-71,-61,-51,-41,-31,-21,-11,-1,0,1,11,21,31,41,51,61,71,81,91,101,111,121,131,141,151,161,171,181,191,201];
-const HONRA_Y=[-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,-3,-2,1,3,5,7,10,15,20,30,35,40,45,50,55,60,65,70,75,80];
-const ESPIRIT_Y=[-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,-3,-2,1,3,5,7,10,15,20,30,35,40,45,50,55,60,65,70,75,80];
-const EQUILIBRIO_Y=[15,14,13,12,11,10,9,8,7,6,5,4,3,2,1,0,-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11,-12,-13,-14,-15,-16,-17];
-const ORDEM_Y=[-75,-70,-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-10,-5,-2,-1,0,1,2,5,10,15,20,25,30,35,40,45,50,55,60,65,70];
-const POPULACAO_Y=[-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,1,3,1,0,-5,-10,-15,-20,-25,-30,-35,-40,-45,-50,-55,-60,-65,-70,-75];
+/* Honra e Espiritualidade tinham exatamente a mesma curva antes da fusão — agora é o Vazio. */
+const VAZIO_Y=[-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,-3,-2,1,3,5,7,10,15,20,30,35,40,45,50,55,60,65,70,75,80];
+/* Equilíbrio Espiritual — Honra e Espiritualidade são as duas do anel do Vazio.
+   O bônus de Raise nasce da média das duas, mas encolhe (e pode virar penalidade)
+   quanto maior o desnível entre elas: uma família muito honrada mas espiritualmente
+   negligente (ou muito pia mas desonrada) está desequilibrada de verdade. */
+const EQUILIBRIO_X=[0,1,21,41,61,81];
+const EQUILIBRIO_Y=[-2,-1,0,1,2,3];
+/* Favor das Fortunas — mesmo raciocínio, agora a partir do valor atual de Fortunas
+   (não mais um corte fixo em 50): fortunas ruins viram desfavor de verdade. */
+const FAVOR_FORTUNAS_X=[-99999,0,15,30,50];
+const FAVOR_FORTUNAS_Y=[-1,0,1,2,3];
+const AUTORIDADE_Y=[-75,-70,-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-10,-5,-2,-1,0,1,2,5,10,15,20,25,30,35,40,45,50,55,60,65,70];
+const DOMINIO_Y=[-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,1,3,1,0,-5,-10,-15,-20,-25,-30,-35,-40,-45,-50,-55,-60,-65,-70,-75];
 const AUGURIO_Y=["","","","","","","","","","","","","","","","Sussurros","Sussurros","Sensações","Sensações","Fragmentos","Fragmentos","Enigmas","Visão","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação"];
-const HONRA_RANK_X=[0,20,30,40,50,60,70];
-const HONRA_RANK_Y=["Rank 0","Rank 1","Rank 2","Rank 3","Rank 4","Rank 5","Rank 6"];
+const DOJO_X=[0,20,30,40,50,60,70];
+/* Quantos samurai o dojo forma de fato a cada estação, a partir do Vazio da família
+   (retidão + devoção) — uma cabeça de contagem, não mais um "Rank" abstrato. */
+const DOJO_ALUNOS_Y=[0,1,2,3,4,5,6];
 
 function curvaLookup(xs,ys,x){let idx=-1;for(let i=0;i<xs.length;i++){if(xs[i]<=x)idx=i;else break;}return idx>=0?ys[idx]:ys[0];}
 
@@ -545,22 +571,22 @@ const PERSONAGEM_PAPEL=[
  {nome:"Daimyō de cidade ou família vassala",custo:20,efeito:"fortuna",valor:2},
  {nome:"Governante regional",custo:30,efeito:"fortuna",valor:3},
  {nome:"Figura importante dentro do clã",custo:40,efeito:"fortuna",valor:5},
- {nome:"Bushi Jovem",custo:5,efeito:"defesa",valor:1},
- {nome:"Bushi Experiente",custo:10,efeito:"defesa",valor:3},
- {nome:"Bushi Veterano",custo:20,efeito:"defesa",valor:5},
- {nome:"Cortesão Jovem",custo:5,efeito:"ordem",valor:1},
- {nome:"Cortesão Experiente",custo:10,efeito:"ordem",valor:3},
- {nome:"Cortesão Veterano",custo:20,efeito:"ordem",valor:5},
- {nome:"Shugenja Jovem",custo:15,efeito:"espiritualidade",valor:1},
- {nome:"Shugenja Experiente",custo:25,efeito:"espiritualidade",valor:3},
- {nome:"Shugenja Veterano",custo:40,efeito:"espiritualidade",valor:5},
- {nome:"Monge Jovem",custo:10,efeito:"espiritualidade",valor:1},
- {nome:"Monge Experiente",custo:15,efeito:"espiritualidade",valor:3},
- {nome:"Monge Veterano",custo:25,efeito:"espiritualidade",valor:5}
+ {nome:"Bushi Jovem",custo:5,efeito:"dominio",valor:1},
+ {nome:"Bushi Experiente",custo:10,efeito:"dominio",valor:3},
+ {nome:"Bushi Veterano",custo:20,efeito:"dominio",valor:5},
+ {nome:"Cortesão Jovem",custo:5,efeito:"autoridade",valor:1},
+ {nome:"Cortesão Experiente",custo:10,efeito:"autoridade",valor:3},
+ {nome:"Cortesão Veterano",custo:20,efeito:"autoridade",valor:5},
+ {nome:"Shugenja Jovem",custo:15,efeito:"vazio",valor:1},
+ {nome:"Shugenja Experiente",custo:25,efeito:"vazio",valor:3},
+ {nome:"Shugenja Veterano",custo:40,efeito:"vazio",valor:5},
+ {nome:"Monge Jovem",custo:10,efeito:"vazio",valor:1},
+ {nome:"Monge Experiente",custo:15,efeito:"vazio",valor:3},
+ {nome:"Monge Veterano",custo:25,efeito:"vazio",valor:5}
 ];
 const ESTADO_PERSONAGEM=["Vivo","Ferido","Refém","Morto","Ausente"];
 
-/* Tropa e Liderança (Poder) */
+/* Tropa e Liderança (Autoridade) */
 const TROPA_TIPOS={
  camponesa:{nome:"Camponesa",forca:35,disciplina:20,custo:10},
  ashigaru:{nome:"Ashigaru",forca:55,disciplina:30,custo:15},
@@ -578,36 +604,40 @@ const TROPA_EQUIP=[
  {id:"armaduras",nome:"Armaduras Aprimoradas",custo:20}
 ];
 const TROPA_ESTADO={
- patrulha:{nome:"Patrulha",ordem:3,populacao:0,honra:1,fortuna:-1},
- mobilizado:{nome:"Mobilizado",ordem:-2,populacao:-2,honra:2,fortuna:-2},
- refem:{nome:"Refém",ordem:-2,populacao:-2,honra:-3,fortuna:-2},
- ferido:{nome:"Ferido",ordem:-2,populacao:-2,honra:-2,fortuna:-3},
- derrotado:{nome:"Derrotado",ordem:0,populacao:-2,honra:-5,fortuna:0}
+ patrulha:{nome:"Patrulha",autoridade:3,dominio:0,vazio:1,fortuna:-1},
+ mobilizado:{nome:"Mobilizado",autoridade:-2,dominio:-2,vazio:2,fortuna:-2},
+ refem:{nome:"Refém",autoridade:-2,dominio:-2,vazio:-3,fortuna:-2},
+ ferido:{nome:"Ferido",autoridade:-2,dominio:-2,vazio:-2,fortuna:-3},
+ derrotado:{nome:"Derrotado",autoridade:0,dominio:-2,vazio:-5,fortuna:0}
 };
 const MULT_TROPA={camponesa:1,ashigaru:2,samurai:3};
 
 /* Conversão de recursos: origem -> {destinos, taxa} */
 const CONVERSAO_REGRAS={
- defesa:{destinos:[],taxa:1},
- influencia:{destinos:["ordem"],taxa:1},
- terras:{destinos:["defesa"],taxa:1},
- ordem:{destinos:[],taxa:1},
- populacao:{destinos:["poder"],taxa:1},
- poder:{destinos:["influencia","ordem","populacao"],taxa:1},
- riqueza:{destinos:["defesa","influencia","terras","ordem","populacao","poder"],taxa:2},
- honra:{destinos:["riqueza","influencia"],taxa:2},
- espiritualidade:{destinos:[],taxa:1}
+ dominio:{destinos:["autoridade"],taxa:1},
+ autoridade:{destinos:["influencia","dominio"],taxa:1},
+ influencia:{destinos:["autoridade"],taxa:1},
+ riqueza:{destinos:["dominio","influencia","autoridade"],taxa:2},
+ vazio:{destinos:["riqueza","influencia"],taxa:2}
 };
 
 /* ============ ESTADO ============ */
 function uid(){return Math.random().toString(36).slice(2,8);}
 function esc(s){return(s||"").toString().replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
 function estadoInicial(){return{
-  nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",idade:"recente",sacrificioHonra:0,numDados:7,
-  base:{defesa:0,influencia:0,terras:0,ordem:0,populacao:0,poder:0,riqueza:0,honra:0,espiritualidade:0},
-  eventos:[],terrenos:[],personagens:[],tropas:[],conversoes:[],feed:[]
+  nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",idade:"recente",numDados:7,
+  base:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},
+  eventos:[],terrenos:[],personagens:[],tropas:[],conversoes:[],feed:[],
+  conquistas:[],estacaoIdx:0,anoEstacao:1,sacrificios:[]
 };}
+/* Estações de Rokugan — o teste de Fortunas roda a cada estação (Mestre decide quando
+   avançar). Cada estação favorece um par de atributos diferentes na hora do nudge,
+   pra combinar com o clima narrativo (primavera de plantio, verão de campanha militar,
+   outono de colheita/comércio, inverno de corte fechada e espiritualidade). */
+const ESTACOES=["Primavera","Verão","Outono","Inverno"];
+const ESTACAO_FOCO={Primavera:["dominio","riqueza"],"Verão":["autoridade"],Outono:["riqueza","dominio"],Inverno:["vazio"]};
 function d10(){return 1+Math.floor(Math.random()*10);}
+function pickRandom(arr){return arr[Math.floor(Math.random()*arr.length)];}
 function rollAllAttrs(){
   if(bloqueadoLeitura())return;
   const n=Math.max(1,Math.min(15,parseInt(S.numDados)||7));
@@ -624,6 +654,29 @@ function salvarLocal(){try{localStorage.setItem("l5r_familia_v1",JSON.stringify(
 function salvar(){salvarLocal();agendarPush();}
 function carregar(){try{const r=localStorage.getItem("l5r_familia_v1");return r?JSON.parse(r):null;}catch(e){return null;}}
 let S=carregar()||estadoInicial();
+if(!S.conquistas)S.conquistas=[];
+if(S.estacaoIdx===undefined)S.estacaoIdx=0;
+if(S.anoEstacao===undefined)S.anoEstacao=1;
+if(!S.sacrificios)S.sacrificios=[];
+if(S.sacrificioHonra){S.sacrificios.push({id:uid(),tipo:"progresso",quem:"(valor antigo, migrado automaticamente)",valor:S.sacrificioHonra,quando:"",attrGanho:"",attrValor:0});delete S.sacrificioHonra;}
+/* Migração: famílias salvas antes da fusão pros 5 atributos (5 anéis) tinham
+   defesa/terras/ordem/populacao/poder/honra/espiritualidade separados. Soma cada
+   grupo no atributo novo correspondente e remapeia qualquer referência salva
+   (sacrifícios, conquistas) pro id novo. Roda uma vez só, é seguro rodar de novo. */
+const ATTR_MIGRA={defesa:"dominio",terras:"dominio",populacao:"dominio",ordem:"autoridade",poder:"autoridade",honra:"vazio",espiritualidade:"vazio"};
+if(S.base&&(S.base.defesa!==undefined||S.base.terras!==undefined||S.base.ordem!==undefined||S.base.populacao!==undefined||S.base.poder!==undefined||S.base.honra!==undefined||S.base.espiritualidade!==undefined)){
+  const b=S.base;
+  S.base={
+    dominio:(Number(b.defesa)||0)+(Number(b.terras)||0)+(Number(b.populacao)||0)+(Number(b.dominio)||0),
+    influencia:Number(b.influencia)||0,
+    autoridade:(Number(b.ordem)||0)+(Number(b.poder)||0)+(Number(b.autoridade)||0),
+    riqueza:Number(b.riqueza)||0,
+    vazio:(Number(b.honra)||0)+(Number(b.espiritualidade)||0)+(Number(b.vazio)||0)
+  };
+  feedPush("A família se adaptou ao novo sistema de atributos (5 anéis) — os valores antigos foram somados nos atributos correspondentes.");
+}
+(S.sacrificios||[]).forEach(s=>{if(s.attrGanho&&ATTR_MIGRA[s.attrGanho])s.attrGanho=ATTR_MIGRA[s.attrGanho];});
+(S.conquistas||[]).forEach(c=>{(c.itens||[]).forEach(it=>{if(it.attr&&ATTR_MIGRA[it.attr])it.attr=ATTR_MIGRA[it.attr];});});
 let papel="mestre";
 /* estado só de tela (não salva): se a lista de clãs/eventos aparece cheia ou só o que já foi escolhido */
 let verTodosClas=!S.cla;
@@ -633,6 +686,7 @@ let verTodosEventos=S.eventos.length<maxEventos();
 function claAtual(){return CLAS.find(c=>c.id===S.cla);}
 function claMod(attr){const c=claAtual();return c?(c.mods[attr]||0):0;}
 function eventosMod(attr){let s=0;S.eventos.forEach(id=>{const e=EVENTOS.find(x=>x.id===id);if(e)s+=(e.mods[attr]||0);});return s;}
+function conquistasMod(attr){let s=0;(S.conquistas||[]).forEach(c=>{(c.itens||[]).forEach(it=>{if(it.attr===attr)s+=(Number(it.delta)||0);});});return s;}
 function personagemMod(attr){let s=0;S.personagens.forEach(p=>{const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito===attr)s+=papel.valor;});return s;}
 function fortunaPersonagem(){let s=0;S.personagens.forEach(p=>{const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito==="fortuna")s+=papel.valor;});return s;}
 function personagemCusto(cat){const p=PERSONAGEM_PAPEL.find(x=>x.nome===cat);return p?p.custo:0;}
@@ -668,34 +722,46 @@ function terrenoLinhaCalc(row){
 }
 function terrenosTotais(){let cd=0,ct=0,f=0;S.terrenos.forEach(r=>{const x=terrenoLinhaCalc(r);cd+=x.custoDefesa;ct+=x.custoTerras;f+=x.fortuna;});return{custoDefesa:cd,custoTerras:ct,fortuna:f};}
 
+function honraSacrificadaTotal(){return(S.sacrificios||[]).reduce((s,x)=>s+(Number(x.valor)||0),0);}
+function sacrificioProgressoMod(attr){let s=0;(S.sacrificios||[]).forEach(x=>{if(x.tipo==="progresso"&&x.attrGanho===attr)s+=(Number(x.attrValor)||0);});return s;}
 function modificador(attr){
-  let m=personagemMod(attr)+conversaoGanho(attr)-conversaoGasto(attr);
-  if(attr==="ordem"||attr==="populacao"||attr==="honra")m+=tropaMod(attr);
-  if(attr==="honra")m+=mortosBonusHonra()-(Number(S.sacrificioHonra)||0)*5;
+  let m=personagemMod(attr)+conversaoGanho(attr)-conversaoGasto(attr)+sacrificioProgressoMod(attr);
+  if(attr==="autoridade"||attr==="dominio"||attr==="vazio")m+=tropaMod(attr);
+  if(attr==="vazio")m+=mortosBonusHonra()-honraSacrificadaTotal()*5;
   return m;
 }
-function totalAttr(attr){return(Number(S.base[attr])||0)+claMod(attr)+eventosMod(attr)+modificador(attr);}
+function totalAttr(attr){return(Number(S.base[attr])||0)+claMod(attr)+eventosMod(attr)+conquistasMod(attr)+modificador(attr);}
 function poolGasto(attr){
-  if(attr==="defesa")return terrenosTotais().custoDefesa;
-  if(attr==="terras")return terrenosTotais().custoTerras;
+  if(attr==="dominio")return terrenosTotais().custoDefesa+terrenosTotais().custoTerras;
   if(attr==="influencia")return personagensCustoTotal();
-  if(attr==="poder")return tropasCustoTotal();
+  if(attr==="autoridade")return tropasCustoTotal();
   return 0;
 }
 function poolRestante(attr){return totalAttr(attr)-poolGasto(attr);}
 
 function fortunas(){
   return fortunaTropa()+terrenosTotais().fortuna+
-    curvaLookup(CURVA_X,ORDEM_Y,totalAttr("ordem"))+
-    curvaLookup(CURVA_X,POPULACAO_Y,totalAttr("populacao"))+
-    curvaLookup(CURVA_X,ESPIRIT_Y,totalAttr("espiritualidade"))+
-    curvaLookup(CURVA_X,HONRA_Y,totalAttr("honra"))+
+    curvaLookup(CURVA_X,AUTORIDADE_Y,totalAttr("autoridade"))+
+    curvaLookup(CURVA_X,DOMINIO_Y,totalAttr("dominio"))+
+    curvaLookup(CURVA_X,VAZIO_Y,totalAttr("vazio"))+
     fortunaPersonagem();
 }
-function favorDasFortunas(){return fortunas()>=50;}
-function equilibrioEspiritual(){return curvaLookup(CURVA_X,EQUILIBRIO_Y,totalAttr("espiritualidade"));}
-function augurioKami(){return curvaLookup(CURVA_X,AUGURIO_Y,totalAttr("espiritualidade"));}
-function dojo(){const h=totalAttr("honra");if(h<20)return"—";return curvaLookup(HONRA_RANK_X,HONRA_RANK_Y,h);}
+function favorDasFortunas(){return curvaLookup(FAVOR_FORTUNAS_X,FAVOR_FORTUNAS_Y,fortunas());}
+function equilibrioEspiritual(){return curvaLookup(EQUILIBRIO_X,EQUILIBRIO_Y,totalAttr("vazio"));}
+function augurioKami(){return curvaLookup(CURVA_X,AUGURIO_Y,totalAttr("vazio"));}
+function dojo(){return curvaLookup(DOJO_X,DOJO_ALUNOS_Y,totalAttr("vazio"));}
+/* Quem hoje "puxa" o ensino do dojo: o samurai vivo de maior Rank da família — é a técnica dele
+   que define o teto do que o dojo consegue ensinar (Rank de personagem, não Insight bruto). */
+function personagemMaisGraduado(){
+  let melhor=null,melhorRank=0;
+  (S.personagens||[]).forEach(p=>{
+    if(p.estado==="Morto")return;
+    fichaBase(p);
+    const r=Math.min(rankPersonagem(p),5);
+    if(r>melhorRank){melhorRank=r;melhor=p;}
+  });
+  return{personagem:melhor,rank:melhorRank};
+}
 function maxEventos(){return IDADE[S.idade]||0;}
 function contarPapel(re){return S.personagens.filter(p=>re.test(p.categoria||"")).length;}
 function rosterCounts(){
@@ -760,7 +826,19 @@ function setIdade(v){if(bloqueadoLeitura())return;S.idade=v;
 function setNome(v){if(bloqueadoLeitura())return;S.nome=(v||"Família").trim()||"Família";salvar();render();}
 function setDaimyo(v){if(bloqueadoLeitura())return;S.daimyo=v;salvar();render();}
 function setRamoFamiliar(v){if(bloqueadoLeitura())return;S.ramoFamiliar=v;salvar();render();}
-function setSacrificio(v){if(bloqueadoLeitura())return;S.sacrificioHonra=Math.max(0,parseInt(v)||0);feedPush("Sacrifício da Honra ajustado para "+S.sacrificioHonra+".");salvar();render();}
+/* ============ SACRIFÍCIOS DE HONRA ============
+   Dois usos bem diferentes pra "gastar" a Honra da família, cada um registrado com
+   quem usou e quando (não é mais um número solto):
+   - "rolamento": um jogador queimou Honra da família por um bônus/re-rolagem durante
+     a aventura — fica registrado quem e quando, sem dar nada em troca aqui na ficha.
+   - "progresso": a família fez algo desonroso pra avançar mais rápido — perde Honra
+     e ganha pontos num atributo escolhido, também registrado. */
+function addSacrificio(tipo){if(bloqueadoLeitura())return;
+  S.sacrificios.push({id:uid(),tipo:tipo||"rolamento",quem:"",valor:1,quando:new Date().toISOString().slice(0,10),attrGanho:"riqueza",attrValor:0});
+  salvar();render();}
+function setSacrificioCampo(id,campo,val){if(bloqueadoLeitura())return;const s=S.sacrificios.find(x=>x.id===id);if(!s)return;
+  s[campo]=(campo==="valor"||campo==="attrValor")?(parseFloat(val)||0):val;salvar();render();}
+function delSacrificio(id){if(bloqueadoLeitura())return;S.sacrificios=S.sacrificios.filter(x=>x.id!==id);salvar();render();}
 
 function toggleEvento(id){
   if(bloqueadoLeitura())return;
@@ -794,6 +872,72 @@ function limparEventos(){
   S.eventos=[];verTodosEventos=true;feedPush("Eventos históricos limpos.");salvar();render();
 }
 function verEventosCompletos(){if(bloqueadoLeitura())return;verTodosEventos=true;render();}
+
+/* ============ CONQUISTAS (registro livre do Mestre) ============
+   Diferente dos Eventos Históricos (catálogo fechado, escolhido na criação da
+   família), uma Conquista é o Mestre anotando, na hora, o que aconteceu na mesa —
+   um resgate, um contrato fechado, uma humilhação pública — e escolhendo que
+   atributo(s) aquilo empurra. Fica numa lista própria, abaixo dos Eventos
+   Históricos, com o texto do que aconteceu ao lado do número. */
+function addConquista(){if(bloqueadoLeitura())return;S.conquistas.push({id:uid(),titulo:"",itens:[]});salvar();render();}
+function delConquista(id){if(bloqueadoLeitura())return;S.conquistas=S.conquistas.filter(x=>x.id!==id);salvar();render();}
+function setConquistaTitulo(id,val){if(bloqueadoLeitura())return;const c=S.conquistas.find(x=>x.id===id);if(!c)return;c.titulo=val;salvar();render();}
+function addConquistaItem(id){if(bloqueadoLeitura())return;const c=S.conquistas.find(x=>x.id===id);if(!c)return;c.itens.push({id:uid(),attr:"vazio",delta:1});salvar();render();}
+function setConquistaItem(id,itemId,campo,val){if(bloqueadoLeitura())return;const c=S.conquistas.find(x=>x.id===id);if(!c)return;
+  const it=c.itens.find(x=>x.id===itemId);if(!it)return;it[campo]=(campo==="delta")?(parseFloat(val)||0):val;salvar();render();}
+function delConquistaItem(id,itemId){if(bloqueadoLeitura())return;const c=S.conquistas.find(x=>x.id===id);if(!c)return;
+  c.itens=c.itens.filter(x=>x.id!==itemId);salvar();render();}
+
+/* ============ ESTAÇÕES E TESTE DE FORTUNAS ============
+   O Mestre avança a estação quando achar apropriado (fim de sessão, fim de arco —
+   sem relógio de dias correndo sozinho). Cada avanço faz um teste de Fortunas: rola
+   1d10 (mais 2 se a família já goza do favor das Fortunas — o prestígio ajuda a
+   sorte a continuar), e o resultado empurra os 1-2 atributos que aquela estação
+   favorece, pra cima ou pra baixo, num tamanho que realmente conta pra 3 meses de
+   jogo (na casa de 3 a 12 pontos, não um "+1" que ninguém nota). */
+function avancarEstacao(){
+  if(bloqueadoLeitura())return;
+  if(S.estacaoIdx===undefined)S.estacaoIdx=0;
+  if(S.anoEstacao===undefined)S.anoEstacao=1;
+  const estacao=ESTACOES[S.estacaoIdx];
+  const favor=favorDasFortunas();
+  const roll=d10()+favor;
+  let tier,mult;
+  if(roll<=3){tier="presságio ruim";mult=-1;}
+  else if(roll<=6){tier="estação comum";mult=0;}
+  else if(roll<=10){tier="bênção discreta";mult=1;}
+  else{tier="favor evidente dos Kami";mult=2;}
+  const alvos=ESTACAO_FOCO[estacao]||["vazio"];
+  const partes=[];
+  if(mult!==0){
+    alvos.forEach(attr=>{
+      const delta=mult*(3+Math.floor(Math.random()*4));
+      S.base[attr]=(Number(S.base[attr])||0)+delta;
+      const l=(ATRIBUTOS.find(a=>a[0]===attr)||[attr,attr])[1];
+      partes.push(l+" "+(delta>0?"+":"")+delta);
+    });
+  }
+  feedPush("Teste de Fortunas — "+estacao+" do ano "+S.anoEstacao+": "+tier+(partes.length?" ("+partes.join(", ")+").":", nada muda desta vez."));
+  S.estacaoIdx=(S.estacaoIdx+1)%4;
+  if(S.estacaoIdx===0)S.anoEstacao=(S.anoEstacao||1)+1;
+  salvar();render();
+}
+
+/* Sorteia a família inteira de uma vez: clã, ramo sugerido, atributos base e eventos
+   históricos — na mesma ordem e reaproveitando exatamente as mesmas funções que o
+   Mestre usaria manualmente, uma de cada vez (nada de fórmula paralela e divergente). */
+function randomizarFamilia(){
+  if(bloqueadoLeitura())return;
+  const c=pickRandom(CLAS);
+  selecionarCla(c.id);
+  if(c.familias&&c.familias.length)S.ramoFamiliar="um ramo da família "+pickRandom(c.familias);
+  else S.ramoFamiliar="";
+  rollAllAttrs();
+  limparEventos();
+  sortearEventosFaltantes();
+  feedPush("Uma família inteira nasceu por sorteio: "+c.nome+".");
+  salvar();render();
+}
 
 function addTerreno(){if(bloqueadoLeitura())return;S.terrenos.push({id:uid(),nome:"",terreno:"planicies",c1:"",c2:"",c3:"",c4:""});salvar();render();}
 function setTerreno(id,campo,val){if(bloqueadoLeitura())return;const r=S.terrenos.find(x=>x.id===id);if(!r)return;r[campo]=val;salvar();render();}
@@ -851,12 +995,11 @@ function render(){
   const c0=claAtual();
   document.getElementById("ramoSugestoes").innerHTML=(c0&&c0.familias?c0.familias:[]).map(f=>"<option value=\""+esc(f)+"\">").join("");
   document.getElementById("idadeSel").value=S.idade||"recente";
-  document.getElementById("sacrificioInput").value=S.sacrificioHonra||0;
   if(document.activeElement!==document.getElementById("numDadosInput"))document.getElementById("numDadosInput").value=S.numDados||7;
   document.getElementById("claLab").textContent="Clã: "+(claAtual()?claAtual().nome:"—");
   const claDoCrest=claAtual();
   document.getElementById("crest").innerHTML=claDoCrest?("<img src=\"img/mons/"+claDoCrest.id+".png\" alt=\"\" onerror=\"this.parentNode.textContent='家'\">"):"家";
-  renderClas();renderMeters();renderAttrs();renderEventos();renderTerrenos();renderPersonagens();renderTropas();renderConversoes();renderFeed();renderSync();
+  renderClas();renderMeters();renderAttrs();renderEventos();renderConquistas();renderSacrificios();renderTerrenos();renderPersonagens();renderTropas();renderConversoes();renderFeed();renderSync();
   document.getElementById("tabPersonagensCount").textContent=S.personagens.length?("("+S.personagens.length+")"):"";
   if(abaPrincipal==="personagens")renderCharTabs();
 }
@@ -882,21 +1025,32 @@ function renderClas(){
   }).join("");
 }
 const METER_INFO={
-  fortunas:"Soma das curvas de Honra, Espiritualidade, Ordem e População, mais o bônus de personagens com título ou posição — mede o prestígio geral da família.",
-  favor:"Quando as Fortunas somam 50 ou mais, diz-se que a família goza do favor das Fortunas — eventos e testes sociais tendem a soprar a favor dela.",
-  dojo:"Quantos alunos o dojo da família pode formar por temporada, de acordo com o Rank de Honra alcançado.",
-  equilibrio:"Mede o quanto a espiritualidade da família está em harmonia. Valores muito extremos, para mais ou para menos, chamam a atenção de kami, espíritos ou forças sombrias.",
-  augurio:"Um presságio sobre como os kami veem a espiritualidade atual da família, de maus agouros a sinais muito favoráveis.",
+  fortunas:"Soma das curvas de Autoridade, Domínio e Vazio, mais a Fortuna de manutenção dos terrenos e tropas e o bônus de personagens com título ou posição — mede o prestígio geral da família.",
+  favor:"Regra de mesa: escala com o valor atual de Fortunas. Este número é o Raise bônus que qualquer membro da família ganha em testes sociais dentro do próprio território, em ações que beneficiem diretamente a família. Fortunas muito baixas viram desfavor de verdade (número negativo) — o mesmo valor entra como dificuldade extra nesses testes.",
+  dojo:"Quantos samurai o dojo da família forma de fato a cada estação, de acordo com o Vazio alcançado — retidão e devoção atraindo quem quer aprender. Não é mais um Rank abstrato, é gente formada.",
+  tecnicaDojo:"O dojo ensina até onde vai o samurai mais graduado e vivo da família — é ele (ou ela) quem carrega a técnica de Rank mais alto e a repassa aos demais. Sem ninguém formado ainda, o dojo não tem o que ensinar.",
+  equilibrio:"Regra de mesa: este número é o Raise bônus (pode passar de +1) que um shugenja da família ganha ao conjurar um encanto que ajude a família, desde que esteja dentro do próprio território — escala direto com o Vazio da família (retidão e devoção como uma só coisa). Se o valor for negativo, o mesmo número vira dificuldade extra: os kami estão incomodados.",
+  augurio:"Um presságio sobre como os kami veem o Vazio atual da família, de maus agouros a sinais muito favoráveis.",
   samurai:"Total de personagens ativos a serviço desta família, somando os quatro papéis abaixo — todos são samurai, cada um a seu jeito."
 };
+function fmtRaise(n){if(n===0)return"0 (neutro)";return(n>0?"+":"")+n+" raise"+(Math.abs(n)===1?"":"s");}
 function renderMeters(){
-  const f=fortunas(),favor=favorDasFortunas(),r=rosterCounts();
+  const f=fortunas(),favor=favorDasFortunas(),r=rosterCounts(),eq=equilibrioEspiritual(),grad=personagemMaisGraduado();
+  const estLab=document.getElementById("estacaoLabel");
+  const favorTxt=favor>0?(" · favor das Fortunas "+fmtRaise(favor)):(favor<0?(" · desfavor das Fortunas "+fmtRaise(favor)):"");
+  if(estLab)estLab.textContent=(ESTACOES[S.estacaoIdx||0])+" · ano "+(S.anoEstacao||1)+favorTxt;
   const linha=(lbl,val,titulo,cls)=>"<div class=\"ledgerline\" title=\""+esc(titulo)+"\"><span class=\"lbl\">"+lbl+"</span><span class=\"fill\"></span><span class=\"val"+(cls?" "+cls:"")+"\">"+val+"</span></div>";
+  const favorVal=fmtRaise(favor);
+  const favorCls=favor>0?"good small":(favor<0?"bad small":"small");
+  const eqVal=fmtRaise(eq);
+  const eqCls=eq>0?"good":(eq<0?"bad":"");
+  const tecVal=grad.personagem?("Rank "+grad.rank+" — "+esc(grad.personagem.nome||"sem nome")):"ainda sem ninguém formado";
   document.getElementById("meters").innerHTML=
     linha("Fortunas",f.toFixed(0),METER_INFO.fortunas)+
-    linha("Favor das Fortunas",favor?"sim":"não",METER_INFO.favor,favor?"good small":"small")+
+    linha("Favor das Fortunas",favorVal,METER_INFO.favor,favorCls)+
     linha("Dojo — alunos por temporada",dojo(),METER_INFO.dojo)+
-    linha("Equilíbrio Espiritual",equilibrioEspiritual().toFixed(0),METER_INFO.equilibrio)+
+    linha("Técnica mais alta do Dojo",tecVal,METER_INFO.tecnicaDojo,"small")+
+    linha("Equilíbrio Espiritual",eqVal,METER_INFO.equilibrio,eqCls)+
     linha("Augúrio dos Kami",augurioKami()||"—",METER_INFO.augurio,"small")+
     "<div class=\"rolesrow\" title=\""+esc(METER_INFO.samurai)+"\">"+
       "<div class=\"rolewrap\" title=\"Guerreiros que defendem a família em combate.\"><img src=\"img/papeis/bushi.png\" alt=\"\" onerror=\"this.style.display='none'\"><div class=\"n\">"+r.bushi+"</div><div class=\"l\">bushi</div></div>"+
@@ -950,6 +1104,57 @@ function renderEventos(){
   }
   box.innerHTML=EVENTOS.map(e=>eventoCardHTML(e)).join("");
 }
+function opcoesAtributoConquista(sel,id,itemId){
+  return "<select onchange=\"setConquistaItem('"+id+"','"+itemId+"','attr',this.value)\">"+
+    ATRIBUTOS.map(([k,l])=>"<option value=\""+k+"\" "+(sel===k?"selected":"")+">"+l+"</option>").join("")+"</select>";
+}
+function conquistaCardHTML(c){
+  const itens=(c.itens||[]).map(it=>
+    "<span class=\"grp\">"+opcoesAtributoConquista(it.attr,c.id,it.id)+
+    "<input type=\"number\" style=\"width:56px\" value=\""+(Number(it.delta)||0)+"\" onchange=\"setConquistaItem('"+c.id+"','"+it.id+"','delta',this.value)\">"+
+    "<button class=\"ghost\" onclick=\"delConquistaItem('"+c.id+"','"+it.id+"')\">✕</button></span>"
+  ).join("");
+  return "<div class=\"linha\" style=\"flex-direction:column;align-items:stretch\">"+
+    "<div style=\"display:flex;gap:8px;align-items:center;flex-wrap:wrap\">"+
+      "<input class=\"campo-nome\" placeholder=\"o que aconteceu\" style=\"flex:2;min-width:180px\" value=\""+esc(c.titulo)+"\" onchange=\"setConquistaTitulo('"+c.id+"',this.value)\">"+
+      "<button class=\"ghost del\" onclick=\"delConquista('"+c.id+"')\">✕ remover</button>"+
+    "</div>"+
+    "<div style=\"display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;align-items:center\">"+itens+
+      "<button class=\"ghost\" onclick=\"addConquistaItem('"+c.id+"')\">+ atributo</button>"+
+    "</div></div>";
+}
+function renderConquistas(){
+  const box=document.getElementById("conquistas");
+  if(!box)return;
+  box.innerHTML=(S.conquistas||[]).map(conquistaCardHTML).join("")||"<div class=\"linha-vazia\">Nenhuma conquista registrada ainda — use o botão abaixo quando algo relevante acontecer na mesa.</div>";
+}
+function sacrificioLinhaHTML(s){
+  const progresso=s.tipo==="progresso";
+  return "<div class=\"linha\" style=\"flex-direction:column;align-items:stretch\">"+
+    "<div style=\"display:flex;gap:8px;align-items:center;flex-wrap:wrap\">"+
+      "<select onchange=\"setSacrificioCampo('"+s.id+"','tipo',this.value)\">"+
+        "<option value=\"rolamento\" "+(progresso?"":"selected")+">Rolamento em jogo</option>"+
+        "<option value=\"progresso\" "+(progresso?"selected":"")+">Progresso desonroso</option>"+
+      "</select>"+
+      "<input class=\"campo-nome\" placeholder=\""+(progresso?"o que a família fez":"quem usou / em quê")+"\" style=\"flex:2;min-width:160px\" value=\""+esc(s.quem||"")+"\" onchange=\"setSacrificioCampo('"+s.id+"','quem',this.value)\">"+
+      "<span class=\"grp\">Honra <input type=\"number\" style=\"width:56px\" value=\""+(Number(s.valor)||0)+"\" onchange=\"setSacrificioCampo('"+s.id+"','valor',this.value)\"></span>"+
+      "<input type=\"date\" value=\""+esc(s.quando||"")+"\" onchange=\"setSacrificioCampo('"+s.id+"','quando',this.value)\">"+
+      "<button class=\"ghost del\" onclick=\"delSacrificio('"+s.id+"')\">✕</button>"+
+    "</div>"+
+    (progresso?("<div style=\"display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px\">"+
+      "<span class=\"grp\">Ganha em <select onchange=\"setSacrificioCampo('"+s.id+"','attrGanho',this.value)\">"+
+        ATRIBUTOS.map(([k,l])=>"<option value=\""+k+"\" "+(s.attrGanho===k?"selected":"")+">"+l+"</option>").join("")+"</select></span>"+
+      "<span class=\"grp\">Quanto <input type=\"number\" style=\"width:56px\" value=\""+(Number(s.attrValor)||0)+"\" onchange=\"setSacrificioCampo('"+s.id+"','attrValor',this.value)\"></span>"+
+    "</div>"):"")+
+    "</div>";
+}
+function renderSacrificios(){
+  const box=document.getElementById("sacrificios");
+  if(!box)return;
+  const total=honraSacrificadaTotal();
+  document.getElementById("sacrificiosTotal").textContent=total?("total sacrificado: "+total+" (−"+(total*5)+" na Honra)"):"nada sacrificado ainda";
+  box.innerHTML=(S.sacrificios||[]).map(sacrificioLinhaHTML).join("")||"<div class=\"linha-vazia\">Nada registrado ainda.</div>";
+}
 function opcoesTerreno(sel){return TERRENOS_BASE.map(t=>"<option value=\""+t.id+"\" "+(sel===t.id?"selected":"")+">"+t.nome+"</option>").join("");}
 function opcoesFeature(sel){
   let out="<option value=\"\">—</option>";
@@ -963,7 +1168,7 @@ function saldoChip(attr){
   return "<div class=\"saldo\">"+l+" disponível: <b class=\""+(rest<0?"bad":"good")+"\">"+rest.toFixed(0)+"</b></div>";
 }
 function renderTerrenos(){
-  document.getElementById("terrenosSaldo").innerHTML=saldoChip("terras")+saldoChip("defesa");
+  document.getElementById("terrenosSaldo").innerHTML=saldoChip("dominio");
   const tot=terrenosTotais();
   const rows=S.terrenos.map(r=>{
     const c=terrenoLinhaCalc(r);
@@ -1063,11 +1268,101 @@ function escolhaCla4e(id,claId){
   p.cla4e=claId;p.familia4e="";p.escola4e="";
   salvar();render();
 }
+/* Honra/Glória/Status iniciais: a Honra vem direto da escola na base de dados
+   (campo "honra" de cada escola, extraído do L5RCM — varia por escola: bushi de
+   clãs guerreiros costuma começar mais alto, cortesão mais baixo, etc.). Glória e
+   Status NÃO estão na base extraída (os data packs não trazem essa informação);
+   Glória segue a regra padrão da 4ª edição, que é fixa em 1.0 pra todo personagem
+   recém-criado; Status é uma aproximação nossa a partir do porte do clã (Grandes
+   Clãs e famílias imperiais têm mais prestígio de nascença que Clãs Menores). Dá
+   pra ajustar esses números à mão na ficha depois — isso aqui é só o ponto de
+   partida. */
+function valoresIniciais4e(escolaId,claId4e){
+  const escola=l5r4ePronto()?L5R4E.escolas.find(e=>e.id===escolaId):null;
+  const honraEscola=escola&&escola.honra!==undefined?parseFloat(escola.honra):NaN;
+  const monId=claIdParaMon(claId4e);
+  const claInfo=CLAS.find(c=>c.id===monId);
+  let status=1.0;
+  if(claInfo){if(claInfo.tier==="imperial")status=2.0;else if(claInfo.tier==="menor")status=0.8;}
+  return{honorRank:isNaN(honraEscola)?3.5:honraEscola,gloriaRank:1.0,statusRank:status};
+}
+function aplicarValoresIniciais4e(p){
+  if(!p.escola4e)return;
+  const v=valoresIniciais4e(p.escola4e,p.cla4e);
+  p.honorRank=v.honorRank;p.gloriaRank=v.gloriaRank;p.statusRank=v.statusRank;
+}
 function escolhaFamilia4e(id,familiaId){
   const p=S.personagens.find(x=>x.id===id);if(!p)return;
   p.familia4e=familiaId;
   const esc=l5r4ePronto()?L5R4E.escolas.find(e=>e.clanId===p.cla4e&&e.id.indexOf(familiaId+"_")===0):null;
   p.escola4e=esc?esc.id:"";
+  fichaBase(p);aplicarValoresIniciais4e(p);
+  salvar();render();
+}
+function escolhaEscola4e(id,escolaId){
+  const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  p.escola4e=escolaId;
+  fichaBase(p);aplicarValoresIniciais4e(p);
+  salvar();render();
+}
+/* Sorteia UM personagem, um de cada vez (nunca todos juntos): clã/família/escola 4e
+   válidos entre si, traços dentro de uma faixa plausível de samurai recém-formado
+   (base 2, o traço da escola sobe pra 3, mais 2-3 pontos espalhados, teto 4 — sem
+   virar um monstro otimizado), perícias iniciais da própria escola, e um punhado de
+   vantagens/desvantagens sorteadas com orçamento equilibrado (o que as desvantagens
+   valem é o que sobra pra gastar em vantagens). Não mexe em nome/jogador/notas/papel —
+   só a parte mecânica que foi pedida. */
+function randomizarPersonagem(id){
+  if(bloqueadoLeitura())return;
+  const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  fichaBase(p);
+  if(!l5r4ePronto()){flashHint("Base de dados da 4ª edição ainda não carregou.");return;}
+  const clansValidos=L5R4E.clans.filter(c=>escolasDoCla4e(c.id).length>0);
+  if(!clansValidos.length)return;
+  const cla=pickRandom(clansValidos);
+  const escolas=escolasDoCla4e(cla.id);
+  const escola=pickRandom(escolas);
+  const familias=familiasDoCla4e(cla.id);
+  let familia=familias.find(f=>escola.id.indexOf(f.id+"_")===0);
+  if(!familia&&familias.length)familia=pickRandom(familias);
+  p.cla4e=cla.id;p.familia4e=familia?familia.id:"";p.escola4e=escola.id;
+  aplicarValoresIniciais4e(p);
+
+  const traits={reflexes:2,awareness:2,stamina:2,willpower:2,agility:2,intelligence:2,strength:2,perception:2};
+  if(escola.traco&&traits[escola.traco]!==undefined)traits[escola.traco]=3;
+  const chaves=Object.keys(traits);
+  let extras=2+Math.floor(Math.random()*2);
+  let tentativas=0;
+  while(extras>0&&tentativas<50){
+    const k=pickRandom(chaves);
+    if(traits[k]<4){traits[k]++;extras--;}
+    tentativas++;
+  }
+  traits.vazio=Math.random()<0.3?3:2;
+  p.traits=traits;
+
+  p.pericias=(escola.pericias||[]).map(s=>({id:uid(),skill:s.id,rank:(Number(s.rank)||1)+(Math.random()<0.4?1:0),enfase:s.enfase||""}));
+
+  const descPool=(L5R4E.desvantagens||[]).slice();
+  const orcamentoAlvo=6+Math.floor(Math.random()*5);
+  let orcamento=0,desvantagens=[];
+  while(desvantagens.length<2&&descPool.length&&orcamento<orcamentoAlvo){
+    const d=descPool.splice(Math.floor(Math.random()*descPool.length),1)[0];
+    desvantagens.push({id:uid(),nome:d.nome,custo:d.custo});
+    orcamento+=Number(d.custo)||0;
+  }
+  const vantPool=(L5R4E.vantagens||[]).slice();
+  let vantagens=[],disponivel=orcamento;
+  let tentativasV=0;
+  while(vantagens.length<2&&vantPool.length&&tentativasV<40){
+    const v=vantPool.splice(Math.floor(Math.random()*vantPool.length),1)[0];
+    if((Number(v.custo)||0)<=disponivel){vantagens.push({id:uid(),nome:v.nome,custo:v.custo});disponivel-=(Number(v.custo)||0);}
+    tentativasV++;
+  }
+  p.desvantagens=desvantagens;
+  p.vantagens=vantagens;
+
+  feedPush("Personagem sorteado: "+(p.nome||"sem nome")+" — "+escola.nome+".");
   salvar();render();
 }
 function renderFicha4e(p){
@@ -1086,14 +1381,14 @@ function renderFicha4e(p){
       (tec1?"<div style=\"margin-top:6px\"><b>"+esc(tec1.nome)+"</b> (rank 1)<div class=\"hint\">"+esc(tec1.descricao)+"</div></div>":"")+
       "</div>";
   }
-  const monImg=p.cla4e?"<img class=\"monimg\" style=\"width:28px;height:28px;margin:0 6px 0 0;vertical-align:middle\" src=\"img/mons/"+claIdParaMon(p.cla4e)+".png\" alt=\"\" onerror=\"this.style.display='none'\">":"";
+  const monImg=p.cla4e?"<img class=\"monimg\" style=\"width:44px;height:44px;margin:0 8px 0 0;vertical-align:middle;display:inline-block\" src=\"img/mons/"+claIdParaMon(p.cla4e)+".png\" alt=\"\" onerror=\"this.style.display='none'\">":"";
   return "<div style=\"display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px;align-items:center\">"+
     monImg+
     "<div class=\"grp\">Clã (4ª ed.) <select onchange=\"escolhaCla4e('"+p.id+"',this.value)\"><option value=\"\">—</option>"+
       clas.map(c=>"<option value=\""+c.id+"\" "+(p.cla4e===c.id?"selected":"")+">"+esc(c.nome)+"</option>").join("")+"</select></div>"+
     "<div class=\"grp\">Família <select onchange=\"escolhaFamilia4e('"+p.id+"',this.value)\" "+(!p.cla4e?"disabled":"")+"><option value=\"\">—</option>"+
       familias.map(f=>"<option value=\""+f.id+"\" "+(p.familia4e===f.id?"selected":"")+">"+esc(f.nome)+"</option>").join("")+"</select></div>"+
-    "<div class=\"grp\">Escola <select onchange=\"setPersonagem('"+p.id+"','escola4e',this.value)\" "+(!p.cla4e?"disabled":"")+"><option value=\"\">—</option>"+
+    "<div class=\"grp\">Escola <select onchange=\"escolhaEscola4e('"+p.id+"',this.value)\" "+(!p.cla4e?"disabled":"")+"><option value=\"\">—</option>"+
       escolasCla.map(e=>"<option value=\""+e.id+"\" "+(p.escola4e===e.id?"selected":"")+">"+esc(e.nome)+"</option>").join("")+"</select></div>"+
     "</div>"+card;
 }
@@ -1423,7 +1718,7 @@ function renderKataKihoMagia(p){
   out+="<div class=\"fichapanel\"><h2>Espaços de Magia</h2>";
   out+="<div style=\"display:flex;gap:14px;flex-wrap:wrap\">"+
     [["ar","Ar"],["terra","Terra"],["fogo","Fogo"],["agua","Água"],["vazio","Vazio"]].map(([k,l])=>
-      "<div class=\"anelRow\" style=\"width:auto\">"+"<img class=\"anelIcon\" style=\"width:28px;height:28px\" src=\""+ANEL_ICONE[k]+"\" alt=\"\" onerror=\"this.style.visibility='hidden'\">"+
+      "<div class=\"anelRow\" style=\"width:auto\">"+"<img class=\"anelIcon\" style=\"width:38px;height:38px\" src=\""+ANEL_ICONE[k]+"\" alt=\"\" onerror=\"this.style.visibility='hidden'\">"+
       "<span class=\"grp\">"+l+" <input type=\"number\" min=\"0\" style=\"width:50px\" value=\""+(Number(p.espacosMagia[k])||0)+"\" onchange=\"setEspacoMagia('"+p.id+"','"+k+"',this.value)\"></span></div>").join("")+
     "</div><div class=\"hint\">Preencha manualmente conforme o rank de Insight e a escola do personagem.</div></div>";
   return out;
@@ -1444,6 +1739,7 @@ function renderCharSheet(){
       "<div class=\"grp\">Honra <input type=\"number\" value=\""+(Number(p.honra)||0)+"\" style=\"width:70px\" onchange=\"setPersonagem('"+p.id+"','honra',this.value)\"></div>"+
     "</div>"+
     "<div class=\"hint\" style=\"margin-bottom:10px\">Custo pago em Influência: <b>"+custo+"</b>"+(efeitoLabel?" · dá +"+(papelInfo?papelInfo.valor:0)+" em "+efeitoLabel:"")+"</div>"+
+    "<button class=\"ghost\" style=\"margin-bottom:10px\" onclick=\"randomizarPersonagem('"+p.id+"')\" title=\"Sorteia clã/família/escola, traços, perícias e vantagens/desvantagens deste personagem (só ele, não mexe nos outros)\">🎲 Sortear este personagem</button>"+
     renderFicha4e(p)+
     "<div class=\"tabbar\" style=\"margin-top:12px\">"+
       "<button class=\"tabbtn "+(fichaSubAba==="geral"?"on":"")+"\" onclick=\"setFichaSubAba('geral')\">Ficha</button>"+
@@ -1456,7 +1752,7 @@ function renderCharSheet(){
 }
 function delPersonagemAtivo(){if(!personagemAtivoId)return;delPersonagem(personagemAtivoId);personagemAtivoId=null;}
 function renderTropas(){
-  document.getElementById("tropasSaldo").innerHTML=saldoChip("poder");
+  document.getElementById("tropasSaldo").innerHTML=saldoChip("autoridade");
   const rows=S.tropas.map(t=>{
     const c=tropaLinhaCalc(t);
     const eq=(t.equipamento||[]);
@@ -1512,7 +1808,10 @@ document.getElementById("nomeInput").onchange=e=>setNome(e.target.value);
 document.getElementById("daimyoInput").onchange=e=>setDaimyo(e.target.value);
 document.getElementById("ramoInput").onchange=e=>setRamoFamiliar(e.target.value);
 document.getElementById("idadeSel").onchange=e=>setIdade(e.target.value);
-document.getElementById("sacrificioInput").onchange=e=>setSacrificio(e.target.value);
+document.getElementById("btnAvancarEstacao").onclick=avancarEstacao;
+document.getElementById("btnAddConquista").onclick=addConquista;
+document.getElementById("btnAddSacrificioRolamento").onclick=()=>addSacrificio("rolamento");
+document.getElementById("btnAddSacrificioProgresso").onclick=()=>addSacrificio("progresso");
 document.getElementById("btnHardReset").onclick=hardReset;
 document.getElementById("btnSortearEventos").onclick=sortearEventosFaltantes;
 document.getElementById("btnRolarTudo").onclick=rollAllAttrs;
