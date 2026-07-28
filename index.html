@@ -222,6 +222,7 @@
   <div class="tabbar" id="mainTabs">
     <button class="tabbtn on" id="tabBtnFamilia" onclick="setAbaPrincipal('familia')">家 Família</button>
     <button class="tabbtn" id="tabBtnPersonagens" onclick="setAbaPrincipal('personagens')">Personagens <span class="tag" id="tabPersonagensCount"></span></button>
+    <button class="tabbtn" id="tabBtnBatalha" onclick="setAbaPrincipal('batalha')">兵 Batalha em Massa</button>
   </div>
 
   <div id="viewFamilia">
@@ -321,7 +322,7 @@
   <div class="panel"><h2><span class="kan">換</span>Conversão de Recursos<span class="sub">trocar um atributo por outro, a uma taxa</span></h2>
     <div class="tabwrap"><table class="ctab" id="conversoesTab"></table></div>
     <button class="ghost" id="btnAddConversao" style="margin-top:8px">+ conversão</button>
-    <div class="hint">Taxa = quanto do atributo de origem custa para ganhar 1 do atributo de destino. Defesa, Ordem e Espiritualidade não podem ser origem de conversão.</div>
+    <div class="hint">Taxa = quanto do atributo de origem custa para ganhar 1 do atributo de destino.</div>
   </div>
   </div>
 
@@ -331,6 +332,23 @@
       <div class="hint" style="margin-bottom:10px">Quem cria e paga o papel de um personagem (o custo em Influência) é o Mestre, na aba Família → painel "Personagens". Aqui cada personagem tem sua própria ficha — um jogador pode ter mais de um.</div>
       <div class="tabbar" id="charTabs"></div>
       <div id="charSheet"></div>
+    </div>
+  </div>
+
+  <div id="viewBatalha" style="display:none">
+    <div class="panel">
+      <h2><span class="kan">兵</span>Batalha em Massa<span class="sub">regras da 4ª edição — turnos de 30min, tabela de batalha, oportunidades heroicas</span></h2>
+      <div class="hint" style="margin-bottom:10px">Primeira versão, seguindo as regras oficiais como estão no livro. As tropas da família (aba Família → Tropa e Liderança) ainda não conversam direto com essa conta — por ora a Batalha em Massa roda em torno dos personagens que participam dela. Isso vai melhorar depois.</div>
+      <div id="batalhaAtualBox"></div>
+    </div>
+    <div class="panel">
+      <h2><span class="kan">歴</span>Histórico de Batalhas<span class="sub">batalhas já encerradas</span></h2>
+      <div id="batalhaHistoricoBox"></div>
+    </div>
+    <div class="panel">
+      <h2><span class="kan">巻</span>Referência para o Mestre<span class="sub">oportunidades heroicas</span></h2>
+      <div class="hint" style="margin-bottom:10px">Quando a Tabela de Batalha indica "Oportunidade Heroica", escolha uma destas situações (ou invente outra) pro personagem viver.</div>
+      <div class="linhas" id="oportunidadesBox"></div>
     </div>
   </div>
 
@@ -502,16 +520,20 @@ const VAZIO_Y=[-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,-3,-2,1,3,5,7,
    O bônus de Raise nasce da média das duas, mas encolhe (e pode virar penalidade)
    quanto maior o desnível entre elas: uma família muito honrada mas espiritualmente
    negligente (ou muito pia mas desonrada) está desequilibrada de verdade. */
-const EQUILIBRIO_X=[0,1,21,41,61,81];
+/* Limiares calibrados por simulação (milhares de famílias aleatórias, clã+eventos)
+   depois da fusão dos atributos — o Vazio herdou os modificadores de Honra E
+   Espiritualidade somados, mas continua com uma rolagem só, então ficou com uma
+   escala típica bem mais alta (mediana ~62) do que a Honra sozinha tinha antes. */
+const EQUILIBRIO_X=[-15,30,50,63,78,95];
 const EQUILIBRIO_Y=[-2,-1,0,1,2,3];
 /* Favor das Fortunas — mesmo raciocínio, agora a partir do valor atual de Fortunas
    (não mais um corte fixo em 50): fortunas ruins viram desfavor de verdade. */
-const FAVOR_FORTUNAS_X=[-99999,0,15,30,50];
+const FAVOR_FORTUNAS_X=[-99999,-5,5,12,20];
 const FAVOR_FORTUNAS_Y=[-1,0,1,2,3];
 const AUTORIDADE_Y=[-75,-70,-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-10,-5,-2,-1,0,1,2,5,10,15,20,25,30,35,40,45,50,55,60,65,70];
 const DOMINIO_Y=[-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,1,3,1,0,-5,-10,-15,-20,-25,-30,-35,-40,-45,-50,-55,-60,-65,-70,-75];
 const AUGURIO_Y=["","","","","","","","","","","","","","","","Sussurros","Sussurros","Sensações","Sensações","Fragmentos","Fragmentos","Enigmas","Visão","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação"];
-const DOJO_X=[0,20,30,40,50,60,70];
+const DOJO_X=[-15,30,45,58,68,80,95];
 /* Quantos samurai o dojo forma de fato a cada estação, a partir do Vazio da família
    (retidão + devoção) — uma cabeça de contagem, não mais um "Rank" abstrato. */
 const DOJO_ALUNOS_Y=[0,1,2,3,4,5,6];
@@ -587,21 +609,25 @@ const PERSONAGEM_PAPEL=[
 const ESTADO_PERSONAGEM=["Vivo","Ferido","Refém","Morto","Ausente"];
 
 /* Tropa e Liderança (Autoridade) */
+/* Custo de recrutar/equipar baixado (calibrado por simulação pra Autoridade pós-fusão) —
+   levantar um exército ainda pesa, mas não trava a maioria das famílias na primeira unidade.
+   O upkeep de manter tropa mobilizada continua em TROPA_ESTADO, sem mudança — é ali que mora
+   o gasto contínuo de sustentar soldados, não no recrutamento em si. */
 const TROPA_TIPOS={
- camponesa:{nome:"Camponesa",forca:35,disciplina:20,custo:10},
- ashigaru:{nome:"Ashigaru",forca:55,disciplina:30,custo:15},
- samurai:{nome:"Samurai",forca:50,disciplina:45,custo:30}
+ camponesa:{nome:"Camponesa",forca:35,disciplina:20,custo:5},
+ ashigaru:{nome:"Ashigaru",forca:55,disciplina:30,custo:8},
+ samurai:{nome:"Samurai",forca:50,disciplina:45,custo:15}
 };
 const TROPA_ESPEC={
- disciplinado:{nome:"Disciplinado",disciplina:5,custo:10},
- fortalecido:{nome:"Fortalecido",forca:5,custo:10}
+ disciplinado:{nome:"Disciplinado",disciplina:5,custo:5},
+ fortalecido:{nome:"Fortalecido",forca:5,custo:5}
 };
 const TROPA_EQUIP=[
- {id:"bagagem",nome:"Trem de Bagagem",custo:15},
- {id:"suprimentos",nome:"Suprimentos Médicos",custo:5},
- {id:"nagae",nome:"Nagae Yari",custo:5},
- {id:"tetsubishi",nome:"Tetsubishi",custo:10},
- {id:"armaduras",nome:"Armaduras Aprimoradas",custo:20}
+ {id:"bagagem",nome:"Trem de Bagagem",custo:8},
+ {id:"suprimentos",nome:"Suprimentos Médicos",custo:3},
+ {id:"nagae",nome:"Nagae Yari",custo:3},
+ {id:"tetsubishi",nome:"Tetsubishi",custo:5},
+ {id:"armaduras",nome:"Armaduras Aprimoradas",custo:10}
 ];
 const TROPA_ESTADO={
  patrulha:{nome:"Patrulha",autoridade:3,dominio:0,vazio:1,fortuna:-1},
@@ -611,6 +637,96 @@ const TROPA_ESTADO={
  derrotado:{nome:"Derrotado",autoridade:0,dominio:-2,vazio:-5,fortuna:0}
 };
 const MULT_TROPA={camponesa:1,ashigaru:2,samurai:3};
+
+/* ============ BATALHA EM MASSA (regras oficiais da 4ª edição, primeira versão) ============
+   Baseado em lasthaiku.wikidot.com/battle. Cada Turno de Batalha (~30min, regra de bolso:
+   1 turno a cada 250 tropas por lado) tem 3 estágios: Declaração (nível de engajamento de
+   cada personagem + contest de Generais em Batalha/Percepção pra saber quem está Vencendo/
+   Perdendo/Impasse), Determinação (cada personagem rola d10+Água+Batalha e consulta a
+   Tabela de Batalha) e Resolução (Duelo ou Oportunidade Heroica).
+   Nosso tipo de tropa (TROPA_TIPOS/TROPA_ESPEC) ainda não conversa diretamente com essas
+   regras — por ora a Batalha em Massa roda solta, focada nos personagens, e a integração
+   com o exército da família fica pra uma próxima passada. */
+const ENGAJAMENTO=[
+ {id:"reservas",nome:"Reservas",idx:0,desc:"Atrás da linha de frente, relativamente a salvo."},
+ {id:"desengajado",nome:"Desengajado",idx:1,desc:"Nas margens do combate, entra e sai da briga."},
+ {id:"engajado",nome:"Engajado",idx:2,desc:"No meio da luta, cercado por aliados e inimigos."},
+ {id:"pesado",nome:"Fortemente Engajado",idx:3,desc:"Na linha de frente, no centro do caos."}
+];
+const STATUS_BATALHA=[
+ {id:"vencendo",nome:"Vencendo",shift:0},
+ {id:"impasse",nome:"Impasse",shift:1},
+ {id:"perdendo",nome:"Perdendo",shift:2}
+];
+/* Cada linha cobre uma faixa de d10+Água+Perícia Batalha. As 6 colunas são os níveis
+   efetivos 0-5 (engajamento + deslocamento pelo status do exército). fer = nº de dados
+   de Ferimento (rolados e somados no Dano Atual do personagem), gloria = Glória ganha,
+   esp = null | "duelo" | "heroica". */
+const BATALHA_TABELA=[
+ {min:1,max:3,cols:[{fer:1,gloria:0,esp:null},{fer:2,gloria:0,esp:null},{fer:3,gloria:1,esp:null},{fer:4,gloria:1,esp:null},{fer:5,gloria:1,esp:"duelo"},{fer:6,gloria:3,esp:"heroica"}]},
+ {min:4,max:6,cols:[{fer:1,gloria:0,esp:null},{fer:1,gloria:0,esp:null},{fer:3,gloria:1,esp:null},{fer:4,gloria:1,esp:null},{fer:5,gloria:1,esp:"duelo"},{fer:5,gloria:2,esp:"heroica"}]},
+ {min:7,max:9,cols:[{fer:1,gloria:0,esp:null},{fer:0,gloria:0,esp:null},{fer:2,gloria:1,esp:null},{fer:3,gloria:1,esp:"duelo"},{fer:4,gloria:1,esp:"heroica"},{fer:5,gloria:1,esp:"duelo"}]},
+ {min:10,max:12,cols:[{fer:0,gloria:0,esp:null},{fer:0,gloria:0,esp:null},{fer:2,gloria:0,esp:"duelo"},{fer:3,gloria:0,esp:"heroica"},{fer:4,gloria:1,esp:"heroica"},{fer:4,gloria:1,esp:"duelo"}]},
+ {min:13,max:15,cols:[{fer:0,gloria:1,esp:null},{fer:0,gloria:1,esp:null},{fer:1,gloria:1,esp:null},{fer:2,gloria:1,esp:"duelo"},{fer:3,gloria:1,esp:null},{fer:4,gloria:1,esp:"heroica"}]},
+ {min:16,max:18,cols:[{fer:0,gloria:1,esp:null},{fer:0,gloria:1,esp:"duelo"},{fer:1,gloria:1,esp:null},{fer:2,gloria:1,esp:"duelo"},{fer:3,gloria:2,esp:null},{fer:3,gloria:2,esp:"heroica"}]},
+ {min:19,max:21,cols:[{fer:0,gloria:2,esp:null},{fer:0,gloria:2,esp:null},{fer:0,gloria:2,esp:"heroica"},{fer:1,gloria:2,esp:null},{fer:2,gloria:2,esp:"heroica"},{fer:3,gloria:2,esp:"duelo"}]},
+ {min:22,max:24,cols:[{fer:0,gloria:2,esp:null},{fer:0,gloria:2,esp:"heroica"},{fer:0,gloria:2,esp:null},{fer:1,gloria:2,esp:"heroica"},{fer:2,gloria:3,esp:null},{fer:3,gloria:3,esp:"duelo"}]},
+ {min:25,max:27,cols:[{fer:0,gloria:2,esp:null},{fer:0,gloria:2,esp:null},{fer:0,gloria:3,esp:"duelo"},{fer:1,gloria:3,esp:null},{fer:2,gloria:4,esp:"heroica"},{fer:3,gloria:4,esp:"heroica"}]},
+ {min:28,max:999,cols:[{fer:0,gloria:3,esp:null},{fer:0,gloria:3,esp:null},{fer:0,gloria:4,esp:"heroica"},{fer:1,gloria:4,esp:"duelo"},{fer:2,gloria:5,esp:"duelo"},{fer:3,gloria:5,esp:"heroica"}]}
+];
+const ESP_LABEL={duelo:"Duelo",heroica:"Oportunidade Heroica"};
+function faixaBatalha(total){
+ for(let i=0;i<BATALHA_TABELA.length;i++){const r=BATALHA_TABELA[i];if(total>=r.min&&total<=r.max)return r;}
+ return BATALHA_TABELA[BATALHA_TABELA.length-1];
+}
+function nivelEfetivo(engajamentoIdx,shift){return Math.min(5,Math.max(0,(Number(engajamentoIdx)||0)+(Number(shift)||0)));}
+function personagemBattleSkill(p){const s=(p.pericias||[]).find(x=>x.skill==="battle");return s?(Number(s.rank)||0):0;}
+function rolarBatalhaPersonagem(p,engajamentoIdx,shift){
+ fichaBase(p);
+ const agua=aneisPersonagem(p).agua||0;
+ const skill=personagemBattleSkill(p);
+ const dado=d10();
+ const total=dado+agua+skill;
+ const linha=faixaBatalha(total);
+ const nivel=nivelEfetivo(engajamentoIdx,shift);
+ const col=linha.cols[nivel];
+ let ferimentosRolados=0;const dadosFer=[];
+ for(let i=0;i<col.fer;i++){const f=d10();dadosFer.push(f);ferimentosRolados+=f;}
+ return{dado,agua,skill,total,faixa:linha.min+"-"+(linha.max>=999?"+":linha.max),nivel,fer:col.fer,dadosFer,ferimentosRolados,gloria:col.gloria,especial:col.esp};
+}
+function rolarContesteGenerais(bonusProprio,bonusInimigo){
+ const proprio=d10()+(Number(bonusProprio)||0);
+ const inimigo=d10()+(Number(bonusInimigo)||0);
+ const dif=proprio-inimigo;
+ let status="impasse";if(dif>=5)status="vencendo";else if(dif<=-5)status="perdendo";
+ return{proprio,inimigo,dif,status};
+}
+const OPORTUNIDADES_HEROICAS=[
+ {nome:"Um Tiro Certeiro",efeito:"A linha de frente se abre — tiro à distância no general inimigo (TN 30+). Acerto vale 4 Glória e -5 no próximo Turno de Batalha do general inimigo."},
+ {nome:"Atacar os Arqueiros",efeito:"Escaramuça contra os arqueiros de reserva do inimigo. Sucesso: -5 no próximo turno do general inimigo, +2 Glória."},
+ {nome:"Atacar o Shugenja",efeito:"Ataque arriscado contra os shugenja inimigos. Sucesso: -5 no próximo turno do general inimigo, +3 Glória (oferecer rendição antes vale +2 Honra, aceitando ou não)."},
+ {nome:"Duas Covas",efeito:"Persegue quem matou um parente — precisa entrar no nível de engajamento do inimigo e vencer um Contest de Percepção pra encontrá-lo, aí parte pro duelo."},
+ {nome:"Romper a Linha",efeito:"Carrega contra 2-4 samurai Rank 2 na linha de frente. Vai pra Fortemente Engajado; no próximo turno rola -2, mas soma +3 no Battle Roll do general. +3 Glória."},
+ {nome:"Poucos contra Muitos",efeito:"Um aliado é cercado — escaramuça contra 3-6 samurai um Rank abaixo do personagem. Se o aliado sobrevive, +3 Glória."},
+ {nome:"Incendiar as Velas",efeito:"(batalha naval) Flecha em brasa mira as velas do navio inimigo. Sucesso: navio imobilizado, -3 no próximo turno do general inimigo."},
+ {nome:"Pelo Império",efeito:"Duelo contra um Perdido de Rank+1, um oni menor ou outro corrompido à escolha do Mestre. Sucesso: +3 Glória, -5 no próximo turno do general inimigo."},
+ {nome:"Segure o Terreno!",efeito:"Sustentar a linha: Engajado enfrenta um número de inimigos igual ao da unidade +2 (2 Glória); Fortemente Engajado soma +2 inimigos (4 Glória)."},
+ {nome:"Entre na Batalha",efeito:"Sai das Reservas pra Desengajado e rola de novo na Tabela de Batalha, sem modificador, imediatamente."},
+ {nome:"Sobrepujar",efeito:"O personagem e sua unidade cercam um único samurai Rank 3 ou 4. Sucesso: -5 no próximo turno do general inimigo."},
+ {nome:"Erguer o Estandarte",efeito:"O porta-estandarte cai — segurar a bandeira dá +3 no Battle Roll do general a cada turno, mas atrai ataques constantes até ser largada."},
+ {nome:"Proteger o General",efeito:"Fica ao lado do general pelo resto da batalha, seguindo o engajamento dele. +1 Glória extra por turno."},
+ {nome:"Reagrupar os Arqueiros",efeito:"Perform: Oratória/Percepção TN 20. Sucesso: +5 no próximo Battle Roll do general, +1 Glória. Falha ou recusa: -5 no próximo turno do general."},
+ {nome:"Velocidade de Abalroamento",efeito:"(batalha naval) Abordagem: vai pra Fortemente Engajado e enfrenta 1-4 samurai um Rank abaixo. +1 Glória."},
+ {nome:"Salvar um Camarada Ferido",efeito:"Defende um aliado caído contra 2-3 inimigos Rank 1-2 por turno. Sucesso: +1 Glória por turno sustentado (não acumula com outra oportunidade heroica)."},
+ {nome:"Salvar um Oponente Ferido",efeito:"Um inimigo ferido pede ajuda — ajudar não dá bônus mecânico, mas cria uma obrigação (e um possível refém valioso). Precisa ir pras Reservas assim que possível."},
+ {nome:"Salvar Nosso Navio",efeito:"(batalha naval) O navio está afundando — avisar e ajudar a tripulação a sair vale 3 Glória se bem-sucedido."},
+ {nome:"Loucura das Terras Sombrias",efeito:"Aliados tocados pela Mácula se voltam contra o personagem — enfrenta 1-4 samurai Manchados (Rank igual se Fortemente Engajado, um abaixo se Engajado). Sucesso: +1 Glória; falha: -3 no próximo turno do general."},
+ {nome:"Mostre-me sua Postura",efeito:"Duelo formal contra um samurai Rank 2 ou 3 escolhido pelo inimigo. Vitória: Glória igual ao Rank de Glória do oponente, +2 no próximo Battle Roll do general."},
+ {nome:"Presente do Shugenja",efeito:"Um shugenja aliado abençoa o personagem — um Traço ou Perícia sobe um Rank até o fim da batalha."},
+ {nome:"Escaramuça",efeito:"Enfrenta um número de inimigos definido pelo Mestre — só precisa forçá-los a recuar, não matar. Sucesso: +1 no próximo Battle Roll do general."},
+ {nome:"Resista às Trevas",efeito:"Um oni menor (ou similar) avança sobre tropas desmoralizadas. Vencer: +4 Glória, +3 no próximo turno do general. Perder ou recusar: -5 no próximo turno do general."},
+ {nome:"Tomar o Estandarte Inimigo",efeito:"Precisa matar o porta-estandarte inimigo e levar a bandeira de volta às Reservas — enquanto a carrega, é atacado por samurai de Rank igual a cada turno; -5 no Battle Roll do general inimigo enquanto durar. Sucesso: ganha um Rank inteiro de Glória."}
+];
 
 /* Conversão de recursos: origem -> {destinos, taxa} */
 const CONVERSAO_REGRAS={
@@ -628,7 +744,8 @@ function estadoInicial(){return{
   nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",idade:"recente",numDados:7,
   base:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},
   eventos:[],terrenos:[],personagens:[],tropas:[],conversoes:[],feed:[],
-  conquistas:[],estacaoIdx:0,anoEstacao:1,sacrificios:[]
+  conquistas:[],estacaoIdx:0,anoEstacao:1,sacrificios:[],
+  batalhaAtual:null,batalhas:[]
 };}
 /* Estações de Rokugan — o teste de Fortunas roda a cada estação (Mestre decide quando
    avançar). Cada estação favorece um par de atributos diferentes na hora do nudge,
@@ -677,6 +794,8 @@ if(S.base&&(S.base.defesa!==undefined||S.base.terras!==undefined||S.base.ordem!=
 }
 (S.sacrificios||[]).forEach(s=>{if(s.attrGanho&&ATTR_MIGRA[s.attrGanho])s.attrGanho=ATTR_MIGRA[s.attrGanho];});
 (S.conquistas||[]).forEach(c=>{(c.itens||[]).forEach(it=>{if(it.attr&&ATTR_MIGRA[it.attr])it.attr=ATTR_MIGRA[it.attr];});});
+if(!S.batalhas)S.batalhas=[];
+if(S.batalhaAtual===undefined)S.batalhaAtual=null;
 let papel="mestre";
 /* estado só de tela (não salva): se a lista de clãs/eventos aparece cheia ou só o que já foi escolhido */
 let verTodosClas=!S.cla;
@@ -691,7 +810,11 @@ function personagemMod(attr){let s=0;S.personagens.forEach(p=>{const papel=PERSO
 function fortunaPersonagem(){let s=0;S.personagens.forEach(p=>{const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito==="fortuna")s+=papel.valor;});return s;}
 function personagemCusto(cat){const p=PERSONAGEM_PAPEL.find(x=>x.nome===cat);return p?p.custo:0;}
 function personagensCustoTotal(){return S.personagens.reduce((s,p)=>s+personagemCusto(p.categoria),0);}
-function mortosBonusHonra(){let s=0;S.personagens.forEach(p=>{if(p.estado==="Morto")s+=Math.floor((Number(p.honra)||0)/10);});return s;}
+/* O Honor Rank oficial da 4ª edição (0-10, na trilha de Honra/Glória/Status/Mancha)
+   de cada personagem pesa no Vazio da família — vivos ainda representam a casa no
+   dia a dia, mortos deixam a Honra deles como legado que não se apaga. Os dois
+   contam, ninguém é esquecido. */
+function personagensHonraBonus(){let s=0;S.personagens.forEach(p=>{s+=Number(p.honorRank)||0;});return Math.round(s);}
 
 function conversaoGanho(attr){let s=0;S.conversoes.forEach(c=>{if(c.destino===attr)s+=(Number(c.usos)||0);});return s;}
 function conversaoGasto(attr){let s=0;S.conversoes.forEach(c=>{if(c.origem===attr){const r=CONVERSAO_REGRAS[attr];const taxa=r?r.taxa||1:1;s+=(Number(c.usos)||0)*taxa;}});return s;}
@@ -727,7 +850,7 @@ function sacrificioProgressoMod(attr){let s=0;(S.sacrificios||[]).forEach(x=>{if
 function modificador(attr){
   let m=personagemMod(attr)+conversaoGanho(attr)-conversaoGasto(attr)+sacrificioProgressoMod(attr);
   if(attr==="autoridade"||attr==="dominio"||attr==="vazio")m+=tropaMod(attr);
-  if(attr==="vazio")m+=mortosBonusHonra()-honraSacrificadaTotal()*5;
+  if(attr==="vazio")m+=personagensHonraBonus()-honraSacrificadaTotal()*5;
   return m;
 }
 function totalAttr(attr){return(Number(S.base[attr])||0)+claMod(attr)+eventosMod(attr)+conquistasMod(attr)+modificador(attr);}
@@ -984,6 +1107,46 @@ function setConversao(id,campo,val){if(bloqueadoLeitura())return;const c=S.conve
   c[campo]=(campo==="usos")?(parseFloat(val)||0):val;if(campo==="origem")c.destino="";salvar();render();}
 function delConversao(id){if(bloqueadoLeitura())return;S.conversoes=S.conversoes.filter(x=>x.id!==id);salvar();render();}
 
+function iniciarBatalha(){if(bloqueadoLeitura())return;
+  S.batalhaAtual={id:uid(),nome:"",inimigo:"",desfecho:"",criada:(ESTACOES[S.estacaoIdx||0])+" ano "+(S.anoEstacao||1),
+    turno:0,generalProprioBonus:0,generalInimigoBonus:0,status:null,ultimoContest:null,participantes:[],log:[]};
+  feedPush("A família entra em campo de batalha.");salvar();render();}
+function setBatalhaCampo(campo,val){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  S.batalhaAtual[campo]=(campo==="generalProprioBonus"||campo==="generalInimigoBonus")?(parseInt(val)||0):val;salvar();render();}
+function toggleParticipante(personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const list=S.batalhaAtual.participantes;const i=list.findIndex(x=>x.personagemId===personagemId);
+  if(i>=0)list.splice(i,1);else list.push({personagemId,engajamentoIdx:1});salvar();render();}
+function setEngajamento(personagemId,idx){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
+  part.engajamentoIdx=Math.max(0,Math.min(3,parseInt(idx)||0));salvar();render();}
+function rodarContesteBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const b=S.batalhaAtual;const c=rolarContesteGenerais(b.generalProprioBonus,b.generalInimigoBonus);
+  b.turno=(b.turno||0)+1;b.status=c.status;b.ultimoContest=c;
+  const statusNome=STATUS_BATALHA.find(s=>s.id===c.status).nome;
+  b.log.unshift({turno:b.turno,texto:"Turno "+b.turno+" — contest dos generais: "+c.proprio+" x "+c.inimigo+" → família "+statusNome+"."});
+  salvar();render();}
+function rodarTurnoBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const b=S.batalhaAtual;
+  if(!b.status){flashHint("Rode o contest dos generais primeiro, pra saber quem está vencendo.");return;}
+  if(!b.participantes.length){flashHint("Nenhum personagem está participando desta batalha ainda.");return;}
+  const shift=STATUS_BATALHA.find(s=>s.id===b.status).shift;
+  b.participantes.forEach(part=>{
+    const p=S.personagens.find(x=>x.id===part.personagemId);if(!p)return;
+    const r=rolarBatalhaPersonagem(p,part.engajamentoIdx,shift);
+    p.danoAtual=(Number(p.danoAtual)||0)+r.ferimentosRolados;
+    p.gloriaRank=(Number(p.gloriaRank)||0)+r.gloria;
+    let txt=esc(p.nome||"sem nome")+" ("+ENGAJAMENTO[part.engajamentoIdx].nome+"): rolou "+r.total+" (d10 "+r.dado+"+Água "+r.agua+"+Batalha "+r.skill+"), faixa "+r.faixa+" — "+r.fer+" dado(s) de ferimento ("+r.ferimentosRolados+" dano), "+r.gloria+" Glória";
+    if(r.especial)txt+=" — "+ESP_LABEL[r.especial]+"!";
+    b.log.unshift({turno:b.turno,texto:txt});
+  });
+  salvar();render();}
+function encerrarBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const b=S.batalhaAtual;b.encerrada=(ESTACOES[S.estacaoIdx||0])+" ano "+(S.anoEstacao||1);
+  S.batalhas=S.batalhas||[];S.batalhas.unshift(b);
+  feedPush("Batalha encerrada: "+(b.nome||"sem nome")+(b.desfecho?(" — "+b.desfecho):"")+".");
+  S.batalhaAtual=null;salvar();render();}
+function delBatalhaHistorico(id){if(bloqueadoLeitura())return;S.batalhas=(S.batalhas||[]).filter(x=>x.id!==id);salvar();render();}
+
 function hardReset(){if(!confirm("Apagar TUDO e recomeçar do zero?"))return;try{localStorage.removeItem("l5r_familia_v1");}catch(e){}S=estadoInicial();salvar();render();}
 
 /* ============ RENDER ============ */
@@ -1002,6 +1165,7 @@ function render(){
   renderClas();renderMeters();renderAttrs();renderEventos();renderConquistas();renderSacrificios();renderTerrenos();renderPersonagens();renderTropas();renderConversoes();renderFeed();renderSync();
   document.getElementById("tabPersonagensCount").textContent=S.personagens.length?("("+S.personagens.length+")"):"";
   if(abaPrincipal==="personagens")renderCharTabs();
+  if(abaPrincipal==="batalha")renderBatalha();
 }
 function renderClas(){
   const box=document.getElementById("clasList");
@@ -1179,7 +1343,7 @@ function renderTerrenos(){
         "<div class=\"trow1\">"+
           "<input class=\"tname\" placeholder=\"nome (opcional)\" value=\""+esc(r.nome||"")+"\" onchange=\"setTerreno('"+r.id+"','nome',this.value)\">"+
           "<select onchange=\"setTerreno('"+r.id+"','terreno',this.value)\">"+opcoesTerreno(r.terreno)+"</select>"+
-          "<div class=\"costs\">defesa <b>"+c.custoDefesa.toFixed(0)+"</b> terras <b>"+c.custoTerras.toFixed(0)+"</b> fortuna <b>"+c.fortuna.toFixed(0)+"</b>"+
+          "<div class=\"costs\" title=\"Os dois saem do mesmo Domínio da família\">estrutura <b>"+c.custoDefesa.toFixed(0)+"</b> extensão <b>"+c.custoTerras.toFixed(0)+"</b> fortuna <b>"+c.fortuna.toFixed(0)+"</b>"+
           "<button class=\"ghost\" onclick=\"delTerreno('"+r.id+"')\">✕</button></div>"+
         "</div>"+
         "<div class=\"trow2\">"+
@@ -1192,7 +1356,7 @@ function renderTerrenos(){
   }).join("");
   document.getElementById("terrenosTab").innerHTML=(rows||"<div class=\"hint\">Nenhum terreno ainda.</div>")+
     "<div class=\"ledgerline\"><span class=\"lbl\"><b>Total</b></span><span class=\"fill\"></span>"+
-    "<span class=\"val small\">defesa "+tot.custoDefesa.toFixed(0)+" · terras "+tot.custoTerras.toFixed(0)+" · fortuna "+tot.fortuna.toFixed(0)+"</span></div>";
+    "<span class=\"val small\">estrutura "+tot.custoDefesa.toFixed(0)+" + extensão "+tot.custoTerras.toFixed(0)+" = "+(tot.custoDefesa+tot.custoTerras).toFixed(0)+" de Domínio · fortuna "+tot.fortuna.toFixed(0)+"</span></div>";
 }
 function opcoesCategoria(sel){
   let out="<option value=\"\">—</option>";
@@ -1209,24 +1373,27 @@ function renderPersonagens(){
       "<td><select onchange=\"setPersonagem('"+p.id+"','estado',this.value)\">"+ESTADO_PERSONAGEM.map(e=>"<option "+(p.estado===e?"selected":"")+">"+e+"</option>").join("")+"</select></td>"+
       "<td><input value=\""+esc(p.jogador)+"\" placeholder=\"jogador\" onchange=\"setPersonagem('"+p.id+"','jogador',this.value)\"></td>"+
       "<td><input value=\""+esc(p.experiencia)+"\" placeholder=\"experiência\" onchange=\"setPersonagem('"+p.id+"','experiencia',this.value)\"></td>"+
-      "<td><input type=\"number\" style=\"width:56px\" value=\""+(Number(p.honra)||0)+"\" onchange=\"setPersonagem('"+p.id+"','honra',this.value)\"></td>"+
+      "<td><input type=\"number\" min=\"0\" max=\"10\" step=\"0.1\" style=\"width:56px\" value=\""+(Number(p.honorRank)||0).toFixed(1)+"\" onchange=\"setStatusInd('"+p.id+"','honorRank',this.value)\"></td>"+
       "<td>"+custo+"</td><td><button class=\"ghost\" onclick=\"delPersonagem('"+p.id+"')\">✕</button></td></tr>";
   }).join("");
   document.getElementById("personagensTab").innerHTML=
-    "<thead><tr><th>Nome</th><th>Categoria</th><th>Estado</th><th>Jogador</th><th>Experiência</th><th>Honra</th><th>Custo</th><th></th></tr></thead>"+
+    "<thead><tr><th>Nome</th><th>Categoria</th><th>Estado</th><th>Jogador</th><th>Experiência</th><th title=\"Honor Rank oficial (0-10) — soma no Vazio da família, vivo ou morto\">Honra</th><th>Custo</th><th></th></tr></thead>"+
     "<tbody>"+(rows||"<tr><td colspan=\"8\" class=\"hint\">Nenhum personagem ainda.</td></tr>")+
     "<tr><td colspan=\"6\"><b>Total gasto de Influência</b></td><td><b>"+personagensCustoTotal().toFixed(0)+"</b></td><td></td></tr></tbody>";
 }
-/* Navegação por abas no topo do app (Família / Personagens) — estado só de tela,
+/* Navegação por abas no topo do app (Família / Personagens / Batalha) — estado só de tela,
    não é salvo em S nem sincronizado. */
 let abaPrincipal="familia";
 function setAbaPrincipal(a){
   abaPrincipal=a;
   document.getElementById("viewFamilia").style.display=(a==="familia")?"":"none";
   document.getElementById("viewPersonagens").style.display=(a==="personagens")?"":"none";
+  document.getElementById("viewBatalha").style.display=(a==="batalha")?"":"none";
   document.getElementById("tabBtnFamilia").className="tabbtn"+(a==="familia"?" on":"");
   document.getElementById("tabBtnPersonagens").className="tabbtn"+(a==="personagens"?" on":"");
+  document.getElementById("tabBtnBatalha").className="tabbtn"+(a==="batalha"?" on":"");
   if(a==="personagens")renderCharTabs();
+  if(a==="batalha")renderBatalha();
 }
 /* Qual personagem está aberto na aba Personagens — também é estado só de tela;
    cada personagem tem sua própria sub-aba, então um jogador com vários personagens
@@ -1564,6 +1731,7 @@ function renderFichaCompleta(p){
 
   out+="<div class=\"fichapanel\">";
   out+="<h2>Honra, Glória, Status e Mancha</h2>";
+  out+="<div class=\"hint\" style=\"margin-bottom:8px\">A Honra daqui é a mesma que soma no Vazio da família — vivo ou morto, todo personagem que já vestiu o nome da casa conta.</div>";
   out+="<div style=\"display:flex;gap:16px;flex-wrap:wrap\">"+
     ["honorRank","gloriaRank","statusRank","taintRank"].map((k,i)=>{
       const labels=["Honra","Glória","Status","Mancha das Sombras"];
@@ -1736,7 +1904,6 @@ function renderCharSheet(){
       "<div class=\"grp\">Papel <select onchange=\"setPersonagem('"+p.id+"','categoria',this.value)\" title=\"muda o custo em Influência — só o Mestre altera\">"+opcoesCategoria(p.categoria)+"</select></div>"+
       "<div class=\"grp\">Estado <select onchange=\"setPersonagem('"+p.id+"','estado',this.value)\">"+ESTADO_PERSONAGEM.map(e=>"<option "+(p.estado===e?"selected":"")+">"+e+"</option>").join("")+"</select></div>"+
       "<div class=\"grp\">Jogador <input type=\"text\" value=\""+esc(p.jogador)+"\" placeholder=\"quem joga\" style=\"width:140px\" onchange=\"setPersonagem('"+p.id+"','jogador',this.value)\"></div>"+
-      "<div class=\"grp\">Honra <input type=\"number\" value=\""+(Number(p.honra)||0)+"\" style=\"width:70px\" onchange=\"setPersonagem('"+p.id+"','honra',this.value)\"></div>"+
     "</div>"+
     "<div class=\"hint\" style=\"margin-bottom:10px\">Custo pago em Influência: <b>"+custo+"</b>"+(efeitoLabel?" · dá +"+(papelInfo?papelInfo.valor:0)+" em "+efeitoLabel:"")+"</div>"+
     "<button class=\"ghost\" style=\"margin-bottom:10px\" onclick=\"randomizarPersonagem('"+p.id+"')\" title=\"Sorteia clã/família/escola, traços, perícias e vantagens/desvantagens deste personagem (só ele, não mexe nos outros)\">🎲 Sortear este personagem</button>"+
@@ -1795,6 +1962,70 @@ function renderConversoes(){
   document.getElementById("conversoesTab").innerHTML=
     "<thead><tr><th>Origem</th><th>Destino</th><th>Taxa</th><th>Usos</th><th>Ganho</th><th>Custo</th><th></th></tr></thead>"+
     "<tbody>"+(rows||"<tr><td colspan=\"7\" class=\"hint\">Nenhuma conversão ainda.</td></tr>")+"</tbody>";
+}
+
+/* ============ BATALHA EM MASSA — render ============ */
+function renderBatalha(){
+  const box=document.getElementById("batalhaAtualBox");
+  if(!box)return;
+  if(!S.batalhaAtual){
+    box.innerHTML="<button class=\"primary\" onclick=\"iniciarBatalha()\">⚔ Iniciar nova batalha</button>";
+  }else{
+    const b=S.batalhaAtual;
+    const statusInfo=b.status?STATUS_BATALHA.find(s=>s.id===b.status):null;
+    const statusCor=b.status==="vencendo"?"var(--good)":(b.status==="perdendo"?"var(--bad)":"var(--ink)");
+    let out="";
+    out+="<div class=\"linha\"><input class=\"campo-medio\" value=\""+esc(b.nome)+"\" placeholder=\"nome da batalha (ex: Cerco de Shiro Kaiu)\" onchange=\"setBatalhaCampo('nome',this.value)\">"+
+      "<input class=\"campo-medio\" value=\""+esc(b.inimigo)+"\" placeholder=\"contra quem\" onchange=\"setBatalhaCampo('inimigo',this.value)\"></div>";
+    out+="<div class=\"hint\" style=\"margin:8px 0\">Iniciada em "+esc(b.criada)+" · Turno "+(b.turno||0)+" · status atual: <b style=\"color:"+statusCor+"\">"+(statusInfo?statusInfo.nome:"— rode o contest dos generais")+"</b></div>";
+    out+="<div class=\"linha\"><span class=\"tag\">General da família <input type=\"number\" style=\"width:52px\" value=\""+(b.generalProprioBonus||0)+"\" onchange=\"setBatalhaCampo('generalProprioBonus',this.value)\"> (Percepção+Batalha)</span>"+
+      "<span class=\"tag\">General inimigo <input type=\"number\" style=\"width:52px\" value=\""+(b.generalInimigoBonus||0)+"\" onchange=\"setBatalhaCampo('generalInimigoBonus',this.value)\"> (estimativa do Mestre)</span></div>";
+    if(b.ultimoContest)out+="<div class=\"hint\">Último contest: família "+b.ultimoContest.proprio+" × inimigo "+b.ultimoContest.inimigo+" (diferença "+b.ultimoContest.dif+")</div>";
+    out+="<div style=\"margin:10px 0;display:flex;gap:8px;flex-wrap:wrap\">"+
+      "<button onclick=\"rodarContesteBatalha()\">🎲 Rodar contest dos generais (novo turno)</button>"+
+      "<button onclick=\"rodarTurnoBatalha()\">🎲 Rodar Tabela de Batalha pros participantes</button></div>";
+
+    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Participantes</div>";
+    out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th></th><th>Personagem</th><th>Engajamento</th><th>Dano</th><th>Glória</th></tr></thead><tbody>";
+    if(!S.personagens.length){
+      out+="<tr><td colspan=\"5\" class=\"hint\">Nenhum personagem criado ainda.</td></tr>";
+    }else{
+      S.personagens.forEach(p=>{
+        const part=b.participantes.find(x=>x.personagemId===p.id);
+        out+="<tr><td><input type=\"checkbox\" "+(part?"checked":"")+" onchange=\"toggleParticipante('"+p.id+"')\"></td>"+
+          "<td>"+esc(p.nome||"sem nome")+"</td>"+
+          "<td>"+(part?("<select onchange=\"setEngajamento('"+p.id+"',this.value)\">"+ENGAJAMENTO.map(e=>"<option value=\""+e.idx+"\" "+(part.engajamentoIdx===e.idx?"selected":"")+" title=\""+esc(e.desc)+"\">"+esc(e.nome)+"</option>").join("")+"</select>"):"—")+"</td>"+
+          "<td>"+(Number(p.danoAtual)||0)+"</td>"+
+          "<td>"+(Number(p.gloriaRank)||0).toFixed(1)+"</td></tr>";
+      });
+    }
+    out+="</tbody></table></div>";
+
+    out+="<div class=\"linha\" style=\"margin-top:14px\"><input class=\"campo-medio\" style=\"flex:2\" value=\""+esc(b.desfecho||"")+"\" placeholder=\"desfecho da batalha (preencha antes de encerrar)\" onchange=\"setBatalhaCampo('desfecho',this.value)\">"+
+      "<button class=\"ghost\" onclick=\"encerrarBatalha()\">encerrar e arquivar</button></div>";
+
+    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Log da batalha</div>";
+    out+="<div class=\"log\">"+(b.log.length?b.log.map(l=>"<p>Turno "+l.turno+" — "+l.texto.replace(/^Turno \d+ — /,"")+"</p>").join(""):"<p style=\"color:var(--muted-tx)\">Nenhum turno rodado ainda.</p>")+"</div>";
+    box.innerHTML=out;
+  }
+
+  const hist=document.getElementById("batalhaHistoricoBox");
+  if(hist){
+    const list=S.batalhas||[];
+    hist.innerHTML=list.length?list.map(bt=>
+      "<div class=\"torncard\"><div class=\"on\">"+esc(bt.nome||"sem nome")+"</div>"+
+      (bt.inimigo?"<div class=\"ed\">contra "+esc(bt.inimigo)+"</div>":"")+
+      (bt.desfecho?"<div class=\"ed\">"+esc(bt.desfecho)+"</div>":"")+
+      "<div class=\"hint\">"+esc(bt.criada||"")+" — "+esc(bt.encerrada||"")+" · "+(bt.turno||0)+" turno(s) · "+((bt.participantes||[]).length)+" participante(s)</div>"+
+      "<button class=\"ghost\" onclick=\"delBatalhaHistorico('"+bt.id+"')\">remover</button></div>"
+    ).join(""):"<div class=\"hint\">Nenhuma batalha encerrada ainda.</div>";
+  }
+
+  const op=document.getElementById("oportunidadesBox");
+  if(op&&!op.dataset.filled){
+    op.innerHTML=OPORTUNIDADES_HEROICAS.map(o=>"<div class=\"linha\" style=\"align-items:flex-start\"><b style=\"min-width:170px\">"+esc(o.nome)+"</b><span style=\"font-size:12.5px;color:var(--ink2)\">"+esc(o.efeito)+"</span></div>").join("");
+    op.dataset.filled="1";
+  }
 }
 function renderFeed(){
   const l=document.getElementById("log");
