@@ -66,16 +66,24 @@
   .mapaViewport img{max-width:100%;max-height:100%;object-fit:contain;transform-origin:center center;
     user-select:none;-webkit-user-drag:none;pointer-events:none;will-change:transform}
   /* Tabuleiro de raias de engajamento (§13) — duas colunas (família/inimigo) por fileira,
-     inspirado em Shogi: só a profundidade de sempre, agora visual, clicável pra ciclar. */
-  .tabuleiro{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:10px}
-  .tabuleiroLinha{display:grid;grid-template-columns:110px 1fr 1fr;min-height:44px;border-top:1px solid var(--line)}
+     inspirado em Shogi: só a profundidade de sempre, agora visual, clicável pra ciclar.
+     v4: maior/mais espaçoso, fundo de terreno (cor lisa, sem imagem) e uma faixa opcional
+     de fortificação em disputa no topo. */
+  .tabuleiro{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:10px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06);transition:background .2s}
+  .tabuleiroTerreno{padding:8px 12px;font-size:12px;text-transform:uppercase;letter-spacing:.5px;
+    color:var(--muted-tx);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:6px}
+  .tabuleiroForte{padding:9px 12px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:1px solid var(--line);
+    background:rgba(160,120,40,.10)}
+  .tabuleiroForte:hover{filter:brightness(1.06)}
+  .tabuleiroLinha{display:grid;grid-template-columns:120px 1fr 1fr;min-height:64px;border-top:1px solid var(--line)}
   .tabuleiroLinha:first-child{border-top:none}
-  .tabuleiroRotulo{display:flex;align-items:center;padding:6px 10px;font-size:11px;text-transform:uppercase;
+  .tabuleiroRotulo{display:flex;align-items:center;padding:8px 12px;font-size:12px;text-transform:uppercase;
     letter-spacing:.5px;color:var(--muted-tx);background:var(--panel2)}
-  .tabuleiroLado{display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:6px 8px}
+  .tabuleiroLado{display:flex;flex-wrap:wrap;gap:7px;align-items:center;padding:10px 12px}
   .tabuleiroLado.ladoInimigo{background:rgba(140,40,40,.05)}
   .tabuleiroLado.ladoFamilia{background:rgba(40,80,140,.05)}
-  .chip{display:inline-block;padding:3px 9px;border-radius:14px;font-size:12px;cursor:pointer;border:1px solid var(--line);
+  .chip{display:inline-block;padding:5px 13px;border-radius:16px;font-size:13px;cursor:pointer;border:1px solid var(--line);
     background:var(--panel);white-space:nowrap}
   .chip:hover{filter:brightness(1.08)}
   .chipFamilia{border-color:#3f6ca6;color:#274a78}
@@ -360,6 +368,7 @@
   <div id="viewBatalha" style="display:none">
     <div class="panel">
       <h2><span class="kan">兵</span>Batalha em Massa<span class="sub">regras da 4ª edição + tropas, Ordens, Postura e Fortificações</span></h2>
+      <div class="hint" style="margin-bottom:10px;background:rgba(200,150,40,.12);border:1px solid rgba(200,150,40,.4);border-radius:var(--radius);padding:10px 14px">🚧 <b>Em construção:</b> este sistema está sendo reformulado do zero (o exército vai funcionar como uma unidade única, ao estilo de um personagem, com ações e modificadores próprios). O que está abaixo é a versão anterior, ainda funcional pra referência, mas vai mudar bastante.</div>
       <div class="hint" style="margin-bottom:10px">Marque as tropas comprometidas nesta batalha (força/disciplina delas mexem no nível efetivo e no bônus do General), escolha uma Ordem de Batalha e uma Postura de Combate por personagem a cada turno, e opcionalmente ponha uma fortificação em jogo pra representar um cerco. Detalhes e fórmulas em "Batalha em Massa - Redesign.md", na pasta do projeto.</div>
       <div id="batalhaAtualBox"></div>
     </div>
@@ -749,6 +758,18 @@ const FORTIFICACAO_TIPOS={
  forte:{nome:"Forte",reducaoFerimentos:3,dificuldadeCerco:20},
  castelo:{nome:"Castelo",reducaoFerimentos:4,dificuldadeCerco:30}
 };
+/* Visual de terreno do tabuleiro de batalha — puramente estético (cor de fundo + ícone),
+   o Mestre escolhe pra deixar claro o cenário sem precisar de arte de verdade. */
+const TERRENO_BATALHA_VISUAL={
+ "":{nome:"Terreno não definido",emoji:"◻",cor:"transparent"},
+ planicies:{nome:"Planícies",emoji:"🌾",cor:"rgba(200,175,70,.14)"},
+ colinas:{nome:"Colinas",emoji:"⛰",cor:"rgba(150,110,70,.14)"},
+ montanhas:{nome:"Montanhas",emoji:"🗻",cor:"rgba(120,120,135,.16)"},
+ alagadas:{nome:"Terras Alagadas",emoji:"💧",cor:"rgba(70,130,180,.14)"},
+ floresta:{nome:"Floresta",emoji:"🌲",cor:"rgba(60,120,60,.16)"},
+ costa:{nome:"Costa/Praia",emoji:"🌊",cor:"rgba(50,140,180,.14)"},
+ neve:{nome:"Neve/Inverno",emoji:"❄",cor:"rgba(200,220,230,.20)"}
+};
 /* Ordens de Batalha — decisão de comando a cada turno, substitui a escolha estática de
    engajamento por uma tática que se repete turno a turno. */
 const ORDENS_BATALHA=[
@@ -926,6 +947,17 @@ if(S.batalhaAtual){
   if(!ba.comandantesTropa)ba.comandantesTropa={};
   if(!ba.raiasTropa)ba.raiasTropa={};
   (ba.participantes||[]).forEach(pt=>{if(pt.tropaId===undefined)pt.tropaId=null;});
+  /* Migração v4: terreno visual do tabuleiro, comandante inimigo virou texto+bônus manual
+     (era um id de personagem da família, que não fazia sentido pro lado inimigo), e a
+     fortificação da batalha ganhou origem (família/manual) — sem origem definida, trata
+     como "manual" (comportamento antigo, tipo genérico direto em fort.tipo). */
+  if(ba.terreno===undefined)ba.terreno="";
+  (ba.tropasInimigas||[]).forEach(t=>{
+    if(t.comandanteNome===undefined)t.comandanteNome="";
+    if(t.comandanteBonus===undefined)t.comandanteBonus=0;
+    delete t.comandanteId;
+  });
+  if(ba.fortificacao&&!ba.fortificacao.origem)ba.fortificacao.origem="manual";
 }
 /* Migração: famílias salvas antes da fusão pros 5 atributos (5 anéis) tinham
    defesa/terras/ordem/populacao/poder/honra/espiritualidade separados. Soma cada
@@ -995,6 +1027,31 @@ function terrenoLinhaCalc(row){
   return{custoDefesa,custoTerras,fortuna};
 }
 function terrenosTotais(){let cd=0,ct=0,f=0;S.terrenos.forEach(r=>{const x=terrenoLinhaCalc(r);cd+=x.custoDefesa;ct+=x.custoTerras;f+=x.fortuna;});return{custoDefesa:cd,custoTerras:ct,fortuna:f};}
+/* Fortificação em disputa numa Batalha em Massa (§ redesign v4): em vez de escolher só
+   um dos 4 tipos genéricos, o Mestre pode puxar uma fortificação DE VERDADE que a família
+   construiu (aba Terrenos, FORTIFICACOES reais com dificuldade/attrition próprios) ou, se
+   for uma estrutura do inimigo que a família nunca teve ficha, preencher manualmente com
+   um dos 4 tipos genéricos como aproximação. */
+function fortificacoesDaFamilia(){
+  const list=[];
+  S.terrenos.forEach(r=>{
+    const tb=TERRENOS_BASE.find(x=>x.id===r.terreno);
+    [r.c1,r.c2,r.c3,r.c4].forEach(id=>{
+      const f=FORTIFICACOES.find(x=>x.id===id);
+      if(f)list.push({terrenoId:r.id,fortId:f.id,nome:f.nome,terrenoNome:r.nome||(tb?tb.nome:"terreno"),attrition:f.attrition,dificuldade:f.dificuldade});
+    });
+  });
+  return list;
+}
+function fortTipoInfo(fort){
+  if(!fort)return null;
+  if(fort.origem==="familia"){
+    const f=fortificacoesDaFamilia().find(x=>x.terrenoId===fort.terrenoId&&x.fortId===fort.fortId);
+    if(f)return{nome:f.nome+" ("+f.terrenoNome+")",reducaoFerimentos:-f.attrition,dificuldadeCerco:f.dificuldade};
+  }
+  const base=FORTIFICACAO_TIPOS[fort.tipoSimples||fort.tipo]||FORTIFICACAO_TIPOS.terreno;
+  return{nome:(fort.nome?fort.nome+" ("+base.nome+")":base.nome),reducaoFerimentos:base.reducaoFerimentos,dificuldadeCerco:base.dificuldadeCerco};
+}
 
 function honraSacrificadaTotal(){return(S.sacrificios||[]).reduce((s,x)=>s+(Number(x.valor)||0),0);}
 function sacrificioProgressoMod(attr){let s=0;(S.sacrificios||[]).forEach(x=>{if(x.tipo==="progresso"&&x.attrGanho===attr)s+=(Number(x.attrValor)||0);});return s;}
@@ -1271,7 +1328,7 @@ function iniciarBatalha(){if(bloqueadoLeitura())return;
   S.batalhaAtual={id:uid(),nome:"",inimigo:"",desfecho:"",criada:(ESTACOES[S.estacaoIdx||0])+" ano "+(S.anoEstacao||1),
     turno:0,generalProprioBonus:0,generalInimigoBonus:0,generalId:null,
     proprioBonusProximoTurno:0,inimigoBonusProximoTurno:0,
-    status:null,ultimoContest:null,statusHistorico:[],moral:10,
+    status:null,ultimoContest:null,statusHistorico:[],moral:10,terreno:"",
     tropasComprometidas:[],fortificacao:null,resultado:null,
     tropasInimigas:[],modoRolagem:"app",posturasTropa:{},comandantesTropa:{},raiasTropa:{},
     participantes:[],log:[]};
@@ -1307,7 +1364,10 @@ function toggleTropaBatalha(tropaId){if(bloqueadoLeitura())return;if(!S.batalhaA
    existem dentro da batalha atual e somem quando ela é encerrada. */
 function addTropaInimiga(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   S.batalhaAtual.tropasInimigas=S.batalhaAtual.tropasInimigas||[];
-  S.batalhaAtual.tropasInimigas.push({id:uid(),nome:"",tipo:"ashigaru",estado:"mobilizado",raia:2,postura:"ataque",comandanteId:null});
+  /* comandanteNome/comandanteBonus em vez de comandanteId: o inimigo não tem ficha de
+     personagem no app, então o Mestre só escreve um nome e um bônus manual (equivalente
+     a Água+Batalha) pra usar no teste de mudança de Postura. */
+  S.batalhaAtual.tropasInimigas.push({id:uid(),nome:"",tipo:"ashigaru",estado:"mobilizado",raia:2,postura:"ataque",comandanteNome:"",comandanteBonus:0});
   salvar();render();}
 function setTropaInimiga(id,campo,val){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const t=(S.batalhaAtual.tropasInimigas||[]).find(x=>x.id===id);if(!t)return;
@@ -1318,28 +1378,29 @@ function delTropaInimiga(id){if(bloqueadoLeitura())return;if(!S.batalhaAtual)ret
    Postura dela num turno com d10+Água+Batalha contra a Moral da Batalha atual (§15). Sem
    comandante, a tropa fica travada em "Ataque". */
 function tropaFamiliaPostura(tropaId){return(S.batalhaAtual&&S.batalhaAtual.posturasTropa&&S.batalhaAtual.posturasTropa[tropaId])||"ataque";}
-function setComandanteTropa(tropaId,lado,personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const b=S.batalhaAtual;
-  if(lado==="familia"){b.comandantesTropa=b.comandantesTropa||{};b.comandantesTropa[tropaId]=personagemId||null;}
-  else{const t=(b.tropasInimigas||[]).find(x=>x.id===tropaId);if(t)t.comandanteId=personagemId||null;}
+function setComandanteTropa(tropaId,personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const b=S.batalhaAtual;b.comandantesTropa=b.comandantesTropa||{};b.comandantesTropa[tropaId]=personagemId||null;
   salvar();render();}
 function testarPosturaTropa(tropaId,lado,novaPostura){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const b=S.batalhaAtual;let comandanteId=null,tropaNome="tropa";
+  const b=S.batalhaAtual;let tropaNome="tropa",nomeComandante=null,bonusTotal=0,detalheBonus="";
   if(lado==="familia"){
-    comandanteId=(b.comandantesTropa&&b.comandantesTropa[tropaId])||null;
+    const comandanteId=(b.comandantesTropa&&b.comandantesTropa[tropaId])||null;
     const t=S.tropas.find(x=>x.id===tropaId);if(t)tropaNome=(TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo)+(t.local?(" ("+t.local+")"):"");
+    if(!comandanteId){flashHint("Essa tropa não tem comandante designado — sem comandante, a postura fica travada em Ataque.");return;}
+    const p=S.personagens.find(x=>x.id===comandanteId);if(!p){flashHint("Comandante não encontrado.");return;}
+    fichaBase(p);
+    const agua=aneisPersonagem(p).agua||0,skill=personagemBattleSkill(p);
+    nomeComandante=p.nome||"comandante";bonusTotal=agua+skill;detalheBonus="Água "+agua+"+Batalha "+skill;
   }else{
     const t=(b.tropasInimigas||[]).find(x=>x.id===tropaId);if(!t)return;
-    comandanteId=t.comandanteId;tropaNome=t.nome||"tropa inimiga";
+    tropaNome=t.nome||"tropa inimiga";
+    if(!t.comandanteNome){flashHint("Escreva um nome pro comandante inimigo antes de testar a mudança de postura (aba de tropas inimigas).");return;}
+    nomeComandante=t.comandanteNome;bonusTotal=Number(t.comandanteBonus)||0;detalheBonus="bônus "+bonusTotal;
   }
-  if(!comandanteId){flashHint("Essa tropa não tem comandante designado — sem comandante, a postura fica travada em Ataque.");return;}
-  const p=S.personagens.find(x=>x.id===comandanteId);if(!p){flashHint("Comandante não encontrado.");return;}
-  fichaBase(p);
-  const agua=aneisPersonagem(p).agua||0,skill=personagemBattleSkill(p);
   const moral=(b.moral===undefined?10:Number(b.moral));
-  const dado=d10(),total=dado+agua+skill,sucesso=total>=moral;
+  const dado=d10(),total=dado+bonusTotal,sucesso=total>=moral;
   const nomePostura=(POSTURAS_BATALHA.find(x=>x.id===novaPostura)||{}).nome||novaPostura;
-  b.log.unshift({turno:b.turno,texto:esc(p.nome||"comandante")+" tenta mudar a postura de "+esc(tropaNome)+" pra "+nomePostura+": rolou "+total+" (d10 "+dado+"+Água "+agua+"+Batalha "+skill+") contra Moral "+moral+" — "+(sucesso?"sucesso!":"falhou, mantém a postura anterior.")});
+  b.log.unshift({turno:b.turno,texto:esc(nomeComandante)+" tenta mudar a postura de "+esc(tropaNome)+" pra "+nomePostura+": rolou "+total+" (d10 "+dado+"+"+detalheBonus+") contra Moral "+moral+" — "+(sucesso?"sucesso!":"falhou, mantém a postura anterior.")});
   if(sucesso){
     if(lado==="familia"){b.posturasTropa=b.posturasTropa||{};b.posturasTropa[tropaId]=novaPostura;}
     else{const t=(b.tropasInimigas||[]).find(x=>x.id===tropaId);if(t)t.postura=novaPostura;}
@@ -1353,21 +1414,74 @@ function setManualResultado(personagemId,campo,val){if(bloqueadoLeitura())return
   else if(campo==="dano")part._manualDano=parseFloat(val)||0;
   else if(campo==="gloria")part._manualGloria=parseFloat(val)||0;
   salvar();}
+/* Turno unificado (v4): antes eram DUAS ações separadas — "rodar contest dos generais"
+   (decide status/moral do exército) e "rodar tabela de batalha" (resultado de cada
+   participante) — o Thiago achou isso esquisito de manejar e pediu pra virar UMA ação só,
+   com um resumo geral no topo do log. calcularEAplicarContesteGenerais() faz a parte do
+   exército (sempre automática, mesmo em modo Mesa — não é algo que se rola fisicamente,
+   é a abstração de generais manobrando); o resto (participantes + baixas de tropa) muda
+   conforme o modo de rolagem. */
+function calcularEAplicarContesteGenerais(){
+  const b=S.batalhaAtual;
+  const bonusProprioEfetivo=(Number(b.generalProprioBonus)||0)+(Number(b.proprioBonusProximoTurno)||0);
+  const bonusInimigoEfetivo=(Number(b.generalInimigoBonus)||0)+(Number(b.inimigoBonusProximoTurno)||0);
+  const bonusPendProprio=Number(b.proprioBonusProximoTurno)||0,bonusPendInimigo=Number(b.inimigoBonusProximoTurno)||0;
+  const c=rolarContesteGenerais(bonusProprioEfetivo,bonusInimigoEfetivo);
+  b.turno=(b.turno||0)+1;b.status=c.status;b.ultimoContest=c;
+  b.statusHistorico=b.statusHistorico||[];b.statusHistorico.push(c.status);
+  const moralAntes=(b.moral===undefined?10:Number(b.moral));
+  b.moral=Math.max(0,Math.min(20,moralAntes+Math.round(c.dif/2)));
+  b.proprioBonusProximoTurno=0;b.inimigoBonusProximoTurno=0;
+  return{c,moralAntes,bonusPendProprio,bonusPendInimigo};
+}
+function aplicarBaixasTropa(b){
+  const perfil=perfilExercitoComprometido();
+  const maioriaBagagem=exercitoTemEquipMaioria(perfil.unidades,"bagagem");
+  let baixas=0;
+  (b.tropasComprometidas||[]).forEach(tid=>{
+    const t=S.tropas.find(x=>x.id===tid);if(!t||t.estado==="derrotado")return;
+    const calc=tropaLinhaCalc(t);
+    const statusMod=b.status==="vencendo"?2:(b.status==="perdendo"?-2:0);
+    const discMod=calc.disciplina>=35?1:(calc.disciplina<25?-1:0);
+    const equipMod=((t.equipamento||[]).includes("armaduras")||t.especializacao==="disciplinado"||maioriaBagagem)?1:0;
+    const roll=d10()+statusMod+discMod+equipMod;
+    let novoEstado=null;
+    if(roll<=2)novoEstado="derrotado";
+    else if(roll<=5)novoEstado=(t.estado==="ferido")?"derrotado":"ferido";
+    if(novoEstado){
+      t.estado=novoEstado;baixas++;
+      b.log.unshift({turno:b.turno,texto:"Tropa "+(TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo)+(t.local?(" ("+esc(t.local)+")"):"")+": baixas — agora "+TROPA_ESTADO[novoEstado].nome+" (teste "+roll+")."});
+    }
+  });
+  return baixas;
+}
+function resumoTurnoTxt(b,c,moralAntes,bonusPendProprio,bonusPendInimigo,danoTotal,gloriaTotal,especiais,baixas,sufixoParticipantes){
+  const statusNome=STATUS_BATALHA.find(s=>s.id===c.status).nome;
+  let txt="Turno "+b.turno+" — Contest: "+c.proprio+" × "+c.inimigo+" (dif "+c.dif+") → "+statusNome+". Moral "+moralAntes+"→"+b.moral+".";
+  if(bonusPendProprio)txt+=" (bônus pendente família "+(bonusPendProprio>0?"+":"")+bonusPendProprio+")";
+  if(bonusPendInimigo)txt+=" (pendente no inimigo "+bonusPendInimigo+")";
+  txt+=" "+b.participantes.length+" participante(s)"+sufixoParticipantes+": "+danoTotal+" dano, "+(Math.round(gloriaTotal*10)/10)+" Glória"+(especiais?", "+especiais+" evento(s) especial(is)":"")+"."+(baixas?" "+baixas+" tropa(s) sofreu(ram) baixas.":"");
+  return txt;
+}
 function confirmarTurnoManual(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const b=S.batalhaAtual;
-  if(!b.status){flashHint("Rode ou registre o contest dos generais primeiro.");return;}
   if(!b.participantes.length){flashHint("Nenhum personagem participando desta batalha ainda.");return;}
+  const{c,moralAntes,bonusPendProprio,bonusPendInimigo}=calcularEAplicarContesteGenerais();
+  let danoTotal=0,gloriaTotal=0,especiais=0;
   b.participantes.forEach(part=>{
     const p=S.personagens.find(x=>x.id===part.personagemId);if(!p)return;
     fichaBase(p);
     const dano=Number(part._manualDano)||0,gloria=Number(part._manualGloria)||0,especial=part._manualEspecial||null;
     p.danoAtual=(Number(p.danoAtual)||0)+dano;
     p.gloriaRank=(Number(p.gloriaRank)||0)+gloria;
-    let txt=esc(p.nome||"sem nome")+" (resultado da mesa): "+dano+" dano, "+gloria+" Glória";
+    danoTotal+=dano;gloriaTotal+=gloria;if(especial)especiais++;
+    let txt=esc(p.nome||"sem nome")+" (mesa): "+dano+" dano, "+gloria+" Glória";
     if(especial)txt+=" — "+ESP_LABEL[especial]+"!";
     b.log.unshift({turno:b.turno,texto:txt});
     delete part._manualDano;delete part._manualGloria;delete part._manualEspecial;
   });
+  const baixas=aplicarBaixasTropa(b);
+  b.log.unshift({turno:b.turno,texto:resumoTurnoTxt(b,c,moralAntes,bonusPendProprio,bonusPendInimigo,danoTotal,gloriaTotal,especiais,baixas," (mesa)")});
   salvar();render();}
 function setGeneralId(personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   S.batalhaAtual.generalId=personagemId||null;salvar();render();}
@@ -1375,10 +1489,34 @@ function recalcularBonusGeneral(){if(bloqueadoLeitura())return;if(!S.batalhaAtua
   const sug=calcularBonusGeneralSugerido();
   if(sug===null){flashHint("Escolha um personagem como General primeiro.");return;}
   S.batalhaAtual.generalProprioBonus=sug;salvar();render();}
-function setFortificacaoTipo(tipo){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  S.batalhaAtual.fortificacao=tipo?{tipo,ocupante:"inimiga",pontosCerco:0}:null;salvar();render();}
+/* Fortificação em disputa (v4): valor do <select> é "" (nenhuma), "manual" (estrutura do
+   inimigo, sem ficha — o Mestre digita nome e escolhe um dos 4 tipos genéricos como
+   aproximação) ou "fam:<terrenoId>:<fortId>" (uma fortificação de verdade que a família
+   já construiu, puxada da aba Terrenos com os números reais dela). */
+function setFortificacaoBatalha(valor){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const b=S.batalhaAtual;
+  if(!valor){b.fortificacao=null;salvar();render();return;}
+  if(valor==="manual"){b.fortificacao={origem:"manual",tipoSimples:"terreno",nome:"",ocupante:"inimiga",pontosCerco:0};salvar();render();return;}
+  const partes=valor.split(":");
+  b.fortificacao={origem:"familia",terrenoId:partes[1],fortId:partes[2],ocupante:"propria",pontosCerco:0};
+  salvar();render();}
+function setFortificacaoManualCampo(campo,val){if(bloqueadoLeitura())return;if(!S.batalhaAtual||!S.batalhaAtual.fortificacao)return;
+  S.batalhaAtual.fortificacao[campo]=val;salvar();render();}
 function setFortificacaoOcupante(ocupante){if(bloqueadoLeitura())return;if(!S.batalhaAtual||!S.batalhaAtual.fortificacao)return;
   S.batalhaAtual.fortificacao.ocupante=ocupante;salvar();render();}
+function ciclarOcupanteFortificacao(){if(bloqueadoLeitura())return;if(!S.batalhaAtual||!S.batalhaAtual.fortificacao)return;
+  const seq=["propria","inimiga",null];const i=seq.indexOf(S.batalhaAtual.fortificacao.ocupante);
+  S.batalhaAtual.fortificacao.ocupante=seq[(i+1)%seq.length];salvar();render();}
+function addPontosCerco(v){if(bloqueadoLeitura())return;if(!S.batalhaAtual||!S.batalhaAtual.fortificacao)return;
+  const n=parseFloat(v)||0;if(!n)return;
+  const b=S.batalhaAtual,fort=b.fortificacao,info=fortTipoInfo(fort);
+  fort.pontosCerco=(Number(fort.pontosCerco)||0)+n;
+  b.log.unshift({turno:b.turno,texto:"Cerco a "+esc(fort.nome||info.nome)+": +"+n+" pontos ("+fort.pontosCerco+"/"+info.dificuldadeCerco+")."});
+  if(fort.pontosCerco>=info.dificuldadeCerco&&fort.ocupante!=="propria"){
+    fort.ocupante="propria";
+    b.log.unshift({turno:b.turno,texto:"A fortificação "+esc(fort.nome||info.nome)+" caiu — agora ocupada pela família!"});
+  }
+  salvar();render();}
 function sugerirResultadoBatalha(b){
   const hist=(b&&b.statusHistorico)||[];if(!hist.length)return"empate";
   let v=0,p=0;hist.forEach(s=>{if(s==="vencendo")v++;else if(s==="perdendo")p++;});
@@ -1400,36 +1538,16 @@ function retirarPersonagemBatalha(personagemId,testemunhado){if(bloqueadoLeitura
   b.participantes=b.participantes.filter(x=>x.personagemId!==personagemId);
   b.log.unshift({turno:b.turno,texto:esc(p.nome||"sem nome")+" se retira definitivamente da batalha (−1 Honra"+(testemunhado?", −1 Glória (testemunhado)":"")+")."+(eraGeneral?" A família fica sem general por um momento (−3 no próximo Contest).":"")});
   salvar();render();}
-function rodarContesteBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const b=S.batalhaAtual;
-  const bonusProprioEfetivo=(Number(b.generalProprioBonus)||0)+(Number(b.proprioBonusProximoTurno)||0);
-  const bonusInimigoEfetivo=(Number(b.generalInimigoBonus)||0)+(Number(b.inimigoBonusProximoTurno)||0);
-  const c=rolarContesteGenerais(bonusProprioEfetivo,bonusInimigoEfetivo);
-  b.turno=(b.turno||0)+1;b.status=c.status;b.ultimoContest=c;
-  b.statusHistorico=b.statusHistorico||[];b.statusHistorico.push(c.status);
-  /* Moral da Batalha (§15): acumula turno a turno pela diferença do Contest, não é só o
-     status do turno atual — uma família que vem ganhando contest após contest sobe a Moral
-     de verdade, uma que vem perdendo desce e fica mais difícil de recuperar rápido. É a TN
-     usada pra testar mudança de Postura de uma tropa (testarPosturaTropa). */
-  const moralAntes=(b.moral===undefined?10:Number(b.moral));
-  b.moral=Math.max(0,Math.min(20,moralAntes+Math.round(c.dif/2)));
-  const statusNome=STATUS_BATALHA.find(s=>s.id===c.status).nome;
-  let txt="Turno "+b.turno+" — contest dos generais: "+c.proprio+" x "+c.inimigo+" → família "+statusNome+". Moral "+moralAntes+"→"+b.moral+".";
-  if(b.proprioBonusProximoTurno)txt+=" (bônus pendente aplicado: "+(b.proprioBonusProximoTurno>0?"+":"")+b.proprioBonusProximoTurno+")";
-  if(b.inimigoBonusProximoTurno)txt+=" (penalidade pendente no inimigo aplicada: "+b.inimigoBonusProximoTurno+")";
-  b.proprioBonusProximoTurno=0;b.inimigoBonusProximoTurno=0;
-  b.log.unshift({turno:b.turno,texto:txt});
-  salvar();render();}
 function rodarTurnoBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const b=S.batalhaAtual;
-  if(b.modoRolagem==="mesa"){flashHint("Modo Mesa está ativo — use \"confirmar turno\" com os resultados digitados, em vez de rolar no app.");return;}
-  if(!b.status){flashHint("Rode o contest dos generais primeiro, pra saber quem está vencendo.");return;}
-  if(!b.participantes.length){flashHint("Nenhum personagem está participando desta batalha ainda.");return;}
+  if(b.modoRolagem==="mesa"){flashHint("Modo Mesa está ativo — preencha os resultados manuais e clique em \"Confirmar turno\".");return;}
+  if(!b.participantes.length&&!(b.tropasComprometidas||[]).length){flashHint("Ninguém está participando desta batalha ainda.");return;}
+  const{c,moralAntes,bonusPendProprio,bonusPendInimigo}=calcularEAplicarContesteGenerais();
   const statusShift=STATUS_BATALHA.find(s=>s.id===b.status).shift;
   const perfil=perfilExercitoComprometido();
   const fort=b.fortificacao;
   const maioriaSuprimentos=exercitoTemEquipMaioria(perfil.unidades,"suprimentos");
-  const maioriaBagagem=exercitoTemEquipMaioria(perfil.unidades,"bagagem");
+  let danoTotal=0,gloriaTotal=0,especiais=0;
   b.participantes.forEach(part=>{
     const p=S.personagens.find(x=>x.id===part.personagemId);if(!p)return;
     fichaBase(p);
@@ -1451,7 +1569,7 @@ function rodarTurnoBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)ret
     if(bonusGeneralProximoOrdem)b.proprioBonusProximoTurno=(Number(b.proprioBonusProximoTurno)||0)+bonusGeneralProximoOrdem;
     let ajusteFerDados=(ordem.reduzFerimento?-ordem.reduzFerimento:0)+(postura.ferimentoDelta||0);
     if(maioriaSuprimentos)ajusteFerDados-=1;
-    if(fort&&fort.ocupante==="propria")ajusteFerDados-=FORTIFICACAO_TIPOS[fort.tipo].reducaoFerimentos;
+    if(fort&&fort.ocupante==="propria")ajusteFerDados-=fortTipoInfo(fort).reducaoFerimentos;
     const totalDelta=(postura.totalDelta||0)+(Number(part._bonusCentroProximo)||0);
     delete part._bonusCentroProximo;
     const r=rolarBatalhaPersonagem(p,part.engajamentoIdx,statusShift+perfil.forcaShift,{
@@ -1463,36 +1581,24 @@ function rodarTurnoBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)ret
     });
     p.danoAtual=(Number(p.danoAtual)||0)+r.ferimentosRolados;
     p.gloriaRank=(Number(p.gloriaRank)||0)+r.gloria;
+    danoTotal+=r.ferimentosRolados;gloriaTotal+=r.gloria;if(r.especial)especiais++;
     let txt=esc(p.nome||"sem nome")+" ("+ENGAJAMENTO[part.engajamentoIdx].nome+" · "+ordem.nome+" · "+postura.nome+"): rolou "+r.total+" (d10 "+r.dado+"+Água "+r.agua+"+Batalha "+r.skill+(r.totalDelta?(r.totalDelta>0?"+"+r.totalDelta:r.totalDelta)+" postura":"")+"), faixa "+r.faixa+" — "+r.fer+" dado(s) de ferimento ("+r.ferimentosRolados+" dano), "+r.gloria+" Glória";
     if(r.especial)txt+=" — "+ESP_LABEL[r.especial]+"!";
     b.log.unshift({turno:b.turno,texto:txt});
     if(assaltando&&fort){
+      const info=fortTipoInfo(fort);
       fort.pontosCerco=(Number(fort.pontosCerco)||0)+r.total;
-      const dif=FORTIFICACAO_TIPOS[fort.tipo].dificuldadeCerco;
-      b.log.unshift({turno:b.turno,texto:"Cerco a "+FORTIFICACAO_TIPOS[fort.tipo].nome+": +"+r.total+" pontos ("+fort.pontosCerco+"/"+dif+")."});
-      if(fort.pontosCerco>=dif){
+      b.log.unshift({turno:b.turno,texto:"Cerco a "+esc(fort.nome||info.nome)+": +"+r.total+" pontos ("+fort.pontosCerco+"/"+info.dificuldadeCerco+")."});
+      if(fort.pontosCerco>=info.dificuldadeCerco){
         fort.ocupante="propria";
         p.gloriaRank=(Number(p.gloriaRank)||0)+3;
         b.inimigoBonusProximoTurno=(Number(b.inimigoBonusProximoTurno)||0)-3;
-        b.log.unshift({turno:b.turno,texto:esc(p.nome||"sem nome")+" toma "+FORTIFICACAO_TIPOS[fort.tipo].nome+"! +3 Glória, general inimigo sofre −3 no próximo Contest."});
+        b.log.unshift({turno:b.turno,texto:esc(p.nome||"sem nome")+" toma "+esc(fort.nome||info.nome)+"! +3 Glória, general inimigo sofre −3 no próximo Contest."});
       }
     }
   });
-  (b.tropasComprometidas||[]).forEach(tid=>{
-    const t=S.tropas.find(x=>x.id===tid);if(!t||t.estado==="derrotado")return;
-    const calc=tropaLinhaCalc(t);
-    const statusMod=b.status==="vencendo"?2:(b.status==="perdendo"?-2:0);
-    const discMod=calc.disciplina>=35?1:(calc.disciplina<25?-1:0);
-    const equipMod=((t.equipamento||[]).includes("armaduras")||t.especializacao==="disciplinado"||maioriaBagagem)?1:0;
-    const roll=d10()+statusMod+discMod+equipMod;
-    let novoEstado=null;
-    if(roll<=2)novoEstado="derrotado";
-    else if(roll<=5)novoEstado=(t.estado==="ferido")?"derrotado":"ferido";
-    if(novoEstado){
-      t.estado=novoEstado;
-      b.log.unshift({turno:b.turno,texto:"Tropa "+(TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo)+(t.local?(" ("+esc(t.local)+")"):"")+": baixas — agora "+TROPA_ESTADO[novoEstado].nome+" (teste "+roll+")."});
-    }
-  });
+  const baixas=aplicarBaixasTropa(b);
+  b.log.unshift({turno:b.turno,texto:resumoTurnoTxt(b,c,moralAntes,bonusPendProprio,bonusPendInimigo,danoTotal,gloriaTotal,especiais,baixas,"")});
   salvar();render();}
 const RESULTADO_BATALHA_CONQUISTA={
  vitoria:{titulo:"Vitória em batalha",itens:[{attr:"influencia",delta:2},{attr:"autoridade",delta:1}]},
@@ -2386,7 +2492,15 @@ function tabuleiroHTML(b){
     fam.push({label:esc(TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo)+(t.local?(" ("+esc(t.local)+")"):""),raia,onclick:"ciclarRaiaTropaFamilia('"+tid+"')"});
   });
   const inimigo=(b.tropasInimigas||[]).map(t=>({label:esc(t.nome||"tropa inimiga"),raia:Number(t.raia)||0,onclick:"ciclarRaiaTropaInimiga('"+t.id+"')"}));
-  let html="<div class=\"tabuleiro\">";
+  const terrenoInfo=TERRENO_BATALHA_VISUAL[b.terreno||""]||TERRENO_BATALHA_VISUAL[""];
+  let html="<div class=\"tabuleiro\" style=\"background:"+terrenoInfo.cor+"\">";
+  html+="<div class=\"tabuleiroTerreno\">"+terrenoInfo.emoji+" "+esc(terrenoInfo.nome)+"</div>";
+  if(b.fortificacao){
+    const info=fortTipoInfo(b.fortificacao);
+    const ocupanteLabel=b.fortificacao.ocupante==="propria"?"família":(b.fortificacao.ocupante==="inimiga"?"inimigo":"disputada, sem ocupante");
+    const cercoTxt=(Number(b.fortificacao.pontosCerco)>0||b.fortificacao.ocupante!=="propria")?(" · cerco "+(Number(b.fortificacao.pontosCerco)||0)+"/"+info.dificuldadeCerco):"";
+    html+="<div class=\"tabuleiroForte\" onclick=\"ciclarOcupanteFortificacao()\" title=\"clique pra alternar quem ocupa\">🏯 "+esc(b.fortificacao.nome||info.nome)+" — ocupada por "+ocupanteLabel+cercoTxt+"</div>";
+  }
   for(let nivel=3;nivel>=0;nivel--){
     html+="<div class=\"tabuleiroLinha\"><div class=\"tabuleiroRotulo\">"+ENGAJAMENTO[nivel].nome+"</div>"+
       "<div class=\"tabuleiroLado ladoFamilia\">"+fam.filter(x=>x.raia===nivel).map(x=>"<span class=\"chip chipFamilia\" onclick=\""+x.onclick+"\">"+x.label+"</span>").join("")+"</div>"+
@@ -2411,13 +2525,14 @@ function renderBatalha(){
     let out="";
     out+="<div class=\"linha\"><input class=\"campo-medio\" value=\""+esc(b.nome)+"\" placeholder=\"nome da batalha (ex: Cerco de Shiro Kaiu)\" onchange=\"setBatalhaCampo('nome',this.value)\">"+
       "<input class=\"campo-medio\" value=\""+esc(b.inimigo)+"\" placeholder=\"contra quem\" onchange=\"setBatalhaCampo('inimigo',this.value)\"></div>";
-    out+="<div class=\"hint\" style=\"margin:8px 0\">Iniciada em "+esc(b.criada)+" · Turno "+(b.turno||0)+" · status atual: <b style=\"color:"+statusCor+"\">"+(statusInfo?statusInfo.nome:"— rode o contest dos generais")+"</b> · Moral da Batalha: <b>"+moral+"</b>/20 <span class=\"tag\" title=\"TN pra testar mudança de Postura de uma tropa — sobe quando a família vem ganhando, desce quando vem perdendo\">(TN de Postura)</span></div>";
+    out+="<div class=\"hint\" style=\"margin:8px 0\">Iniciada em "+esc(b.criada)+" · Turno "+(b.turno||0)+" · status atual: <b style=\"color:"+statusCor+"\">"+(statusInfo?statusInfo.nome:"— ainda sem turno rodado")+"</b> · Moral da Batalha: <b>"+moral+"</b>/20 <span class=\"tag\" title=\"TN pra testar mudança de Postura de uma tropa — sobe quando a família vem ganhando, desce quando vem perdendo\">(TN de Postura)</span></div>";
 
     out+="<div class=\"linha\" style=\"margin-bottom:10px\"><span class=\"tag\">Rolagem:</span>"+
       "<button class=\"ghost"+(b.modoRolagem!=="mesa"?" on":"")+"\" onclick=\"setModoRolagem('app')\">🎲 no App</button>"+
-      "<button class=\"ghost"+(b.modoRolagem==="mesa"?" on":"")+"\" onclick=\"setModoRolagem('mesa')\">📋 na Mesa (Mestre digita o resultado)</button></div>";
+      "<button class=\"ghost"+(b.modoRolagem==="mesa"?" on":"")+"\" onclick=\"setModoRolagem('mesa')\">📋 na Mesa (Mestre digita o resultado)</button>"+
+      "<span class=\"tag\">Terreno: <select onchange=\"setBatalhaCampo('terreno',this.value)\">"+Object.keys(TERRENO_BATALHA_VISUAL).map(k=>"<option value=\""+k+"\" "+((b.terreno||"")===k?"selected":"")+">"+TERRENO_BATALHA_VISUAL[k].emoji+" "+TERRENO_BATALHA_VISUAL[k].nome+"</option>").join("")+"</select></span></div>";
 
-    out+="<div class=\"tag\" style=\"display:block;margin:6px 0\">Tabuleiro (clique num token pra mudar de fileira)</div>";
+    out+="<div class=\"tag\" style=\"display:block;margin:6px 0\">Tabuleiro (clique num token pra mudar de fileira, clique na faixa de fortificação pra alternar quem ocupa)</div>";
     out+=tabuleiroHTML(b);
 
     out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Tropas da família comprometidas</div>";
@@ -2433,7 +2548,7 @@ function renderBatalha(){
         const posturaAtual=tropaFamiliaPostura(t.id);
         return "<tr><td><input type=\"checkbox\" "+(comprometida?"checked":"")+" onchange=\"toggleTropaBatalha('"+t.id+"')\"></td>"+
           "<td>"+esc(tipoNome)+(t.local?(" — "+esc(t.local)):"")+" <span class=\"tag\">("+esc(estadoNome)+")</span></td>"+
-          "<td>"+(comprometida?("<select onchange=\"setComandanteTropa('"+t.id+"','familia',this.value)\"><option value=\"\">— sem comandante —</option>"+S.personagens.map(p=>"<option value=\""+p.id+"\" "+(comandanteId===p.id?"selected":"")+">"+esc(p.nome||"sem nome")+"</option>").join("")+"</select>"):"—")+"</td>"+
+          "<td>"+(comprometida?("<select onchange=\"setComandanteTropa('"+t.id+"',this.value)\"><option value=\"\">— sem comandante —</option>"+S.personagens.map(p=>"<option value=\""+p.id+"\" "+(comandanteId===p.id?"selected":"")+">"+esc(p.nome||"sem nome")+"</option>").join("")+"</select>"):"—")+"</td>"+
           "<td>"+(comprometida?("<b>"+(POSTURAS_BATALHA.find(x=>x.id===posturaAtual)||{}).nome+"</b>"):"—")+"</td>"+
           "<td>"+(comprometida?("<select id=\"novaPostura_"+t.id+"\">"+POSTURAS_BATALHA.map(ps=>"<option value=\""+ps.id+"\" title=\""+esc(ps.desc)+"\">"+esc(ps.nome)+"</option>").join("")+"</select> <button class=\"ghost\" onclick=\"testarPosturaTropa('"+t.id+"','familia',document.getElementById('novaPostura_"+t.id+"').value)\">testar</button>"):"—")+"</td>"+
           "<td></td></tr>";
@@ -2443,13 +2558,14 @@ function renderBatalha(){
       :"<div class=\"hint\" style=\"margin-top:6px\">Nenhuma tropa comprometida — a batalha roda em RAW puro, sem os ajustes de exército.</div>";
 
     out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Tropas inimigas</div>";
-    out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th>Nome</th><th>Tipo</th><th>Estado</th><th>Comandante</th><th>Postura</th><th>Mudar pra</th><th></th></tr></thead><tbody>"+
+    out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th>Nome</th><th>Tipo</th><th>Estado</th><th>Comandante (nome + bônus)</th><th>Postura</th><th>Mudar pra</th><th></th></tr></thead><tbody>"+
       (b.tropasInimigas&&b.tropasInimigas.length?b.tropasInimigas.map(t=>{
         const posturaNome=(POSTURAS_BATALHA.find(x=>x.id===(t.postura||"ataque"))||{}).nome;
         return "<tr><td><input value=\""+esc(t.nome)+"\" placeholder=\"nome da unidade\" onchange=\"setTropaInimiga('"+t.id+"','nome',this.value)\"></td>"+
           "<td><select onchange=\"setTropaInimiga('"+t.id+"','tipo',this.value)\">"+Object.keys(TROPA_TIPOS).map(k=>"<option value=\""+k+"\" "+(t.tipo===k?"selected":"")+">"+TROPA_TIPOS[k].nome+"</option>").join("")+"</select></td>"+
           "<td><select onchange=\"setTropaInimiga('"+t.id+"','estado',this.value)\">"+Object.keys(TROPA_ESTADO).map(k=>"<option value=\""+k+"\" "+(t.estado===k?"selected":"")+">"+TROPA_ESTADO[k].nome+"</option>").join("")+"</select></td>"+
-          "<td><select onchange=\"setComandanteTropa('"+t.id+"','inimiga',this.value)\"><option value=\"\">—</option>"+S.personagens.map(p=>"<option value=\""+p.id+"\" "+(t.comandanteId===p.id?"selected":"")+">"+esc(p.nome||"sem nome")+"</option>").join("")+"</select></td>"+
+          "<td><input style=\"width:90px\" value=\""+esc(t.comandanteNome||"")+"\" placeholder=\"nome (sem ficha)\" onchange=\"setTropaInimiga('"+t.id+"','comandanteNome',this.value)\">"+
+          " <input type=\"number\" style=\"width:48px\" title=\"bônus manual, equivalente a Água+Batalha\" value=\""+(Number(t.comandanteBonus)||0)+"\" onchange=\"setTropaInimiga('"+t.id+"','comandanteBonus',this.value)\"></td>"+
           "<td><b>"+posturaNome+"</b></td>"+
           "<td><select id=\"novaPosturaInimiga_"+t.id+"\">"+POSTURAS_BATALHA.map(ps=>"<option value=\""+ps.id+"\" title=\""+esc(ps.desc)+"\">"+esc(ps.nome)+"</option>").join("")+"</select> <button class=\"ghost\" onclick=\"testarPosturaTropa('"+t.id+"','inimiga',document.getElementById('novaPosturaInimiga_"+t.id+"').value)\">testar</button></td>"+
           "<td><button class=\"ghost\" onclick=\"delTropaInimiga('"+t.id+"')\">✕</button></td></tr>";
@@ -2466,22 +2582,32 @@ function renderBatalha(){
     if(b.proprioBonusProximoTurno||b.inimigoBonusProximoTurno)out+="<div class=\"hint\">Pendente pro próximo Contest: família "+(b.proprioBonusProximoTurno>0?"+":"")+(b.proprioBonusProximoTurno||0)+", inimigo "+(b.inimigoBonusProximoTurno>0?"+":"")+(b.inimigoBonusProximoTurno||0)+".</div>";
     if(b.ultimoContest)out+="<div class=\"hint\">Último contest: família "+b.ultimoContest.proprio+" × inimigo "+b.ultimoContest.inimigo+" (diferença "+b.ultimoContest.dif+")</div>";
 
-    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Fortificação (opcional)</div>";
-    out+="<div class=\"linha\"><select onchange=\"setFortificacaoTipo(this.value)\"><option value=\"\">— sem fortificação em jogo —</option>"+
-      Object.keys(FORTIFICACAO_TIPOS).map(k=>"<option value=\""+k+"\" "+(fort&&fort.tipo===k?"selected":"")+">"+FORTIFICACAO_TIPOS[k].nome+"</option>").join("")+"</select></div>";
+    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Fortificação em disputa (opcional)</div>";
+    const fortsFamilia=fortificacoesDaFamilia();
+    let fortValorAtual="";
+    if(fort&&fort.origem==="familia")fortValorAtual="fam:"+fort.terrenoId+":"+fort.fortId;
+    else if(fort)fortValorAtual="manual";
+    out+="<div class=\"linha\"><select onchange=\"setFortificacaoBatalha(this.value)\">"+
+      "<option value=\"\" "+(!fort?"selected":"")+">— nenhuma em disputa —</option>"+
+      (fortsFamilia.length?("<optgroup label=\"Fortificações da família\">"+fortsFamilia.map(f=>"<option value=\"fam:"+f.terrenoId+":"+f.fortId+"\" "+(fortValorAtual==="fam:"+f.terrenoId+":"+f.fortId?"selected":"")+">"+esc(f.nome)+" ("+esc(f.terrenoNome)+")</option>").join("")+"</optgroup>"):"")+
+      "<option value=\"manual\" "+(fortValorAtual==="manual"?"selected":"")+">✎ fortificação do inimigo (nome livre)</option>"+
+      "</select></div>";
     if(fort){
-      const ftipo=FORTIFICACAO_TIPOS[fort.tipo];
-      out+="<div class=\"hint\">Redução de "+ftipo.reducaoFerimentos+" dado(s) de ferimento pra quem ocupa. Ocupante atual: <b>"+(fort.ocupante==="propria"?"a família":fort.ocupante==="inimiga"?"o inimigo":"ninguém")+"</b>. Cerco: "+(fort.pontosCerco||0)+"/"+ftipo.dificuldadeCerco+" pontos.</div>";
+      const info=fortTipoInfo(fort);
+      if(fort.origem==="manual")out+="<div class=\"linha\"><input placeholder=\"nome da fortificação\" value=\""+esc(fort.nome||"")+"\" onchange=\"setFortificacaoManualCampo('nome',this.value)\">"+
+        "<select onchange=\"setFortificacaoManualCampo('tipoSimples',this.value)\">"+Object.keys(FORTIFICACAO_TIPOS).map(k=>"<option value=\""+k+"\" "+((fort.tipoSimples||"terreno")===k?"selected":"")+">"+FORTIFICACAO_TIPOS[k].nome+"</option>").join("")+"</select></div>";
+      out+="<div class=\"hint\">Redução de "+info.reducaoFerimentos+" dado(s) de ferimento pra quem ocupa. Ocupante atual: <b>"+(fort.ocupante==="propria"?"a família":fort.ocupante==="inimiga"?"o inimigo":"ninguém")+"</b>. Cerco: "+(fort.pontosCerco||0)+"/"+info.dificuldadeCerco+" pontos.</div>";
       out+="<div class=\"linha\">"+
         "<button class=\"ghost\" onclick=\"setFortificacaoOcupante('propria')\">marcar ocupada pela família</button>"+
         "<button class=\"ghost\" onclick=\"setFortificacaoOcupante('inimiga')\">marcar ocupada pelo inimigo</button>"+
-        "<button class=\"ghost\" onclick=\"setFortificacaoOcupante(null)\">marcar vazia</button></div>";
+        "<button class=\"ghost\" onclick=\"setFortificacaoOcupante(null)\">marcar vazia/disputada</button>"+
+        "<input type=\"number\" style=\"width:70px\" placeholder=\"+pontos\" onchange=\"addPontosCerco(this.value);this.value=''\" title=\"adicionar pontos de cerco manualmente\">"+
+        "</div>";
     }
 
-    out+="<div style=\"margin:10px 0;display:flex;gap:8px;flex-wrap:wrap\">"+
-      "<button onclick=\"rodarContesteBatalha()\">🎲 Rodar contest dos generais (novo turno)</button>";
-    if(b.modoRolagem!=="mesa")out+="<button onclick=\"rodarTurnoBatalha()\">🎲 Rodar Tabela de Batalha pros participantes</button>";
-    else out+="<button onclick=\"confirmarTurnoManual()\">✔ Confirmar turno (resultados digitados abaixo)</button>";
+    out+="<div style=\"margin:10px 0;display:flex;gap:8px;flex-wrap:wrap\">";
+    if(b.modoRolagem!=="mesa")out+="<button onclick=\"rodarTurnoBatalha()\">🎲 Rodar Turno de Batalha</button>";
+    else out+="<button onclick=\"confirmarTurnoManual()\">✔ Confirmar Turno de Batalha (resultados digitados abaixo)</button>";
     out+="</div>";
 
     out+="<div class=\"tag\" style=\"display:block;margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Participantes</div>";
