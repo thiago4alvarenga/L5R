@@ -63,8 +63,36 @@
   .mapaViewport{width:100%;height:70vh;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;
     background:#161310;border:1px solid var(--line);border-radius:var(--radius);cursor:grab;touch-action:none}
   .mapaViewport.dragging{cursor:grabbing}
-  .mapaViewport img{max-width:100%;max-height:100%;object-fit:contain;transform-origin:center center;
-    user-select:none;-webkit-user-drag:none;pointer-events:none;will-change:transform}
+  .mapaViewport.marcando{cursor:crosshair}
+  /* O "palco" é o que recebe zoom/pan — imagem e camada de marcações juntas, então a marcação
+     gruda no ponto do mapa em vez de flutuar por cima da tela. O tamanho dele é calculado em JS
+     (mapaAjustarPalco) pra bater exatamente com a imagem encaixada no visor. */
+  .mapaPalco{position:relative;transform-origin:center center;will-change:transform}
+  .mapaPalco img{display:block;width:100%;height:100%;user-select:none;-webkit-user-drag:none;pointer-events:none}
+  .mapaOverlay{position:absolute;inset:0;pointer-events:none}
+  /* Cada marcação é ancorada pela ponta de baixo (transform-origin bottom center) e recebe uma
+     contra-escala 1/zoom, senão o alfinete cresceria junto com o mapa e viraria um borrão. */
+  .mapaMarca{position:absolute;pointer-events:auto;cursor:pointer;transform-origin:bottom center;
+    display:flex;flex-direction:column;align-items:center;line-height:1.1;white-space:nowrap}
+  .mapaMarcaIcone{font-size:19px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.65))}
+  .mapaMarcaNome{margin-top:1px;font-size:11px;font-weight:700;color:#fff;background:rgba(20,16,12,.78);
+    border:1px solid rgba(255,255,255,.25);border-radius:9px;padding:1px 7px;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+  .mapaMarcaPonta{width:2px;height:7px;background:rgba(20,16,12,.75)}
+  .mapaMarca.sel .mapaMarcaNome{outline:2px solid #d1a13a}
+  .mapaMarcaAlerta{position:absolute;margin:-4px 0 0 -6px;font-size:11px;font-weight:900;color:#fff;
+    background:#b8332a;border-radius:50%;width:13px;height:13px;line-height:13px;text-align:center;
+    box-shadow:0 1px 2px rgba(0,0,0,.6)}
+  /* Barra de escala: HUD fixo no canto do visor, fora do palco, então não escala com o zoom —
+     o que muda é quantas milhas ela representa (ver mapaEscalaAtual). */
+  .mapaEscala{position:absolute;left:14px;bottom:14px;pointer-events:none;
+    background:rgba(20,16,12,.72);border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:7px 10px}
+  .mapaEscalaBarra{height:7px;background:linear-gradient(90deg,#fff 0 25%,#1b1713 25% 50%,#fff 50% 75%,#1b1713 75% 100%);
+    border:1px solid rgba(255,255,255,.5);border-radius:2px}
+  .mapaEscalaTxt{margin-top:4px;font-size:11px;color:#f2ece2;letter-spacing:.3px;text-align:center}
+  /* Régua de distância */
+  .mapaMedPonto{position:absolute;width:11px;height:11px;border-radius:50%;transform-origin:center center;
+    background:#b8332a;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.5);pointer-events:none}
+  .mapaMedSvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
   /* Tabuleiro de raias de engajamento (§13) — duas colunas (família/inimigo) por fileira,
      inspirado em Shogi: só a profundidade de sempre, agora visual, clicável pra ciclar.
      v4: maior/mais espaçoso, fundo de terreno (cor lisa, sem imagem) e uma faixa opcional
@@ -76,7 +104,7 @@
   .tabuleiroForte{padding:9px 12px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:1px solid var(--line);
     background:rgba(160,120,40,.10)}
   .tabuleiroForte:hover{filter:brightness(1.06)}
-  .tabuleiroLinha{display:grid;grid-template-columns:120px 1fr 1fr;min-height:64px;border-top:1px solid var(--line)}
+  .tabuleiroLinha{display:grid;grid-template-columns:120px 1fr;min-height:64px;border-top:1px solid var(--line)}
   .tabuleiroLinha:first-child{border-top:none}
   .tabuleiroRotulo{display:flex;align-items:center;padding:8px 12px;font-size:12px;text-transform:uppercase;
     letter-spacing:.5px;color:var(--muted-tx);background:var(--panel2)}
@@ -88,6 +116,30 @@
   .chip:hover{filter:brightness(1.08)}
   .chipFamilia{border-color:#3f6ca6;color:#274a78}
   .chipInimigo{border-color:#a63f3f;color:#782727}
+  .chipColuna{margin-left:4px;opacity:.7;text-decoration:underline dotted;cursor:pointer}
+  .chipColuna:hover{opacity:1}
+  /* Tabuleiro Shogi de tropas (v5) — grade real fileira(4) x coluna(3), clique num token pra
+     selecionar (fica com contorno dourado) e clique numa casa pra mover — moverTropaFamilia/
+     moverTropaInimiga validam o alcance e recusam com flashHint se passar do limite. */
+  .shogiWrap{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:10px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .shogiGrid{display:grid;grid-template-columns:96px repeat(3,1fr)}
+  .shogiHead{padding:7px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;
+    color:var(--muted-tx);background:var(--panel2);border-bottom:1px solid var(--line);
+    border-right:1px solid var(--line);text-align:center}
+  .shogiRotulo{display:flex;align-items:center;padding:8px 10px;font-size:12px;text-transform:uppercase;
+    letter-spacing:.5px;color:var(--muted-tx);background:var(--panel2);border-top:1px solid var(--line);
+    border-right:1px solid var(--line)}
+  .shogiCasa{min-height:64px;padding:6px;display:flex;flex-direction:column;gap:4px;align-items:flex-start;
+    cursor:pointer;border-top:1px solid var(--line);border-right:1px solid var(--line);background:var(--panel);
+    transition:background .15s}
+  .shogiCasa:hover{filter:brightness(1.05)}
+  .shogiCasa.contato{background:rgba(200,110,40,.12)}
+  .shogiToken{font-size:12px;padding:3px 9px;border-radius:12px;border:1px solid;cursor:pointer;white-space:nowrap}
+  .shogiToken.familia{border-color:#3f6ca6;color:#274a78;background:rgba(63,108,166,.10)}
+  .shogiToken.inimiga{border-color:#a63f3f;color:#782727;background:rgba(166,63,63,.10)}
+  .shogiToken.selecionado{outline:2px solid #d1a13a;font-weight:700}
+  .shogiToken:hover{filter:brightness(1.1)}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
   @media(max-width:900px){.grid{grid-template-columns:1fr}}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px}
@@ -349,6 +401,10 @@
     <button class="ghost" id="btnAddTropa" style="margin-top:8px">+ tropa</button>
   </div>
 
+  <div class="panel"><h2><span class="kan">學</span>Escolas da Família<span class="sub">Dojo gasta Autoridade · Salão gasta Influência · Shoin gasta Domínio · Encantamentos gastam Riqueza</span></h2>
+    <div id="escolasBox"></div>
+  </div>
+
   <div class="panel"><h2><span class="kan">換</span>Conversão de Recursos<span class="sub">trocar um atributo por outro, a uma taxa</span></h2>
     <div class="tabwrap"><table class="ctab" id="conversoesTab"></table></div>
     <button class="ghost" id="btnAddConversao" style="margin-top:8px">+ conversão</button>
@@ -378,7 +434,8 @@
     </div>
     <div class="panel">
       <h2><span class="kan">巻</span>Referência para o Mestre<span class="sub">oportunidades heroicas</span></h2>
-      <div class="hint" style="margin-bottom:10px">Quando a Tabela de Batalha indica "Oportunidade Heroica", escolha uma destas situações (ou invente outra) pro personagem viver.</div>
+      <div class="hint" style="margin-bottom:10px">Quando a Tabela de Batalha (pessoal) ou um Confronto de tropas indica "Oportunidade Heroica", escolha uma destas situações (ou invente outra) pro personagem viver. Pessoal = quem está em Participação; Comando = quem está em Liderança ou envolvido num Confronto de tropas. Os botões sorteiam uma ao acaso do subconjunto certo.</div>
+      <div class="linha" style="margin-bottom:10px"><button class="ghost" onclick="sortearOportunidade('pessoal')">Sortear (Pessoal)</button><button class="ghost" onclick="sortearOportunidade('comando')">Sortear (Comando)</button></div>
       <div class="linhas" id="oportunidadesBox"></div>
     </div>
   </div>
@@ -386,20 +443,36 @@
   <div id="viewMapa" style="display:none">
     <div class="panel">
       <h2><span class="kan">図</span>Mapa de Rokugan<span class="sub">arraste pra mover · roda do mouse ou botões pra zoom</span></h2>
-      <div class="hint" style="margin-bottom:10px">Duas versões: a ilustrada dá o clima pra mesa, a política/detalhada traz os nomes dos castelos e vilas com escala em milhas — boa referência de distância pro hexcrawl.</div>
+      <div class="hint" style="margin-bottom:10px">As marcações ficam salvas junto com a ficha da família — posicione domínios, fortalezas, templos e o que mais a mesa precisar lembrar. Escolhendo o tipo, a marcação pode ser vinculada ao que já existe na ficha (um terreno, um personagem, uma tropa, uma batalha), e aí passa a usar o nome de lá.</div>
       <div style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap">
-        <button class="ghost on" id="mapaBtnIlustrado" onclick="mapaSetVariante('ilustrado')">Ilustrado</button>
-        <button class="ghost" id="mapaBtnPolitico" onclick="mapaSetVariante('politico')">Político / Detalhado</button>
         <button class="ghost" onclick="mapaZoom(0.3)">➕ Zoom</button>
         <button class="ghost" onclick="mapaZoom(-0.3)">➖ Zoom</button>
         <button class="ghost" onclick="mapaReset()">↺ Resetar</button>
+        <button class="ghost" id="mapaBtnAdicionar" onclick="mapaToggleModoAdicionar()">📍 Adicionar marcação</button>
+        <button class="ghost" id="mapaBtnMedir" onclick="mapaToggleModoMedir()">📏 Medir distância</button>
+        <button class="ghost" id="mapaBtnRotulos" onclick="mapaToggleRotulos()">🏷️ Nomes</button>
       </div>
+      <div id="mapaAvisoAdicionar" class="hint" style="display:none;margin-bottom:10px;color:var(--seal);font-weight:600">Modo de marcação ativo — clique no mapa pra cravar uma marcação nesse ponto (o arraste fica desligado enquanto isso).</div>
+      <div id="mapaAvisoMedir" class="hint" style="display:none;margin-bottom:10px;color:var(--seal);font-weight:600">Régua ativa — clique na origem e depois no destino (o arraste fica desligado enquanto isso).</div>
       <div class="mapaViewport" id="mapaViewport"
         onmousedown="mapaDragStart(event)" onmousemove="mapaDragMove(event)" onmouseup="mapaDragEnd()" onmouseleave="mapaDragEnd()"
         ontouchstart="mapaDragStart(event)" ontouchmove="mapaDragMove(event)" ontouchend="mapaDragEnd()"
         onwheel="mapaOnWheel(event)" ondblclick="mapaReset()">
-        <img id="mapaImg" src="" alt="Mapa de Rokugan" draggable="false">
+        <div class="mapaPalco" id="mapaPalco" onclick="mapaCliqueNoPalco(event)">
+          <img id="mapaImg" src="" alt="Mapa de Rokugan" draggable="false" onload="mapaAjustarPalco()">
+          <div class="mapaOverlay" id="mapaMedLinha"></div>
+          <div class="mapaOverlay" id="mapaOverlay"></div>
+        </div>
+        <div class="mapaEscala" id="mapaEscala"></div>
       </div>
+    </div>
+    <div class="panel">
+      <h2><span class="kan">里</span>Distância e Viagem<span class="sub">régua do mapa</span></h2>
+      <div id="mapaMedPainel"></div>
+    </div>
+    <div class="panel">
+      <h2><span class="kan">印</span>Marcações do Mapa<span class="sub">salvas com a ficha</span></h2>
+      <div id="mapaMarcacoesBox"></div>
     </div>
   </div>
 
@@ -432,28 +505,36 @@ const IDADE_LABEL={recente:"Recente",jovem:"Jovem",estabelecida:"Estabelecida",a
    antiga (-10..+25) fazia o Vazio — que sozinho decide Dojo, Equilíbrio Espiritual, Augúrio
    dos Kami e Favor das Fortunas — variar demais só pela escolha de clã (Dragão/Fênix tiravam
    3.7 alunos de dojo em média contra 0.9 de Escorpião/Tartaruga). Nova faixa -5..+10 preserva
-   a ordem (Dragão/Fênix continuam os mais espirituais) mas encolhe a distância. Domínio/
-   Influência/Autoridade/Riqueza não mudaram — o líquido deles já era igual por tier (todo clã
-   maior soma +40, todo menor soma +25), não era o problema. Valores antigos no histórico do git. */
+   a ordem (Dragão/Fênix continuam os mais espirituais) mas encolhe a distância.
+
+   Correção em 2026-08-04: aquela compressão comeu o líquido por tier (todo clã maior devia
+   somar +40, todo menor +25, igual na planilha original) — sem repor a diferença em outro
+   lugar, Escorpião (45) ficou quase 2x mais forte no total que Dragão/Fênix (25). Em vez de
+   desfazer a compressão do Vazio (o que traria de volta o desequilíbrio de Dojo), a diferença
+   foi devolvida meio a meio em Influência e Riqueza de cada clã — os dois atributos que não
+   alimentam nenhuma tabela de conversão sensível a essa distância (ao contrário do Vazio).
+   Domínio e Autoridade não mudaram. Todo clã maior volta a somar +40 líquido, todo menor +25,
+   Família Imperial 0 — comparar com os valores antigos no histórico do git se quiser conferir
+   a conta. */
 const CLAS=[
- {id:"caranguejo",nome:"Caranguejo",tier:"maior",mote:"“Coragem. Dever. Sacrifício.”",familias:["Hida","Hiruma","Kaiu","Kuni","Yasuki"],mods:{dominio:20,influencia:-10,autoridade:15,riqueza:0,vazio:6}},
- {id:"garca",nome:"Garça",tier:"maior",mote:"“Há uma técnica adequada para todas as coisas.”",familias:["Doji","Kakita","Asahina","Daidoji"],mods:{dominio:15,influencia:15,autoridade:-5,riqueza:10,vazio:1}},
- {id:"dragao",nome:"Dragão",tier:"maior",mote:"“Encontre seu próprio caminho.”",familias:["Togashi","Mirumoto","Kitsuki","Tamori"],mods:{dominio:0,influencia:-10,autoridade:20,riqueza:5,vazio:10}},
- {id:"leao",nome:"Leão",tier:"maior",mote:"“Por meus ancestrais!”",familias:["Akodo","Matsu","Ikoma","Kitsu"],mods:{dominio:10,influencia:5,autoridade:20,riqueza:-5,vazio:4}},
- {id:"fenix",nome:"Fênix",tier:"maior",mote:"“Domine os elementos e renasça.”",familias:["Shiba","Isawa","Asako","Agasha"],mods:{dominio:10,influencia:5,autoridade:-5,riqueza:5,vazio:10}},
- {id:"escorpiao",nome:"Escorpião",tier:"maior",mote:"“Serei seu vilão, Hantei.”",familias:["Bayushi","Shosuro","Yogo"],mods:{dominio:15,influencia:15,autoridade:10,riqueza:10,vazio:-5}},
- {id:"unicornio",nome:"Unicórnio",tier:"maior",mote:"“Ninguém pode capturar o vento.”",familias:["Moto","Ide","Utaku","Shinjo","Iuchi"],mods:{dominio:20,influencia:-5,autoridade:0,riqueza:15,vazio:4}},
- {id:"louva",nome:"Louva-a-Deus",tier:"maior",mote:"“O mar não perdoa os fracos.”",familias:["Yoritomo","Moshi","Kitsune","Tsuruchi"],mods:{dominio:15,influencia:5,autoridade:5,riqueza:15,vazio:-1}},
- {id:"texugo",nome:"Texugo",tier:"menor",mods:{dominio:5,influencia:-5,autoridade:15,riqueza:5,vazio:1}},
- {id:"gato",nome:"Gato",tier:"menor",mods:{dominio:0,influencia:10,autoridade:10,riqueza:5,vazio:-1}},
- {id:"centopeia",nome:"Centopeia",tier:"menor",mods:{dominio:0,influencia:5,autoridade:5,riqueza:0,vazio:6}},
- {id:"libelula",nome:"Libélula",tier:"menor",mods:{dominio:-5,influencia:5,autoridade:10,riqueza:0,vazio:6}},
- {id:"falcao",nome:"Falcão",tier:"menor",mods:{dominio:5,influencia:5,autoridade:5,riqueza:0,vazio:4}},
- {id:"raposa",nome:"Raposa",tier:"menor",mods:{dominio:-5,influencia:5,autoridade:0,riqueza:10,vazio:6}},
- {id:"lebre",nome:"Lebre",tier:"menor",mods:{dominio:0,influencia:0,autoridade:10,riqueza:5,vazio:4}},
- {id:"pardal",nome:"Pardal",tier:"menor",mods:{dominio:10,influencia:5,autoridade:5,riqueza:-10,vazio:6}},
- {id:"tartaruga",nome:"Tartaruga",tier:"menor",mods:{dominio:15,influencia:0,autoridade:10,riqueza:10,vazio:-5}},
- {id:"vespa",nome:"Vespa",tier:"menor",mods:{dominio:5,influencia:5,autoridade:10,riqueza:0,vazio:1}},
+ {id:"caranguejo",nome:"Caranguejo",tier:"maior",mote:"“Coragem. Dever. Sacrifício.”",familias:["Hida","Hiruma","Kaiu","Kuni","Yasuki"],mods:{dominio:20,influencia:-6,autoridade:15,riqueza:5,vazio:6}},
+ {id:"garca",nome:"Garça",tier:"maior",mote:"“Há uma técnica adequada para todas as coisas.”",familias:["Doji","Kakita","Asahina","Daidoji"],mods:{dominio:15,influencia:17,autoridade:-5,riqueza:12,vazio:1}},
+ {id:"dragao",nome:"Dragão",tier:"maior",mote:"“Encontre seu próprio caminho.”",familias:["Togashi","Mirumoto","Kitsuki","Tamori"],mods:{dominio:0,influencia:-3,autoridade:20,riqueza:13,vazio:10}},
+ {id:"leao",nome:"Leão",tier:"maior",mote:"“Por meus ancestrais!”",familias:["Akodo","Matsu","Ikoma","Kitsu"],mods:{dominio:10,influencia:8,autoridade:20,riqueza:-2,vazio:4}},
+ {id:"fenix",nome:"Fênix",tier:"maior",mote:"“Domine os elementos e renasça.”",familias:["Shiba","Isawa","Asako","Agasha"],mods:{dominio:10,influencia:12,autoridade:-5,riqueza:13,vazio:10}},
+ {id:"escorpiao",nome:"Escorpião",tier:"maior",mote:"“Serei seu vilão, Hantei.”",familias:["Bayushi","Shosuro","Yogo"],mods:{dominio:15,influencia:12,autoridade:10,riqueza:8,vazio:-5}},
+ {id:"unicornio",nome:"Unicórnio",tier:"maior",mote:"“Ninguém pode capturar o vento.”",familias:["Moto","Ide","Utaku","Shinjo","Iuchi"],mods:{dominio:20,influencia:-2,autoridade:0,riqueza:18,vazio:4}},
+ {id:"louva",nome:"Louva-a-Deus",tier:"maior",mote:"“O mar não perdoa os fracos.”",familias:["Yoritomo","Moshi","Kitsune","Tsuruchi"],mods:{dominio:15,influencia:5,autoridade:5,riqueza:16,vazio:-1}},
+ {id:"texugo",nome:"Texugo",tier:"menor",mods:{dominio:5,influencia:-3,autoridade:15,riqueza:7,vazio:1}},
+ {id:"gato",nome:"Gato",tier:"menor",mods:{dominio:0,influencia:10,autoridade:10,riqueza:6,vazio:-1}},
+ {id:"centopeia",nome:"Centopeia",tier:"menor",mods:{dominio:0,influencia:9,autoridade:5,riqueza:5,vazio:6}},
+ {id:"libelula",nome:"Libélula",tier:"menor",mods:{dominio:-5,influencia:9,autoridade:10,riqueza:5,vazio:6}},
+ {id:"falcao",nome:"Falcão",tier:"menor",mods:{dominio:5,influencia:8,autoridade:5,riqueza:3,vazio:4}},
+ {id:"raposa",nome:"Raposa",tier:"menor",mods:{dominio:-5,influencia:9,autoridade:0,riqueza:15,vazio:6}},
+ {id:"lebre",nome:"Lebre",tier:"menor",mods:{dominio:0,influencia:3,autoridade:10,riqueza:8,vazio:4}},
+ {id:"pardal",nome:"Pardal",tier:"menor",mods:{dominio:10,influencia:9,autoridade:5,riqueza:-5,vazio:6}},
+ {id:"tartaruga",nome:"Tartaruga",tier:"menor",mods:{dominio:15,influencia:-3,autoridade:10,riqueza:8,vazio:-5}},
+ {id:"vespa",nome:"Vespa",tier:"menor",mods:{dominio:5,influencia:7,autoridade:10,riqueza:2,vazio:1}},
  {id:"imperial",nome:"Família Imperial",tier:"imperial",familias:["Miya","Seppun","Otomo"],mods:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0}}
 ];
 const TIER_LABEL={maior:"Grande Clã",menor:"Clã Menor",imperial:"Família Imperial"};
@@ -594,7 +675,25 @@ const EQUILIBRIO_Y=[-2,-1,0,1,2,3];
    (não mais um corte fixo em 50): fortunas ruins viram desfavor de verdade. */
 const FAVOR_FORTUNAS_X=[-99999,-5,5,12,20];
 const FAVOR_FORTUNAS_Y=[-1,0,1,2,3];
+/* Autoridade (Ordem+Poder fundidos) — conferida por simulação em 2026-08-04 (30 mil famílias,
+   clã+eventos aleatórios): mediana de totalAttr("autoridade") cai em ~49, bem dentro do degrau
+   Y=0 de CURVA_X (41..50), e a curva é sempre crescente (mais Autoridade nunca vira penalidade,
+   só menos prêmio). Resultado: fortuna média fica perto de 0 e sobe suave até os extremos —
+   já nasce calibrada mesmo puxando dois atributos antigos, não precisou de tabela própria. */
 const AUTORIDADE_Y=[-75,-70,-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-10,-5,-2,-1,0,1,2,5,10,15,20,25,30,35,40,45,50,55,60,65,70];
+/* Domínio (Defesa+Terras+População fundidos) tem pico-e-queda — Domínio esvaziado OU estufado
+   demais pesa contra a família (§ATTR_FLAVOR). Isso o deixa mais sensível a onde a curva está
+   centrada do que a Autoridade: usar CURVA_X sem ajuste (calibrada só pra População sozinha)
+   deixava o pico (antigo X≈21-31) bem abaixo da família mediana recém-criada (totalAttr
+   ~54 por simulação, 2026-08-04) — a família típica já nascia caindo do lado errado da curva,
+   com fortuna média negativa (-2.5) antes de qualquer jogo acontecer.
+   DOMINIO_X reescala os limiares de CURVA_X por ~2.5x (mesma forma de curva, DOMINIO_Y intacto)
+   deixando espaço pra crescer: o pico (antigo 21-31, agora ~52-78) fica perto do percentil 75-90
+   de criação, não da mediana — a maioria das famílias recém-criadas nasce subindo rumo ao pico
+   em vez de já ter passado dele, e só faz sentir a queda depois de crescer bastante ao longo da
+   campanha (Conquistas/Personagens). Chute de design proporcional — calibrar de novo se o jogo
+   real mostrar a curva errada, igual toda outra calibração deste arquivo. */
+const DOMINIO_X=[-252,-228,-202,-178,-152,-128,-102,-78,-52,-28,-2,0,2,28,52,78,102,128,152,178,202,228,252,278,302,328,352,378,402,428,452,478,502];
 const DOMINIO_Y=[-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,1,3,1,0,-5,-10,-15,-20,-25,-30,-35,-40,-45,-50,-55,-60,-65,-70,-75];
 const AUGURIO_Y=["","","","","","","","","","","","","","","","Sussurros","Sussurros","Sensações","Sensações","Fragmentos","Fragmentos","Enigmas","Visão","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação","Comunicação"];
 const DOJO_X=[-15,30,45,58,68,80,95];
@@ -672,6 +771,115 @@ const PERSONAGEM_PAPEL=[
 ];
 const ESTADO_PERSONAGEM=["Vivo","Ferido","Refém","Morto","Ausente"];
 
+/* ============ ESCOLAS DA FAMÍLIA (Dojo Bushi / Salão Cortesão / Shoin Shugenja) ============
+   Criado em 2026-08-04, a pedido do Thiago: uma família tem tradicionalmente UMA escola
+   (Dojo, se marcial; Salão, se cortesã; Shoin, se devota) — só as grandes casas (Doji, Akodo,
+   Isawa...) acumulam mais de uma. "Dojo" sozinho não cabia pra Cortesão/Shugenja (nome é
+   marcial de nascença), então virou um tipo entre três, cada um lendo o atributo que faz
+   sentido pra ele (nunca todos amarrados no Vazio, que já carrega Dojo-alunos/Equilíbrio/
+   Augúrio/Favor das Fortunas sozinho — ver a compressão do Vazio dos clãs, acima).
+
+   Bushi e Cortesão têm NÍVEL 1-5, igual rank de técnica de escola — o nível do Dojo/Salão
+   é o teto de rank que os alunos formados aprendem (nível 3 forma gente com técnica até
+   rank 3). Shugenja não tem essa progressão (Thiago: "não tem técnicas que variam") — em
+   vez de nível, o Shoin acumula uma prateleira de Encantamentos Protegidos, feitiços reais
+   puxados de L5R4E.feiticos, cada um comprado avulso pelo Mastery Level dele. Um personagem
+   shugenja da família só pode aprender um protegido se o School/Insight Rank dele (função
+   rankPersonagem, já existente) for >= o Mastery Level do feitiço — é a regra oficial da
+   4ª edição (School Rank limita o Mastery Level que dá pra aprender/conjurar), não invenção.
+
+   Todo custo aqui foi pedido expressamente pra ser "custoso" — os números abaixo usam a
+   mesma régua das outras calibrações do arquivo: o pool típico de uma família (Autoridade/
+   Influência/Riqueza/Domínio) gira em mediana ~47-56 (simulação de 2026-08-04). Fundar já
+   consome uma fatia grande dele; a 2ª escola praticamente zera o pool inteiro daquele
+   atributo; a 3ª só é viável somando Conquistas de anos de campanha — de propósito, igual
+   na 4e de verdade quase nenhuma família tem as três tradições. Ainda é chute de design
+   proporcional (a régua de todo o arquivo) — calibrar de novo se o jogo real mostrar errado. */
+const ESCOLA_TIPOS={
+ bushi:{nome:"Dojo Bushi",kan:"武",attrFundacao:"autoridade",attrAlunos:"autoridade",tag:"bushi",temNivel:true},
+ cortesao:{nome:"Salão Cortesão",kan:"言",attrFundacao:"influencia",attrAlunos:"influencia",tag:"courtier",temNivel:true},
+ shugenja:{nome:"Shoin Shugenja",kan:"神",attrFundacao:"dominio",attrAlunos:"vazio",tag:"shugenja",temNivel:false}
+};
+const ESCOLA_ORDEM=["bushi","cortesao","shugenja"];
+const ESCOLA_CUSTO_BASE=15; /* custo de fundar a 1ª escola da família, em qualquer dos três tipos */
+const ESCOLA_MULT_ORDEM=[1,2.5,5]; /* multiplicador sobre ESCOLA_CUSTO_BASE conforme quantas escolas a família já tem ANTES de fundar esta (0→1x, 1→2.5x, 2→5x) */
+const ESCOLA_NIVEL_CUSTOS=[12,18,25,35]; /* custo pra subir 1→2, 2→3, 3→4, 4→5 (só Bushi/Cortesão) — cumulativo até nível 5: 15+12+18+25+35=105, mais que o dobro do pool típico */
+const ENCANTAMENTO_CUSTO_POR_MASTERY=8; /* custo de um Encantamento Protegido = mastery×8 (mastery 6 = 48, quase o pool inteiro de Riqueza de uma família típica) */
+/* Nem todo clã do app tem um clanId correspondente nos data packs OpenNingia (faltam Gato,
+   Centopeia e Vespa como clãs catalogados, e Tartaruga existe mas sem escola bushi/cortesã/
+   shugenja marcada nesse pacote) — pra essas, escolasCanonicasDisponiveis() cai no fallback
+   (mostra as escolas de todos os clãs, a família "adota" uma como inspiração) em vez de
+   travar a funcionalidade. */
+const CLA_TO_CLANID4E={caranguejo:"crab",garca:"crane",dragao:"dragon",leao:"lion",fenix:"phoenix",escorpiao:"scorpion",unicornio:"unicorn",texugo:"badger",libelula:"dragonfly",falcao:"falcon",raposa:"fox",lebre:"hare",louva:"mantis",pardal:"sparrow",tartaruga:"tortoise",imperial:"imperial"};
+
+function l5r4eData(){return(typeof L5R4E!=="undefined"&&L5R4E)?L5R4E:null;}
+function escolasCanonicasDisponiveis(tipo){
+  const d=l5r4eData();if(!d)return[];
+  const tag=ESCOLA_TIPOS[tipo].tag;
+  const cla=claAtual();
+  const clanId4e=cla?(CLA_TO_CLANID4E[cla.id]||null):null;
+  let lista=clanId4e?d.escolas.filter(e=>e.clanId===clanId4e&&e.tags&&e.tags.includes(tag)):[];
+  if(!lista.length)lista=d.escolas.filter(e=>e.tags&&e.tags.includes(tag)); /* fallback: clã sem escola catalogada nesse tipo */
+  return lista;
+}
+function escolasAtivasCount(){return ESCOLA_ORDEM.filter(t=>S.escolas[t]&&S.escolas[t].ativa).length;}
+function custoFundarEscola(tipo){if(S.escolas[tipo]&&S.escolas[tipo].ativa)return 0;return Math.round(ESCOLA_CUSTO_BASE*ESCOLA_MULT_ORDEM[Math.min(escolasAtivasCount(),ESCOLA_MULT_ORDEM.length-1)]);}
+function custoProximoNivelEscola(tipo){
+  const e=S.escolas[tipo];if(!e||!e.ativa||!ESCOLA_TIPOS[tipo].temNivel)return null;
+  const idx=e.nivel-1;
+  return(idx>=0&&idx<ESCOLA_NIVEL_CUSTOS.length)?ESCOLA_NIVEL_CUSTOS[idx]:null;
+}
+function custoEscolaInvestido(tipo){
+  const e=S.escolas[tipo];if(!e||!e.ativa)return 0;
+  return(e.custoFundacao||0)+((e.custosNivel||[]).reduce((s,c)=>s+c,0));
+}
+function encantamentoInfo(feiticoId){const d=l5r4eData();return d?(d.feiticos||[]).find(f=>f.id===feiticoId):null;}
+function custoEncantamento(feiticoId){const f=encantamentoInfo(feiticoId);return f?(Number(f.mastery)||1)*ENCANTAMENTO_CUSTO_POR_MASTERY:0;}
+function encantamentosCustoTotal(){const e=S.escolas.shugenja;if(!e||!e.ativa)return 0;return(e.encantamentos||[]).reduce((s,id)=>s+custoEncantamento(id),0);}
+function escolasCustoTotal(attr){
+  /* soma o investido em qualquer escola cuja FUNDAÇÃO/nível saia desse atributo, mais
+     encantamentos protegidos se o atributo for riqueza — usado por poolGasto() */
+  let s=0;
+  ESCOLA_ORDEM.forEach(t=>{if(ESCOLA_TIPOS[t].attrFundacao===attr)s+=custoEscolaInvestido(t);});
+  if(attr==="riqueza")s+=encantamentosCustoTotal();
+  return s;
+}
+function alunosEscola(tipo){const e=S.escolas[tipo];if(!e||!e.ativa)return 0;return curvaLookup(DOJO_X,DOJO_ALUNOS_Y,totalAttr(ESCOLA_TIPOS[tipo].attrAlunos));}
+function fundarEscola(tipo,escolaId){
+  if(bloqueadoLeitura())return;
+  const e=S.escolas[tipo];if(!e||e.ativa)return;
+  const custo=custoFundarEscola(tipo);
+  if(poolRestante(ESCOLA_TIPOS[tipo].attrFundacao)<custo){feedPush("Não há "+ESCOLA_TIPOS[tipo].attrFundacao+" suficiente pra fundar "+ESCOLA_TIPOS[tipo].nome+" (custaria "+custo+").");return;}
+  e.ativa=true;e.escolaId=escolaId||null;e.custoFundacao=custo;
+  if(ESCOLA_TIPOS[tipo].temNivel){e.nivel=1;e.custosNivel=[];}
+  feedPush("A família fundou "+ESCOLA_TIPOS[tipo].nome+" (custo "+custo+").");
+  salvar();render();
+}
+function subirNivelEscola(tipo){
+  if(bloqueadoLeitura())return;
+  const e=S.escolas[tipo];if(!e||!e.ativa||!ESCOLA_TIPOS[tipo].temNivel)return;
+  const custo=custoProximoNivelEscola(tipo);if(custo===null)return;
+  if(poolRestante(ESCOLA_TIPOS[tipo].attrFundacao)<custo){feedPush("Não há "+ESCOLA_TIPOS[tipo].attrFundacao+" suficiente pra subir "+ESCOLA_TIPOS[tipo].nome+" de nível (custaria "+custo+").");return;}
+  e.nivel+=1;if(!e.custosNivel)e.custosNivel=[];e.custosNivel.push(custo);
+  feedPush(ESCOLA_TIPOS[tipo].nome+" subiu pro nível "+e.nivel+" (custo "+custo+").");
+  salvar();render();
+}
+function setEscolaCanonica(tipo,escolaId){if(bloqueadoLeitura())return;const e=S.escolas[tipo];if(!e||!e.ativa)return;e.escolaId=escolaId||null;salvar();render();}
+function adicionarEncantamento(feiticoId){
+  if(bloqueadoLeitura())return;
+  const e=S.escolas.shugenja;if(!e||!e.ativa||!feiticoId)return;
+  if(!e.encantamentos)e.encantamentos=[];
+  if(e.encantamentos.includes(feiticoId))return;
+  const custo=custoEncantamento(feiticoId);
+  if(poolRestante("riqueza")<custo){feedPush("Não há Riqueza suficiente pra proteger esse encantamento (custaria "+custo+").");return;}
+  e.encantamentos.push(feiticoId);
+  const f=encantamentoInfo(feiticoId);
+  feedPush("O Shoin passou a guardar \""+(f?f.nome:feiticoId)+"\" (custo "+custo+").");
+  salvar();render();
+}
+function removerEncantamento(feiticoId){if(bloqueadoLeitura())return;const e=S.escolas.shugenja;if(!e)return;e.encantamentos=(e.encantamentos||[]).filter(x=>x!==feiticoId);salvar();render();}
+function personagemPodeAprenderEncantamento(p,feiticoId){const f=encantamentoInfo(feiticoId);if(!f)return false;return rankPersonagem(p)>=(Number(f.mastery)||1);}
+
 /* Tropa e Liderança (Autoridade) */
 /* Custo de recrutar/equipar baixado (calibrado por simulação pra Autoridade pós-fusão) —
    levantar um exército ainda pesa, mas não trava a maioria das famílias na primeira unidade.
@@ -701,6 +909,163 @@ const TROPA_ESTADO={
  derrotado:{nome:"Derrotado",autoridade:0,dominio:-2,vazio:-5,fortuna:0}
 };
 const MULT_TROPA={camponesa:1,ashigaru:2,samurai:3};
+
+/* ============ TROPA COMO MINI-PERSONAGEM (Anéis) — v5, criado em 2026-08-04 a pedido do
+   Thiago. Em vez de só Força/Disciplina, cada Tipo de tropa ganha os cinco Anéis, na MESMA
+   escala 1-10 dos personagens (não a escala 20-55 de Força/Disciplina) — assim o roll da
+   tropa (d10+Água+Perícia Batalha) fica comparável ao de um PJ que lidera ou luta dentro
+   dela, no mesmo tabuleiro. Força/Disciplina continuam existindo do jeito que estavam
+   (custo de recrutamento, baixas de tropa fora do tabuleiro, bônus do General) — os Anéis
+   são uma camada nova, só para o tabuleiro e o confronto tropa-contra-tropa. Perícias
+   limitadas a três, de propósito ("bem limitado" — pedido do Thiago): Batalha (o roll
+   principal, igual ao personagem), Defesa (reduz o dano recebido no confronto) e Tática
+   (habilita manobras — hoje só documentada, ainda sem mecânica própria). Números abaixo são
+   chute de design proporcional — calibrar com playtest, igual todo o resto do sistema. */
+const TROPA_ANEIS={
+ camponesa:{agua:2,terra:3,fogo:1,ar:1,vazio:0},
+ ashigaru:{agua:3,terra:3,fogo:2,ar:2,vazio:1},
+ samurai:{agua:4,terra:4,fogo:3,ar:3,vazio:2}
+};
+const TROPA_PERICIAS_BASE={
+ camponesa:{batalha:0,defesa:0,tatica:0},
+ ashigaru:{batalha:1,defesa:1,tatica:0},
+ samurai:{batalha:3,defesa:2,tatica:2}
+};
+/* Movimento estilo Shogi: cada Tipo tem um alcance de fileira (profundidade, reaproveita a
+   "raia" 0-3 que já existia) e de coluna (flanco, novo — 0-2, esquerda/centro/direita) por
+   turno de tabuleiro. Camponesa avança devagar e reto (como um peão); Ashigaru já desliza de
+   flanco; Samurai carrega 2 fileiras de uma vez ou se desloca livre de lado (a peça de choque). */
+const TROPA_MOVIMENTO={
+ camponesa:{fileiras:1,colunas:0},
+ ashigaru:{fileiras:1,colunas:1},
+ samurai:{fileiras:2,colunas:2}
+};
+const TROPA_ESPEC_ANEL={disciplinado:{terra:1},fortalecido:{fogo:1}};
+/* Equipamento que já existia (custo em Recurso) ganha um segundo efeito, nos Anéis/Perícias
+   da tropa, sem mexer no custo original. */
+const TROPA_EQUIP_ANEL={
+ armaduras:{terra:1},
+ nagae:{defesaPericia:1},
+ tetsubishi:{taticaPericia:1},
+ bagagem:{vazio:1},
+ suprimentos:{terra:1}
+};
+function tropaAneisCalc(row){
+ const base=TROPA_ANEIS[row.tipo]||{agua:0,terra:0,fogo:0,ar:0,vazio:0};
+ const aneis=Object.assign({},base);
+ const espAnel=TROPA_ESPEC_ANEL[row.especializacao];
+ if(espAnel)Object.keys(espAnel).forEach(k=>aneis[k]=(aneis[k]||0)+espAnel[k]);
+ (row.equipamento||[]).forEach(id=>{
+   const eq=TROPA_EQUIP_ANEL[id];if(!eq)return;
+   Object.keys(eq).forEach(k=>{if(k==="defesaPericia"||k==="taticaPericia")return;aneis[k]=(aneis[k]||0)+eq[k];});
+ });
+ return aneis;
+}
+function tropaPericiasCalc(row){
+ const base=TROPA_PERICIAS_BASE[row.tipo]||{batalha:0,defesa:0,tatica:0};
+ const pericias=Object.assign({},base);
+ (row.equipamento||[]).forEach(id=>{
+   const eq=TROPA_EQUIP_ANEL[id];if(!eq)return;
+   if(eq.defesaPericia)pericias.defesa+=eq.defesaPericia;
+   if(eq.taticaPericia)pericias.tatica+=eq.taticaPericia;
+ });
+ return pericias;
+}
+function tropaMovimento(tipo){return TROPA_MOVIMENTO[tipo]||{fileiras:1,colunas:0};}
+/* Limiares de dano da tropa — versão compacta dos Níveis de Ferimento do personagem (§ver
+   feridasNiveis): só dois degraus (Ferido/Derrotado) em vez de oito, proporcionais ao Terra
+   da própria tropa, igual a lógica "Terra decide quanto aguenta" do personagem. */
+function tropaLimiarFerido(row){return Math.max(3,(tropaAneisCalc(row).terra||0)*3);}
+function tropaLimiarDerrotado(row){return tropaLimiarFerido(row)*2;}
+function aplicarDanoTropa(row,dano){
+ row._dano=(Number(row._dano)||0)+dano;
+ if(row._dano>=tropaLimiarDerrotado(row))row.estado="derrotado";
+ else if(row._dano>=tropaLimiarFerido(row))row.estado=(row.estado==="ferido")?"derrotado":"ferido";
+}
+/* Posição da tropa da família no tabuleiro (fileira reaproveita raiasTropa; coluna é novo,
+   guardado em S.batalhaAtual.colunasTropa — mesma ideia, mapa tropaId->valor). Tropa inimiga
+   guarda os dois direto no próprio objeto (raia já existia, coluna é novo campo). Sem posição
+   definida, assume fileira 0 (Reservas) e coluna 1 (Centro). */
+function tropaFamiliaFileira(tropaId){return Number((S.batalhaAtual&&S.batalhaAtual.raiasTropa&&S.batalhaAtual.raiasTropa[tropaId]))||0;}
+function tropaFamiliaColuna(tropaId){const v=S.batalhaAtual&&S.batalhaAtual.colunasTropa&&S.batalhaAtual.colunasTropa[tropaId];return v===undefined?1:Number(v);}
+function moverTropaFamilia(tropaId,novaFileira,novaColuna){
+ if(bloqueadoLeitura())return;const b=S.batalhaAtual;if(!b)return;
+ const t=S.tropas.find(x=>x.id===tropaId);if(!t)return;
+ const mov=tropaMovimento(t.tipo);
+ const fileiraAtual=tropaFamiliaFileira(tropaId),colunaAtual=tropaFamiliaColuna(tropaId);
+ if(Math.abs(novaFileira-fileiraAtual)>mov.fileiras){flashHint("Essa tropa só anda "+mov.fileiras+" fileira(s) por turno.");return;}
+ if(Math.abs(novaColuna-colunaAtual)>mov.colunas){flashHint("Essa tropa só desloca "+mov.colunas+" coluna(s) por turno.");return;}
+ b.raiasTropa=b.raiasTropa||{};b.raiasTropa[tropaId]=Math.max(0,Math.min(3,Math.round(novaFileira)));
+ b.colunasTropa=b.colunasTropa||{};b.colunasTropa[tropaId]=Math.max(0,Math.min(2,Math.round(novaColuna)));
+ salvar();render();
+}
+function moverTropaInimiga(id,novaFileira,novaColuna){
+ if(bloqueadoLeitura())return;const b=S.batalhaAtual;if(!b)return;
+ const t=(b.tropasInimigas||[]).find(x=>x.id===id);if(!t)return;
+ const mov=tropaMovimento(t.tipo);
+ const fileiraAtual=Number(t.raia)||0,colunaAtual=(t.coluna===undefined?1:Number(t.coluna));
+ if(Math.abs(novaFileira-fileiraAtual)>mov.fileiras){flashHint("Essa tropa só anda "+mov.fileiras+" fileira(s) por turno.");return;}
+ if(Math.abs(novaColuna-colunaAtual)>mov.colunas){flashHint("Essa tropa só desloca "+mov.colunas+" coluna(s) por turno.");return;}
+ t.raia=Math.max(0,Math.min(3,Math.round(novaFileira)));t.coluna=Math.max(0,Math.min(2,Math.round(novaColuna)));
+ salvar();render();
+}
+/* Seleção/clique do tabuleiro Shogi (v5) — clicar num token seleciona (ou desseleciona, se
+   clicar de novo no mesmo); clicar numa casa com um token selecionado tenta mover pra lá.
+   moverTropaFamilia/moverTropaInimiga já validam o alcance e recusam com flashHint, então
+   aqui só repassamos a casa clicada. */
+function selecionarTropaTabuleiro(lado,id){
+ if(bloqueadoLeitura())return;
+ if(tropaSelTabuleiro&&tropaSelTabuleiro.lado===lado&&tropaSelTabuleiro.id===id)tropaSelTabuleiro=null;
+ else tropaSelTabuleiro={lado,id};
+ render();
+}
+function clicarCasaTabuleiro(fileira,coluna){
+ if(bloqueadoLeitura())return;
+ if(!tropaSelTabuleiro){flashHint("Clique primeiro num token de tropa pra selecioná-lo, depois clique na casa de destino.");return;}
+ const sel=tropaSelTabuleiro;tropaSelTabuleiro=null;
+ if(sel.lado==="familia")moverTropaFamilia(sel.id,fileira,coluna);else moverTropaInimiga(sel.id,fileira,coluna);
+ render();
+}
+/* Contato: tropa da família e tropa inimiga na mesma coluna, fileiras a distância <=1 —
+   dispara Confronto. Empate de fileira (mesma casa) ou adjacência (uma fileira de diferença)
+   contam — igual a "engajado" no sentido de já estarem trocando golpes. */
+function tropasEmContato(){
+ const b=S.batalhaAtual;if(!b)return[];
+ const familiares=(b.tropasComprometidas||[]).map(id=>S.tropas.find(x=>x.id===id)).filter(Boolean)
+   .map(t=>({tropa:t,fileira:tropaFamiliaFileira(t.id),coluna:tropaFamiliaColuna(t.id)}));
+ const inimigas=(b.tropasInimigas||[]).map(t=>({tropa:t,fileira:Number(t.raia)||0,coluna:t.coluna===undefined?1:Number(t.coluna)}));
+ const contatos=[];
+ familiares.forEach(f=>{inimigas.forEach(i=>{
+   if(f.coluna===i.coluna&&Math.abs(f.fileira-i.fileira)<=1)contatos.push({familia:f,inimiga:i});
+ });});
+ return contatos;
+}
+/* Resolve um Confronto de tropas no tabuleiro — reaproveita faixaBatalha()/nivelEfetivo(),
+   as MESMAS funções já validadas contra o RAW pro personagem, só que rolando Água+Batalha
+   da tropa em vez do personagem. bonusLiderancaFamilia vem de um PJ em modo Liderança
+   vinculado a essa tropa (ver participante.modo). Empate favorece a família (chute — ajustar
+   se parecer injusto na mesa). */
+function resolverConfrontoTropa(contato,opts){
+ opts=opts||{};
+ const tf=contato.familia.tropa,ti=contato.inimiga.tropa;
+ const aneisF=tropaAneisCalc(tf),periciasF=tropaPericiasCalc(tf);
+ const aneisI=tropaAneisCalc(ti),periciasI=tropaPericiasCalc(ti);
+ const bonusLiderancaFamilia=Number(opts.bonusLiderancaFamilia)||0;
+ const totalF=d10()+(aneisF.agua||0)+(periciasF.batalha||0)+bonusLiderancaFamilia;
+ const totalI=d10()+(aneisI.agua||0)+(periciasI.batalha||0);
+ const fileiraConfronto=Math.max(contato.familia.fileira,contato.inimiga.fileira);
+ const nivel=nivelEfetivo(fileiraConfronto,0);
+ const vencedor=totalF>=totalI?"familia":"inimiga",perdedor=vencedor==="familia"?"inimiga":"familia";
+ const totalVencedor=vencedor==="familia"?totalF:totalI;
+ const linha=faixaBatalha(totalVencedor);
+ const col=linha.cols[nivel];
+ let danoRolado=0;for(let i=0;i<col.fer;i++)danoRolado+=d10();
+ const alvo=perdedor==="familia"?tf:ti;
+ const defesaAlvo=perdedor==="familia"?(periciasF.defesa||0):(periciasI.defesa||0);
+ danoRolado=Math.max(0,danoRolado-defesaAlvo);
+ aplicarDanoTropa(alvo,danoRolado);
+ return{totalF,totalI,vencedor,perdedor,nivel,ferDados:col.fer,danoRolado,gloriaSugerida:col.gloria,especial:col.esp};
+}
 
 /* ============ BATALHA EM MASSA (v2 — regras oficiais da 4ª edição + integração de tropa,
    Ordens de Batalha, Postura de Combate e Fortificações/Cerco) ============
@@ -850,31 +1215,37 @@ function rolarContesteGenerais(bonusProprio,bonusInimigo){
  let status="impasse";if(dif>=5)status="vencendo";else if(dif<=-5)status="perdendo";
  return{proprio,inimigo,dif,status};
 }
+/* modo:"pessoal" (o personagem age sozinho ou com poucos aliados, ganho é dele — sai pra
+   quem está em Participação) vs "comando" (a ação já é inerentemente de comando/coordenação
+   de tropa — sai pra quem está em Liderança). Tag adicionada em 2026-08-04 pra rotear com
+   oportunidadeHeroicaAleatoria(modo); a maioria continua "pessoal" porque a maior parte das
+   24 oportunidades originais da 4e já é sobre o personagem agindo sozinho, mesmo quando o
+   efeito também beneficia o general — classifiquei pelo que a AÇÃO exige, não só o payoff. */
 const OPORTUNIDADES_HEROICAS=[
- {nome:"Um Tiro Certeiro",efeito:"A linha de frente se abre — tiro à distância no general inimigo (TN 30+). Acerto vale 4 Glória e -5 no próximo Turno de Batalha do general inimigo."},
- {nome:"Atacar os Arqueiros",efeito:"Escaramuça contra os arqueiros de reserva do inimigo. Sucesso: -5 no próximo turno do general inimigo, +2 Glória."},
- {nome:"Atacar o Shugenja",efeito:"Ataque arriscado contra os shugenja inimigos. Sucesso: -5 no próximo turno do general inimigo, +3 Glória (oferecer rendição antes vale +2 Honra, aceitando ou não)."},
- {nome:"Duas Covas",efeito:"Persegue quem matou um parente — precisa entrar no nível de engajamento do inimigo e vencer um Contest de Percepção pra encontrá-lo, aí parte pro duelo."},
- {nome:"Romper a Linha",efeito:"Carrega contra 2-4 samurai Rank 2 na linha de frente. Vai pra Fortemente Engajado; no próximo turno rola -2, mas soma +3 no Battle Roll do general. +3 Glória."},
- {nome:"Poucos contra Muitos",efeito:"Um aliado é cercado — escaramuça contra 3-6 samurai um Rank abaixo do personagem. Se o aliado sobrevive, +3 Glória."},
- {nome:"Incendiar as Velas",efeito:"(batalha naval) Flecha em brasa mira as velas do navio inimigo. Sucesso: navio imobilizado, -3 no próximo turno do general inimigo."},
- {nome:"Pelo Império",efeito:"Duelo contra um Perdido de Rank+1, um oni menor ou outro corrompido à escolha do Mestre. Sucesso: +3 Glória, -5 no próximo turno do general inimigo."},
- {nome:"Segure o Terreno!",efeito:"Sustentar a linha: Engajado enfrenta um número de inimigos igual ao da unidade +2 (2 Glória); Fortemente Engajado soma +2 inimigos (4 Glória)."},
- {nome:"Entre na Batalha",efeito:"Sai das Reservas pra Desengajado e rola de novo na Tabela de Batalha, sem modificador, imediatamente."},
- {nome:"Sobrepujar",efeito:"O personagem e sua unidade cercam um único samurai Rank 3 ou 4. Sucesso: -5 no próximo turno do general inimigo."},
- {nome:"Erguer o Estandarte",efeito:"O porta-estandarte cai — segurar a bandeira dá +3 no Battle Roll do general a cada turno, mas atrai ataques constantes até ser largada."},
- {nome:"Proteger o General",efeito:"Fica ao lado do general pelo resto da batalha, seguindo o engajamento dele. +1 Glória extra por turno."},
- {nome:"Reagrupar os Arqueiros",efeito:"Perform: Oratória/Percepção TN 20. Sucesso: +5 no próximo Battle Roll do general, +1 Glória. Falha ou recusa: -5 no próximo turno do general."},
- {nome:"Velocidade de Abalroamento",efeito:"(batalha naval) Abordagem: vai pra Fortemente Engajado e enfrenta 1-4 samurai um Rank abaixo. +1 Glória."},
- {nome:"Salvar um Camarada Ferido",efeito:"Defende um aliado caído contra 2-3 inimigos Rank 1-2 por turno. Sucesso: +1 Glória por turno sustentado (não acumula com outra oportunidade heroica)."},
- {nome:"Salvar um Oponente Ferido",efeito:"Um inimigo ferido pede ajuda — ajudar não dá bônus mecânico, mas cria uma obrigação (e um possível refém valioso). Precisa ir pras Reservas assim que possível."},
- {nome:"Salvar Nosso Navio",efeito:"(batalha naval) O navio está afundando — avisar e ajudar a tripulação a sair vale 3 Glória se bem-sucedido."},
- {nome:"Loucura das Terras Sombrias",efeito:"Aliados tocados pela Mácula se voltam contra o personagem — enfrenta 1-4 samurai Manchados (Rank igual se Fortemente Engajado, um abaixo se Engajado). Sucesso: +1 Glória; falha: -3 no próximo turno do general."},
- {nome:"Mostre-me sua Postura",efeito:"Duelo formal contra um samurai Rank 2 ou 3 escolhido pelo inimigo. Vitória: Glória igual ao Rank de Glória do oponente, +2 no próximo Battle Roll do general."},
- {nome:"Presente do Shugenja",efeito:"Um shugenja aliado abençoa o personagem — um Traço ou Perícia sobe um Rank até o fim da batalha."},
- {nome:"Escaramuça",efeito:"Enfrenta um número de inimigos definido pelo Mestre — só precisa forçá-los a recuar, não matar. Sucesso: +1 no próximo Battle Roll do general."},
- {nome:"Resista às Trevas",efeito:"Um oni menor (ou similar) avança sobre tropas desmoralizadas. Vencer: +4 Glória, +3 no próximo turno do general. Perder ou recusar: -5 no próximo turno do general."},
- {nome:"Tomar o Estandarte Inimigo",efeito:"Precisa matar o porta-estandarte inimigo e levar a bandeira de volta às Reservas — enquanto a carrega, é atacado por samurai de Rank igual a cada turno; -5 no Battle Roll do general inimigo enquanto durar. Sucesso: ganha um Rank inteiro de Glória."}
+ {nome:"Um Tiro Certeiro",efeito:"A linha de frente se abre — tiro à distância no general inimigo (TN 30+). Acerto vale 4 Glória e -5 no próximo Turno de Batalha do general inimigo.",modo:"pessoal"},
+ {nome:"Atacar os Arqueiros",efeito:"Escaramuça contra os arqueiros de reserva do inimigo. Sucesso: -5 no próximo turno do general inimigo, +2 Glória.",modo:"pessoal"},
+ {nome:"Atacar o Shugenja",efeito:"Ataque arriscado contra os shugenja inimigos. Sucesso: -5 no próximo turno do general inimigo, +3 Glória (oferecer rendição antes vale +2 Honra, aceitando ou não).",modo:"pessoal"},
+ {nome:"Duas Covas",efeito:"Persegue quem matou um parente — precisa entrar no nível de engajamento do inimigo e vencer um Contest de Percepção pra encontrá-lo, aí parte pro duelo.",modo:"pessoal"},
+ {nome:"Romper a Linha",efeito:"Carrega contra 2-4 samurai Rank 2 na linha de frente. Vai pra Fortemente Engajado; no próximo turno rola -2, mas soma +3 no Battle Roll do general. +3 Glória.",modo:"pessoal"},
+ {nome:"Poucos contra Muitos",efeito:"Um aliado é cercado — escaramuça contra 3-6 samurai um Rank abaixo do personagem. Se o aliado sobrevive, +3 Glória.",modo:"pessoal"},
+ {nome:"Incendiar as Velas",efeito:"(batalha naval) Flecha em brasa mira as velas do navio inimigo. Sucesso: navio imobilizado, -3 no próximo turno do general inimigo.",modo:"pessoal"},
+ {nome:"Pelo Império",efeito:"Duelo contra um Perdido de Rank+1, um oni menor ou outro corrompido à escolha do Mestre. Sucesso: +3 Glória, -5 no próximo turno do general inimigo.",modo:"pessoal"},
+ {nome:"Segure o Terreno!",efeito:"Sustentar a linha: Engajado enfrenta um número de inimigos igual ao da unidade +2 (2 Glória); Fortemente Engajado soma +2 inimigos (4 Glória).",modo:"comando"},
+ {nome:"Entre na Batalha",efeito:"Sai das Reservas pra Desengajado e rola de novo na Tabela de Batalha, sem modificador, imediatamente.",modo:"pessoal"},
+ {nome:"Sobrepujar",efeito:"O personagem e sua unidade cercam um único samurai Rank 3 ou 4. Sucesso: -5 no próximo turno do general inimigo.",modo:"comando"},
+ {nome:"Erguer o Estandarte",efeito:"O porta-estandarte cai — segurar a bandeira dá +3 no Battle Roll do general a cada turno, mas atrai ataques constantes até ser largada.",modo:"comando"},
+ {nome:"Proteger o General",efeito:"Fica ao lado do general pelo resto da batalha, seguindo o engajamento dele. +1 Glória extra por turno.",modo:"comando"},
+ {nome:"Reagrupar os Arqueiros",efeito:"Perform: Oratória/Percepção TN 20. Sucesso: +5 no próximo Battle Roll do general, +1 Glória. Falha ou recusa: -5 no próximo turno do general.",modo:"comando"},
+ {nome:"Velocidade de Abalroamento",efeito:"(batalha naval) Abordagem: vai pra Fortemente Engajado e enfrenta 1-4 samurai um Rank abaixo. +1 Glória.",modo:"pessoal"},
+ {nome:"Salvar um Camarada Ferido",efeito:"Defende um aliado caído contra 2-3 inimigos Rank 1-2 por turno. Sucesso: +1 Glória por turno sustentado (não acumula com outra oportunidade heroica).",modo:"pessoal"},
+ {nome:"Salvar um Oponente Ferido",efeito:"Um inimigo ferido pede ajuda — ajudar não dá bônus mecânico, mas cria uma obrigação (e um possível refém valioso). Precisa ir pras Reservas assim que possível.",modo:"pessoal"},
+ {nome:"Salvar Nosso Navio",efeito:"(batalha naval) O navio está afundando — avisar e ajudar a tripulação a sair vale 3 Glória se bem-sucedido.",modo:"pessoal"},
+ {nome:"Loucura das Terras Sombrias",efeito:"Aliados tocados pela Mácula se voltam contra o personagem — enfrenta 1-4 samurai Manchados (Rank igual se Fortemente Engajado, um abaixo se Engajado). Sucesso: +1 Glória; falha: -3 no próximo turno do general.",modo:"pessoal"},
+ {nome:"Mostre-me sua Postura",efeito:"Duelo formal contra um samurai Rank 2 ou 3 escolhido pelo inimigo. Vitória: Glória igual ao Rank de Glória do oponente, +2 no próximo Battle Roll do general.",modo:"pessoal"},
+ {nome:"Presente do Shugenja",efeito:"Um shugenja aliado abençoa o personagem — um Traço ou Perícia sobe um Rank até o fim da batalha.",modo:"pessoal"},
+ {nome:"Escaramuça",efeito:"Enfrenta um número de inimigos definido pelo Mestre — só precisa forçá-los a recuar, não matar. Sucesso: +1 no próximo Battle Roll do general.",modo:"comando"},
+ {nome:"Resista às Trevas",efeito:"Um oni menor (ou similar) avança sobre tropas desmoralizadas. Vencer: +4 Glória, +3 no próximo turno do general. Perder ou recusar: -5 no próximo turno do general.",modo:"pessoal"},
+ {nome:"Tomar o Estandarte Inimigo",efeito:"Precisa matar o porta-estandarte inimigo e levar a bandeira de volta às Reservas — enquanto a carrega, é atacado por samurai de Rank igual a cada turno; -5 no Battle Roll do general inimigo enquanto durar. Sucesso: ganha um Rank inteiro de Glória.",modo:"pessoal"}
 ];
 
 /* Conversão de recursos: origem -> {destinos, taxa} */
@@ -894,7 +1265,10 @@ function estadoInicial(){return{
   base:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},
   eventos:[],terrenos:[],personagens:[],tropas:[],conversoes:[],feed:[],
   conquistas:[],estacaoIdx:0,anoEstacao:1,sacrificios:[],
-  batalhaAtual:null,batalhas:[]
+  batalhaAtual:null,batalhas:[],marcacoesMapa:[],
+  escolas:{bushi:{ativa:false,nivel:0,escolaId:null,custoFundacao:0,custosNivel:[]},
+    cortesao:{ativa:false,nivel:0,escolaId:null,custoFundacao:0,custosNivel:[]},
+    shugenja:{ativa:false,escolaId:null,custoFundacao:0,encantamentos:[]}}
 };}
 /* Estações de Rokugan — o teste de Fortunas roda a cada estação (Mestre decide quando
    avançar). Cada estação favorece um par de atributos diferentes na hora do nudge,
@@ -958,6 +1332,16 @@ if(S.batalhaAtual){
     delete t.comandanteId;
   });
   if(ba.fortificacao&&!ba.fortificacao.origem)ba.fortificacao.origem="manual";
+  /* Migração v5 (2026-08-04): tabuleiro Shogi (fileira x coluna) e tropa-como-mini-personagem.
+     Saves antigos não têm coluna nenhuma — toda tropa (família e inimiga) nasce na coluna
+     central (1 = Centro), que é a posição neutra e não força reencaixe de nada que já
+     existia (fileira continua vindo de raiasTropa/t.raia, sem mudança). Participantes
+     antigos não tinham "modo" (liderança vs participação) — default é "participacao",
+     que é o comportamento equivalente ao que já existia (oportunidades heroicas sem
+     distinção de tropa/comando). Seguro rodar de novo. */
+  if(!ba.colunasTropa)ba.colunasTropa={};
+  (ba.tropasInimigas||[]).forEach(t=>{if(t.coluna===undefined)t.coluna=1;});
+  (ba.participantes||[]).forEach(pt=>{if(!pt.modo)pt.modo="participacao";});
 }
 /* Migração: famílias salvas antes da fusão pros 5 atributos (5 anéis) tinham
    defesa/terras/ordem/populacao/poder/honra/espiritualidade separados. Soma cada
@@ -979,7 +1363,22 @@ if(S.base&&(S.base.defesa!==undefined||S.base.terras!==undefined||S.base.ordem!=
 (S.conquistas||[]).forEach(c=>{(c.itens||[]).forEach(it=>{if(it.attr&&ATTR_MIGRA[it.attr])it.attr=ATTR_MIGRA[it.attr];});});
 if(!S.batalhas)S.batalhas=[];
 if(S.batalhaAtual===undefined)S.batalhaAtual=null;
+/* Migração: saves anteriores às marcações do mapa (2026-08-04) não têm S.marcacoesMapa —
+   mapa limpo, igual uma família nova. Seguro rodar de novo. */
+if(!Array.isArray(S.marcacoesMapa))S.marcacoesMapa=[];
+/* Migração: marcações criadas antes dos vínculos com a ficha não têm vinculoId — ficam como
+   anotação solta, que é exatamente o que eram. Seguro rodar de novo. */
+S.marcacoesMapa.forEach(m=>{if(m.vinculoId===undefined)m.vinculoId="";});
+/* Migração: saves de antes das Escolas (2026-08-04) não têm S.escolas — família começa
+   sem nenhuma das três fundada, igual uma família recém-criada. Seguro rodar de novo. */
+if(!S.escolas)S.escolas={bushi:{ativa:false,nivel:0,escolaId:null,custoFundacao:0,custosNivel:[]},
+  cortesao:{ativa:false,nivel:0,escolaId:null,custoFundacao:0,custosNivel:[]},
+  shugenja:{ativa:false,escolaId:null,custoFundacao:0,encantamentos:[]}};
+ESCOLA_ORDEM.forEach(t=>{if(!S.escolas[t])S.escolas[t]=t==="shugenja"?{ativa:false,escolaId:null,custoFundacao:0,encantamentos:[]}:{ativa:false,nivel:0,escolaId:null,custoFundacao:0,custosNivel:[]};});
 let papel="mestre";
+/* Seleção do tabuleiro Shogi de tropas (v5) — só de tela, não salva. Guarda qual token está
+   selecionado ({lado:"familia"|"inimiga",id}) esperando um clique numa casa pra se mover. */
+let tropaSelTabuleiro=null;
 /* estado só de tela (não salva): se a lista de clãs/eventos aparece cheia ou só o que já foi escolhido */
 let verTodosClas=!S.cla;
 let verTodosEventos=S.eventos.length<maxEventos();
@@ -1075,6 +1474,7 @@ function poolGasto(attr){
   if(attr==="dominio")g+=terrenosTotais().custoDefesa+terrenosTotais().custoTerras;
   if(attr==="influencia")g+=personagensCustoTotal();
   if(attr==="autoridade")g+=tropasCustoTotal();
+  g+=escolasCustoTotal(attr); /* fundação/nível de Dojo/Salão/Shoin (dominio/influencia/autoridade) + Encantamentos Protegidos (riqueza) */
   return g;
 }
 function poolRestante(attr){return totalAttr(attr)-poolGasto(attr);}
@@ -1082,7 +1482,7 @@ function poolRestante(attr){return totalAttr(attr)-poolGasto(attr);}
 function fortunas(){
   return fortunaTropa()+terrenosTotais().fortuna+
     curvaLookup(CURVA_X,AUTORIDADE_Y,totalAttr("autoridade"))+
-    curvaLookup(CURVA_X,DOMINIO_Y,totalAttr("dominio"))+
+    curvaLookup(DOMINIO_X,DOMINIO_Y,totalAttr("dominio"))+
     curvaLookup(CURVA_X,VAZIO_Y,totalAttr("vazio"))+
     fortunaPersonagem();
 }
@@ -1337,7 +1737,31 @@ function setBatalhaCampo(campo,val){if(bloqueadoLeitura())return;if(!S.batalhaAt
   S.batalhaAtual[campo]=(campo==="generalProprioBonus"||campo==="generalInimigoBonus")?(parseInt(val)||0):val;salvar();render();}
 function toggleParticipante(personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const list=S.batalhaAtual.participantes;const i=list.findIndex(x=>x.personagemId===personagemId);
-  if(i>=0)list.splice(i,1);else list.push({personagemId,engajamentoIdx:1,ordemId:"manter",posturaId:"ataque",tropaId:null});salvar();render();}
+  if(i>=0)list.splice(i,1);else list.push({personagemId,engajamentoIdx:1,ordemId:"manter",posturaId:"ataque",tropaId:null,modo:"participacao"});salvar();render();}
+/* Modo do participante — v5: "participacao" (dentro da tropa, rola a Tabela de Batalha
+   pessoal de sempre — nada muda) ou "lideranca" (o personagem empresta Água+Batalha pro
+   Confronto da tropa vinculada, em vez de rolar sozinho — ver resolverConfrontoTropa). Rotea
+   também qual subconjunto de Oportunidades Heroicas pode sair pra ele (ver OPORTUNIDADES_
+   HEROICAS[].modo e oportunidadeHeroicaAleatoria()). */
+function setModoParticipante(personagemId,modo){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
+  part.modo=modo;salvar();render();}
+function bonusLiderancaParticipante(personagemId){
+  const part=(S.batalhaAtual&&S.batalhaAtual.participantes||[]).find(x=>x.personagemId===personagemId);
+  if(!part||part.modo!=="lideranca")return 0;
+  const p=S.personagens.find(x=>x.id===personagemId);if(!p)return 0;
+  fichaBase(p);return(aneisPersonagem(p).agua||0)+personagemBattleSkill(p);
+}
+function oportunidadeHeroicaAleatoria(modo){
+  const pool=OPORTUNIDADES_HEROICAS.filter(o=>!modo||o.modo===modo);
+  return pickRandom(pool.length?pool:OPORTUNIDADES_HEROICAS);
+}
+function sortearOportunidade(modo){
+  const o=oportunidadeHeroicaAleatoria(modo);
+  feedPush("Oportunidade Heroica ("+(modo==="comando"?"Comando":"Pessoal")+") sorteada: "+o.nome+" — "+o.efeito);
+  if(S.batalhaAtual)S.batalhaAtual.log.unshift({turno:S.batalhaAtual.turno,texto:"Oportunidade Heroica ("+(modo==="comando"?"Comando":"Pessoal")+"): "+o.nome+" — "+o.efeito});
+  salvar();render();
+}
 function setEngajamento(personagemId,idx){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
   part.engajamentoIdx=Math.max(0,Math.min(3,parseInt(idx)||0));salvar();render();}
@@ -1350,6 +1774,17 @@ function ciclarRaiaTropaFamilia(tropaId){if(bloqueadoLeitura())return;if(!S.bata
 function ciclarRaiaTropaInimiga(tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const t=(S.batalhaAtual.tropasInimigas||[]).find(x=>x.id===tropaId);if(!t)return;
   t.raia=((Number(t.raia)||0)+1)%4;salvar();render();}
+/* Coluna (flanco Shogi, v5) — mesmo padrão dos cicladores de fileira acima: clique livre,
+   sem checar tropaMovimento (esse limite fica pra moverTropaFamilia/moverTropaInimiga, que
+   dão o botão "certo" pra um tabuleiro com drag-and-drop no futuro; por ora o ciclador rápido
+   já cobre o uso de mesa). */
+const COLUNA_NOMES=["Esq","Centro","Dir"];
+function ciclarColunaTropaFamilia(tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const b=S.batalhaAtual;b.colunasTropa=b.colunasTropa||{};
+  b.colunasTropa[tropaId]=(tropaFamiliaColuna(tropaId)+1)%3;salvar();render();}
+function ciclarColunaTropaInimiga(tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  const t=(S.batalhaAtual.tropasInimigas||[]).find(x=>x.id===tropaId);if(!t)return;
+  t.coluna=((t.coluna===undefined?1:Number(t.coluna))+1)%3;salvar();render();}
 function setOrdem(personagemId,ordemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
   part.ordemId=ordemId;salvar();render();}
@@ -1551,6 +1986,13 @@ function rodarTurnoBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)ret
   b.participantes.forEach(part=>{
     const p=S.personagens.find(x=>x.id===part.personagemId);if(!p)return;
     fichaBase(p);
+    /* v5: em modo Liderança o personagem empresta Água+Batalha ao Confronto da tropa
+       vinculada (ver resolverConfrontosTurno abaixo) em vez de rolar a Tabela de Batalha
+       pessoal — evita contar o mesmo personagem duas vezes no mesmo turno. */
+    if(part.modo==="lideranca"){
+      b.log.unshift({turno:b.turno,texto:esc(p.nome||"sem nome")+" comanda a tropa vinculada neste turno (Água+Batalha somados ao Confronto da tropa) — não rola a Tabela de Batalha pessoal."});
+      return;
+    }
     const ordem=ORDENS_BATALHA.find(o=>o.id===(part.ordemId||"manter"))||ORDENS_BATALHA[1];
     /* Postura agora vem da tropa vinculada ao personagem (§16), não mais de uma escolha
        pessoal — sem tropa vinculada, o personagem rola sem modificador de postura (Ataque). */
@@ -1598,8 +2040,29 @@ function rodarTurnoBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)ret
     }
   });
   const baixas=aplicarBaixasTropa(b);
+  const confrontos=resolverConfrontosTurno();
+  confrontos.forEach(r=>{
+    const nF=esc(r.tropaFamilia.nome||"tropa da família"),nI=esc(r.tropaInimiga.nome||"tropa inimiga");
+    const nomeVencedor=r.vencedor==="familia"?nF:nI,nomePerdedor=r.perdedor==="familia"?nF:nI;
+    b.log.unshift({turno:b.turno,texto:"Confronto "+nF+" x "+nI+": "+r.totalF+" x "+r.totalI+" — "+nomeVencedor+" vence, "+r.danoRolado+" dano em "+nomePerdedor+(r.especial?" — "+ESP_LABEL[r.especial]+"!":"")+"."});
+  });
   b.log.unshift({turno:b.turno,texto:resumoTurnoTxt(b,c,moralAntes,bonusPendProprio,bonusPendInimigo,danoTotal,gloriaTotal,especiais,baixas,"")});
   salvar();render();}
+/* Roda todo Confronto de tropas em contato (tabuleiro Shogi, v5) num turno: soma o bônus de
+   qualquer participante em modo Liderança vinculado à tropa da família envolvida, resolve
+   com resolverConfrontoTropa (reaproveitando faixaBatalha/nivelEfetivo já validados) e
+   aplica dano. Retorna a lista de resultados pra log — não mexe em b.log sozinha, quem chama
+   decide como narrar. */
+function resolverConfrontosTurno(){
+  const b=S.batalhaAtual;if(!b)return[];
+  return tropasEmContato().map(contato=>{
+    const tropaId=contato.familia.tropa.id;
+    let bonusLid=0;
+    (b.participantes||[]).forEach(pt=>{if(pt.tropaId===tropaId)bonusLid+=bonusLiderancaParticipante(pt.personagemId);});
+    const r=resolverConfrontoTropa(contato,{bonusLiderancaFamilia:bonusLid});
+    return Object.assign({tropaFamilia:contato.familia.tropa,tropaInimiga:contato.inimiga.tropa},r);
+  });
+}
 const RESULTADO_BATALHA_CONQUISTA={
  vitoria:{titulo:"Vitória em batalha",itens:[{attr:"influencia",delta:2},{attr:"autoridade",delta:1}]},
  derrota:{titulo:"Derrota em batalha",itens:[{attr:"dominio",delta:-2},{attr:"autoridade",delta:-1}]},
@@ -1632,10 +2095,12 @@ function render(){
   document.getElementById("claLab").textContent="Clã: "+(claAtual()?claAtual().nome:"—");
   const claDoCrest=claAtual();
   document.getElementById("crest").innerHTML=claDoCrest?("<img src=\"img/mons/"+claDoCrest.id+".png\" alt=\"\" onerror=\"this.parentNode.textContent='家'\">"):"家";
-  renderClas();renderMeters();renderAttrs();renderEventos();renderConquistas();renderSacrificios();renderTerrenos();renderPersonagens();renderTropas();renderConversoes();renderFeed();renderSync();
+  renderClas();renderMeters();renderAttrs();renderEventos();renderConquistas();renderSacrificios();renderTerrenos();renderPersonagens();renderTropas();renderEscolas();renderConversoes();renderFeed();renderSync();
   document.getElementById("tabPersonagensCount").textContent=S.personagens.length?("("+S.personagens.length+")"):"";
   if(abaPrincipal==="personagens")renderCharTabs();
   if(abaPrincipal==="batalha")renderBatalha();
+  if(abaPrincipal==="mapa")renderMapa();
+  renderMapaLista();
 }
 function renderClas(){
   const box=document.getElementById("clasList");
@@ -1851,6 +2316,49 @@ function renderPersonagens(){
     "<tbody>"+(rows||"<tr><td colspan=\"8\" class=\"hint\">Nenhum personagem ainda.</td></tr>")+
     "<tr><td colspan=\"6\"><b>Total gasto de Influência</b></td><td><b>"+personagensCustoTotal().toFixed(0)+"</b></td><td></td></tr></tbody>";
 }
+function renderEscolas(){
+  const box=document.getElementById("escolasBox");if(!box)return;
+  box.innerHTML=ESCOLA_ORDEM.map(tipo=>{
+    const info=ESCOLA_TIPOS[tipo],e=S.escolas[tipo];
+    let corpo;
+    if(!e.ativa){
+      const custo=custoFundarEscola(tipo);
+      corpo="<div class=\"hint\">Não fundada. Custo pra fundar agora: <b>"+custo+" "+info.attrFundacao+"</b> (disponível: "+poolRestante(info.attrFundacao).toFixed(0)+").</div>"+
+        "<button class=\"ghost\" onclick=\"fundarEscola('"+tipo+"')\">fundar "+esc(info.nome)+"</button>";
+    }else{
+      const canonicas=escolasCanonicasDisponiveis(tipo);
+      const selEscola="<select onchange=\"setEscolaCanonica('"+tipo+"',this.value)\"><option value=\"\">— escola própria, sem catálogo —</option>"+
+        canonicas.map(c=>"<option value=\""+c.id+"\" "+(e.escolaId===c.id?"selected":"")+">"+esc(c.nome)+"</option>").join("")+"</select>";
+      const alunos="<div class=\"hint\">Forma ~"+alunosEscola(tipo)+" aluno(s) por temporada (lê "+info.attrAlunos+").</div>";
+      let nivelHtml="";
+      if(info.temNivel){
+        const custoNivel=custoProximoNivelEscola(tipo);
+        nivelHtml="<div class=\"hint\">Nível <b>"+e.nivel+"</b>/5 — alunos formados sabem técnica até rank "+e.nivel+".</div>"+
+          (custoNivel!==null?"<button class=\"ghost\" onclick=\"subirNivelEscola('"+tipo+"')\">subir pro nível "+(e.nivel+1)+" ("+custoNivel+" "+info.attrFundacao+")</button>":"<div class=\"hint\">Nível máximo (5).</div>");
+      }
+      let shugenjaHtml="";
+      if(tipo==="shugenja"){
+        const d=l5r4eData();
+        const feiticos=d?d.feiticos:[];
+        const opcoes=feiticos.filter(f=>!(e.encantamentos||[]).includes(f.id))
+          .sort((a,b)=>(Number(a.mastery)||0)-(Number(b.mastery)||0))
+          .map(f=>"<option value=\""+f.id+"\">"+esc(f.nome)+" (mastery "+f.mastery+", custo "+custoEncantamento(f.id)+")</option>").join("");
+        const lista=(e.encantamentos||[]).map(id=>{
+          const f=encantamentoInfo(id);if(!f)return"";
+          return "<div class=\"linha\"><b>"+esc(f.nome)+"</b><span class=\"tag\">mastery "+f.mastery+"</span><span class=\"tag\">custo "+custoEncantamento(id)+"</span>"+
+            "<button class=\"ghost\" onclick=\"removerEncantamento('"+id+"')\">✕</button></div>";
+        }).join("")||"<div class=\"hint\">Nenhum encantamento protegido ainda.</div>";
+        shugenjaHtml="<div class=\"hint\" style=\"margin-top:6px\">Encantamentos Protegidos (Riqueza disponível: "+poolRestante("riqueza").toFixed(0)+"):</div>"+
+          lista+
+          (opcoes?"<select id=\"selNovoEncantamento_"+tipo+"\">"+opcoes+"</select>"+
+            "<button class=\"ghost\" onclick=\"adicionarEncantamento(document.getElementById('selNovoEncantamento_"+tipo+"').value)\">proteger encantamento</button>":"");
+      }
+      corpo="<div class=\"hint\">Escola canônica: "+selEscola+"</div>"+alunos+nivelHtml+shugenjaHtml+
+        "<div class=\"hint\">Investido até agora: "+custoEscolaInvestido(tipo)+" "+info.attrFundacao+".</div>";
+    }
+    return "<div class=\"panel\" style=\"margin-bottom:8px\"><h3><span class=\"kan\">"+info.kan+"</span>"+esc(info.nome)+"</h3>"+corpo+"</div>";
+  }).join("");
+}
 /* Navegação por abas no topo do app (Família / Personagens / Batalha) — estado só de tela,
    não é salvo em S nem sincronizado. */
 let abaPrincipal="familia";
@@ -1869,46 +2377,450 @@ function setAbaPrincipal(a){
   if(a==="mapa")renderMapa();
 }
 
-/* ============ MAPA DE ROKUGAN (visor com zoom/pan, só estado de tela — não salva em S) ============
-   Duas imagens locais (Familia L5R App/img/mapa_rokugan_*.jpg): a ilustrada veio de um PDF vetorial
-   (rokugan_map.pdf) rasterizado em alta resolução; a política/detalhada é o mapa clássico com nomes
-   de castelo e escala em milhas que o Thiago já tinha na pasta. Zoom/pan é feito com transform CSS
-   simples (translate+scale) — sem biblioteca, consistente com o resto do arquivo. */
-let mapaState={variante:"ilustrado",zoom:1,x:0,y:0,dragging:false,lastX:0,lastY:0};
-function mapaImgSrc(){return mapaState.variante==="politico"?"img/mapa_rokugan_politico.jpg":"img/mapa_rokugan_ilustrado.jpg";}
+/* ============ MAPA DE ROKUGAN (visor com zoom/pan + marcações persistentes) ============
+   Uma imagem local (Familia L5R App/img/mapa_rokugan_ilustrado.jpg), rasterizada em alta
+   resolução a partir do PDF vetorial rokugan_map.pdf. Zoom/pan é transform CSS simples
+   (translate+scale) — sem biblioteca, consistente com o resto do arquivo.
+   Em 2026-08-04 o mapa político/detalhado foi removido a pedido do Thiago: com marcações
+   salvas na ficha, manter duas imagens de enquadramento diferente significaria ou duplicar
+   as marcações ou deixá-las tortas numa delas. Uma imagem só, uma verdade só.
+   Zoom/pan continuam sendo estado de tela (não salvam); só as MARCAÇÕES vão pra S. */
+let mapaState={zoom:1,x:0,y:0,dragging:false,arrastou:false,lastX:0,lastY:0,modoAdicionar:false,modoMedir:false,medPontos:[],mostrarRotulos:true,selecionada:null};
+/* ---- Escala do mapa ilustrado ----
+   O mapa ilustrado não traz barra de escala. A calibração abaixo foi medida comparando-o com
+   o mapa político/detalhado (img/mapa_rokugan_politico.jpg), que traz "scale in miles" com
+   200 milhas medindo 325 px numa imagem de 1380 px de largura.
+   Duas linhas de base LONGAS foram usadas, cada uma com dois marcos nomeados nos dois mapas:
+     · Shiba Castle (Shiro Shiba) ↔ Temple of the Morning Sun (Shinden Asahina)
+       político 1881 px = 1157 milhas · ilustrado 2206 px → 1,907 px/milha
+     · Shiba Castle ↔ Hida Castle (Kyuden Hida)
+       político 1910 px = 1176 milhas · ilustrado 2245 px → 1,910 px/milha
+   As duas concordam em 0,18%, o que é bom sinal. Linhas de base CURTAS (ex.: Daylight Castle ↔
+   Hida Castle) dão números bem diferentes — o mapa ilustrado é desenhado à mão e espalha os
+   ícones de castelo localmente, então ele só é confiável em distância grande. Para viagens
+   curtas, trate o resultado como estimativa generosa.
+   Ressalva honesta: a prosa do cenário costuma dizer que "Rokugan tem novecentas milhas de
+   norte a sul", e os DOIS mapas discordam disso — pela barra de escala do próprio mapa
+   político, a massa de terra dá bem mais de mil milhas. Não é erro desta calibração: mapa e
+   texto de L5R simplesmente não batem entre si. Preferi seguir a barra de escala impressa,
+   que é a evidência direta, em vez do número da prosa. Se a mesa preferir o cânone escrito,
+   é só multiplicar MAPA_PX_POR_MILHA por ~1,4 e tudo o mais se ajusta sozinho. */
+const MAPA_LARGURA_PX=2600,MAPA_ALTURA_PX=3678;
+const MAPA_PX_POR_MILHA=1.9085;
+const MAPA_MILHAS_LARGURA=MAPA_LARGURA_PX/MAPA_PX_POR_MILHA; /* ≈1362 milhas de ponta a ponta */
+/* 1 ri (里) ≈ 3,927 km ≈ 2,44 milhas — a unidade de estrada do Japão pré-moderno, boa pra
+   dar sabor na mesa ("três dias e doze ri até Kyuden Doji"). */
+const MILHAS_POR_RI=2.44;
+/* Ritmos de viagem. A 4ª edição não publica milhas/dia de viagem terrestre, então estes
+   números vêm do Japão histórico e ficam como convenção da mesa (ajuste à vontade):
+   10 ri/dia era o passo clássico de um viajante a pé no Tōkaidō. */
+const MODOS_VIAGEM=[
+ {id:"kachi",nome:"A pé",kanji:"徒歩",romaji:"kachi",milhasDia:24,desc:"Viajante a pé em estrada boa — o passo clássico de 10 ri por dia do Tōkaidō."},
+ {id:"kiba",nome:"A cavalo",kanji:"騎馬",romaji:"kiba",milhasDia:40,desc:"Montado, com paradas pro animal descansar. Mensageiro com troca de montaria vai bem mais longe."},
+ {id:"kogun",nome:"Coluna em marcha",kanji:"行軍",romaji:"kōgun",milhasDia:12,desc:"Exército em campanha com bagagem e suprimento — anda na velocidade do carro de boi mais lento."}
+];
+/* Distância entre dois pontos em coordenada normalizada (0-1) da imagem, em milhas. */
+function milhasEntre(x1,y1,x2,y2){
+ const dx=(x2-x1)*MAPA_LARGURA_PX,dy=(y2-y1)*MAPA_ALTURA_PX;
+ return Math.sqrt(dx*dx+dy*dy)/MAPA_PX_POR_MILHA;
+}
+function milhasParaRi(milhas){return milhas/MILHAS_POR_RI;}
+function diasDeViagem(milhas,modoId){
+ const m=MODOS_VIAGEM.find(x=>x.id===modoId);if(!m)return 0;
+ return milhas/m.milhasDia;
+}
+function formatarDias(d){
+ if(d<0.05)return"menos de meio dia";
+ if(d<1)return(Math.round(d*10)/10)+" dia";
+ return(Math.round(d*10)/10)+" dias";
+}
+/* Tipos de marcação — ícone, rótulo e de qual lista da ficha ele puxa o vínculo.
+   "fonte" liga a marcação a uma coisa que já existe na ficha da família: marcar um Domínio
+   abre a lista de terrenos cadastrados, marcar um Personagem abre o roster, e por aí vai.
+   Genérico/Perigo/Rota não têm fonte — são anotação livre do Mestre, sem contrapartida na
+   ficha. Marcação vinculada herda o nome da coisa vinculada, então renomear o terreno na
+   aba Família renomeia o alfinete no mapa sozinho. */
+const MARCA_TIPOS={
+ dominio:{nome:"Domínio",icone:"🏞️",fonte:"terrenos",aba:"familia"},
+ fortaleza:{nome:"Fortaleza",icone:"🏯",fonte:"terrenos",aba:"familia"},
+ cidade:{nome:"Cidade / Vila",icone:"🏘️",fonte:"terrenos",aba:"familia"},
+ templo:{nome:"Templo",icone:"⛩️",fonte:"terrenos",aba:"familia"},
+ porto:{nome:"Porto",icone:"⚓",fonte:"terrenos",aba:"familia"},
+ escola:{nome:"Escola da Família",icone:"🎋",fonte:"escolas",aba:"familia"},
+ personagem:{nome:"Personagem",icone:"👤",fonte:"personagens",aba:"personagens"},
+ tropa:{nome:"Tropa",icone:"🏹",fonte:"tropas",aba:"familia"},
+ batalha:{nome:"Batalha",icone:"⚔️",fonte:"batalhas",aba:"batalha"},
+ perigo:{nome:"Perigo",icone:"☠️",fonte:null,aba:null},
+ rota:{nome:"Rota / Estrada",icone:"🛣️",fonte:null,aba:null},
+ generico:{nome:"Marcação genérica",icone:"📍",fonte:null,aba:null}
+};
+const MARCA_TIPO_ORDEM=["dominio","fortaleza","cidade","templo","porto","escola","personagem","tropa","batalha","perigo","rota","generico"];
+function marcaTipoInfo(tipo){return MARCA_TIPOS[tipo]||MARCA_TIPOS.generico;}
+function marcaClaNome(claId){const c=CLAS.find(x=>x.id===claId);return c?c.nome:"";}
+/* Nome da escola canônica (do pacote l5r_4e_data) a partir do id salvo — a família pode ter
+   fundado uma escola "própria, sem catálogo", e aí o id vem vazio. */
+function nomeEscolaCanonica(escolaId){
+  if(!escolaId)return"";
+  const d=l5r4eData();if(!d||!d.escolas)return"";
+  const e=d.escolas.find(x=>x.id===escolaId);
+  return e?e.nome:"";
+}
+/* Opções de vínculo pra cada fonte — devolve [{id,label}] a partir do que já está na ficha.
+   Cada fonte monta o rótulo com o que ela tem de mais reconhecível na mesa. */
+function opcoesVinculo(fonte){
+  if(fonte==="terrenos"){
+    return(S.terrenos||[]).map(r=>{
+      const base=TERRENOS_BASE.find(t=>t.id===r.terreno);
+      /* Mostra também as construções (fortificação/característica) do terreno, que é o que
+         diferencia um "Shiro" de uma "Aldeia" na hora de escolher qual marcar. */
+      const extras=[r.c1,r.c2,r.c3,r.c4].filter(Boolean).map(id=>{
+        const f=FORTIFICACOES.find(x=>x.id===id),c=CARACTERISTICAS.find(x=>x.id===id);
+        return(f&&f.nome)||(c&&c.nome)||"";
+      }).filter(Boolean);
+      const nome=r.nome||("Terreno sem nome"+(base?" ("+base.nome+")":""));
+      return{id:r.id,label:nome+(extras.length?(" — "+extras.join(", ")):"")};
+    });
+  }
+  if(fonte==="personagens")return(S.personagens||[]).map(p=>({id:p.id,label:(p.nome||"sem nome")+(p.categoria?(" — "+p.categoria):"")+(p.estado&&p.estado!=="Vivo"?(" ("+p.estado+")"):"")}));
+  if(fonte==="tropas")return(S.tropas||[]).map(t=>({id:t.id,label:((TROPA_TIPOS[t.tipo]&&TROPA_TIPOS[t.tipo].nome)||t.tipo)+(t.local?(" — "+t.local):"")+(t.estado?(" ("+t.estado+")"):"")}));
+  if(fonte==="batalhas"){
+    const out=[];
+    /* A batalha em andamento não está em S.batalhas ainda, mas é justamente a que o Mestre
+       mais quer fincar no mapa — então entra primeiro, marcada como em curso. */
+    if(S.batalhaAtual)out.push({id:S.batalhaAtual.id,label:(S.batalhaAtual.nome||"batalha sem nome")+" — em curso"});
+    (S.batalhas||[]).forEach(b=>out.push({id:b.id,label:(b.nome||"batalha sem nome")+(b.inimigo?(" contra "+b.inimigo):"")+(b.encerrada?(" — "+b.encerrada):"")}));
+    return out;
+  }
+  if(fonte==="escolas"){
+    return ESCOLA_ORDEM.filter(t=>S.escolas&&S.escolas[t]&&S.escolas[t].ativa).map(t=>{
+      const e=S.escolas[t],canon=nomeEscolaCanonica(e.escolaId);
+      const tipoNome=(ESCOLA_TIPOS[t]&&ESCOLA_TIPOS[t].nome)||t;
+      return{id:t,label:tipoNome+(canon?(" — "+canon):"")+(e.nivel?(" (nível "+e.nivel+")"):"")};
+    });
+  }
+  return[];
+}
+/* Nome da coisa vinculada, ou "" se o vínculo apontar pro vazio (a coisa foi apagada da
+   ficha depois de marcada no mapa). Quem chama decide como avisar. */
+function nomeVinculo(m){
+  if(!m||!m.vinculoId)return"";
+  const info=marcaTipoInfo(m.tipo);
+  if(!info.fonte)return"";
+  const op=opcoesVinculo(info.fonte).find(o=>o.id===m.vinculoId);
+  return op?op.label:"";
+}
+function vinculoQuebrado(m){return!!(m&&m.vinculoId&&marcaTipoInfo(m.tipo).fonte&&!nomeVinculo(m));}
+/* Rótulo que aparece no alfinete: o nome do vínculo manda (assim renomear na ficha reflete
+   no mapa), com o nome digitado e o clã como reserva. */
+function rotuloMarcacao(m){
+  const v=nomeVinculo(m);
+  if(v)return v;
+  if(m.nome)return m.nome;
+  return marcaClaNome(m.claId);
+}
+/* Pula pra aba onde a coisa vinculada mora — o "ir e ver" que faltava entre mapa e ficha. */
+function irParaVinculo(id){
+  const m=(S.marcacoesMapa||[]).find(x=>x.id===id);if(!m)return;
+  const info=marcaTipoInfo(m.tipo);
+  if(!info.aba){flashHint("Esse tipo de marcação não tem contrapartida na ficha.");return;}
+  if(info.fonte==="personagens"&&m.vinculoId)personagemAtivoId=m.vinculoId;
+  setAbaPrincipal(info.aba);
+}
 function mapaAplicarTransform(){
-  const img=document.getElementById("mapaImg");if(!img)return;
-  img.style.transform="translate("+mapaState.x+"px,"+mapaState.y+"px) scale("+mapaState.zoom+")";
+  const palco=document.getElementById("mapaPalco");if(!palco)return;
+  palco.style.transform="translate("+mapaState.x+"px,"+mapaState.y+"px) scale("+mapaState.zoom+")";
+  /* Contra-escala dos alfinetes e dos pontos da régua: sem isso eles inflariam junto com o
+     mapa no zoom e virariam borrões. A linha da régua é SVG com viewBox 0-100 e
+     vector-effect="non-scaling-stroke", então já se vira sozinha. */
+  const inv=1/mapaState.zoom;
+  const ov=document.getElementById("mapaOverlay");
+  if(ov&&ov.children)Array.prototype.forEach.call(ov.children,el=>{
+    if(el&&el.style)el.style.transform="translate(-50%,-100%) scale("+inv+")";
+  });
+  const med=document.getElementById("mapaMedLinha");
+  if(med&&med.children)Array.prototype.forEach.call(med.children,el=>{
+    if(el&&el.style&&el.className&&String(el.className).indexOf("mapaMedPonto")>=0)el.style.transform="translate(-50%,-50%) scale("+inv+")";
+  });
+}
+/* Encaixa o palco (imagem + camada de marcações) dentro do visor mantendo a proporção da
+   imagem — é o equivalente manual do object-fit:contain que a img usava antes, só que agora
+   precisamos do tamanho explícito pra posicionar as marcações em porcentagem. */
+function mapaAjustarPalco(){
+  const img=document.getElementById("mapaImg"),palco=document.getElementById("mapaPalco"),vp=document.getElementById("mapaViewport");
+  if(!img||!palco||!vp)return;
+  const nw=Number(img.naturalWidth)||0,nh=Number(img.naturalHeight)||0;
+  if(!nw||!nh)return;
+  const vw=vp.clientWidth||0,vh=vp.clientHeight||0;
+  if(!vw||!vh)return;
+  const escala=Math.min(vw/nw,vh/nh);
+  palco.style.width=Math.round(nw*escala)+"px";
+  palco.style.height=Math.round(nh*escala)+"px";
+  mapaAplicarTransform();
+}
+/* Barra de escala — fica fixa num canto do visor (não dentro do palco), então continua
+   legível em qualquer zoom; o que muda é quantas milhas ela representa. Escolhe o maior
+   valor "redondo" da lista que ainda caiba em ~230 px de tela. */
+const MAPA_ESCALA_PASSOS=[5,10,25,50,100,200,300,500];
+function mapaEscalaAtual(){
+  const palco=document.getElementById("mapaPalco");
+  const larguraPalco=(palco&&palco.clientWidth)||0;
+  if(!larguraPalco)return null;
+  /* px de tela por milha = (px do palco por milha) * zoom */
+  const pxPorMilha=(larguraPalco/MAPA_MILHAS_LARGURA)*mapaState.zoom;
+  if(!pxPorMilha)return null;
+  let escolhido=MAPA_ESCALA_PASSOS[0];
+  for(let i=0;i<MAPA_ESCALA_PASSOS.length;i++){
+    if(MAPA_ESCALA_PASSOS[i]*pxPorMilha<=230)escolhido=MAPA_ESCALA_PASSOS[i];
+  }
+  return{milhas:escolhido,px:Math.round(escolhido*pxPorMilha),pxPorMilha};
+}
+function renderMapaEscala(){
+  const el=document.getElementById("mapaEscala");if(!el)return;
+  const e=mapaEscalaAtual();
+  if(!e){el.innerHTML="";return;}
+  const ri=Math.round(milhasParaRi(e.milhas));
+  el.innerHTML="<div class=\"mapaEscalaBarra\" style=\"width:"+e.px+"px\"></div>"+
+    "<div class=\"mapaEscalaTxt\">"+e.milhas+" milhas · ~"+ri+" ri</div>";
 }
 function renderMapa(){
   const img=document.getElementById("mapaImg");if(!img)return;
-  const novoSrc=mapaImgSrc();
-  if(img.getAttribute("src")!==novoSrc)img.src=novoSrc;
-  mapaAplicarTransform();
-  document.getElementById("mapaBtnIlustrado").className="ghost"+(mapaState.variante==="ilustrado"?" on":"");
-  document.getElementById("mapaBtnPolitico").className="ghost"+(mapaState.variante==="politico"?" on":"");
+  const src="img/mapa_rokugan_ilustrado.jpg";
+  if(img.getAttribute("src")!==src)img.src=src;
+  mapaAjustarPalco();
+  renderMapaMarcacoes();
+  renderMapaEscala();
+  renderMapaMedicao();
+  const bA=document.getElementById("mapaBtnAdicionar");
+  if(bA)bA.className="ghost"+(mapaState.modoAdicionar?" on":"");
+  const bM=document.getElementById("mapaBtnMedir");
+  if(bM)bM.className="ghost"+(mapaState.modoMedir?" on":"");
+  const bR=document.getElementById("mapaBtnRotulos");
+  if(bR)bR.className="ghost"+(mapaState.mostrarRotulos?" on":"");
+  const aviso=document.getElementById("mapaAvisoAdicionar");
+  if(aviso)aviso.style.display=mapaState.modoAdicionar?"":"none";
+  const avisoM=document.getElementById("mapaAvisoMedir");
+  if(avisoM)avisoM.style.display=mapaState.modoMedir?"":"none";
+  const vp=document.getElementById("mapaViewport");
+  if(vp&&vp.classList)vp.classList[(mapaState.modoAdicionar||mapaState.modoMedir)?"add":"remove"]("marcando");
 }
-function mapaSetVariante(v){mapaState.variante=v;mapaState.zoom=1;mapaState.x=0;mapaState.y=0;renderMapa();}
 function mapaZoom(delta){mapaState.zoom=Math.max(1,Math.min(6,mapaState.zoom+delta));mapaAplicarTransform();}
 function mapaReset(){mapaState.zoom=1;mapaState.x=0;mapaState.y=0;mapaAplicarTransform();}
-function mapaOnWheel(e){e.preventDefault();mapaZoom(e.deltaY<0?0.3:-0.3);}
+function mapaOnWheel(e){if(e.preventDefault)e.preventDefault();mapaZoom(e.deltaY<0?0.3:-0.3);}
 function mapaDragStart(e){
-  mapaState.dragging=true;
+  if(mapaState.modoAdicionar||mapaState.modoMedir)return; /* nos modos de clique o arraste fica desligado, senão um clique vira pan */
+  mapaState.dragging=true;mapaState.arrastou=false;
   const p=e.touches?e.touches[0]:e;
   mapaState.lastX=p.clientX;mapaState.lastY=p.clientY;
-  const vp=document.getElementById("mapaViewport");if(vp)vp.classList.add("dragging");
+  const vp=document.getElementById("mapaViewport");if(vp&&vp.classList)vp.classList.add("dragging");
 }
 function mapaDragMove(e){
   if(!mapaState.dragging)return;
   const p=e.touches?e.touches[0]:e;
-  mapaState.x+=p.clientX-mapaState.lastX;mapaState.y+=p.clientY-mapaState.lastY;
+  const dx=p.clientX-mapaState.lastX,dy=p.clientY-mapaState.lastY;
+  if(Math.abs(dx)>2||Math.abs(dy)>2)mapaState.arrastou=true;
+  mapaState.x+=dx;mapaState.y+=dy;
   mapaState.lastX=p.clientX;mapaState.lastY=p.clientY;
   mapaAplicarTransform();
-  if(e.touches)e.preventDefault();
+  if(e.touches&&e.preventDefault)e.preventDefault();
 }
 function mapaDragEnd(){
   mapaState.dragging=false;
-  const vp=document.getElementById("mapaViewport");if(vp)vp.classList.remove("dragging");
+  const vp=document.getElementById("mapaViewport");if(vp&&vp.classList)vp.classList.remove("dragging");
+}
+/* ---- Marcações persistentes ---- */
+function mapaToggleModoAdicionar(){
+  if(bloqueadoLeitura())return;
+  mapaState.modoAdicionar=!mapaState.modoAdicionar;
+  if(mapaState.modoAdicionar)mapaState.modoMedir=false;
+  mapaState.selecionada=null;renderMapa();
+}
+function mapaToggleRotulos(){mapaState.mostrarRotulos=!mapaState.mostrarRotulos;renderMapa();}
+/* ---- Régua de distância / dias de viagem ---- */
+function mapaToggleModoMedir(){
+  mapaState.modoMedir=!mapaState.modoMedir;
+  if(mapaState.modoMedir)mapaState.modoAdicionar=false;
+  mapaState.medPontos=[];renderMapa();
+}
+function mapaLimparMedicao(){mapaState.medPontos=[];renderMapa();}
+/* Cada clique acrescenta um ponto; ao chegar em dois, a régua fecha o trecho. Um terceiro
+   clique começa uma medição nova (mais previsível que exigir "limpar" a cada vez). */
+function mapaMedirPonto(c){
+  if(mapaState.medPontos.length>=2)mapaState.medPontos=[];
+  mapaState.medPontos.push(c);
+  renderMapa();
+}
+function mapaMedicaoAtual(){
+  const p=mapaState.medPontos;
+  if(p.length<2)return null;
+  const milhas=milhasEntre(p[0].x,p[0].y,p[1].x,p[1].y);
+  return{
+    milhas,
+    ri:milhasParaRi(milhas),
+    viagens:MODOS_VIAGEM.map(m=>({modo:m,dias:diasDeViagem(milhas,m.id)}))
+  };
+}
+function renderMapaMedicao(){
+  const linha=document.getElementById("mapaMedLinha"),painel=document.getElementById("mapaMedPainel");
+  const p=mapaState.medPontos;
+  if(linha){
+    if(p.length===0)linha.innerHTML="";
+    else{
+      let h=p.map(pt=>"<span class=\"mapaMedPonto\" style=\"left:"+(pt.x*100)+"%;top:"+(pt.y*100)+"%;transform:translate(-50%,-50%) scale("+(1/mapaState.zoom)+")\"></span>").join("");
+      if(p.length===2){
+        /* SVG por cima do palco: coordenadas em % via viewBox 0-100, então a linha acompanha
+           zoom/pan de graça, sem recalcular nada. */
+        h+="<svg class=\"mapaMedSvg\" viewBox=\"0 0 100 100\" preserveAspectRatio=\"none\">"+
+           "<line x1=\""+(p[0].x*100)+"\" y1=\""+(p[0].y*100)+"\" x2=\""+(p[1].x*100)+"\" y2=\""+(p[1].y*100)+"\" "+
+           "stroke=\"#b8332a\" stroke-width=\"0.35\" stroke-dasharray=\"1.2 0.8\" vector-effect=\"non-scaling-stroke\"></line></svg>";
+      }
+      linha.innerHTML=h;
+    }
+  }
+  if(!painel)return;
+  const m=mapaMedicaoAtual();
+  if(!m){
+    painel.innerHTML=p.length===1
+      ?"<div class=\"hint\">Primeiro ponto cravado — clique no destino pra fechar a medição.</div>"
+      :"<div class=\"hint\">Ative \"📏 Medir\" e clique em dois pontos do mapa pra ver a distância e quantos dias de viagem ela custa.</div>";
+    return;
+  }
+  let out="<div class=\"linha\" style=\"flex-wrap:wrap;align-items:baseline;gap:14px\">"+
+    "<b style=\"font-size:17px\">"+Math.round(m.milhas)+" milhas</b>"+
+    "<span class=\"hint\">≈ "+Math.round(m.ri)+" ri</span>"+
+    "<button class=\"ghost\" onclick=\"mapaLimparMedicao()\">limpar</button></div>";
+  out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th>Ritmo</th><th>Por dia</th><th>Viagem</th></tr></thead><tbody>";
+  m.viagens.forEach(v=>{
+    out+="<tr><td title=\""+esc(v.modo.desc)+"\"><b>"+esc(v.modo.nome)+"</b> <span class=\"hint\">"+v.modo.kanji+" "+esc(v.modo.romaji)+"</span></td>"+
+      "<td class=\"hint\">"+v.modo.milhasDia+" milhas</td>"+
+      "<td>"+formatarDias(v.dias)+"</td></tr>";
+  });
+  out+="</tbody></table></div>";
+  out+="<div class=\"hint\" style=\"margin-top:6px\">Distância em linha reta — estrada de verdade sobe serra, contorna rio e cobra pedágio de tempo. Para trechos curtos o mapa ilustrado exagera o espaçamento, então arredonde pra baixo.</div>";
+  painel.innerHTML=out;
+}
+/* Converte um clique dentro do palco em coordenada normalizada 0-1 da imagem. Usa
+   getBoundingClientRect do próprio palco, que já vem com o zoom/pan aplicados pelo browser —
+   assim a conta funciona em qualquer nível de zoom sem desfazer a transform na mão. */
+function mapaCoordDoEvento(e){
+  const palco=document.getElementById("mapaPalco");if(!palco||!palco.getBoundingClientRect)return null;
+  const r=palco.getBoundingClientRect();
+  if(!r.width||!r.height)return null;
+  const p=(e.touches&&e.touches[0])?e.touches[0]:e;
+  const x=(p.clientX-r.left)/r.width,y=(p.clientY-r.top)/r.height;
+  if(x<0||x>1||y<0||y>1)return null;
+  return{x:Math.round(x*10000)/10000,y:Math.round(y*10000)/10000};
+}
+function mapaCliqueNoPalco(e){
+  if(mapaState.modoMedir){
+    const cm=mapaCoordDoEvento(e);
+    if(!cm){flashHint("Clique dentro do mapa pra marcar o ponto.");return;}
+    mapaMedirPonto(cm);return;
+  }
+  if(!mapaState.modoAdicionar)return;
+  if(bloqueadoLeitura())return;
+  const c=mapaCoordDoEvento(e);
+  if(!c){flashHint("Clique dentro do mapa pra cravar a marcação.");return;}
+  addMarcacaoMapa(c.x,c.y);
+}
+function addMarcacaoMapa(x,y){
+  if(bloqueadoLeitura())return null;
+  S.marcacoesMapa=S.marcacoesMapa||[];
+  const m={id:uid(),x:Number(x)||0,y:Number(y)||0,tipo:"generico",nome:"",claId:"",vinculoId:""};
+  S.marcacoesMapa.push(m);
+  mapaState.selecionada=m.id;
+  mapaState.modoAdicionar=false;
+  salvar();render();
+  return m;
+}
+function setMarcacaoMapa(id,campo,val){
+  if(bloqueadoLeitura())return;
+  const m=(S.marcacoesMapa||[]).find(x=>x.id===id);if(!m)return;
+  if(campo==="x"||campo==="y")m[campo]=Math.max(0,Math.min(1,parseFloat(val)||0));
+  else m[campo]=val;
+  /* Trocar de tipo pode trocar a fonte do vínculo (um id de terreno não vale nada numa
+     marcação de personagem) — então o vínculo cai fora quando deixa de fazer sentido. */
+  if(campo==="tipo"){
+    const fonte=marcaTipoInfo(m.tipo).fonte;
+    if(!fonte||!opcoesVinculo(fonte).some(o=>o.id===m.vinculoId))m.vinculoId="";
+  }
+  salvar();render();
+}
+function delMarcacaoMapa(id){
+  if(bloqueadoLeitura())return;
+  S.marcacoesMapa=(S.marcacoesMapa||[]).filter(x=>x.id!==id);
+  if(mapaState.selecionada===id)mapaState.selecionada=null;
+  salvar();render();
+}
+function selecionarMarcacaoMapa(id){
+  mapaState.selecionada=(mapaState.selecionada===id)?null:id;
+  renderMapa();renderMapaLista();
+}
+function renderMapaMarcacoes(){
+  const ov=document.getElementById("mapaOverlay");if(!ov)return;
+  const lista=S.marcacoesMapa||[];
+  ov.innerHTML=lista.map(m=>{
+    const info=marcaTipoInfo(m.tipo);
+    const cla=marcaClaNome(m.claId);
+    const texto=rotuloMarcacao(m);
+    const quebrado=vinculoQuebrado(m);
+    const titulo=info.nome+(texto?" — "+texto:"")+(cla?" ("+cla+")":"")+(quebrado?" · vínculo perdido (a coisa vinculada saiu da ficha)":"");
+    const rotulo=(mapaState.mostrarRotulos&&texto)?("<span class=\"mapaMarcaNome\">"+esc(texto)+"</span>"):"";
+    return"<div class=\"mapaMarca"+(mapaState.selecionada===m.id?" sel":"")+"\" style=\"left:"+(m.x*100)+"%;top:"+(m.y*100)+"%;transform:translate(-50%,-100%) scale("+(1/mapaState.zoom)+")\" "+
+      "title=\""+esc(titulo)+"\" onclick=\"event.stopPropagation();selecionarMarcacaoMapa('"+m.id+"')\">"+
+      "<span class=\"mapaMarcaIcone\">"+info.icone+(quebrado?"<span class=\"mapaMarcaAlerta\">!</span>":"")+"</span>"+rotulo+"<span class=\"mapaMarcaPonta\"></span></div>";
+  }).join("");
+}
+function renderMapaLista(){
+  const box=document.getElementById("mapaMarcacoesBox");if(!box)return;
+  const lista=S.marcacoesMapa||[];
+  if(!lista.length){
+    box.innerHTML="<div class=\"hint\">Nenhuma marcação ainda. Clique em \"📍 Adicionar marcação\" acima e depois no ponto do mapa.</div>";
+    return;
+  }
+  let out="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th>Tipo</th><th>Vínculo na ficha</th><th>Nome</th><th>Clã dono</th><th>Posição</th><th></th></tr></thead><tbody>";
+  let quebrados=0;
+  lista.forEach(m=>{
+    const sel=mapaState.selecionada===m.id;
+    const info=marcaTipoInfo(m.tipo);
+    /* Coluna de vínculo: só existe pros tipos que têm contrapartida na ficha. Se a lista de
+       origem estiver vazia (ex.: marcar Tropa sem nenhuma tropa cadastrada), avisa em vez de
+       mostrar um select vazio e sem explicação. */
+    let tdVinculo;
+    if(!info.fonte){
+      tdVinculo="<td class=\"hint\">—</td>";
+    }else{
+      const ops=opcoesVinculo(info.fonte);
+      const quebrado=vinculoQuebrado(m);
+      if(quebrado)quebrados++;
+      /* O aviso de vínculo perdido vem ANTES de tudo: se a última coisa da lista foi apagada
+         da ficha, a lista fica vazia E o vínculo fica quebrado ao mesmo tempo — sem isso o
+         alerta sumia atrás do "nada cadastrado" e o Mestre perdia a informação de que aquele
+         alfinete aponta pro vazio. */
+      const avisoQuebrado=quebrado?"<div class=\"hint\" style=\"color:var(--seal)\">vínculo perdido — a coisa vinculada saiu da ficha</div>":"";
+      if(!ops.length){
+        tdVinculo="<td class=\"hint\">nenhum(a) "+esc(info.nome.toLowerCase())+" cadastrado(a) na ficha ainda"+avisoQuebrado+"</td>";
+      }else{
+        tdVinculo="<td><select onchange=\"setMarcacaoMapa('"+m.id+"','vinculoId',this.value)\">"+
+          "<option value=\"\">— sem vínculo —</option>"+
+          ops.map(o=>"<option value=\""+o.id+"\" "+(m.vinculoId===o.id?"selected":"")+">"+esc(o.label)+"</option>").join("")+
+          "</select>"+avisoQuebrado+
+          (m.vinculoId&&!quebrado?"<button class=\"ghost\" style=\"margin-top:4px\" onclick=\"irParaVinculo('"+m.id+"')\">ir até a ficha ↗</button>":"")+
+          "</td>";
+      }
+    }
+    out+="<tr"+(sel?" style=\"outline:2px solid #d1a13a\"":"")+">"+
+      "<td><select onchange=\"setMarcacaoMapa('"+m.id+"','tipo',this.value)\">"+MARCA_TIPO_ORDEM.map(k=>"<option value=\""+k+"\" "+(m.tipo===k?"selected":"")+">"+MARCA_TIPOS[k].icone+" "+MARCA_TIPOS[k].nome+"</option>").join("")+"</select></td>"+
+      tdVinculo+
+      "<td><input value=\""+esc(m.nome||"")+"\" placeholder=\""+(m.vinculoId?"(usa o nome do vínculo)":"nome")+"\" onchange=\"setMarcacaoMapa('"+m.id+"','nome',this.value)\"></td>"+
+      "<td><select onchange=\"setMarcacaoMapa('"+m.id+"','claId',this.value)\"><option value=\"\">— nenhum —</option>"+CLAS.map(c=>"<option value=\""+c.id+"\" "+(m.claId===c.id?"selected":"")+">"+esc(c.nome)+"</option>").join("")+"</select></td>"+
+      "<td class=\"hint\">"+Math.round(m.x*100)+"% , "+Math.round(m.y*100)+"%</td>"+
+      "<td><button class=\"ghost\" onclick=\"selecionarMarcacaoMapa('"+m.id+"')\" title=\"destacar no mapa\">"+(sel?"◉":"◎")+"</button>"+
+      "<button class=\"ghost\" onclick=\"delMarcacaoMapa('"+m.id+"')\">✕</button></td></tr>";
+  });
+  out+="</tbody></table></div>";
+  out+="<div class=\"hint\" style=\"margin-top:6px\">"+lista.length+" marcação(ões) salva(s) com a ficha da família. Marcação vinculada usa o nome da coisa vinculada no mapa — renomeou na ficha, mudou no mapa."+
+    (quebrados?" <b style=\"color:var(--seal)\">"+quebrados+" com vínculo perdido.</b>":"")+"</div>";
+  box.innerHTML=out;
 }
 /* Qual personagem está aberto na aba Personagens — também é estado só de tela;
    cada personagem tem sua própria sub-aba, então um jogador com vários personagens
@@ -2047,6 +2959,13 @@ function randomizarPersonagem(id){
   feedPush("Personagem sorteado: "+(p.nome||"sem nome")+" — "+escola.nome+".");
   salvar();render();
 }
+/* Aviso (não bloqueio) em 2026-08-04: o Clã (4ª ed.) de um personagem é livre — não trava no
+   clã da família, ao contrário do Dojo/Salão/Shoin (que filtram por CLA_TO_CLANID4E). Isso é
+   proposital pro caso comum de casamento político, refém ou aliado emprestado servindo a casa,
+   mas o Thiago pediu um aviso visível quando não bater, pra pegar o caso de erro de digitação
+   ou esquecimento — sem impedir nada. */
+function claFamiliaId4e(){const c=claAtual();return c?(CLA_TO_CLANID4E[c.id]||null):null;}
+function personagemClaDivergeDaFamilia(p){const fam=claFamiliaId4e();return!!(fam&&p.cla4e&&p.cla4e!==fam);}
 function renderFicha4e(p){
   if(!l5r4ePronto())return "<div class=\"hint\" style=\"margin-bottom:10px\">Base de dados da 4ª edição não carregada (l5r_4e_data.js).</div>";
   const clas=L5R4E.clans.slice().sort((a,b)=>a.nome.localeCompare(b.nome));
@@ -2064,6 +2983,9 @@ function renderFicha4e(p){
       "</div>";
   }
   const monImg=p.cla4e?"<img class=\"monimg\" style=\"width:44px;height:44px;margin:0 8px 0 0;vertical-align:middle;display:inline-block\" src=\"img/mons/"+claIdParaMon(p.cla4e)+".png\" alt=\"\" onerror=\"this.style.display='none'\">":"";
+  const claFamNome=claAtual()?claAtual().nome:"—";
+  const aviso=personagemClaDivergeDaFamilia(p)?
+    "<div class=\"hint\" style=\"color:var(--bad,#c0392b);margin:4px 0\">⚠ Clã deste personagem diferente do clã da família ("+esc(claFamNome)+"). Pode ser casamento político, refém ou aliado emprestado — se não for de propósito, ajuste o Clã acima.</div>":"";
   return "<div style=\"display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px;align-items:center\">"+
     monImg+
     "<div class=\"grp\">Clã (4ª ed.) <select onchange=\"escolhaCla4e('"+p.id+"',this.value)\"><option value=\"\">—</option>"+
@@ -2072,7 +2994,7 @@ function renderFicha4e(p){
       familias.map(f=>"<option value=\""+f.id+"\" "+(p.familia4e===f.id?"selected":"")+">"+esc(f.nome)+"</option>").join("")+"</select></div>"+
     "<div class=\"grp\">Escola <select onchange=\"escolhaEscola4e('"+p.id+"',this.value)\" "+(!p.cla4e?"disabled":"")+"><option value=\"\">—</option>"+
       escolasCla.map(e=>"<option value=\""+e.id+"\" "+(p.escola4e===e.id?"selected":"")+">"+esc(e.nome)+"</option>").join("")+"</select></div>"+
-    "</div>"+card;
+    "</div>"+aviso+card;
 }
 /* ============ FICHA COMPLETA DO PERSONAGEM (4ª edição) ============
    Reproduz a ficha oficial de papel (traços/anéis, honra/glória/status/mancha
@@ -2108,9 +3030,21 @@ function aneisPersonagem(p){return{terra:anelPersonagem(p,"terra"),ar:anelPerson
   agua:anelPersonagem(p,"agua"),fogo:anelPersonagem(p,"fogo"),vazio:Number(p.traits.vazio)||0};}
 function insightPersonagem(p){const a=aneisPersonagem(p);const somaAneis=a.terra+a.ar+a.agua+a.fogo+a.vazio;
   const somaPericias=(p.pericias||[]).reduce((s,x)=>s+(Number(x.rank)||0),0);return somaAneis*10+somaPericias;}
-function rankPersonagem(p){return Math.max(1,Math.floor((insightPersonagem(p)-125)/25));}
-function iniciativaPersonagem(p){const a=aneisPersonagem(p);const rank=rankPersonagem(p);return(rank+a.ar)+"k"+a.ar;}
-function tnBasePersonagem(p){return 5*(Number(p.traits.reflexes)||0);}
+/* Corrigido em 2026-08-04: a tabela oficial de Insight Rank NÃO é uma reta contínua — Rank 1
+   vai de 0 a 149, e só a partir daí cada 25 pontos sobe um rank (150-174→Rank2, 175-199→Rank3,
+   200-224→Rank4, 225-249→Rank5...). A fórmula antiga (floor((insight-125)/25)) tirava 1 rank
+   de qualquer personagem com Insight ≥150 — o que também rebaixava por engano a Taxa de Cura
+   (soma o rank) e a checagem de "pode aprender esse Encantamento Protegido" (compara o rank
+   com o Mastery Level do feitiço). Fonte: lasthaiku.wikidot.com/character-creation. */
+function rankPersonagem(p){const i=insightPersonagem(p);return i<150?1:2+Math.floor((i-150)/25);}
+/* Corrigido em 2026-08-04: RAW é "role Insight Rank + Reflexos, mantendo Reflexos" — usava
+   o Anel de Ar (mínimo entre Reflexos e Percepção) tanto pra somar quanto pra manter, o que
+   subestimava a Iniciativa de qualquer personagem com Percepção menor que Reflexos. */
+function iniciativaPersonagem(p){const rank=rankPersonagem(p);const reflexos=Number(p.traits.reflexes)||0;return(rank+reflexos)+"k"+reflexos;}
+/* Corrigido em 2026-08-04: faltava o +5 fixo — TN de Armadura oficial é 5+(Reflexos×5), não só
+   Reflexos×5 (um personagem com Reflexos 4 tem TN 25, não 20). Fonte: philgamer.wordpress.com,
+   "Let's Study: L5R 4e — Sample Combat". */
+function tnBasePersonagem(p){return 5+5*(Number(p.traits.reflexes)||0);}
 function tnAtualPersonagem(p){return tnBasePersonagem(p)+(Number(p.tnAjuste)||0);}
 const FERIDAS_DEF=[["Sadio",0],["Machucado",3],["Arranhado",5],["Ferido",10],["Contundido",15],["Mutilado",20],["Caído",40],["Fora de Combate",null]];
 function feridasNiveis(p){const earth=aneisPersonagem(p).terra;
@@ -2480,18 +3414,14 @@ function renderConversoes(){
 }
 
 /* ============ BATALHA EM MASSA — render ============ */
+/* Tabuleiro dos personagens — engajamento (só fileira, sem coluna: o eixo de flanco é uma
+   coisa de tropa organizada, não de um samurai avulso brigando dentro da confusão). */
 function tabuleiroHTML(b){
   const fam=[];
   b.participantes.forEach(part=>{
     const p=S.personagens.find(x=>x.id===part.personagemId);if(!p)return;
     fam.push({label:esc(p.nome||"sem nome")+" 👤",raia:Number(part.engajamentoIdx)||0,onclick:"ciclarRaiaParticipante('"+part.personagemId+"')"});
   });
-  (b.tropasComprometidas||[]).forEach(tid=>{
-    const t=S.tropas.find(x=>x.id===tid);if(!t)return;
-    const raia=Number(b.raiasTropa&&b.raiasTropa[tid])||0;
-    fam.push({label:esc(TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo)+(t.local?(" ("+esc(t.local)+")"):""),raia,onclick:"ciclarRaiaTropaFamilia('"+tid+"')"});
-  });
-  const inimigo=(b.tropasInimigas||[]).map(t=>({label:esc(t.nome||"tropa inimiga"),raia:Number(t.raia)||0,onclick:"ciclarRaiaTropaInimiga('"+t.id+"')"}));
   const terrenoInfo=TERRENO_BATALHA_VISUAL[b.terreno||""]||TERRENO_BATALHA_VISUAL[""];
   let html="<div class=\"tabuleiro\" style=\"background:"+terrenoInfo.cor+"\">";
   html+="<div class=\"tabuleiroTerreno\">"+terrenoInfo.emoji+" "+esc(terrenoInfo.nome)+"</div>";
@@ -2504,10 +3434,45 @@ function tabuleiroHTML(b){
   for(let nivel=3;nivel>=0;nivel--){
     html+="<div class=\"tabuleiroLinha\"><div class=\"tabuleiroRotulo\">"+ENGAJAMENTO[nivel].nome+"</div>"+
       "<div class=\"tabuleiroLado ladoFamilia\">"+fam.filter(x=>x.raia===nivel).map(x=>"<span class=\"chip chipFamilia\" onclick=\""+x.onclick+"\">"+x.label+"</span>").join("")+"</div>"+
-      "<div class=\"tabuleiroLado ladoInimigo\">"+inimigo.filter(x=>x.raia===nivel).map(x=>"<span class=\"chip chipInimigo\" onclick=\""+x.onclick+"\">"+x.label+"</span>").join("")+"</div>"+
       "</div>";
   }
   html+="</div>";
+  return html;
+}
+/* Tabuleiro Shogi das tropas (v5) — grade real fileira(4, Reservas embaixo até Frente/Choque
+   em cima) x coluna(3, Esquerda/Centro/Direita). Clique num token pra selecionar, clique numa
+   casa pra mover (moverTropaFamilia/moverTropaInimiga recusam com flashHint se passar do
+   alcance da tropa). Casas com tropa da família E inimiga na mesma coluna, fileiras a até 1 de
+   distância, ficam destacadas — é ali que resolverConfrontosTurno vai bater quando o turno
+   rodar. */
+function tabuleiroTropasHTML(b){
+  const familiares=(b.tropasComprometidas||[]).map(tid=>S.tropas.find(x=>x.id===tid)).filter(Boolean)
+    .map(t=>({t,fileira:tropaFamiliaFileira(t.id),coluna:tropaFamiliaColuna(t.id)}));
+  const inimigas=(b.tropasInimigas||[]).map(t=>({t,fileira:Number(t.raia)||0,coluna:t.coluna===undefined?1:Number(t.coluna)}));
+  if(!familiares.length&&!inimigas.length)return"<div class=\"hint\" style=\"margin-bottom:10px\">Comprometa uma tropa da família (abaixo) ou adicione uma tropa inimiga pra elas aparecerem no tabuleiro.</div>";
+  const contatoSet=new Set();
+  tropasEmContato().forEach(c=>{contatoSet.add("f:"+c.familia.tropa.id);contatoSet.add("i:"+c.inimiga.tropa.id);});
+  let html="<div class=\"shogiWrap\"><div class=\"shogiGrid\">";
+  html+="<div class=\"shogiHead\"></div>"+COLUNA_NOMES.map(n=>"<div class=\"shogiHead\">"+n+"</div>").join("");
+  for(let nivel=3;nivel>=0;nivel--){
+    html+="<div class=\"shogiRotulo\">"+ENGAJAMENTO[nivel].nome+"</div>";
+    for(let col=0;col<3;col++){
+      const aquiF=familiares.filter(x=>x.fileira===nivel&&x.coluna===col);
+      const aquiI=inimigas.filter(x=>x.fileira===nivel&&x.coluna===col);
+      const emContato=aquiF.some(x=>contatoSet.has("f:"+x.t.id))||aquiI.some(x=>contatoSet.has("i:"+x.t.id));
+      html+="<div class=\"shogiCasa"+(emContato?" contato":"")+"\" onclick=\"clicarCasaTabuleiro("+nivel+","+col+")\" title=\""+(emContato?"Confronto em contato — resolve ao rodar o turno":"clique pra mover a tropa selecionada pra cá")+"\">";
+      aquiF.forEach(x=>{
+        const sel=tropaSelTabuleiro&&tropaSelTabuleiro.lado==="familia"&&tropaSelTabuleiro.id===x.t.id;
+        html+="<span class=\"shogiToken familia"+(sel?" selecionado":"")+"\" onclick=\"event.stopPropagation();selecionarTropaTabuleiro('familia','"+x.t.id+"')\">"+esc(TROPA_TIPOS[x.t.tipo]?TROPA_TIPOS[x.t.tipo].nome:x.t.tipo)+(x.t.local?(" ("+esc(x.t.local)+")"):"")+"</span>";
+      });
+      aquiI.forEach(x=>{
+        const sel=tropaSelTabuleiro&&tropaSelTabuleiro.lado==="inimiga"&&tropaSelTabuleiro.id===x.t.id;
+        html+="<span class=\"shogiToken inimiga"+(sel?" selecionado":"")+"\" onclick=\"event.stopPropagation();selecionarTropaTabuleiro('inimiga','"+x.t.id+"')\">"+esc(x.t.nome||"tropa inimiga")+"</span>";
+      });
+      html+="</div>";
+    }
+  }
+  html+="</div></div>";
   return html;
 }
 function renderBatalha(){
@@ -2532,8 +3497,14 @@ function renderBatalha(){
       "<button class=\"ghost"+(b.modoRolagem==="mesa"?" on":"")+"\" onclick=\"setModoRolagem('mesa')\">📋 na Mesa (Mestre digita o resultado)</button>"+
       "<span class=\"tag\">Terreno: <select onchange=\"setBatalhaCampo('terreno',this.value)\">"+Object.keys(TERRENO_BATALHA_VISUAL).map(k=>"<option value=\""+k+"\" "+((b.terreno||"")===k?"selected":"")+">"+TERRENO_BATALHA_VISUAL[k].emoji+" "+TERRENO_BATALHA_VISUAL[k].nome+"</option>").join("")+"</select></span></div>";
 
-    out+="<div class=\"tag\" style=\"display:block;margin:6px 0\">Tabuleiro (clique num token pra mudar de fileira, clique na faixa de fortificação pra alternar quem ocupa)</div>";
+    out+="<div class=\"tag\" style=\"display:block;margin:6px 0\">Engajamento dos personagens (clique no token pra mudar de fileira; clique na faixa de fortificação pra alternar quem ocupa)</div>";
     out+=tabuleiroHTML(b);
+
+    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Tabuleiro de tropas <span class=\"sub\">estilo Shogi — fileira x coluna</span></div>";
+    out+="<div class=\"hint\" style=\"margin-bottom:8px\">Clique num token de tropa pra selecioná-lo, depois clique na casa de destino pra mover (o alcance de cada Tipo é validado — Camponesa anda pouco e reto, Ashigaru desliza de flanco, Samurai carrega). Casas destacadas em laranja já estão em contato — o confronto é resolvido sozinho ao clicar em \"Rodar Turno de Batalha\".</div>";
+    out+=tabuleiroTropasHTML(b);
+    const contatosPendentes=tropasEmContato();
+    if(contatosPendentes.length)out+="<div class=\"hint\" style=\"margin:4px 0 10px\">"+contatosPendentes.length+" confronto(s) de tropa em contato agora.</div>";
 
     out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Tropas da família comprometidas</div>";
     if(!S.tropas.length){
@@ -2612,9 +3583,9 @@ function renderBatalha(){
 
     out+="<div class=\"tag\" style=\"display:block;margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Participantes</div>";
     const colsManuais=b.modoRolagem==="mesa"?"<th>Dano (mesa)</th><th>Glória (mesa)</th><th>Especial (mesa)</th>":"";
-    out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th></th><th>Personagem</th><th>Engajamento</th><th>Ordem</th><th>Tropa vinculada</th>"+colsManuais+"<th>Dano</th><th>Glória</th><th></th></tr></thead><tbody>";
+    out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th></th><th>Personagem</th><th>Engajamento</th><th>Ordem</th><th>Tropa vinculada</th><th>Modo</th>"+colsManuais+"<th>Dano</th><th>Glória</th><th></th></tr></thead><tbody>";
     if(!S.personagens.length){
-      out+="<tr><td colspan=\"9\" class=\"hint\">Nenhum personagem criado ainda.</td></tr>";
+      out+="<tr><td colspan=\"10\" class=\"hint\">Nenhum personagem criado ainda.</td></tr>";
     }else{
       const ordensDisponiveis=ORDENS_BATALHA.filter(o=>!o.assaltaFortificacao||(fort&&fort.ocupante!=="propria"));
       S.personagens.forEach(p=>{
@@ -2630,6 +3601,7 @@ function renderBatalha(){
           "<td>"+(part?("<select onchange=\"setEngajamento('"+p.id+"',this.value)\">"+ENGAJAMENTO.map(e=>"<option value=\""+e.idx+"\" "+(part.engajamentoIdx===e.idx?"selected":"")+" title=\""+esc(e.desc)+"\">"+esc(e.nome)+"</option>").join("")+"</select>"):"—")+"</td>"+
           "<td>"+(part?("<select onchange=\"setOrdem('"+p.id+"',this.value)\">"+ordensDisponiveis.map(o=>"<option value=\""+o.id+"\" "+((part.ordemId||"manter")===o.id?"selected":"")+" title=\""+esc(o.desc)+"\">"+esc(o.nome)+"</option>").join("")+"</select>"):"—")+"</td>"+
           "<td>"+(part?("<select onchange=\"setParticipanteTropa('"+p.id+"',this.value)\"><option value=\"\">— nenhuma —</option>"+(b.tropasComprometidas||[]).map(tid=>{const t=S.tropas.find(x=>x.id===tid);if(!t)return"";return"<option value=\""+tid+"\" "+(part.tropaId===tid?"selected":"")+">"+esc(TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo)+(t.local?(" — "+esc(t.local)):"")+"</option>";}).join("")+"</select>"):"—")+"</td>"+
+          "<td>"+(part&&part.tropaId?("<select onchange=\"setModoParticipante('"+p.id+"',this.value)\" title=\"Participação: rola a Tabela de Batalha pessoal, como sempre. Liderança: empresta Água+Batalha ao Confronto da tropa vinculada em vez de rolar sozinho.\"><option value=\"participacao\" "+((part.modo||"participacao")==="participacao"?"selected":"")+">Participação</option><option value=\"lideranca\" "+(part.modo==="lideranca"?"selected":"")+">Liderança</option></select>"):(part?"<span class=\"hint\">vincule a tropa</span>":"—"))+"</td>"+
           manuaisTd+
           "<td>"+(Number(p.danoAtual)||0)+"</td>"+
           "<td>"+(Number(p.gloriaRank)||0).toFixed(1)+"</td>"+
@@ -2666,7 +3638,7 @@ function renderBatalha(){
 
   const op=document.getElementById("oportunidadesBox");
   if(op&&!op.dataset.filled){
-    op.innerHTML=OPORTUNIDADES_HEROICAS.map(o=>"<div class=\"linha\" style=\"align-items:flex-start\"><b style=\"min-width:170px\">"+esc(o.nome)+"</b><span style=\"font-size:12.5px;color:var(--ink2)\">"+esc(o.efeito)+"</span></div>").join("");
+    op.innerHTML=OPORTUNIDADES_HEROICAS.map(o=>"<div class=\"linha\" style=\"align-items:flex-start\"><b style=\"min-width:170px\">"+esc(o.nome)+" <span class=\"hint\" style=\"font-size:11px\">("+(o.modo==="comando"?"Comando":"Pessoal")+")</span></b><span style=\"font-size:12.5px;color:var(--ink2)\">"+esc(o.efeito)+"</span></div>").join("");
     op.dataset.filled="1";
   }
 }
@@ -2698,6 +3670,10 @@ document.getElementById("btnAddConversao").onclick=addConversao;
 document.getElementById("btnConectar").onclick=()=>conectarSala(document.getElementById("salaInput").value);
 document.getElementById("btnDesconectar").onclick=desconectar;
 document.getElementById("papelSel").onchange=e=>mudarPapel(e.target.value);
+/* O palco do mapa tem tamanho calculado em px (pra posicionar as marcações em %), então
+   precisa ser recalculado quando a janela muda de tamanho — senão as marcações descolam
+   da imagem ao redimensionar. */
+if(typeof window!=="undefined"&&window.addEventListener)window.addEventListener("resize",()=>{if(abaPrincipal==="mapa")renderMapa();});
 
 render();
 </script>
