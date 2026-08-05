@@ -93,53 +93,54 @@
   .mapaMedPonto{position:absolute;width:11px;height:11px;border-radius:50%;transform-origin:center center;
     background:#b8332a;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.5);pointer-events:none}
   .mapaMedSvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-  /* Tabuleiro de raias de engajamento (§13) — duas colunas (família/inimigo) por fileira,
-     inspirado em Shogi: só a profundidade de sempre, agora visual, clicável pra ciclar.
-     v4: maior/mais espaçoso, fundo de terreno (cor lisa, sem imagem) e uma faixa opcional
-     de fortificação em disputa no topo. */
-  .tabuleiro{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:10px;
+  /* Quadro de Batalha (v6) — grade 5 fileiras x 5 colunas onde o Mestre arrasta as peças.
+     Substituiu o tabuleiro de raias e o tabuleiro Shogi das versões antigas, que sumiram
+     junto com a automação que eles serviam. Aqui não há casa "válida" ou "inválida": toda
+     casa aceita qualquer peça, porque quem julga o que é possível é o Mestre. */
+  .qbWrap{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:10px;
     box-shadow:0 1px 3px rgba(0,0,0,.06);transition:background .2s}
-  .tabuleiroTerreno{padding:8px 12px;font-size:12px;text-transform:uppercase;letter-spacing:.5px;
+  .qbTerreno{padding:8px 12px;font-size:12px;text-transform:uppercase;letter-spacing:.5px;
     color:var(--muted-tx);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:6px}
-  .tabuleiroForte{padding:9px 12px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:1px solid var(--line);
-    background:rgba(160,120,40,.10)}
-  .tabuleiroForte:hover{filter:brightness(1.06)}
-  .tabuleiroLinha{display:grid;grid-template-columns:120px 1fr;min-height:64px;border-top:1px solid var(--line)}
-  .tabuleiroLinha:first-child{border-top:none}
-  .tabuleiroRotulo{display:flex;align-items:center;padding:8px 12px;font-size:12px;text-transform:uppercase;
-    letter-spacing:.5px;color:var(--muted-tx);background:var(--panel2)}
-  .tabuleiroLado{display:flex;flex-wrap:wrap;gap:7px;align-items:center;padding:10px 12px}
-  .tabuleiroLado.ladoInimigo{background:rgba(140,40,40,.05)}
-  .tabuleiroLado.ladoFamilia{background:rgba(40,80,140,.05)}
-  .chip{display:inline-block;padding:5px 13px;border-radius:16px;font-size:13px;cursor:pointer;border:1px solid var(--line);
-    background:var(--panel);white-space:nowrap}
-  .chip:hover{filter:brightness(1.08)}
-  .chipFamilia{border-color:#3f6ca6;color:#274a78}
-  .chipInimigo{border-color:#a63f3f;color:#782727}
-  .chipColuna{margin-left:4px;opacity:.7;text-decoration:underline dotted;cursor:pointer}
-  .chipColuna:hover{opacity:1}
-  /* Tabuleiro Shogi de tropas (v5) — grade real fileira(4) x coluna(3), clique num token pra
-     selecionar (fica com contorno dourado) e clique numa casa pra mover — moverTropaFamilia/
-     moverTropaInimiga validam o alcance e recusam com flashHint se passar do limite. */
-  .shogiWrap{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:10px;
-    box-shadow:0 1px 3px rgba(0,0,0,.06)}
-  .shogiGrid{display:grid;grid-template-columns:96px repeat(3,1fr)}
-  .shogiHead{padding:7px 10px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;
+  /* Numa tela estreita a grade rola de lado em vez de espremer as casas até virarem
+     ilegíveis — cinco colunas não cabem em 360px de jeito nenhum. */
+  .qbScroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .qbGrid{display:grid;grid-template-columns:112px repeat(5,minmax(116px,1fr));min-width:100%}
+  .qbHead{padding:7px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;
     color:var(--muted-tx);background:var(--panel2);border-bottom:1px solid var(--line);
     border-right:1px solid var(--line);text-align:center}
-  .shogiRotulo{display:flex;align-items:center;padding:8px 10px;font-size:12px;text-transform:uppercase;
-    letter-spacing:.5px;color:var(--muted-tx);background:var(--panel2);border-top:1px solid var(--line);
-    border-right:1px solid var(--line)}
-  .shogiCasa{min-height:64px;padding:6px;display:flex;flex-direction:column;gap:4px;align-items:flex-start;
-    cursor:pointer;border-top:1px solid var(--line);border-right:1px solid var(--line);background:var(--panel);
-    transition:background .15s}
-  .shogiCasa:hover{filter:brightness(1.05)}
-  .shogiCasa.contato{background:rgba(200,110,40,.12)}
-  .shogiToken{font-size:12px;padding:3px 9px;border-radius:12px;border:1px solid;cursor:pointer;white-space:nowrap}
-  .shogiToken.familia{border-color:#3f6ca6;color:#274a78;background:rgba(63,108,166,.10)}
-  .shogiToken.inimiga{border-color:#a63f3f;color:#782727;background:rgba(166,63,63,.10)}
-  .shogiToken.selecionado{outline:2px solid #d1a13a;font-weight:700}
-  .shogiToken:hover{filter:brightness(1.1)}
+  .qbRotulo{display:flex;align-items:center;padding:8px 9px;font-size:11px;text-transform:uppercase;
+    letter-spacing:.4px;color:var(--muted-tx);background:var(--panel2);border-top:1px solid var(--line);
+    border-right:1px solid var(--line);line-height:1.25}
+  .qbCasa{min-height:72px;padding:5px;display:flex;flex-direction:column;gap:4px;align-items:stretch;
+    cursor:pointer;border-top:1px solid var(--line);border-right:1px solid var(--line);
+    background:var(--panel);transition:background .15s}
+  .qbCasa:hover{filter:brightness(1.04)}
+  .qbPeca{border:1px solid var(--line);border-radius:7px;padding:4px 7px;cursor:pointer;
+    font-size:11.5px;line-height:1.3;background:var(--panel2)}
+  .qbPeca:hover{filter:brightness(1.06)}
+  .qbPeca.sel{outline:2px solid #d1a13a}
+  .qbPeca.morta{opacity:.5;text-decoration:line-through}
+  .qbPecaNome{font-weight:700;font-family:var(--font-display)}
+  .qbPecaTipo{font-size:10px;color:var(--muted-tx)}
+  .qbPecaEstado{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;cursor:pointer}
+  .qbPecaEstado:hover{text-decoration:underline}
+  .qbPecaCmd{font-size:10px;color:var(--ink2)}
+  /* Cor do lado fica na borda de cima, pra não brigar com a cor de desgaste que já
+     ocupa a borda esquerda. */
+  .qbPeca.qbFam{border-top:3px solid #3f6ca6}
+  .qbPeca.qbIni{border-top:3px solid #a63f3f}
+  .qbPeca.qbAli{border-top:3px solid #4a8a5c}
+  /* Resultado do rolador */
+  .qbResultado{display:flex;align-items:baseline;gap:12px;margin-top:12px;flex-wrap:wrap}
+  .qbTotal{font-size:38px;font-weight:700;font-family:var(--font-display);color:var(--seal);line-height:1}
+  .qbConta{font-size:12px;color:var(--muted-tx)}
+  .qbDados{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .qbDado{min-width:34px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;
+    background:var(--panel2);text-align:center;font-variant-numeric:tabular-nums;
+    font-family:var(--font-display);font-size:15px;color:var(--muted-tx);opacity:.55}
+  .qbDado.mantido{opacity:1;color:var(--ink);border-color:var(--seal);background:var(--panel);font-weight:700}
+  .qbDado.explodiu{box-shadow:0 0 0 2px rgba(209,161,58,.45) inset}
+  .qbCadeia{display:block;font-size:9px;font-family:var(--font-body);color:var(--muted-tx);margin-top:1px}
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
   @media(max-width:900px){.grid{grid-template-columns:1fr}}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px}
@@ -309,10 +310,9 @@
     .origens{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
     .mapaViewport{height:58vh;min-height:320px}
     /* Tabuleiros: o rótulo da fileira era largo demais e roubava espaço das casas. */
-    .tabuleiroLinha{grid-template-columns:88px 1fr}
-    .shogiGrid{grid-template-columns:68px repeat(3,1fr)}
-    .shogiCasa{min-height:56px;padding:4px}
-    .shogiToken{font-size:11px;padding:2px 7px}
+    .qbGrid{grid-template-columns:92px repeat(5,minmax(104px,1fr))}
+    .qbCasa{min-height:64px;padding:4px}
+    .qbRotulo{font-size:10px;padding:6px 7px}
   }
 
   @media(max-width:560px){
@@ -392,14 +392,13 @@
     .mapaMarcaIcone{font-size:16px}
     .mapaMarcaNome{font-size:10px;max-width:104px;padding:1px 5px}
 
-    .tabuleiroLinha{grid-template-columns:66px 1fr;min-height:54px}
-    .tabuleiroRotulo{font-size:10px;padding:6px 7px}
-    .tabuleiroLado{padding:7px 8px;gap:5px}
-    .chip{font-size:12px;padding:4px 10px}
-    .shogiGrid{grid-template-columns:52px repeat(3,1fr)}
-    .shogiRotulo,.shogiHead{font-size:9.5px;padding:5px 5px}
-    .shogiCasa{min-height:52px;padding:3px;gap:3px}
-    .shogiToken{font-size:10px;padding:2px 6px}
+    /* A grade de batalha nao encolhe alem disso: 5 colunas legiveis nao cabem num celular,
+       entao ela rola de lado dentro do .qbScroll. Espremer viraria peca ilegivel. */
+    .qbGrid{grid-template-columns:78px repeat(5,minmax(96px,1fr))}
+    .qbRotulo,.qbHead{font-size:9.5px;padding:5px 5px}
+    .qbCasa{min-height:60px;padding:3px;gap:3px}
+    .qbPeca{font-size:11px;padding:3px 6px}
+    .qbTotal{font-size:31px}
     .log{max-height:260px}
   }
 </style>
@@ -547,10 +546,15 @@
 
   <div id="viewBatalha" style="display:none">
     <div class="panel">
-      <h2><span class="kan">兵</span>Batalha em Massa<span class="sub">regras da 4ª edição + tropas, Ordens, Postura e Fortificações</span></h2>
-      <div class="hint" style="margin-bottom:10px;background:rgba(200,150,40,.12);border:1px solid rgba(200,150,40,.4);border-radius:var(--radius);padding:10px 14px">🚧 <b>Em construção:</b> este sistema está sendo reformulado do zero (o exército vai funcionar como uma unidade única, ao estilo de um personagem, com ações e modificadores próprios). O que está abaixo é a versão anterior, ainda funcional pra referência, mas vai mudar bastante.</div>
-      <div class="hint" style="margin-bottom:10px">Marque as tropas comprometidas nesta batalha (força/disciplina delas mexem no nível efetivo e no bônus do General), escolha uma Ordem de Batalha e uma Postura de Combate por personagem a cada turno, e opcionalmente ponha uma fortificação em jogo pra representar um cerco. Detalhes e fórmulas em "Batalha em Massa - Redesign.md", na pasta do projeto.</div>
+      <h2><span class="kan">兵</span>Quadro de Batalha<span class="sub">auxílio visual — o Mestre decide tudo</span></h2>
+      <div class="hint" style="margin-bottom:10px">Este quadro não resolve nada sozinho: ele mostra onde está cada tropa, em que estado, e quem comanda. Movimento, dano, recuo e o desfecho são decididos e aplicados pelo Mestre. Use o log pra registrar o que foi acontecendo.</div>
       <div id="batalhaAtualBox"></div>
+      <datalist id="personagensSugestoes"></datalist>
+    </div>
+    <div class="panel">
+      <h2><span class="kan">賽</span>Dados<span class="sub">rola e explode, sem aplicar nada</span></h2>
+      <div class="hint" style="margin-bottom:10px">Rolagem no estilo da 4ª edição: rola X dados de dez, cada 10 explode (rola de novo e soma), mantém os Y maiores e soma o modificador. Não está ligado a nenhuma regra nem mexe em ficha nenhuma — é só a rolagem na tela.</div>
+      <div id="dadosBox"></div>
     </div>
     <div class="panel">
       <h2><span class="kan">歴</span>Histórico de Batalhas<span class="sub">batalhas já encerradas</span></h2>
@@ -558,7 +562,7 @@
     </div>
     <div class="panel">
       <h2><span class="kan">巻</span>Referência para o Mestre<span class="sub">oportunidades heroicas</span></h2>
-      <div class="hint" style="margin-bottom:10px">Quando a Tabela de Batalha (pessoal) ou um Confronto de tropas indica "Oportunidade Heroica", escolha uma destas situações (ou invente outra) pro personagem viver. Pessoal = quem está em Participação; Comando = quem está em Liderança ou envolvido num Confronto de tropas. Os botões sorteiam uma ao acaso do subconjunto certo.</div>
+      <div class="hint" style="margin-bottom:10px">Situações prontas pra jogar num personagem no meio da batalha, tiradas da 4ª edição. Nenhuma delas tem efeito automático aqui — são ganchos de cena. "Comando" são as que dependem de liderar tropa; "Pessoal" são as que o personagem resolve sozinho.</div>
       <div class="linha" style="margin-bottom:10px"><button class="ghost" onclick="sortearOportunidade('pessoal')">Sortear (Pessoal)</button><button class="ghost" onclick="sortearOportunidade('comando')">Sortear (Comando)</button></div>
       <div class="linhas" id="oportunidadesBox"></div>
     </div>
@@ -1034,221 +1038,27 @@ const TROPA_ESTADO={
 };
 const MULT_TROPA={camponesa:1,ashigaru:2,samurai:3};
 
-/* ============ TROPA COMO MINI-PERSONAGEM (Anéis) — v5, criado em 2026-08-04 a pedido do
-   Thiago. Em vez de só Força/Disciplina, cada Tipo de tropa ganha os cinco Anéis, na MESMA
-   escala 1-10 dos personagens (não a escala 20-55 de Força/Disciplina) — assim o roll da
-   tropa (d10+Água+Perícia Batalha) fica comparável ao de um PJ que lidera ou luta dentro
-   dela, no mesmo tabuleiro. Força/Disciplina continuam existindo do jeito que estavam
-   (custo de recrutamento, baixas de tropa fora do tabuleiro, bônus do General) — os Anéis
-   são uma camada nova, só para o tabuleiro e o confronto tropa-contra-tropa. Perícias
-   limitadas a três, de propósito ("bem limitado" — pedido do Thiago): Batalha (o roll
-   principal, igual ao personagem), Defesa (reduz o dano recebido no confronto) e Tática
-   (habilita manobras — hoje só documentada, ainda sem mecânica própria). Números abaixo são
-   chute de design proporcional — calibrar com playtest, igual todo o resto do sistema. */
-const TROPA_ANEIS={
- camponesa:{agua:2,terra:3,fogo:1,ar:1,vazio:0},
- ashigaru:{agua:3,terra:3,fogo:2,ar:2,vazio:1},
- samurai:{agua:4,terra:4,fogo:3,ar:3,vazio:2}
-};
-const TROPA_PERICIAS_BASE={
- camponesa:{batalha:0,defesa:0,tatica:0},
- ashigaru:{batalha:1,defesa:1,tatica:0},
- samurai:{batalha:3,defesa:2,tatica:2}
-};
-/* Movimento estilo Shogi: cada Tipo tem um alcance de fileira (profundidade, reaproveita a
-   "raia" 0-3 que já existia) e de coluna (flanco, novo — 0-2, esquerda/centro/direita) por
-   turno de tabuleiro. Camponesa avança devagar e reto (como um peão); Ashigaru já desliza de
-   flanco; Samurai carrega 2 fileiras de uma vez ou se desloca livre de lado (a peça de choque). */
-const TROPA_MOVIMENTO={
- camponesa:{fileiras:1,colunas:0},
- ashigaru:{fileiras:1,colunas:1},
- samurai:{fileiras:2,colunas:2}
-};
-const TROPA_ESPEC_ANEL={disciplinado:{terra:1},fortalecido:{fogo:1}};
-/* Equipamento que já existia (custo em Recurso) ganha um segundo efeito, nos Anéis/Perícias
-   da tropa, sem mexer no custo original. */
-const TROPA_EQUIP_ANEL={
- armaduras:{terra:1},
- nagae:{defesaPericia:1},
- tetsubishi:{taticaPericia:1},
- bagagem:{vazio:1},
- suprimentos:{terra:1}
-};
-function tropaAneisCalc(row){
- const base=TROPA_ANEIS[row.tipo]||{agua:0,terra:0,fogo:0,ar:0,vazio:0};
- const aneis=Object.assign({},base);
- const espAnel=TROPA_ESPEC_ANEL[row.especializacao];
- if(espAnel)Object.keys(espAnel).forEach(k=>aneis[k]=(aneis[k]||0)+espAnel[k]);
- (row.equipamento||[]).forEach(id=>{
-   const eq=TROPA_EQUIP_ANEL[id];if(!eq)return;
-   Object.keys(eq).forEach(k=>{if(k==="defesaPericia"||k==="taticaPericia")return;aneis[k]=(aneis[k]||0)+eq[k];});
- });
- return aneis;
-}
-function tropaPericiasCalc(row){
- const base=TROPA_PERICIAS_BASE[row.tipo]||{batalha:0,defesa:0,tatica:0};
- const pericias=Object.assign({},base);
- (row.equipamento||[]).forEach(id=>{
-   const eq=TROPA_EQUIP_ANEL[id];if(!eq)return;
-   if(eq.defesaPericia)pericias.defesa+=eq.defesaPericia;
-   if(eq.taticaPericia)pericias.tatica+=eq.taticaPericia;
- });
- return pericias;
-}
-function tropaMovimento(tipo){return TROPA_MOVIMENTO[tipo]||{fileiras:1,colunas:0};}
-/* Limiares de dano da tropa — versão compacta dos Níveis de Ferimento do personagem (§ver
-   feridasNiveis): só dois degraus (Ferido/Derrotado) em vez de oito, proporcionais ao Terra
-   da própria tropa, igual a lógica "Terra decide quanto aguenta" do personagem. */
-function tropaLimiarFerido(row){return Math.max(3,(tropaAneisCalc(row).terra||0)*3);}
-function tropaLimiarDerrotado(row){return tropaLimiarFerido(row)*2;}
-function aplicarDanoTropa(row,dano){
- row._dano=(Number(row._dano)||0)+dano;
- if(row._dano>=tropaLimiarDerrotado(row))row.estado="derrotado";
- else if(row._dano>=tropaLimiarFerido(row))row.estado=(row.estado==="ferido")?"derrotado":"ferido";
-}
-/* Posição da tropa da família no tabuleiro (fileira reaproveita raiasTropa; coluna é novo,
-   guardado em S.batalhaAtual.colunasTropa — mesma ideia, mapa tropaId->valor). Tropa inimiga
-   guarda os dois direto no próprio objeto (raia já existia, coluna é novo campo). Sem posição
-   definida, assume fileira 0 (Reservas) e coluna 1 (Centro). */
-function tropaFamiliaFileira(tropaId){return Number((S.batalhaAtual&&S.batalhaAtual.raiasTropa&&S.batalhaAtual.raiasTropa[tropaId]))||0;}
-function tropaFamiliaColuna(tropaId){const v=S.batalhaAtual&&S.batalhaAtual.colunasTropa&&S.batalhaAtual.colunasTropa[tropaId];return v===undefined?1:Number(v);}
-function moverTropaFamilia(tropaId,novaFileira,novaColuna){
- if(bloqueadoLeitura())return;const b=S.batalhaAtual;if(!b)return;
- const t=S.tropas.find(x=>x.id===tropaId);if(!t)return;
- const mov=tropaMovimento(t.tipo);
- const fileiraAtual=tropaFamiliaFileira(tropaId),colunaAtual=tropaFamiliaColuna(tropaId);
- if(Math.abs(novaFileira-fileiraAtual)>mov.fileiras){flashHint("Essa tropa só anda "+mov.fileiras+" fileira(s) por turno.");return;}
- if(Math.abs(novaColuna-colunaAtual)>mov.colunas){flashHint("Essa tropa só desloca "+mov.colunas+" coluna(s) por turno.");return;}
- b.raiasTropa=b.raiasTropa||{};b.raiasTropa[tropaId]=Math.max(0,Math.min(3,Math.round(novaFileira)));
- b.colunasTropa=b.colunasTropa||{};b.colunasTropa[tropaId]=Math.max(0,Math.min(2,Math.round(novaColuna)));
- salvar();render();
-}
-function moverTropaInimiga(id,novaFileira,novaColuna){
- if(bloqueadoLeitura())return;const b=S.batalhaAtual;if(!b)return;
- const t=(b.tropasInimigas||[]).find(x=>x.id===id);if(!t)return;
- const mov=tropaMovimento(t.tipo);
- const fileiraAtual=Number(t.raia)||0,colunaAtual=(t.coluna===undefined?1:Number(t.coluna));
- if(Math.abs(novaFileira-fileiraAtual)>mov.fileiras){flashHint("Essa tropa só anda "+mov.fileiras+" fileira(s) por turno.");return;}
- if(Math.abs(novaColuna-colunaAtual)>mov.colunas){flashHint("Essa tropa só desloca "+mov.colunas+" coluna(s) por turno.");return;}
- t.raia=Math.max(0,Math.min(3,Math.round(novaFileira)));t.coluna=Math.max(0,Math.min(2,Math.round(novaColuna)));
- salvar();render();
-}
-/* Seleção/clique do tabuleiro Shogi (v5) — clicar num token seleciona (ou desseleciona, se
-   clicar de novo no mesmo); clicar numa casa com um token selecionado tenta mover pra lá.
-   moverTropaFamilia/moverTropaInimiga já validam o alcance e recusam com flashHint, então
-   aqui só repassamos a casa clicada. */
-function selecionarTropaTabuleiro(lado,id){
- if(bloqueadoLeitura())return;
- if(tropaSelTabuleiro&&tropaSelTabuleiro.lado===lado&&tropaSelTabuleiro.id===id)tropaSelTabuleiro=null;
- else tropaSelTabuleiro={lado,id};
- render();
-}
-function clicarCasaTabuleiro(fileira,coluna){
- if(bloqueadoLeitura())return;
- if(!tropaSelTabuleiro){flashHint("Clique primeiro num token de tropa pra selecioná-lo, depois clique na casa de destino.");return;}
- const sel=tropaSelTabuleiro;tropaSelTabuleiro=null;
- if(sel.lado==="familia")moverTropaFamilia(sel.id,fileira,coluna);else moverTropaInimiga(sel.id,fileira,coluna);
- render();
-}
-/* Contato: tropa da família e tropa inimiga na mesma coluna, fileiras a distância <=1 —
-   dispara Confronto. Empate de fileira (mesma casa) ou adjacência (uma fileira de diferença)
-   contam — igual a "engajado" no sentido de já estarem trocando golpes. */
-function tropasEmContato(){
- const b=S.batalhaAtual;if(!b)return[];
- const familiares=(b.tropasComprometidas||[]).map(id=>S.tropas.find(x=>x.id===id)).filter(Boolean)
-   .map(t=>({tropa:t,fileira:tropaFamiliaFileira(t.id),coluna:tropaFamiliaColuna(t.id)}));
- const inimigas=(b.tropasInimigas||[]).map(t=>({tropa:t,fileira:Number(t.raia)||0,coluna:t.coluna===undefined?1:Number(t.coluna)}));
- const contatos=[];
- familiares.forEach(f=>{inimigas.forEach(i=>{
-   if(f.coluna===i.coluna&&Math.abs(f.fileira-i.fileira)<=1)contatos.push({familia:f,inimiga:i});
- });});
- return contatos;
-}
-/* Resolve um Confronto de tropas no tabuleiro — reaproveita faixaBatalha()/nivelEfetivo(),
-   as MESMAS funções já validadas contra o RAW pro personagem, só que rolando Água+Batalha
-   da tropa em vez do personagem. bonusLiderancaFamilia vem de um PJ em modo Liderança
-   vinculado a essa tropa (ver participante.modo). Empate favorece a família (chute — ajustar
-   se parecer injusto na mesa). */
-function resolverConfrontoTropa(contato,opts){
- opts=opts||{};
- const tf=contato.familia.tropa,ti=contato.inimiga.tropa;
- const aneisF=tropaAneisCalc(tf),periciasF=tropaPericiasCalc(tf);
- const aneisI=tropaAneisCalc(ti),periciasI=tropaPericiasCalc(ti);
- const bonusLiderancaFamilia=Number(opts.bonusLiderancaFamilia)||0;
- const totalF=d10()+(aneisF.agua||0)+(periciasF.batalha||0)+bonusLiderancaFamilia;
- const totalI=d10()+(aneisI.agua||0)+(periciasI.batalha||0);
- const fileiraConfronto=Math.max(contato.familia.fileira,contato.inimiga.fileira);
- const nivel=nivelEfetivo(fileiraConfronto,0);
- const vencedor=totalF>=totalI?"familia":"inimiga",perdedor=vencedor==="familia"?"inimiga":"familia";
- const totalVencedor=vencedor==="familia"?totalF:totalI;
- const linha=faixaBatalha(totalVencedor);
- const col=linha.cols[nivel];
- let danoRolado=0;for(let i=0;i<col.fer;i++)danoRolado+=d10();
- const alvo=perdedor==="familia"?tf:ti;
- const defesaAlvo=perdedor==="familia"?(periciasF.defesa||0):(periciasI.defesa||0);
- danoRolado=Math.max(0,danoRolado-defesaAlvo);
- aplicarDanoTropa(alvo,danoRolado);
- return{totalF,totalI,vencedor,perdedor,nivel,ferDados:col.fer,danoRolado,gloriaSugerida:col.gloria,especial:col.esp};
-}
+/* ============ QUADRO DE BATALHA (v6 — 2026-08-05) ============================
+   Reescrito do zero a pedido do Thiago. As versões v2→v5 tinham virado um bolo de
+   camadas com três sistemas automáticos que não se falavam: o Contest de Generais
+   (que sozinho decidia quem vencia a batalha), a Tabela de Batalha pessoal e o
+   Confronto de tropas do tabuleiro — este último escrevia dano num campo que
+   NENHUMA outra linha do arquivo lia. O tabuleiro era decoração.
 
-/* ============ BATALHA EM MASSA (v2 — regras oficiais da 4ª edição + integração de tropa,
-   Ordens de Batalha, Postura de Combate e Fortificações/Cerco) ============
-   Baseado em lasthaiku.wikidot.com/battle, com extensões documentadas em
-   "Batalha em Massa - Redesign.md" (na pasta do projeto). Cada Turno de Batalha tem 3 estágios:
-   Declaração (nível de engajamento + Ordem + Postura de cada personagem, contest de Generais),
-   Determinação (d10+Água+Batalha+ajustes contra a Tabela de Batalha) e Resolução (Duelo,
-   Oportunidade Heroica, ou progresso de Cerco se houver fortificação em jogo). As tropas
-   comprometidas (S.tropas marcadas via toggleTropaBatalha) alimentam o nível efetivo e o
-   bônus do General — ver perfilExercitoComprometido(). */
-const ENGAJAMENTO=[
- {id:"reservas",nome:"Reservas",idx:0,desc:"Atrás da linha de frente, relativamente a salvo."},
- {id:"desengajado",nome:"Desengajado",idx:1,desc:"Nas margens do combate, entra e sai da briga."},
- {id:"engajado",nome:"Engajado",idx:2,desc:"No meio da luta, cercado por aliados e inimigos."},
- {id:"pesado",nome:"Fortemente Engajado",idx:3,desc:"Na linha de frente, no centro do caos."}
-];
-const STATUS_BATALHA=[
- {id:"vencendo",nome:"Vencendo",shift:0},
- {id:"impasse",nome:"Impasse",shift:1},
- {id:"perdendo",nome:"Perdendo",shift:2}
-];
-/* Cada linha cobre uma faixa de d10+Água+Perícia Batalha. As 6 colunas são os níveis
-   efetivos 0-5 (engajamento + deslocamento pelo status do exército). fer = nº de dados
-   de Ferimento (rolados e somados no Dano Atual do personagem), gloria = Glória ganha,
-   esp = null | "duelo" | "heroica". */
-const BATALHA_TABELA=[
- {min:1,max:3,cols:[{fer:1,gloria:0,esp:null},{fer:2,gloria:0,esp:null},{fer:3,gloria:1,esp:null},{fer:4,gloria:1,esp:null},{fer:5,gloria:1,esp:"duelo"},{fer:6,gloria:3,esp:"heroica"}]},
- {min:4,max:6,cols:[{fer:1,gloria:0,esp:null},{fer:1,gloria:0,esp:null},{fer:3,gloria:1,esp:null},{fer:4,gloria:1,esp:null},{fer:5,gloria:1,esp:"duelo"},{fer:5,gloria:2,esp:"heroica"}]},
- {min:7,max:9,cols:[{fer:1,gloria:0,esp:null},{fer:0,gloria:0,esp:null},{fer:2,gloria:1,esp:null},{fer:3,gloria:1,esp:"duelo"},{fer:4,gloria:1,esp:"heroica"},{fer:5,gloria:1,esp:"duelo"}]},
- {min:10,max:12,cols:[{fer:0,gloria:0,esp:null},{fer:0,gloria:0,esp:null},{fer:2,gloria:0,esp:"duelo"},{fer:3,gloria:0,esp:"heroica"},{fer:4,gloria:1,esp:"heroica"},{fer:4,gloria:1,esp:"duelo"}]},
- {min:13,max:15,cols:[{fer:0,gloria:1,esp:null},{fer:0,gloria:1,esp:null},{fer:1,gloria:1,esp:null},{fer:2,gloria:1,esp:"duelo"},{fer:3,gloria:1,esp:null},{fer:4,gloria:1,esp:"heroica"}]},
- {min:16,max:18,cols:[{fer:0,gloria:1,esp:null},{fer:0,gloria:1,esp:"duelo"},{fer:1,gloria:1,esp:null},{fer:2,gloria:1,esp:"duelo"},{fer:3,gloria:2,esp:null},{fer:3,gloria:2,esp:"heroica"}]},
- {min:19,max:21,cols:[{fer:0,gloria:2,esp:null},{fer:0,gloria:2,esp:null},{fer:0,gloria:2,esp:"heroica"},{fer:1,gloria:2,esp:null},{fer:2,gloria:2,esp:"heroica"},{fer:3,gloria:2,esp:"duelo"}]},
- {min:22,max:24,cols:[{fer:0,gloria:2,esp:null},{fer:0,gloria:2,esp:"heroica"},{fer:0,gloria:2,esp:null},{fer:1,gloria:2,esp:"heroica"},{fer:2,gloria:3,esp:null},{fer:3,gloria:3,esp:"duelo"}]},
- {min:25,max:27,cols:[{fer:0,gloria:2,esp:null},{fer:0,gloria:2,esp:null},{fer:0,gloria:3,esp:"duelo"},{fer:1,gloria:3,esp:null},{fer:2,gloria:4,esp:"heroica"},{fer:3,gloria:4,esp:"heroica"}]},
- {min:28,max:999,cols:[{fer:0,gloria:3,esp:null},{fer:0,gloria:3,esp:null},{fer:0,gloria:4,esp:"heroica"},{fer:1,gloria:4,esp:"duelo"},{fer:2,gloria:5,esp:"duelo"},{fer:3,gloria:5,esp:"heroica"}]}
-];
-const ESP_LABEL={duelo:"Duelo",heroica:"Oportunidade Heroica"};
-function faixaBatalha(total){
- for(let i=0;i<BATALHA_TABELA.length;i++){const r=BATALHA_TABELA[i];if(total>=r.min&&total<=r.max)return r;}
- return BATALHA_TABELA[BATALHA_TABELA.length-1];
-}
-function nivelEfetivo(engajamentoIdx,shift){return Math.min(5,Math.max(0,(Number(engajamentoIdx)||0)+(Number(shift)||0)));}
-function personagemBattleSkill(p){const s=(p.pericias||[]).find(x=>x.skill==="battle");return s?(Number(s.rank)||0):0;}
+   A decisão foi não religar aquilo, e sim tirar: o app não é um motor de regras,
+   é um auxílio visual para o Mestre. Aqui não existe resolução automática, nem
+   cálculo de vitória, nem dano aplicado sozinho. O quadro guarda POSIÇÃO, ESTADO
+   e QUEM COMANDA; o Mestre move as peças, marca o desgaste, escreve no log e
+   decide o desfecho. O rolador de dados existe ao lado, sem estar amarrado a
+   nada.
 
-/* Fortificações — adaptado da seção "Fortifications"/"Capture a Position" do material de
-   batalha em massa da 5ª edição pros números de d10+Água+Batalha daqui. reducaoFerimentos
-   beneficia quem OCUPA a posição; dificuldadeCerco é quanto de Pontos de Cerco (soma dos
-   totais de roll de quem escolhe a Ordem "Assaltar Fortificação") o lado atacante precisa
-   acumular pra tomar. Escala nova, proporcional à da 5e — não é tradução literal, calibrar
-   com playtest (ver doc de redesign). */
-const FORTIFICACAO_TIPOS={
- terreno:{nome:"Terreno Defensivo",reducaoFerimentos:1,dificuldadeCerco:8},
- posto:{nome:"Posto Avançado",reducaoFerimentos:2,dificuldadeCerco:14},
- forte:{nome:"Forte",reducaoFerimentos:3,dificuldadeCerco:20},
- castelo:{nome:"Castelo",reducaoFerimentos:4,dificuldadeCerco:30}
-};
-/* Visual de terreno do tabuleiro de batalha — puramente estético (cor de fundo + ícone),
-   o Mestre escolhe pra deixar claro o cenário sem precisar de arte de verdade. */
+   O que sobreviveu das versões antigas: o terreno visual (só cor de fundo), as
+   24 Oportunidades Heroicas (viraram pura referência de cena, sem efeito) e a
+   Conquista gerada ao encerrar a batalha (que continua sendo o único lugar onde
+   a batalha toca a ficha da família — e só depois do Mestre escolher o resultado
+   na mão).
+   ============================================================================ */
+
 const TERRENO_BATALHA_VISUAL={
  "":{nome:"Terreno não definido",emoji:"◻",cor:"transparent"},
  planicies:{nome:"Planícies",emoji:"🌾",cor:"rgba(200,175,70,.14)"},
@@ -1259,92 +1069,45 @@ const TERRENO_BATALHA_VISUAL={
  costa:{nome:"Costa/Praia",emoji:"🌊",cor:"rgba(50,140,180,.14)"},
  neve:{nome:"Neve/Inverno",emoji:"❄",cor:"rgba(200,220,230,.20)"}
 };
-/* Ordens de Batalha — decisão de comando a cada turno, substitui a escolha estática de
-   engajamento por uma tática que se repete turno a turno. */
-const ORDENS_BATALHA=[
- {id:"avancar",nome:"Avançar",nivelDelta:1,gloriaExtraSeEspecial:1,desc:"Empurra a linha adiante — mais perigo, +1 Glória extra se sair algo especial na coluna."},
- {id:"manter",nome:"Manter Posição",nivelDelta:0,reduzFerimento:1,desc:"Postura defensiva da unidade — reduz 1 dado de ferimento (mín. 0)."},
- {id:"flanquear",nome:"Flanquear",nivelDelta:0,condicional:"vencendo",bonusGeneralProximo:2,penalidadeSeFalhar:1,desc:"Só funciona se a família estiver Vencendo: +2 no bônus do General no próximo turno. Sem vencer, a manobra falha e vira +1 no nível efetivo, sem bônus nenhum."},
- {id:"focar_general",nome:"Focar no General Inimigo",nivelDelta:2,forcaDuelo:true,gloriaExtra:2,desc:"Avança direto contra o comando inimigo — a ordem mais exposta, mas força um Duelo e dá +2 Glória."},
- {id:"recuar",nome:"Recuar pras Reservas",nivelDelta:-2,semGloria:true,bonusGeneralProximo:-1,desc:"Sai de perto do combate por esse turno — seguro pro personagem, mas custa o momento da batalha (−1 no próximo bônus do General)."},
- {id:"assaltar_forte",nome:"Assaltar Fortificação",nivelDelta:1,assaltaFortificacao:true,gloriaExtra:2,desc:"Só disponível com fortificação em jogo, ocupada pelo inimigo — o total do roll vira Pontos de Cerco."}
+
+/* Campo de batalha: 5 fileiras de profundidade × 5 colunas de frente. As fileiras
+   são nomeadas do ponto de vista da família (0 = fundo dela, 4 = fundo do
+   inimigo), porque é assim que o Mestre narra ("empurrou até a linha inimiga").
+   Não há regra nenhuma presa a essas casas — são só endereços. */
+const BAT_FILEIRAS=[
+ {idx:0,nome:"Retaguarda da família",curto:"Retag. família"},
+ {idx:1,nome:"Linha da família",curto:"Linha família"},
+ {idx:2,nome:"Centro do campo",curto:"Centro"},
+ {idx:3,nome:"Linha inimiga",curto:"Linha inimiga"},
+ {idx:4,nome:"Retaguarda inimiga",curto:"Retag. inimiga"}
 ];
-/* Postura de Combate — as 5 Stances pessoais da 4ª edição (Ataque/Ataque Total/Defesa/Defesa
-   Total/Centro — fonte: magicalsamurai.wikidot.com/stances) reaproveitadas como eixo
-   independente das Ordens: a Ordem é o que o personagem tenta fazer, a Postura é como ele
-   luta pessoalmente dentro disso. */
-const POSTURAS_BATALHA=[
- {id:"ataque",nome:"Ataque",totalDelta:0,ferimentoDelta:0,desc:"Postura padrão, sem modificador — igual ao comportamento de antes."},
- {id:"ataque_total",nome:"Ataque Total",totalDelta:2,ferimentoDelta:1,desc:"+2 no total do roll de Batalha, +1 dado de ferimento — mais dano causado, mais exposto."},
- {id:"defesa",nome:"Defesa",totalDelta:-1,ferimentoDelta:-1,desc:"−1 no total do roll, −1 dado de ferimento (mín. 0) — troca ofensiva por sobrevivência."},
- {id:"defesa_total",nome:"Defesa Total",totalDelta:0,ferimentoDelta:-2,semGloriaEsteTurno:true,desc:"Sem Glória neste turno, −2 dados de ferimento (mín. 0) — abre mão do turno pra sobreviver de verdade."},
- {id:"centro",nome:"Centro",totalDelta:0,ferimentoDelta:0,semRoloEsteTurno:true,desc:"Não rola neste turno — represa energia. No turno seguinte, o total ganha +Vazio do personagem."}
-];
-function exercitoTemEquipMaioria(unidades,eqId){
- if(!unidades||!unidades.length)return false;
- const com=unidades.filter(t=>(t.equipamento||[]).includes(eqId)).length;
- return com>unidades.length/2;
-}
-/* Perfil do exército comprometido numa batalha específica (S.batalhaAtual.tropasComprometidas).
-   Sem tropa comprometida, forcaShift e modGeneral ficam 0 — batalha roda em RAW puro, idêntica
-   ao comportamento de antes da integração. */
-function perfilExercitoComprometido(){
- const b=S.batalhaAtual;
- const ids=(b&&b.tropasComprometidas)||[];
- const unidades=ids.map(id=>S.tropas.find(t=>t.id===id)).filter(Boolean);
- if(!unidades.length)return{forcaMedia:0,disciplinaMedia:0,forcaShift:0,modGeneral:0,n:0,unidades:[]};
- let somaForca=0,somaDisc=0;
- unidades.forEach(t=>{const c=tropaLinhaCalc(t);somaForca+=c.forca;somaDisc+=c.disciplina;});
- const forcaMedia=somaForca/unidades.length,disciplinaMedia=somaDisc/unidades.length;
- const forcaShift=forcaMedia<40?1:(forcaMedia>=50?-1:0);
- const modGeneral=disciplinaMedia<25?-1:(disciplinaMedia>=35?1:0);
- return{forcaMedia,disciplinaMedia,forcaShift,modGeneral,n:unidades.length,unidades};
-}
-function calcularBonusGeneralSugerido(){
- const b=S.batalhaAtual;if(!b||!b.generalId)return null;
- const g=S.personagens.find(x=>x.id===b.generalId);if(!g)return null;
- fichaBase(g);
- const agua=aneisPersonagem(g).agua||0;
- const skill=personagemBattleSkill(g);
- const perfil=perfilExercitoComprometido();
- return skill+agua+perfil.modGeneral;
-}
-function rolarBatalhaPersonagem(p,engajamentoIdx,shift,opts){
- opts=opts||{};
- fichaBase(p);
- const agua=aneisPersonagem(p).agua||0;
- const skill=personagemBattleSkill(p);
- const dado=d10();
- const totalDelta=Number(opts.totalDelta)||0;
- const total=dado+agua+skill+totalDelta;
- const linha=faixaBatalha(total);
- const nivel=nivelEfetivo(engajamentoIdx,(Number(shift)||0)+(Number(opts.nivelDelta)||0));
- const col=linha.cols[nivel];
- const ajusteFerDados=Number(opts.ajusteFerDados)||0;
- const numDados=Math.max(0,col.fer+ajusteFerDados);
- let ferimentosRolados=0;const dadosFer=[];
- for(let i=0;i<numDados;i++){const f=d10();dadosFer.push(f);ferimentosRolados+=f;}
- let especial=col.esp;
- if(opts.forcarDuelo&&especial!=="heroica")especial="duelo";
- let gloria=col.gloria;
- if(opts.semGloriaEsteTurno)gloria=0;
- if(opts.gloriaExtra)gloria+=Number(opts.gloriaExtra)||0;
- if(opts.gloriaExtraSeEspecial&&especial)gloria+=Number(opts.gloriaExtraSeEspecial)||0;
- return{dado,agua,skill,totalDelta,total,faixa:linha.min+"-"+(linha.max>=999?"+":linha.max),nivel,fer:numDados,dadosFer,ferimentosRolados,gloria,especial};
-}
-function rolarContesteGenerais(bonusProprio,bonusInimigo){
- const proprio=d10()+(Number(bonusProprio)||0);
- const inimigo=d10()+(Number(bonusInimigo)||0);
- const dif=proprio-inimigo;
- let status="impasse";if(dif>=5)status="vencendo";else if(dif<=-5)status="perdendo";
- return{proprio,inimigo,dif,status};
-}
-/* modo:"pessoal" (o personagem age sozinho ou com poucos aliados, ganho é dele — sai pra
-   quem está em Participação) vs "comando" (a ação já é inerentemente de comando/coordenação
-   de tropa — sai pra quem está em Liderança). Tag adicionada em 2026-08-04 pra rotear com
-   oportunidadeHeroicaAleatoria(modo); a maioria continua "pessoal" porque a maior parte das
-   24 oportunidades originais da 4e já é sobre o personagem agindo sozinho, mesmo quando o
-   efeito também beneficia o general — classifiquei pelo que a AÇÃO exige, não só o payoff. */
+const BAT_COLUNAS=["Flanco esq.","Esquerda","Centro","Direita","Flanco dir."];
+const BAT_NFILEIRAS=5,BAT_NCOLUNAS=5;
+
+/* Desgaste da peça — condição narrada, não número. O Mestre escolhe pela cabeça
+   dele; o app só pinta. "destruida" fica na lista pra peça poder sair de cena
+   sem ser apagada (o Mestre pode querer o registro de que aquela tropa morreu). */
+const BAT_ESTADOS={
+ intacta:{nome:"Intacta",cor:"#3f7a3f",bg:"rgba(63,122,63,.14)"},
+ castigada:{nome:"Castigada",cor:"#9a7418",bg:"rgba(168,128,31,.16)"},
+ quebrada:{nome:"Quebrada",cor:"#b8332a",bg:"rgba(184,51,42,.15)"},
+ fuga:{nome:"Em fuga",cor:"#6b6b6b",bg:"rgba(107,107,107,.16)"},
+ destruida:{nome:"Destruída",cor:"#3a3a3a",bg:"rgba(58,58,58,.22)"}
+};
+const BAT_ESTADO_ORDEM=["intacta","castigada","quebrada","fuga","destruida"];
+function batEstadoInfo(e){return BAT_ESTADOS[e]||BAT_ESTADOS.intacta;}
+
+const BAT_LADOS={
+ familia:{nome:"Família",curto:"nossa",classe:"qbFam"},
+ inimiga:{nome:"Inimigo",curto:"inimiga",classe:"qbIni"},
+ aliada:{nome:"Aliado",curto:"aliada",classe:"qbAli"}
+};
+const BAT_LADO_ORDEM=["familia","aliada","inimiga"];
+
+/* As 24 Oportunidades Heroicas da 4a edicao, mantidas como REFERENCIA DE CENA — nenhuma
+   delas tem efeito mecanico aqui. A tag modo separa as que dependem de estar comandando
+   tropa ("comando") das que o personagem resolve sozinho ("pessoal"); classifiquei pelo
+   que a ACAO exige, nao pelo que ela rende. Serve pro Mestre sortear um gancho na hora. */
 const OPORTUNIDADES_HEROICAS=[
  {nome:"Um Tiro Certeiro",efeito:"A linha de frente se abre — tiro à distância no general inimigo (TN 30+). Acerto vale 4 Glória e -5 no próximo Turno de Batalha do general inimigo.",modo:"pessoal"},
  {nome:"Atacar os Arqueiros",efeito:"Escaramuça contra os arqueiros de reserva do inimigo. Sucesso: -5 no próximo turno do general inimigo, +2 Glória.",modo:"pessoal"},
@@ -1423,50 +1186,66 @@ if(S.estacaoIdx===undefined)S.estacaoIdx=0;
 if(S.anoEstacao===undefined)S.anoEstacao=1;
 if(!S.sacrificios)S.sacrificios=[];
 if(S.sacrificioHonra){S.sacrificios.push({id:uid(),tipo:"progresso",quem:"(valor antigo, migrado automaticamente)",valor:S.sacrificioHonra,quando:"",attrGanho:"",attrValor:0});delete S.sacrificioHonra;}
-/* Migração: batalhas salvas antes da v2 (tropas/Ordens/Postura/Fortificação/resultado) não
-   têm esses campos — preencher com os defaults que reproduzem o comportamento RAW de antes
-   (nenhuma tropa comprometida, sem general designado, sem fortificação = forcaShift/modGeneral
-   ficam 0, Ordem "manter" e Postura "ataque" não mudam nada). Seguro rodar de novo. */
-if(S.batalhaAtual){
+/* Migração v6 (2026-08-05): a batalha deixou de ser um motor de regras e virou um quadro
+   manual. O formato antigo espalhava as tropas por quatro campos paralelos
+   (tropasComprometidas, tropasInimigas, raiasTropa, colunasTropa) mais participantes; o
+   novo junta tudo numa lista única de peças. Aqui a batalha em aberto é convertida uma
+   vez, preservando quem estava em campo e onde, e os campos das mecânicas removidas
+   (moral, fortificação, ordens, posturas, contest, bônus pendentes) são descartados —
+   não têm mais para onde ir. Seguro rodar de novo: se já tem pecas, não mexe. */
+if(S.batalhaAtual&&!S.batalhaAtual.pecas){
   const ba=S.batalhaAtual;
-  if(!ba.tropasComprometidas)ba.tropasComprometidas=[];
-  if(ba.generalId===undefined)ba.generalId=null;
-  if(ba.fortificacao===undefined)ba.fortificacao=null;
-  if(ba.resultado===undefined)ba.resultado=null;
-  if(!ba.statusHistorico)ba.statusHistorico=[];
-  if(ba.proprioBonusProximoTurno===undefined)ba.proprioBonusProximoTurno=0;
-  if(ba.inimigoBonusProximoTurno===undefined)ba.inimigoBonusProximoTurno=0;
-  (ba.participantes||[]).forEach(pt=>{if(!pt.ordemId)pt.ordemId="manter";if(!pt.posturaId)pt.posturaId="ataque";});
-  /* Migração v3: tropas inimigas, tabuleiro de raias, moral, postura por tropa, modo de rolagem. */
-  if(ba.moral===undefined)ba.moral=10;
-  if(!ba.tropasInimigas)ba.tropasInimigas=[];
-  if(!ba.modoRolagem)ba.modoRolagem="app";
-  if(!ba.posturasTropa)ba.posturasTropa={};
-  if(!ba.comandantesTropa)ba.comandantesTropa={};
-  if(!ba.raiasTropa)ba.raiasTropa={};
-  (ba.participantes||[]).forEach(pt=>{if(pt.tropaId===undefined)pt.tropaId=null;});
-  /* Migração v4: terreno visual do tabuleiro, comandante inimigo virou texto+bônus manual
-     (era um id de personagem da família, que não fazia sentido pro lado inimigo), e a
-     fortificação da batalha ganhou origem (família/manual) — sem origem definida, trata
-     como "manual" (comportamento antigo, tipo genérico direto em fort.tipo). */
-  if(ba.terreno===undefined)ba.terreno="";
-  (ba.tropasInimigas||[]).forEach(t=>{
-    if(t.comandanteNome===undefined)t.comandanteNome="";
-    if(t.comandanteBonus===undefined)t.comandanteBonus=0;
-    delete t.comandanteId;
+  const pecas=[];
+  /* Estados antigos das tropas → desgaste novo. "mobilizado"/"patrulha" eram situação
+     administrativa, não dano, então entram como intactas. */
+  const MAPA_ESTADO={mobilizado:"intacta",patrulha:"intacta",treinamento:"intacta",
+    ferido:"castigada",derrotado:"destruida"};
+  /* A fileira antiga (raia 0-3) era nível de engajamento contado do próprio lado. No campo
+     novo, 0 é o fundo da família e 4 o fundo do inimigo, então a tropa da família mapeia
+     direto e a inimiga entra espelhada. A coluna antiga (0-2) vai pro meio das cinco. */
+  const colNova=c=>Math.max(0,Math.min(4,(c===undefined?1:Number(c))+1));
+  (ba.tropasComprometidas||[]).forEach(tid=>{
+    const t=(S.tropas||[]).find(x=>x.id===tid);
+    const raia=Number(ba.raiasTropa&&ba.raiasTropa[tid])||0;
+    const cmdId=ba.comandantesTropa&&ba.comandantesTropa[tid];
+    const cmd=cmdId?(S.personagens||[]).find(p=>p.id===cmdId):null;
+    pecas.push({id:uid(),lado:"familia",tropaId:tid,
+      nome:(t&&t.local)||"",tipo:(t&&t.tipo)||"",
+      estado:MAPA_ESTADO[(t&&t.estado)]||"intacta",
+      comandante:cmd?(cmd.nome||""):"",obs:"",
+      fileira:Math.max(0,Math.min(4,raia)),
+      coluna:colNova(ba.colunasTropa&&ba.colunasTropa[tid])});
   });
-  if(ba.fortificacao&&!ba.fortificacao.origem)ba.fortificacao.origem="manual";
-  /* Migração v5 (2026-08-04): tabuleiro Shogi (fileira x coluna) e tropa-como-mini-personagem.
-     Saves antigos não têm coluna nenhuma — toda tropa (família e inimiga) nasce na coluna
-     central (1 = Centro), que é a posição neutra e não força reencaixe de nada que já
-     existia (fileira continua vindo de raiasTropa/t.raia, sem mudança). Participantes
-     antigos não tinham "modo" (liderança vs participação) — default é "participacao",
-     que é o comportamento equivalente ao que já existia (oportunidades heroicas sem
-     distinção de tropa/comando). Seguro rodar de novo. */
-  if(!ba.colunasTropa)ba.colunasTropa={};
-  (ba.tropasInimigas||[]).forEach(t=>{if(t.coluna===undefined)t.coluna=1;});
-  (ba.participantes||[]).forEach(pt=>{if(!pt.modo)pt.modo="participacao";});
+  (ba.tropasInimigas||[]).forEach(t=>{
+    pecas.push({id:uid(),lado:"inimiga",tropaId:null,
+      nome:t.nome||"",tipo:t.tipo||"",
+      estado:MAPA_ESTADO[t.estado]||"intacta",
+      comandante:t.comandanteNome||"",obs:"",
+      fileira:Math.max(0,Math.min(4,4-(Number(t.raia)||0))),
+      coluna:colNova(t.coluna)});
+  });
+  ba.pecas=pecas;
+  ba.turno=Math.max(1,Number(ba.turno)||1);
+  if(ba.notas===undefined)ba.notas="";
+  if(ba.terreno===undefined)ba.terreno="";
+  if(ba.resultado===undefined)ba.resultado=null;
+  ba.log=ba.log||[];
+  /* Os participantes viravam peças? Não: personagem não é unidade no quadro. Quem liderava
+     tropa já virou o campo "comandante" da peça acima; quem só lutava dentro dela fica
+     registrado no log pra não sumir sem aviso. */
+  const nomesPart=(ba.participantes||[]).map(pt=>{
+    const p=(S.personagens||[]).find(x=>x.id===pt.personagemId);
+    return p?(p.nome||"sem nome"):null;
+  }).filter(Boolean);
+  if(nomesPart.length)ba.log.unshift({turno:ba.turno,
+    texto:"(migração) Estavam em campo nesta batalha: "+nomesPart.join(", ")+"."});
+  ["tropasComprometidas","tropasInimigas","raiasTropa","colunasTropa","posturasTropa",
+   "comandantesTropa","participantes","moral","fortificacao","status","statusHistorico",
+   "ultimoContest","generalId","generalProprioBonus","generalInimigoBonus","modoRolagem",
+   "proprioBonusProximoTurno","inimigoBonusProximoTurno"].forEach(k=>{delete ba[k];});
 }
+/* Batalhas já arquivadas ficam como estão: são registro histórico, ninguém vai reabrir e
+   editar. O render do histórico só lê nome/inimigo/desfecho/datas, que não mudaram. */
 /* Migração: famílias salvas antes da fusão pros 5 atributos (5 anéis) tinham
    defesa/terras/ordem/populacao/poder/honra/espiritualidade separados. Soma cada
    grupo no atributo novo correspondente e remapeia qualquer referência salva
@@ -1502,7 +1281,6 @@ ESCOLA_ORDEM.forEach(t=>{if(!S.escolas[t])S.escolas[t]=t==="shugenja"?{ativa:fal
 let papel="mestre";
 /* Seleção do tabuleiro Shogi de tropas (v5) — só de tela, não salva. Guarda qual token está
    selecionado ({lado:"familia"|"inimiga",id}) esperando um clique numa casa pra se mover. */
-let tropaSelTabuleiro=null;
 /* estado só de tela (não salva): se a lista de clãs/eventos aparece cheia ou só o que já foi escolhido */
 let verTodosClas=!S.cla;
 let verTodosEventos=S.eventos.length<maxEventos();
@@ -1550,32 +1328,6 @@ function terrenoLinhaCalc(row){
   return{custoDefesa,custoTerras,fortuna};
 }
 function terrenosTotais(){let cd=0,ct=0,f=0;S.terrenos.forEach(r=>{const x=terrenoLinhaCalc(r);cd+=x.custoDefesa;ct+=x.custoTerras;f+=x.fortuna;});return{custoDefesa:cd,custoTerras:ct,fortuna:f};}
-/* Fortificação em disputa numa Batalha em Massa (§ redesign v4): em vez de escolher só
-   um dos 4 tipos genéricos, o Mestre pode puxar uma fortificação DE VERDADE que a família
-   construiu (aba Terrenos, FORTIFICACOES reais com dificuldade/attrition próprios) ou, se
-   for uma estrutura do inimigo que a família nunca teve ficha, preencher manualmente com
-   um dos 4 tipos genéricos como aproximação. */
-function fortificacoesDaFamilia(){
-  const list=[];
-  S.terrenos.forEach(r=>{
-    const tb=TERRENOS_BASE.find(x=>x.id===r.terreno);
-    [r.c1,r.c2,r.c3,r.c4].forEach(id=>{
-      const f=FORTIFICACOES.find(x=>x.id===id);
-      if(f)list.push({terrenoId:r.id,fortId:f.id,nome:f.nome,terrenoNome:r.nome||(tb?tb.nome:"terreno"),attrition:f.attrition,dificuldade:f.dificuldade});
-    });
-  });
-  return list;
-}
-function fortTipoInfo(fort){
-  if(!fort)return null;
-  if(fort.origem==="familia"){
-    const f=fortificacoesDaFamilia().find(x=>x.terrenoId===fort.terrenoId&&x.fortId===fort.fortId);
-    if(f)return{nome:f.nome+" ("+f.terrenoNome+")",reducaoFerimentos:-f.attrition,dificuldadeCerco:f.dificuldade};
-  }
-  const base=FORTIFICACAO_TIPOS[fort.tipoSimples||fort.tipo]||FORTIFICACAO_TIPOS.terreno;
-  return{nome:(fort.nome?fort.nome+" ("+base.nome+")":base.nome),reducaoFerimentos:base.reducaoFerimentos,dificuldadeCerco:base.dificuldadeCerco};
-}
-
 function honraSacrificadaTotal(){return(S.sacrificios||[]).reduce((s,x)=>s+(Number(x.valor)||0),0);}
 function sacrificioProgressoMod(attr){let s=0;(S.sacrificios||[]).forEach(x=>{if(x.tipo==="progresso"&&x.attrGanho===attr)s+=(Number(x.attrValor)||0);});return s;}
 function modificador(attr){
@@ -1848,345 +1600,156 @@ function setConversao(id,campo,val){if(bloqueadoLeitura())return;const c=S.conve
   c[campo]=(campo==="usos")?(parseFloat(val)||0):val;if(campo==="origem")c.destino="";salvar();render();}
 function delConversao(id){if(bloqueadoLeitura())return;S.conversoes=S.conversoes.filter(x=>x.id!==id);salvar();render();}
 
+/* ---- Ciclo de vida da batalha ---- */
 function iniciarBatalha(){if(bloqueadoLeitura())return;
-  S.batalhaAtual={id:uid(),nome:"",inimigo:"",desfecho:"",criada:(ESTACOES[S.estacaoIdx||0])+" ano "+(S.anoEstacao||1),
-    turno:0,generalProprioBonus:0,generalInimigoBonus:0,generalId:null,
-    proprioBonusProximoTurno:0,inimigoBonusProximoTurno:0,
-    status:null,ultimoContest:null,statusHistorico:[],moral:10,terreno:"",
-    tropasComprometidas:[],fortificacao:null,resultado:null,
-    tropasInimigas:[],modoRolagem:"app",posturasTropa:{},comandantesTropa:{},raiasTropa:{},
-    participantes:[],log:[]};
+  S.batalhaAtual={id:uid(),nome:"",inimigo:"",desfecho:"",terreno:"",
+    criada:(ESTACOES[S.estacaoIdx||0])+" ano "+(S.anoEstacao||1),
+    turno:1,pecas:[],log:[],resultado:null,notas:""};
   feedPush("A família entra em campo de batalha.");salvar();render();}
 function setBatalhaCampo(campo,val){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  S.batalhaAtual[campo]=(campo==="generalProprioBonus"||campo==="generalInimigoBonus")?(parseInt(val)||0):val;salvar();render();}
-function toggleParticipante(personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const list=S.batalhaAtual.participantes;const i=list.findIndex(x=>x.personagemId===personagemId);
-  if(i>=0)list.splice(i,1);else list.push({personagemId,engajamentoIdx:1,ordemId:"manter",posturaId:"ataque",tropaId:null,modo:"participacao"});salvar();render();}
-/* Modo do participante — v5: "participacao" (dentro da tropa, rola a Tabela de Batalha
-   pessoal de sempre — nada muda) ou "lideranca" (o personagem empresta Água+Batalha pro
-   Confronto da tropa vinculada, em vez de rolar sozinho — ver resolverConfrontoTropa). Rotea
-   também qual subconjunto de Oportunidades Heroicas pode sair pra ele (ver OPORTUNIDADES_
-   HEROICAS[].modo e oportunidadeHeroicaAleatoria()). */
-function setModoParticipante(personagemId,modo){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
-  part.modo=modo;salvar();render();}
-function bonusLiderancaParticipante(personagemId){
-  const part=(S.batalhaAtual&&S.batalhaAtual.participantes||[]).find(x=>x.personagemId===personagemId);
-  if(!part||part.modo!=="lideranca")return 0;
-  const p=S.personagens.find(x=>x.id===personagemId);if(!p)return 0;
-  fichaBase(p);return(aneisPersonagem(p).agua||0)+personagemBattleSkill(p);
-}
+  S.batalhaAtual[campo]=val;salvar();render();}
+function setBatalhaResultado(resultado){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  S.batalhaAtual.resultado=resultado;salvar();render();}
+function avancarTurnoBatalha(delta){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
+  S.batalhaAtual.turno=Math.max(1,(Number(S.batalhaAtual.turno)||1)+delta);salvar();render();}
+
+/* ---- Peças ---- */
+/* Uma peça pode nascer de uma tropa do cadastro da família (carrega o id, então o
+   Mestre vê de qual tropa se trata) ou ser avulsa, digitada na hora — o inimigo
+   nunca está cadastrado, e às vezes um aliado aparece sem ficha. */
+function addPecaBatalha(lado,tropaId){
+  if(bloqueadoLeitura())return null;
+  const b=S.batalhaAtual;if(!b)return null;
+  b.pecas=b.pecas||[];
+  let nome="",tipo="";
+  const t=tropaId?(S.tropas||[]).find(x=>x.id===tropaId):null;
+  if(t){nome=t.local||"";tipo=t.tipo||"";}
+  const p={id:uid(),lado:lado||"familia",tropaId:t?t.id:null,
+    nome,tipo,estado:"intacta",comandante:"",obs:"",
+    fileira:(lado==="inimiga")?3:1,coluna:2};
+  b.pecas.push(p);
+  batSelecionada=p.id;
+  salvar();render();return p;}
+function setPecaBatalha(id,campo,val){
+  if(bloqueadoLeitura())return;
+  const b=S.batalhaAtual;if(!b)return;
+  const p=(b.pecas||[]).find(x=>x.id===id);if(!p)return;
+  if(campo==="fileira")p.fileira=Math.max(0,Math.min(BAT_NFILEIRAS-1,parseInt(val)||0));
+  else if(campo==="coluna")p.coluna=Math.max(0,Math.min(BAT_NCOLUNAS-1,parseInt(val)||0));
+  else p[campo]=val;
+  salvar();render();}
+function delPecaBatalha(id){
+  if(bloqueadoLeitura())return;
+  const b=S.batalhaAtual;if(!b)return;
+  b.pecas=(b.pecas||[]).filter(x=>x.id!==id);
+  if(batSelecionada===id)batSelecionada=null;
+  salvar();render();}
+/* Ciclar estado com um clique é o gesto que o Mestre mais repete durante a
+   batalha, então tem que caber num toque só, sem abrir menu. */
+function ciclarEstadoPeca(id){
+  if(bloqueadoLeitura())return;
+  const b=S.batalhaAtual;if(!b)return;
+  const p=(b.pecas||[]).find(x=>x.id===id);if(!p)return;
+  const i=BAT_ESTADO_ORDEM.indexOf(p.estado);
+  p.estado=BAT_ESTADO_ORDEM[(i<0?0:i+1)%BAT_ESTADO_ORDEM.length];
+  salvar();render();}
+
+/* Seleção e movimento — de tela, não salva. Sem NENHUMA validação de alcance:
+   quem decide se aquela tropa consegue chegar lá é o Mestre, não o app. */
+let batSelecionada=null;
+function selecionarPecaBatalha(id){
+  batSelecionada=(batSelecionada===id)?null:id;render();}
+function moverPecaPara(fileira,coluna){
+  if(bloqueadoLeitura())return;
+  const b=S.batalhaAtual;if(!b)return;
+  if(!batSelecionada){flashHint("Clique numa peça pra selecioná-la, depois clique na casa de destino.");return;}
+  const p=(b.pecas||[]).find(x=>x.id===batSelecionada);
+  batSelecionada=null;
+  if(!p){render();return;}
+  p.fileira=Math.max(0,Math.min(BAT_NFILEIRAS-1,fileira));
+  p.coluna=Math.max(0,Math.min(BAT_NCOLUNAS-1,coluna));
+  salvar();render();}
+
+/* ---- Log ---- */
+/* O log é do Mestre: ele escreve o que quiser. O rolador de dados também pode
+   despejar um resultado aqui, mas só quando ele mandar. */
+function addLogBatalha(texto){
+  if(bloqueadoLeitura())return;
+  const b=S.batalhaAtual;if(!b)return;
+  const t=String(texto||"").trim();if(!t)return;
+  b.log=b.log||[];
+  b.log.unshift({turno:Number(b.turno)||1,texto:t});
+  salvar();render();}
+function addLogBatalhaDoCampo(){
+  const el=document.getElementById("batalhaLogInput");
+  if(!el)return;
+  addLogBatalha(el.value);
+  el.value="";}
+function delLogBatalha(idx){
+  if(bloqueadoLeitura())return;
+  const b=S.batalhaAtual;if(!b||!b.log)return;
+  b.log.splice(idx,1);salvar();render();}
+
+/* ---- Oportunidades Heroicas: pura referência de cena ---- */
 function oportunidadeHeroicaAleatoria(modo){
   const pool=OPORTUNIDADES_HEROICAS.filter(o=>!modo||o.modo===modo);
   return pickRandom(pool.length?pool:OPORTUNIDADES_HEROICAS);
 }
 function sortearOportunidade(modo){
   const o=oportunidadeHeroicaAleatoria(modo);
-  feedPush("Oportunidade Heroica ("+(modo==="comando"?"Comando":"Pessoal")+") sorteada: "+o.nome+" — "+o.efeito);
-  if(S.batalhaAtual)S.batalhaAtual.log.unshift({turno:S.batalhaAtual.turno,texto:"Oportunidade Heroica ("+(modo==="comando"?"Comando":"Pessoal")+"): "+o.nome+" — "+o.efeito});
-  salvar();render();
+  const txt="Oportunidade Heroica ("+(modo==="comando"?"Comando":"Pessoal")+"): "+o.nome+" — "+o.efeito;
+  if(S.batalhaAtual)addLogBatalha(txt);else{feedPush(txt);salvar();render();}
 }
-function setEngajamento(personagemId,idx){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
-  part.engajamentoIdx=Math.max(0,Math.min(3,parseInt(idx)||0));salvar();render();}
-function ciclarRaiaParticipante(personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
-  part.engajamentoIdx=((Number(part.engajamentoIdx)||0)+1)%4;salvar();render();}
-function ciclarRaiaTropaFamilia(tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  S.batalhaAtual.raiasTropa=S.batalhaAtual.raiasTropa||{};
-  S.batalhaAtual.raiasTropa[tropaId]=((Number(S.batalhaAtual.raiasTropa[tropaId])||0)+1)%4;salvar();render();}
-function ciclarRaiaTropaInimiga(tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const t=(S.batalhaAtual.tropasInimigas||[]).find(x=>x.id===tropaId);if(!t)return;
-  t.raia=((Number(t.raia)||0)+1)%4;salvar();render();}
-/* Coluna (flanco Shogi, v5) — mesmo padrão dos cicladores de fileira acima: clique livre,
-   sem checar tropaMovimento (esse limite fica pra moverTropaFamilia/moverTropaInimiga, que
-   dão o botão "certo" pra um tabuleiro com drag-and-drop no futuro; por ora o ciclador rápido
-   já cobre o uso de mesa). */
-const COLUNA_NOMES=["Esq","Centro","Dir"];
-function ciclarColunaTropaFamilia(tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const b=S.batalhaAtual;b.colunasTropa=b.colunasTropa||{};
-  b.colunasTropa[tropaId]=(tropaFamiliaColuna(tropaId)+1)%3;salvar();render();}
-function ciclarColunaTropaInimiga(tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const t=(S.batalhaAtual.tropasInimigas||[]).find(x=>x.id===tropaId);if(!t)return;
-  t.coluna=((t.coluna===undefined?1:Number(t.coluna))+1)%3;salvar();render();}
-function setOrdem(personagemId,ordemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
-  part.ordemId=ordemId;salvar();render();}
-function setParticipanteTropa(personagemId,tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
-  part.tropaId=tropaId||null;salvar();render();}
-function toggleTropaBatalha(tropaId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  if(!S.batalhaAtual.tropasComprometidas)S.batalhaAtual.tropasComprometidas=[];
-  const list=S.batalhaAtual.tropasComprometidas;const i=list.indexOf(tropaId);
-  if(i>=0)list.splice(i,1);else list.push(tropaId);salvar();render();}
-/* Tropas inimigas — ao contrário de S.tropas (cadastro permanente da família), estas só
-   existem dentro da batalha atual e somem quando ela é encerrada. */
-function addTropaInimiga(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  S.batalhaAtual.tropasInimigas=S.batalhaAtual.tropasInimigas||[];
-  /* comandanteNome/comandanteBonus em vez de comandanteId: o inimigo não tem ficha de
-     personagem no app, então o Mestre só escreve um nome e um bônus manual (equivalente
-     a Água+Batalha) pra usar no teste de mudança de Postura. */
-  S.batalhaAtual.tropasInimigas.push({id:uid(),nome:"",tipo:"ashigaru",estado:"mobilizado",raia:2,postura:"ataque",comandanteNome:"",comandanteBonus:0});
-  salvar();render();}
-function setTropaInimiga(id,campo,val){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const t=(S.batalhaAtual.tropasInimigas||[]).find(x=>x.id===id);if(!t)return;
-  t[campo]=val;salvar();render();}
-function delTropaInimiga(id){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  S.batalhaAtual.tropasInimigas=(S.batalhaAtual.tropasInimigas||[]).filter(x=>x.id!==id);salvar();render();}
-/* Postura por Tropa (§16) — comandante de uma tropa da família ou inimiga tenta mudar a
-   Postura dela num turno com d10+Água+Batalha contra a Moral da Batalha atual (§15). Sem
-   comandante, a tropa fica travada em "Ataque". */
-function tropaFamiliaPostura(tropaId){return(S.batalhaAtual&&S.batalhaAtual.posturasTropa&&S.batalhaAtual.posturasTropa[tropaId])||"ataque";}
-function setComandanteTropa(tropaId,personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const b=S.batalhaAtual;b.comandantesTropa=b.comandantesTropa||{};b.comandantesTropa[tropaId]=personagemId||null;
-  salvar();render();}
-function testarPosturaTropa(tropaId,lado,novaPostura){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const b=S.batalhaAtual;let tropaNome="tropa",nomeComandante=null,bonusTotal=0,detalheBonus="";
-  if(lado==="familia"){
-    const comandanteId=(b.comandantesTropa&&b.comandantesTropa[tropaId])||null;
-    const t=S.tropas.find(x=>x.id===tropaId);if(t)tropaNome=(TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo)+(t.local?(" ("+t.local+")"):"");
-    if(!comandanteId){flashHint("Essa tropa não tem comandante designado — sem comandante, a postura fica travada em Ataque.");return;}
-    const p=S.personagens.find(x=>x.id===comandanteId);if(!p){flashHint("Comandante não encontrado.");return;}
-    fichaBase(p);
-    const agua=aneisPersonagem(p).agua||0,skill=personagemBattleSkill(p);
-    nomeComandante=p.nome||"comandante";bonusTotal=agua+skill;detalheBonus="Água "+agua+"+Batalha "+skill;
-  }else{
-    const t=(b.tropasInimigas||[]).find(x=>x.id===tropaId);if(!t)return;
-    tropaNome=t.nome||"tropa inimiga";
-    if(!t.comandanteNome){flashHint("Escreva um nome pro comandante inimigo antes de testar a mudança de postura (aba de tropas inimigas).");return;}
-    nomeComandante=t.comandanteNome;bonusTotal=Number(t.comandanteBonus)||0;detalheBonus="bônus "+bonusTotal;
-  }
-  const moral=(b.moral===undefined?10:Number(b.moral));
-  const dado=d10(),total=dado+bonusTotal,sucesso=total>=moral;
-  const nomePostura=(POSTURAS_BATALHA.find(x=>x.id===novaPostura)||{}).nome||novaPostura;
-  b.log.unshift({turno:b.turno,texto:esc(nomeComandante)+" tenta mudar a postura de "+esc(tropaNome)+" pra "+nomePostura+": rolou "+total+" (d10 "+dado+"+"+detalheBonus+") contra Moral "+moral+" — "+(sucesso?"sucesso!":"falhou, mantém a postura anterior.")});
-  if(sucesso){
-    if(lado==="familia"){b.posturasTropa=b.posturasTropa||{};b.posturasTropa[tropaId]=novaPostura;}
-    else{const t=(b.tropasInimigas||[]).find(x=>x.id===tropaId);if(t)t.postura=novaPostura;}
-  }
-  salvar();render();}
-function setModoRolagem(modo){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  S.batalhaAtual.modoRolagem=modo;salvar();render();}
-function setManualResultado(personagemId,campo,val){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const part=S.batalhaAtual.participantes.find(x=>x.personagemId===personagemId);if(!part)return;
-  if(campo==="especial")part._manualEspecial=val||null;
-  else if(campo==="dano")part._manualDano=parseFloat(val)||0;
-  else if(campo==="gloria")part._manualGloria=parseFloat(val)||0;
-  salvar();}
-/* Turno unificado (v4): antes eram DUAS ações separadas — "rodar contest dos generais"
-   (decide status/moral do exército) e "rodar tabela de batalha" (resultado de cada
-   participante) — o Thiago achou isso esquisito de manejar e pediu pra virar UMA ação só,
-   com um resumo geral no topo do log. calcularEAplicarContesteGenerais() faz a parte do
-   exército (sempre automática, mesmo em modo Mesa — não é algo que se rola fisicamente,
-   é a abstração de generais manobrando); o resto (participantes + baixas de tropa) muda
-   conforme o modo de rolagem. */
-function calcularEAplicarContesteGenerais(){
-  const b=S.batalhaAtual;
-  const bonusProprioEfetivo=(Number(b.generalProprioBonus)||0)+(Number(b.proprioBonusProximoTurno)||0);
-  const bonusInimigoEfetivo=(Number(b.generalInimigoBonus)||0)+(Number(b.inimigoBonusProximoTurno)||0);
-  const bonusPendProprio=Number(b.proprioBonusProximoTurno)||0,bonusPendInimigo=Number(b.inimigoBonusProximoTurno)||0;
-  const c=rolarContesteGenerais(bonusProprioEfetivo,bonusInimigoEfetivo);
-  b.turno=(b.turno||0)+1;b.status=c.status;b.ultimoContest=c;
-  b.statusHistorico=b.statusHistorico||[];b.statusHistorico.push(c.status);
-  const moralAntes=(b.moral===undefined?10:Number(b.moral));
-  b.moral=Math.max(0,Math.min(20,moralAntes+Math.round(c.dif/2)));
-  b.proprioBonusProximoTurno=0;b.inimigoBonusProximoTurno=0;
-  return{c,moralAntes,bonusPendProprio,bonusPendInimigo};
-}
-function aplicarBaixasTropa(b){
-  const perfil=perfilExercitoComprometido();
-  const maioriaBagagem=exercitoTemEquipMaioria(perfil.unidades,"bagagem");
-  let baixas=0;
-  (b.tropasComprometidas||[]).forEach(tid=>{
-    const t=S.tropas.find(x=>x.id===tid);if(!t||t.estado==="derrotado")return;
-    const calc=tropaLinhaCalc(t);
-    const statusMod=b.status==="vencendo"?2:(b.status==="perdendo"?-2:0);
-    const discMod=calc.disciplina>=35?1:(calc.disciplina<25?-1:0);
-    const equipMod=((t.equipamento||[]).includes("armaduras")||t.especializacao==="disciplinado"||maioriaBagagem)?1:0;
-    const roll=d10()+statusMod+discMod+equipMod;
-    let novoEstado=null;
-    if(roll<=2)novoEstado="derrotado";
-    else if(roll<=5)novoEstado=(t.estado==="ferido")?"derrotado":"ferido";
-    if(novoEstado){
-      t.estado=novoEstado;baixas++;
-      b.log.unshift({turno:b.turno,texto:"Tropa "+(TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo)+(t.local?(" ("+esc(t.local)+")"):"")+": baixas — agora "+TROPA_ESTADO[novoEstado].nome+" (teste "+roll+")."});
-    }
-  });
-  return baixas;
-}
-function resumoTurnoTxt(b,c,moralAntes,bonusPendProprio,bonusPendInimigo,danoTotal,gloriaTotal,especiais,baixas,sufixoParticipantes){
-  const statusNome=STATUS_BATALHA.find(s=>s.id===c.status).nome;
-  let txt="Turno "+b.turno+" — Contest: "+c.proprio+" × "+c.inimigo+" (dif "+c.dif+") → "+statusNome+". Moral "+moralAntes+"→"+b.moral+".";
-  if(bonusPendProprio)txt+=" (bônus pendente família "+(bonusPendProprio>0?"+":"")+bonusPendProprio+")";
-  if(bonusPendInimigo)txt+=" (pendente no inimigo "+bonusPendInimigo+")";
-  txt+=" "+b.participantes.length+" participante(s)"+sufixoParticipantes+": "+danoTotal+" dano, "+(Math.round(gloriaTotal*10)/10)+" Glória"+(especiais?", "+especiais+" evento(s) especial(is)":"")+"."+(baixas?" "+baixas+" tropa(s) sofreu(ram) baixas.":"");
-  return txt;
-}
-function confirmarTurnoManual(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const b=S.batalhaAtual;
-  if(!b.participantes.length){flashHint("Nenhum personagem participando desta batalha ainda.");return;}
-  const{c,moralAntes,bonusPendProprio,bonusPendInimigo}=calcularEAplicarContesteGenerais();
-  let danoTotal=0,gloriaTotal=0,especiais=0;
-  b.participantes.forEach(part=>{
-    const p=S.personagens.find(x=>x.id===part.personagemId);if(!p)return;
-    fichaBase(p);
-    const dano=Number(part._manualDano)||0,gloria=Number(part._manualGloria)||0,especial=part._manualEspecial||null;
-    p.danoAtual=(Number(p.danoAtual)||0)+dano;
-    p.gloriaRank=(Number(p.gloriaRank)||0)+gloria;
-    danoTotal+=dano;gloriaTotal+=gloria;if(especial)especiais++;
-    let txt=esc(p.nome||"sem nome")+" (mesa): "+dano+" dano, "+gloria+" Glória";
-    if(especial)txt+=" — "+ESP_LABEL[especial]+"!";
-    b.log.unshift({turno:b.turno,texto:txt});
-    delete part._manualDano;delete part._manualGloria;delete part._manualEspecial;
-  });
-  const baixas=aplicarBaixasTropa(b);
-  b.log.unshift({turno:b.turno,texto:resumoTurnoTxt(b,c,moralAntes,bonusPendProprio,bonusPendInimigo,danoTotal,gloriaTotal,especiais,baixas," (mesa)")});
-  salvar();render();}
-function setGeneralId(personagemId){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  S.batalhaAtual.generalId=personagemId||null;salvar();render();}
-function recalcularBonusGeneral(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const sug=calcularBonusGeneralSugerido();
-  if(sug===null){flashHint("Escolha um personagem como General primeiro.");return;}
-  S.batalhaAtual.generalProprioBonus=sug;salvar();render();}
-/* Fortificação em disputa (v4): valor do <select> é "" (nenhuma), "manual" (estrutura do
-   inimigo, sem ficha — o Mestre digita nome e escolhe um dos 4 tipos genéricos como
-   aproximação) ou "fam:<terrenoId>:<fortId>" (uma fortificação de verdade que a família
-   já construiu, puxada da aba Terrenos com os números reais dela). */
-function setFortificacaoBatalha(valor){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const b=S.batalhaAtual;
-  if(!valor){b.fortificacao=null;salvar();render();return;}
-  if(valor==="manual"){b.fortificacao={origem:"manual",tipoSimples:"terreno",nome:"",ocupante:"inimiga",pontosCerco:0};salvar();render();return;}
-  const partes=valor.split(":");
-  b.fortificacao={origem:"familia",terrenoId:partes[1],fortId:partes[2],ocupante:"propria",pontosCerco:0};
-  salvar();render();}
-function setFortificacaoManualCampo(campo,val){if(bloqueadoLeitura())return;if(!S.batalhaAtual||!S.batalhaAtual.fortificacao)return;
-  S.batalhaAtual.fortificacao[campo]=val;salvar();render();}
-function setFortificacaoOcupante(ocupante){if(bloqueadoLeitura())return;if(!S.batalhaAtual||!S.batalhaAtual.fortificacao)return;
-  S.batalhaAtual.fortificacao.ocupante=ocupante;salvar();render();}
-function ciclarOcupanteFortificacao(){if(bloqueadoLeitura())return;if(!S.batalhaAtual||!S.batalhaAtual.fortificacao)return;
-  const seq=["propria","inimiga",null];const i=seq.indexOf(S.batalhaAtual.fortificacao.ocupante);
-  S.batalhaAtual.fortificacao.ocupante=seq[(i+1)%seq.length];salvar();render();}
-function addPontosCerco(v){if(bloqueadoLeitura())return;if(!S.batalhaAtual||!S.batalhaAtual.fortificacao)return;
-  const n=parseFloat(v)||0;if(!n)return;
-  const b=S.batalhaAtual,fort=b.fortificacao,info=fortTipoInfo(fort);
-  fort.pontosCerco=(Number(fort.pontosCerco)||0)+n;
-  b.log.unshift({turno:b.turno,texto:"Cerco a "+esc(fort.nome||info.nome)+": +"+n+" pontos ("+fort.pontosCerco+"/"+info.dificuldadeCerco+")."});
-  if(fort.pontosCerco>=info.dificuldadeCerco&&fort.ocupante!=="propria"){
-    fort.ocupante="propria";
-    b.log.unshift({turno:b.turno,texto:"A fortificação "+esc(fort.nome||info.nome)+" caiu — agora ocupada pela família!"});
-  }
-  salvar();render();}
-function sugerirResultadoBatalha(b){
-  const hist=(b&&b.statusHistorico)||[];if(!hist.length)return"empate";
-  let v=0,p=0;hist.forEach(s=>{if(s==="vencendo")v++;else if(s==="perdendo")p++;});
-  if(v>p)return"vitoria";if(p>v)return"derrota";return"empate";}
-function setBatalhaResultado(resultado){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  S.batalhaAtual.resultado=resultado;salvar();render();}
-function confirmarRetirada(personagemId){
-  const p=S.personagens.find(x=>x.id===personagemId);if(!p)return;
-  if(!confirm("Retirar "+(p.nome||"personagem")+" de vez da batalha? Custa 1 Honra (e 1 Glória se alguém testemunhou)."))return;
-  const testemunhado=confirm("Alguém testemunhou a retirada?");
-  retirarPersonagemBatalha(personagemId,testemunhado);}
-function retirarPersonagemBatalha(personagemId,testemunhado){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const b=S.batalhaAtual;const p=S.personagens.find(x=>x.id===personagemId);if(!p)return;
-  fichaBase(p);
-  p.honorRank=Math.max(0,(Number(p.honorRank)||0)-1);
-  if(testemunhado)p.gloriaRank=Math.max(0,(Number(p.gloriaRank)||0)-1);
-  const eraGeneral=b.generalId===personagemId;
-  if(eraGeneral)b.proprioBonusProximoTurno=(Number(b.proprioBonusProximoTurno)||0)-3;
-  b.participantes=b.participantes.filter(x=>x.personagemId!==personagemId);
-  b.log.unshift({turno:b.turno,texto:esc(p.nome||"sem nome")+" se retira definitivamente da batalha (−1 Honra"+(testemunhado?", −1 Glória (testemunhado)":"")+")."+(eraGeneral?" A família fica sem general por um momento (−3 no próximo Contest).":"")});
-  salvar();render();}
-function rodarTurnoBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
-  const b=S.batalhaAtual;
-  if(b.modoRolagem==="mesa"){flashHint("Modo Mesa está ativo — preencha os resultados manuais e clique em \"Confirmar turno\".");return;}
-  if(!b.participantes.length&&!(b.tropasComprometidas||[]).length){flashHint("Ninguém está participando desta batalha ainda.");return;}
-  const{c,moralAntes,bonusPendProprio,bonusPendInimigo}=calcularEAplicarContesteGenerais();
-  const statusShift=STATUS_BATALHA.find(s=>s.id===b.status).shift;
-  const perfil=perfilExercitoComprometido();
-  const fort=b.fortificacao;
-  const maioriaSuprimentos=exercitoTemEquipMaioria(perfil.unidades,"suprimentos");
-  let danoTotal=0,gloriaTotal=0,especiais=0;
-  b.participantes.forEach(part=>{
-    const p=S.personagens.find(x=>x.id===part.personagemId);if(!p)return;
-    fichaBase(p);
-    /* v5: em modo Liderança o personagem empresta Água+Batalha ao Confronto da tropa
-       vinculada (ver resolverConfrontosTurno abaixo) em vez de rolar a Tabela de Batalha
-       pessoal — evita contar o mesmo personagem duas vezes no mesmo turno. */
-    if(part.modo==="lideranca"){
-      b.log.unshift({turno:b.turno,texto:esc(p.nome||"sem nome")+" comanda a tropa vinculada neste turno (Água+Batalha somados ao Confronto da tropa) — não rola a Tabela de Batalha pessoal."});
-      return;
-    }
-    const ordem=ORDENS_BATALHA.find(o=>o.id===(part.ordemId||"manter"))||ORDENS_BATALHA[1];
-    /* Postura agora vem da tropa vinculada ao personagem (§16), não mais de uma escolha
-       pessoal — sem tropa vinculada, o personagem rola sem modificador de postura (Ataque). */
-    const posturaIdEfetiva=part.tropaId?tropaFamiliaPostura(part.tropaId):"ataque";
-    const postura=POSTURAS_BATALHA.find(x=>x.id===posturaIdEfetiva)||POSTURAS_BATALHA[0];
-    if(postura.semRoloEsteTurno){
-      part._bonusCentroProximo=aneisPersonagem(p).vazio||0;
-      b.log.unshift({turno:b.turno,texto:esc(p.nome||"sem nome")+" — Centro: concentra energia pro próximo turno (+"+part._bonusCentroProximo+" no próximo total)."});
-      return;
-    }
-    const fortDisponivel=!!(fort&&fort.ocupante!=="propria");
-    const assaltando=!!(ordem.assaltaFortificacao&&fortDisponivel);
-    let nivelDelta=ordem.nivelDelta||0;
-    let bonusGeneralProximoOrdem=ordem.bonusGeneralProximo||0;
-    if(ordem.condicional&&b.status!==ordem.condicional){nivelDelta=ordem.penalidadeSeFalhar||0;bonusGeneralProximoOrdem=0;}
-    if(bonusGeneralProximoOrdem)b.proprioBonusProximoTurno=(Number(b.proprioBonusProximoTurno)||0)+bonusGeneralProximoOrdem;
-    let ajusteFerDados=(ordem.reduzFerimento?-ordem.reduzFerimento:0)+(postura.ferimentoDelta||0);
-    if(maioriaSuprimentos)ajusteFerDados-=1;
-    if(fort&&fort.ocupante==="propria")ajusteFerDados-=fortTipoInfo(fort).reducaoFerimentos;
-    const totalDelta=(postura.totalDelta||0)+(Number(part._bonusCentroProximo)||0);
-    delete part._bonusCentroProximo;
-    const r=rolarBatalhaPersonagem(p,part.engajamentoIdx,statusShift+perfil.forcaShift,{
-      nivelDelta,totalDelta,ajusteFerDados,
-      forcarDuelo:!!ordem.forcaDuelo,
-      gloriaExtra:ordem.gloriaExtra||0,
-      gloriaExtraSeEspecial:ordem.gloriaExtraSeEspecial||0,
-      semGloriaEsteTurno:!!postura.semGloriaEsteTurno
-    });
-    p.danoAtual=(Number(p.danoAtual)||0)+r.ferimentosRolados;
-    p.gloriaRank=(Number(p.gloriaRank)||0)+r.gloria;
-    danoTotal+=r.ferimentosRolados;gloriaTotal+=r.gloria;if(r.especial)especiais++;
-    let txt=esc(p.nome||"sem nome")+" ("+ENGAJAMENTO[part.engajamentoIdx].nome+" · "+ordem.nome+" · "+postura.nome+"): rolou "+r.total+" (d10 "+r.dado+"+Água "+r.agua+"+Batalha "+r.skill+(r.totalDelta?(r.totalDelta>0?"+"+r.totalDelta:r.totalDelta)+" postura":"")+"), faixa "+r.faixa+" — "+r.fer+" dado(s) de ferimento ("+r.ferimentosRolados+" dano), "+r.gloria+" Glória";
-    if(r.especial)txt+=" — "+ESP_LABEL[r.especial]+"!";
-    b.log.unshift({turno:b.turno,texto:txt});
-    if(assaltando&&fort){
-      const info=fortTipoInfo(fort);
-      fort.pontosCerco=(Number(fort.pontosCerco)||0)+r.total;
-      b.log.unshift({turno:b.turno,texto:"Cerco a "+esc(fort.nome||info.nome)+": +"+r.total+" pontos ("+fort.pontosCerco+"/"+info.dificuldadeCerco+")."});
-      if(fort.pontosCerco>=info.dificuldadeCerco){
-        fort.ocupante="propria";
-        p.gloriaRank=(Number(p.gloriaRank)||0)+3;
-        b.inimigoBonusProximoTurno=(Number(b.inimigoBonusProximoTurno)||0)-3;
-        b.log.unshift({turno:b.turno,texto:esc(p.nome||"sem nome")+" toma "+esc(fort.nome||info.nome)+"! +3 Glória, general inimigo sofre −3 no próximo Contest."});
-      }
-    }
-  });
-  const baixas=aplicarBaixasTropa(b);
-  const confrontos=resolverConfrontosTurno();
-  confrontos.forEach(r=>{
-    const nF=esc(r.tropaFamilia.nome||"tropa da família"),nI=esc(r.tropaInimiga.nome||"tropa inimiga");
-    const nomeVencedor=r.vencedor==="familia"?nF:nI,nomePerdedor=r.perdedor==="familia"?nF:nI;
-    b.log.unshift({turno:b.turno,texto:"Confronto "+nF+" x "+nI+": "+r.totalF+" x "+r.totalI+" — "+nomeVencedor+" vence, "+r.danoRolado+" dano em "+nomePerdedor+(r.especial?" — "+ESP_LABEL[r.especial]+"!":"")+"."});
-  });
-  b.log.unshift({turno:b.turno,texto:resumoTurnoTxt(b,c,moralAntes,bonusPendProprio,bonusPendInimigo,danoTotal,gloriaTotal,especiais,baixas,"")});
-  salvar();render();}
-/* Roda todo Confronto de tropas em contato (tabuleiro Shogi, v5) num turno: soma o bônus de
-   qualquer participante em modo Liderança vinculado à tropa da família envolvida, resolve
-   com resolverConfrontoTropa (reaproveitando faixaBatalha/nivelEfetivo já validados) e
-   aplica dano. Retorna a lista de resultados pra log — não mexe em b.log sozinha, quem chama
-   decide como narrar. */
-function resolverConfrontosTurno(){
-  const b=S.batalhaAtual;if(!b)return[];
-  return tropasEmContato().map(contato=>{
-    const tropaId=contato.familia.tropa.id;
-    let bonusLid=0;
-    (b.participantes||[]).forEach(pt=>{if(pt.tropaId===tropaId)bonusLid+=bonusLiderancaParticipante(pt.personagemId);});
-    const r=resolverConfrontoTropa(contato,{bonusLiderancaFamilia:bonusLid});
-    return Object.assign({tropaFamilia:contato.familia.tropa,tropaInimiga:contato.inimiga.tropa},r);
-  });
-}
+
+/* ============ ROLADOR DE DADOS (independente de tudo) =======================
+   Rolagem no estilo da 4ª edição — XkY: rola X dados de dez, cada 10 explode
+   (rola de novo e soma no mesmo dado, em cadeia), mantém os Y maiores e soma um
+   modificador. Não consulta ficha, não aplica resultado, não conhece regra
+   nenhuma: cospe o número e mostra a conta. O limite de 100 explosões por dado é
+   só uma trava contra laço infinito, não uma regra do jogo.
+   ============================================================================ */
+let dadosState={qtd:5,manter:3,mod:0,explode:true,ultimo:null};
+function setDadoCampo(campo,val){
+  if(campo==="explode")dadosState.explode=!!val;
+  else if(campo==="qtd")dadosState.qtd=Math.max(1,Math.min(30,parseInt(val)||1));
+  else if(campo==="manter")dadosState.manter=Math.max(1,Math.min(30,parseInt(val)||1));
+  else if(campo==="mod")dadosState.mod=parseInt(val)||0;
+  if(dadosState.manter>dadosState.qtd)dadosState.manter=dadosState.qtd;
+  renderDados();}
+function rolarDadoExplosivo(explode){
+  const chain=[];let v=d10();chain.push(v);
+  let guarda=0;
+  while(explode&&v===10&&guarda<100){v=d10();chain.push(v);guarda++;}
+  return{total:chain.reduce((a,x)=>a+x,0),chain};}
+function rolarDadosL5R(qtd,manter,mod,explode){
+  qtd=Math.max(1,Math.min(30,parseInt(qtd)||1));
+  manter=Math.max(1,Math.min(qtd,parseInt(manter)||1));
+  mod=parseInt(mod)||0;
+  const dados=[];
+  for(let i=0;i<qtd;i++)dados.push(rolarDadoExplosivo(!!explode));
+  /* ordena por valor pra saber quais ficam, mas guarda a ordem original pra
+     exibição não ficar embaralhada em relação ao que o jogador viu rolar */
+  const ordenados=dados.map((d,i)=>({i,total:d.total})).sort((a,b)=>b.total-a.total);
+  const mantidos=new Set(ordenados.slice(0,manter).map(x=>x.i));
+  const soma=ordenados.slice(0,manter).reduce((a,x)=>a+x.total,0);
+  return{qtd,manter,mod,explode:!!explode,
+    dados:dados.map((d,i)=>({total:d.total,chain:d.chain,mantido:mantidos.has(i),explodiu:d.chain.length>1})),
+    somaMantidos:soma,total:soma+mod};}
+function rolarDados(){
+  dadosState.ultimo=rolarDadosL5R(dadosState.qtd,dadosState.manter,dadosState.mod,dadosState.explode);
+  renderDados();}
+function textoDaRolagem(r){
+  if(!r)return"";
+  const detalhe=r.dados.map(d=>(d.mantido?"["+d.total+"]":d.total)+(d.explodiu?"("+d.chain.join("+")+")":"")).join(" ");
+  return r.qtd+"k"+r.manter+(r.mod?(r.mod>0?"+":"")+r.mod:"")+" = "+r.total+"  ·  "+detalhe;}
+function mandarRolagemProLog(){
+  if(!dadosState.ultimo){flashHint("Role alguma coisa primeiro.");return;}
+  if(!S.batalhaAtual){flashHint("Não há batalha aberta pra receber o registro.");return;}
+  addLogBatalha("🎲 "+textoDaRolagem(dadosState.ultimo));}
+
+/* ---- Encerramento ---- */
+/* Único ponto em que a batalha toca a ficha da família, e mesmo assim só depois
+   do Mestre escolher o resultado na mão — não existe mais sugestão automática. */
 const RESULTADO_BATALHA_CONQUISTA={
  vitoria:{titulo:"Vitória em batalha",itens:[{attr:"influencia",delta:2},{attr:"autoridade",delta:1}]},
  derrota:{titulo:"Derrota em batalha",itens:[{attr:"dominio",delta:-2},{attr:"autoridade",delta:-1}]},
@@ -2194,14 +1757,14 @@ const RESULTADO_BATALHA_CONQUISTA={
 };
 function encerrarBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)return;
   const b=S.batalhaAtual;
-  if(!b.resultado)b.resultado=sugerirResultadoBatalha(b);
+  if(!b.resultado){flashHint("Escolha o resultado da batalha antes de encerrar — o app não decide isso por você.");return;}
   b.encerrada=(ESTACOES[S.estacaoIdx||0])+" ano "+(S.anoEstacao||1);
   const base=RESULTADO_BATALHA_CONQUISTA[b.resultado]||RESULTADO_BATALHA_CONQUISTA.empate;
   S.conquistas=S.conquistas||[];
   S.conquistas.push({id:uid(),titulo:base.titulo+(b.nome?(" — "+b.nome):""),itens:base.itens.map(it=>({id:uid(),attr:it.attr,delta:it.delta}))});
   S.batalhas=S.batalhas||[];S.batalhas.unshift(b);
   feedPush("Batalha encerrada ("+base.titulo+"): "+(b.nome||"sem nome")+(b.desfecho?(" — "+b.desfecho):"")+".");
-  S.batalhaAtual=null;salvar();render();}
+  S.batalhaAtual=null;batSelecionada=null;salvar();render();}
 function delBatalhaHistorico(id){if(bloqueadoLeitura())return;S.batalhas=(S.batalhas||[]).filter(x=>x.id!==id);salvar();render();}
 
 function hardReset(){if(!confirm("Apagar TUDO e recomeçar do zero?"))return;try{localStorage.removeItem("l5r_familia_v1");}catch(e){}S=estadoInicial();salvar();render();}
@@ -3537,228 +3100,134 @@ function renderConversoes(){
     "<tbody>"+(rows||"<tr><td colspan=\"7\" class=\"hint\">Nenhuma conversão ainda.</td></tr>")+"</tbody>";
 }
 
-/* ============ BATALHA EM MASSA — render ============ */
-/* Tabuleiro dos personagens — engajamento (só fileira, sem coluna: o eixo de flanco é uma
-   coisa de tropa organizada, não de um samurai avulso brigando dentro da confusão). */
-function tabuleiroHTML(b){
-  const fam=[];
-  b.participantes.forEach(part=>{
-    const p=S.personagens.find(x=>x.id===part.personagemId);if(!p)return;
-    fam.push({label:esc(p.nome||"sem nome")+" 👤",raia:Number(part.engajamentoIdx)||0,onclick:"ciclarRaiaParticipante('"+part.personagemId+"')"});
-  });
+/* ============ QUADRO DE BATALHA — render (v6) ============
+   Três pedaços: o tabuleiro (grade clicável), a tabela de peças (onde o Mestre
+   edita estado, comandante e observação) e o log. Nada aqui calcula nada. */
+function tabuleiroBatalhaHTML(b){
   const terrenoInfo=TERRENO_BATALHA_VISUAL[b.terreno||""]||TERRENO_BATALHA_VISUAL[""];
-  let html="<div class=\"tabuleiro\" style=\"background:"+terrenoInfo.cor+"\">";
-  html+="<div class=\"tabuleiroTerreno\">"+terrenoInfo.emoji+" "+esc(terrenoInfo.nome)+"</div>";
-  if(b.fortificacao){
-    const info=fortTipoInfo(b.fortificacao);
-    const ocupanteLabel=b.fortificacao.ocupante==="propria"?"família":(b.fortificacao.ocupante==="inimiga"?"inimigo":"disputada, sem ocupante");
-    const cercoTxt=(Number(b.fortificacao.pontosCerco)>0||b.fortificacao.ocupante!=="propria")?(" · cerco "+(Number(b.fortificacao.pontosCerco)||0)+"/"+info.dificuldadeCerco):"";
-    html+="<div class=\"tabuleiroForte\" onclick=\"ciclarOcupanteFortificacao()\" title=\"clique pra alternar quem ocupa\">🏯 "+esc(b.fortificacao.nome||info.nome)+" — ocupada por "+ocupanteLabel+cercoTxt+"</div>";
-  }
-  for(let nivel=3;nivel>=0;nivel--){
-    html+="<div class=\"tabuleiroLinha\"><div class=\"tabuleiroRotulo\">"+ENGAJAMENTO[nivel].nome+"</div>"+
-      "<div class=\"tabuleiroLado ladoFamilia\">"+fam.filter(x=>x.raia===nivel).map(x=>"<span class=\"chip chipFamilia\" onclick=\""+x.onclick+"\">"+x.label+"</span>").join("")+"</div>"+
-      "</div>";
-  }
-  html+="</div>";
-  return html;
-}
-/* Tabuleiro Shogi das tropas (v5) — grade real fileira(4, Reservas embaixo até Frente/Choque
-   em cima) x coluna(3, Esquerda/Centro/Direita). Clique num token pra selecionar, clique numa
-   casa pra mover (moverTropaFamilia/moverTropaInimiga recusam com flashHint se passar do
-   alcance da tropa). Casas com tropa da família E inimiga na mesma coluna, fileiras a até 1 de
-   distância, ficam destacadas — é ali que resolverConfrontosTurno vai bater quando o turno
-   rodar. */
-function tabuleiroTropasHTML(b){
-  const familiares=(b.tropasComprometidas||[]).map(tid=>S.tropas.find(x=>x.id===tid)).filter(Boolean)
-    .map(t=>({t,fileira:tropaFamiliaFileira(t.id),coluna:tropaFamiliaColuna(t.id)}));
-  const inimigas=(b.tropasInimigas||[]).map(t=>({t,fileira:Number(t.raia)||0,coluna:t.coluna===undefined?1:Number(t.coluna)}));
-  if(!familiares.length&&!inimigas.length)return"<div class=\"hint\" style=\"margin-bottom:10px\">Comprometa uma tropa da família (abaixo) ou adicione uma tropa inimiga pra elas aparecerem no tabuleiro.</div>";
-  const contatoSet=new Set();
-  tropasEmContato().forEach(c=>{contatoSet.add("f:"+c.familia.tropa.id);contatoSet.add("i:"+c.inimiga.tropa.id);});
-  let html="<div class=\"shogiWrap\"><div class=\"shogiGrid\">";
-  html+="<div class=\"shogiHead\"></div>"+COLUNA_NOMES.map(n=>"<div class=\"shogiHead\">"+n+"</div>").join("");
-  for(let nivel=3;nivel>=0;nivel--){
-    html+="<div class=\"shogiRotulo\">"+ENGAJAMENTO[nivel].nome+"</div>";
-    for(let col=0;col<3;col++){
-      const aquiF=familiares.filter(x=>x.fileira===nivel&&x.coluna===col);
-      const aquiI=inimigas.filter(x=>x.fileira===nivel&&x.coluna===col);
-      const emContato=aquiF.some(x=>contatoSet.has("f:"+x.t.id))||aquiI.some(x=>contatoSet.has("i:"+x.t.id));
-      html+="<div class=\"shogiCasa"+(emContato?" contato":"")+"\" onclick=\"clicarCasaTabuleiro("+nivel+","+col+")\" title=\""+(emContato?"Confronto em contato — resolve ao rodar o turno":"clique pra mover a tropa selecionada pra cá")+"\">";
-      aquiF.forEach(x=>{
-        const sel=tropaSelTabuleiro&&tropaSelTabuleiro.lado==="familia"&&tropaSelTabuleiro.id===x.t.id;
-        html+="<span class=\"shogiToken familia"+(sel?" selecionado":"")+"\" onclick=\"event.stopPropagation();selecionarTropaTabuleiro('familia','"+x.t.id+"')\">"+esc(TROPA_TIPOS[x.t.tipo]?TROPA_TIPOS[x.t.tipo].nome:x.t.tipo)+(x.t.local?(" ("+esc(x.t.local)+")"):"")+"</span>";
+  const pecas=b.pecas||[];
+  let h="<div class=\"qbWrap\" style=\"background:"+terrenoInfo.cor+"\">";
+  h+="<div class=\"qbTerreno\">"+terrenoInfo.emoji+" "+esc(terrenoInfo.nome)+"</div>";
+  h+="<div class=\"qbScroll\"><div class=\"qbGrid\">";
+  h+="<div class=\"qbHead\"></div>"+BAT_COLUNAS.map(n=>"<div class=\"qbHead\">"+esc(n)+"</div>").join("");
+  /* de cima pra baixo: retaguarda inimiga primeiro, retaguarda da família por
+     último — é como o Mestre olha o campo com a família "do lado dele". */
+  for(let f=BAT_NFILEIRAS-1;f>=0;f--){
+    h+="<div class=\"qbRotulo\">"+esc(BAT_FILEIRAS[f].curto)+"</div>";
+    for(let c=0;c<BAT_NCOLUNAS;c++){
+      h+="<div class=\"qbCasa\" onclick=\"moverPecaPara("+f+","+c+")\" title=\""+esc(BAT_FILEIRAS[f].nome+" · "+BAT_COLUNAS[c])+"\">";
+      pecas.filter(p=>p.fileira===f&&p.coluna===c).forEach(p=>{
+        const est=batEstadoInfo(p.estado),lado=BAT_LADOS[p.lado]||BAT_LADOS.familia;
+        const sel=batSelecionada===p.id;
+        const rotulo=p.nome||((TROPA_TIPOS[p.tipo]&&TROPA_TIPOS[p.tipo].nome)||p.tipo||"tropa");
+        const tipoTxt=(TROPA_TIPOS[p.tipo]&&TROPA_TIPOS[p.tipo].nome)||p.tipo||"";
+        h+="<div class=\"qbPeca "+lado.classe+(sel?" sel":"")+(p.estado==="destruida"?" morta":"")+"\" "+
+           "style=\"border-left:4px solid "+est.cor+";background:"+est.bg+"\" "+
+           "onclick=\"event.stopPropagation();selecionarPecaBatalha('"+p.id+"')\" "+
+           "title=\""+esc(lado.nome+" · "+rotulo+(tipoTxt?" ("+tipoTxt+")":"")+" · "+est.nome+(p.comandante?" · comanda: "+p.comandante:""))+"\">"+
+           "<div class=\"qbPecaNome\">"+esc(rotulo)+"</div>"+
+           (tipoTxt&&tipoTxt!==rotulo?"<div class=\"qbPecaTipo\">"+esc(tipoTxt)+"</div>":"")+
+           "<div class=\"qbPecaEstado\" style=\"color:"+est.cor+"\" onclick=\"event.stopPropagation();ciclarEstadoPeca('"+p.id+"')\" title=\"clique pra mudar o desgaste\">"+esc(est.nome)+"</div>"+
+           (p.comandante?"<div class=\"qbPecaCmd\">⚑ "+esc(p.comandante)+"</div>":"")+
+           "</div>";
       });
-      aquiI.forEach(x=>{
-        const sel=tropaSelTabuleiro&&tropaSelTabuleiro.lado==="inimiga"&&tropaSelTabuleiro.id===x.t.id;
-        html+="<span class=\"shogiToken inimiga"+(sel?" selecionado":"")+"\" onclick=\"event.stopPropagation();selecionarTropaTabuleiro('inimiga','"+x.t.id+"')\">"+esc(x.t.nome||"tropa inimiga")+"</span>";
-      });
-      html+="</div>";
+      h+="</div>";
     }
   }
-  html+="</div></div>";
-  return html;
+  h+="</div></div></div>";
+  return h;
+}
+function pecasTabelaHTML(b){
+  const pecas=b.pecas||[];
+  if(!pecas.length)return"<div class=\"hint\">Nenhuma peça no campo. Use os botões acima pra pôr uma tropa da família, um aliado ou uma força inimiga no tabuleiro.</div>";
+  let out="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th>Lado</th><th>Nome</th><th>Tipo</th><th>Desgaste</th><th>Comandante</th><th>Posição</th><th>Observação</th><th></th></tr></thead><tbody>";
+  BAT_LADO_ORDEM.forEach(lado=>{
+    pecas.filter(p=>p.lado===lado).forEach(p=>{
+      const sel=batSelecionada===p.id,est=batEstadoInfo(p.estado);
+      out+="<tr"+(sel?" style=\"outline:2px solid #d1a13a\"":"")+">"+
+        "<td><select onchange=\"setPecaBatalha('"+p.id+"','lado',this.value)\">"+BAT_LADO_ORDEM.map(l=>"<option value=\""+l+"\" "+(p.lado===l?"selected":"")+">"+BAT_LADOS[l].nome+"</option>").join("")+"</select></td>"+
+        "<td><input value=\""+esc(p.nome||"")+"\" placeholder=\"nome da unidade\" onchange=\"setPecaBatalha('"+p.id+"','nome',this.value)\"></td>"+
+        "<td><select onchange=\"setPecaBatalha('"+p.id+"','tipo',this.value)\"><option value=\"\">—</option>"+Object.keys(TROPA_TIPOS).map(k=>"<option value=\""+k+"\" "+(p.tipo===k?"selected":"")+">"+TROPA_TIPOS[k].nome+"</option>").join("")+"</select></td>"+
+        "<td><select style=\"color:"+est.cor+";font-weight:600\" onchange=\"setPecaBatalha('"+p.id+"','estado',this.value)\">"+BAT_ESTADO_ORDEM.map(k=>"<option value=\""+k+"\" "+(p.estado===k?"selected":"")+">"+BAT_ESTADOS[k].nome+"</option>").join("")+"</select></td>"+
+        "<td><input value=\""+esc(p.comandante||"")+"\" placeholder=\"quem lidera\" list=\"personagensSugestoes\" onchange=\"setPecaBatalha('"+p.id+"','comandante',this.value)\"></td>"+
+        "<td class=\"hint\" style=\"white-space:nowrap\">"+esc(BAT_FILEIRAS[p.fileira].curto)+"<br>"+esc(BAT_COLUNAS[p.coluna])+"</td>"+
+        "<td><input value=\""+esc(p.obs||"")+"\" placeholder=\"livre\" onchange=\"setPecaBatalha('"+p.id+"','obs',this.value)\"></td>"+
+        "<td style=\"white-space:nowrap\"><button class=\"ghost\" onclick=\"selecionarPecaBatalha('"+p.id+"')\" title=\"selecionar pra mover no tabuleiro\">"+(sel?"◉":"◎")+"</button>"+
+        "<button class=\"ghost\" onclick=\"delPecaBatalha('"+p.id+"')\">✕</button></td></tr>";
+    });
+  });
+  out+="</tbody></table></div>";
+  return out;
 }
 function renderBatalha(){
   const box=document.getElementById("batalhaAtualBox");
   if(!box)return;
+  /* Sugestões pro campo "comandante" das peças: o Mestre digita livre (pode ser um NPC que
+     não tem ficha), mas o roster da família aparece como atalho. */
+  const sug=document.getElementById("personagensSugestoes");
+  if(sug)sug.innerHTML=(S.personagens||[]).map(p=>"<option value=\""+esc(p.nome||"")+"\">").join("");
   if(!S.batalhaAtual){
-    box.innerHTML="<button class=\"primary\" onclick=\"iniciarBatalha()\">⚔ Iniciar nova batalha</button>";
+    box.innerHTML="<div class=\"hint\" style=\"margin-bottom:10px\">Nenhuma batalha aberta.</div>"+
+      "<button onclick=\"iniciarBatalha()\">⚔ Abrir um quadro de batalha</button>";
   }else{
     const b=S.batalhaAtual;
-    const statusInfo=b.status?STATUS_BATALHA.find(s=>s.id===b.status):null;
-    const statusCor=b.status==="vencendo"?"var(--good)":(b.status==="perdendo"?"var(--bad)":"var(--ink)");
-    const perfil=perfilExercitoComprometido();
-    const fort=b.fortificacao;
-    const moral=(b.moral===undefined?10:Number(b.moral));
     let out="";
-    out+="<div class=\"linha\"><input class=\"campo-medio\" value=\""+esc(b.nome)+"\" placeholder=\"nome da batalha (ex: Cerco de Shiro Kaiu)\" onchange=\"setBatalhaCampo('nome',this.value)\">"+
-      "<input class=\"campo-medio\" value=\""+esc(b.inimigo)+"\" placeholder=\"contra quem\" onchange=\"setBatalhaCampo('inimigo',this.value)\"></div>";
-    out+="<div class=\"hint\" style=\"margin:8px 0\">Iniciada em "+esc(b.criada)+" · Turno "+(b.turno||0)+" · status atual: <b style=\"color:"+statusCor+"\">"+(statusInfo?statusInfo.nome:"— ainda sem turno rodado")+"</b> · Moral da Batalha: <b>"+moral+"</b>/20 <span class=\"tag\" title=\"TN pra testar mudança de Postura de uma tropa — sobe quando a família vem ganhando, desce quando vem perdendo\">(TN de Postura)</span></div>";
+    out+="<div class=\"linha\" style=\"flex-wrap:wrap\"><input class=\"campo-medio\" value=\""+esc(b.nome||"")+"\" placeholder=\"nome da batalha (ex: Cerco de Shiro Kaiu)\" onchange=\"setBatalhaCampo('nome',this.value)\">"+
+      "<input class=\"campo-medio\" value=\""+esc(b.inimigo||"")+"\" placeholder=\"contra quem\" onchange=\"setBatalhaCampo('inimigo',this.value)\"></div>";
+    out+="<div class=\"linha\" style=\"flex-wrap:wrap;margin-top:8px\">"+
+      "<span class=\"tag\">Terreno:</span><select onchange=\"setBatalhaCampo('terreno',this.value)\">"+Object.keys(TERRENO_BATALHA_VISUAL).map(k=>"<option value=\""+k+"\" "+((b.terreno||"")===k?"selected":"")+">"+TERRENO_BATALHA_VISUAL[k].emoji+" "+TERRENO_BATALHA_VISUAL[k].nome+"</option>").join("")+"</select>"+
+      "<span class=\"tag\" style=\"margin-left:10px\">Turno:</span>"+
+      "<button class=\"ghost\" onclick=\"avancarTurnoBatalha(-1)\">−</button>"+
+      "<b style=\"min-width:28px;text-align:center\">"+(b.turno||1)+"</b>"+
+      "<button class=\"ghost\" onclick=\"avancarTurnoBatalha(1)\">+</button>"+
+      "<span class=\"hint\" style=\"margin:0 0 0 6px\">iniciada em "+esc(b.criada||"")+"</span></div>";
 
-    out+="<div class=\"linha\" style=\"margin-bottom:10px\"><span class=\"tag\">Rolagem:</span>"+
-      "<button class=\"ghost"+(b.modoRolagem!=="mesa"?" on":"")+"\" onclick=\"setModoRolagem('app')\">🎲 no App</button>"+
-      "<button class=\"ghost"+(b.modoRolagem==="mesa"?" on":"")+"\" onclick=\"setModoRolagem('mesa')\">📋 na Mesa (Mestre digita o resultado)</button>"+
-      "<span class=\"tag\">Terreno: <select onchange=\"setBatalhaCampo('terreno',this.value)\">"+Object.keys(TERRENO_BATALHA_VISUAL).map(k=>"<option value=\""+k+"\" "+((b.terreno||"")===k?"selected":"")+">"+TERRENO_BATALHA_VISUAL[k].emoji+" "+TERRENO_BATALHA_VISUAL[k].nome+"</option>").join("")+"</select></span></div>";
+    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Campo de batalha</div>";
+    out+="<div class=\"hint\" style=\"margin-bottom:8px\">Clique numa peça pra selecioná-la e depois numa casa pra movê-la — sem limite de alcance, quem julga o que é possível é você. Clique no desgaste da peça pra ciclar Intacta → Castigada → Quebrada → Em fuga → Destruída.</div>";
+    out+=tabuleiroBatalhaHTML(b);
 
-    out+="<div class=\"tag\" style=\"display:block;margin:6px 0\">Engajamento dos personagens (clique no token pra mudar de fileira; clique na faixa de fortificação pra alternar quem ocupa)</div>";
-    out+=tabuleiroHTML(b);
+    out+="<div class=\"linha\" style=\"flex-wrap:wrap;margin-top:8px\">"+
+      "<span class=\"tag\">Pôr no campo:</span>"+
+      "<select id=\"batalhaTropaSel\"><option value=\"\">— tropa da família —</option>"+
+      (S.tropas||[]).map(t=>"<option value=\""+t.id+"\">"+esc((TROPA_TIPOS[t.tipo]&&TROPA_TIPOS[t.tipo].nome)||t.tipo)+(t.local?(" — "+esc(t.local)):"")+"</option>").join("")+"</select>"+
+      "<button class=\"ghost\" onclick=\"addPecaDoRoster()\">+ do cadastro</button>"+
+      "<button class=\"ghost\" onclick=\"addPecaBatalha('familia',null)\">+ unidade nossa</button>"+
+      "<button class=\"ghost\" onclick=\"addPecaBatalha('aliada',null)\">+ aliada</button>"+
+      "<button class=\"ghost\" onclick=\"addPecaBatalha('inimiga',null)\">+ inimiga</button></div>";
 
-    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Tabuleiro de tropas <span class=\"sub\">estilo Shogi — fileira x coluna</span></div>";
-    out+="<div class=\"hint\" style=\"margin-bottom:8px\">Clique num token de tropa pra selecioná-lo, depois clique na casa de destino pra mover (o alcance de cada Tipo é validado — Camponesa anda pouco e reto, Ashigaru desliza de flanco, Samurai carrega). Casas destacadas em laranja já estão em contato — o confronto é resolvido sozinho ao clicar em \"Rodar Turno de Batalha\".</div>";
-    out+=tabuleiroTropasHTML(b);
-    const contatosPendentes=tropasEmContato();
-    if(contatosPendentes.length)out+="<div class=\"hint\" style=\"margin:4px 0 10px\">"+contatosPendentes.length+" confronto(s) de tropa em contato agora.</div>";
+    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Peças em campo</div>";
+    out+=pecasTabelaHTML(b);
 
-    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Tropas da família comprometidas</div>";
-    if(!S.tropas.length){
-      out+="<div class=\"hint\">Nenhuma tropa cadastrada ainda (aba Família → Tropa e Liderança).</div>";
-    }else{
-      out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th></th><th>Tropa</th><th>Comandante</th><th>Postura</th><th>Mudar pra</th><th></th></tr></thead><tbody>"+
-      S.tropas.map(t=>{
-        const comprometida=(b.tropasComprometidas||[]).includes(t.id);
-        const tipoNome=TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo;
-        const estadoNome=TROPA_ESTADO[t.estado]?TROPA_ESTADO[t.estado].nome:t.estado;
-        const comandanteId=(b.comandantesTropa&&b.comandantesTropa[t.id])||"";
-        const posturaAtual=tropaFamiliaPostura(t.id);
-        return "<tr><td><input type=\"checkbox\" "+(comprometida?"checked":"")+" onchange=\"toggleTropaBatalha('"+t.id+"')\"></td>"+
-          "<td>"+esc(tipoNome)+(t.local?(" — "+esc(t.local)):"")+" <span class=\"tag\">("+esc(estadoNome)+")</span></td>"+
-          "<td>"+(comprometida?("<select onchange=\"setComandanteTropa('"+t.id+"',this.value)\"><option value=\"\">— sem comandante —</option>"+S.personagens.map(p=>"<option value=\""+p.id+"\" "+(comandanteId===p.id?"selected":"")+">"+esc(p.nome||"sem nome")+"</option>").join("")+"</select>"):"—")+"</td>"+
-          "<td>"+(comprometida?("<b>"+(POSTURAS_BATALHA.find(x=>x.id===posturaAtual)||{}).nome+"</b>"):"—")+"</td>"+
-          "<td>"+(comprometida?("<select id=\"novaPostura_"+t.id+"\">"+POSTURAS_BATALHA.map(ps=>"<option value=\""+ps.id+"\" title=\""+esc(ps.desc)+"\">"+esc(ps.nome)+"</option>").join("")+"</select> <button class=\"ghost\" onclick=\"testarPosturaTropa('"+t.id+"','familia',document.getElementById('novaPostura_"+t.id+"').value)\">testar</button>"):"—")+"</td>"+
-          "<td></td></tr>";
-      }).join("")+"</tbody></table></div>";
-    }
-    out+=perfil.n?("<div class=\"hint\" style=\"margin-top:6px\">"+perfil.n+" unidade(s) comprometida(s) — força média "+perfil.forcaMedia.toFixed(0)+" (nível efetivo "+(perfil.forcaShift>0?"+1, exército fraco expõe mais":perfil.forcaShift<0?"−1, a massa absorve o impacto":"sem ajuste")+"), disciplina média "+perfil.disciplinaMedia.toFixed(0)+" (bônus do General "+(perfil.modGeneral>0?"+1":perfil.modGeneral<0?"−1":"sem ajuste")+").</div>")
-      :"<div class=\"hint\" style=\"margin-top:6px\">Nenhuma tropa comprometida — a batalha roda em RAW puro, sem os ajustes de exército.</div>";
+    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Anotações da batalha</div>";
+    out+="<textarea style=\"width:100%;min-height:64px;padding:8px 10px;font:inherit;color:var(--ink);background:var(--panel2);border:1px solid var(--line);border-radius:6px\" placeholder=\"plano do inimigo, objetivos, o que os jogadores não sabem ainda...\" onchange=\"setBatalhaCampo('notas',this.value)\">"+esc(b.notas||"")+"</textarea>";
 
-    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Tropas inimigas</div>";
-    out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th>Nome</th><th>Tipo</th><th>Estado</th><th>Comandante (nome + bônus)</th><th>Postura</th><th>Mudar pra</th><th></th></tr></thead><tbody>"+
-      (b.tropasInimigas&&b.tropasInimigas.length?b.tropasInimigas.map(t=>{
-        const posturaNome=(POSTURAS_BATALHA.find(x=>x.id===(t.postura||"ataque"))||{}).nome;
-        return "<tr><td><input value=\""+esc(t.nome)+"\" placeholder=\"nome da unidade\" onchange=\"setTropaInimiga('"+t.id+"','nome',this.value)\"></td>"+
-          "<td><select onchange=\"setTropaInimiga('"+t.id+"','tipo',this.value)\">"+Object.keys(TROPA_TIPOS).map(k=>"<option value=\""+k+"\" "+(t.tipo===k?"selected":"")+">"+TROPA_TIPOS[k].nome+"</option>").join("")+"</select></td>"+
-          "<td><select onchange=\"setTropaInimiga('"+t.id+"','estado',this.value)\">"+Object.keys(TROPA_ESTADO).map(k=>"<option value=\""+k+"\" "+(t.estado===k?"selected":"")+">"+TROPA_ESTADO[k].nome+"</option>").join("")+"</select></td>"+
-          "<td><input style=\"width:90px\" value=\""+esc(t.comandanteNome||"")+"\" placeholder=\"nome (sem ficha)\" onchange=\"setTropaInimiga('"+t.id+"','comandanteNome',this.value)\">"+
-          " <input type=\"number\" style=\"width:48px\" title=\"bônus manual, equivalente a Água+Batalha\" value=\""+(Number(t.comandanteBonus)||0)+"\" onchange=\"setTropaInimiga('"+t.id+"','comandanteBonus',this.value)\"></td>"+
-          "<td><b>"+posturaNome+"</b></td>"+
-          "<td><select id=\"novaPosturaInimiga_"+t.id+"\">"+POSTURAS_BATALHA.map(ps=>"<option value=\""+ps.id+"\" title=\""+esc(ps.desc)+"\">"+esc(ps.nome)+"</option>").join("")+"</select> <button class=\"ghost\" onclick=\"testarPosturaTropa('"+t.id+"','inimiga',document.getElementById('novaPosturaInimiga_"+t.id+"').value)\">testar</button></td>"+
-          "<td><button class=\"ghost\" onclick=\"delTropaInimiga('"+t.id+"')\">✕</button></td></tr>";
-      }).join(""):"<tr><td colspan=\"7\" class=\"hint\">Nenhuma tropa inimiga cadastrada — o Mestre acrescenta as unidades que aparecem nesta batalha.</td></tr>")+
-      "</tbody></table></div>";
-    out+="<button class=\"ghost\" style=\"margin-top:6px\" onclick=\"addTropaInimiga()\">+ tropa inimiga</button>";
-
-    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">General da família</div>";
-    out+="<div class=\"linha\"><select onchange=\"setGeneralId(this.value)\"><option value=\"\">— sem general designado —</option>"+
-      S.personagens.map(p=>"<option value=\""+p.id+"\" "+(b.generalId===p.id?"selected":"")+">"+esc(p.nome||"sem nome")+"</option>").join("")+"</select>"+
-      "<button class=\"ghost\" onclick=\"recalcularBonusGeneral()\">recalcular bônus sugerido</button></div>";
-    out+="<div class=\"linha\"><span class=\"tag\">Bônus da família <input type=\"number\" style=\"width:52px\" value=\""+(b.generalProprioBonus||0)+"\" onchange=\"setBatalhaCampo('generalProprioBonus',this.value)\"> (editável — Batalha+Água do general + qualidade do exército)</span>"+
-      "<span class=\"tag\">General inimigo <input type=\"number\" style=\"width:52px\" value=\""+(b.generalInimigoBonus||0)+"\" onchange=\"setBatalhaCampo('generalInimigoBonus',this.value)\"> (estimativa do Mestre)</span></div>";
-    if(b.proprioBonusProximoTurno||b.inimigoBonusProximoTurno)out+="<div class=\"hint\">Pendente pro próximo Contest: família "+(b.proprioBonusProximoTurno>0?"+":"")+(b.proprioBonusProximoTurno||0)+", inimigo "+(b.inimigoBonusProximoTurno>0?"+":"")+(b.inimigoBonusProximoTurno||0)+".</div>";
-    if(b.ultimoContest)out+="<div class=\"hint\">Último contest: família "+b.ultimoContest.proprio+" × inimigo "+b.ultimoContest.inimigo+" (diferença "+b.ultimoContest.dif+")</div>";
-
-    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Fortificação em disputa (opcional)</div>";
-    const fortsFamilia=fortificacoesDaFamilia();
-    let fortValorAtual="";
-    if(fort&&fort.origem==="familia")fortValorAtual="fam:"+fort.terrenoId+":"+fort.fortId;
-    else if(fort)fortValorAtual="manual";
-    out+="<div class=\"linha\"><select onchange=\"setFortificacaoBatalha(this.value)\">"+
-      "<option value=\"\" "+(!fort?"selected":"")+">— nenhuma em disputa —</option>"+
-      (fortsFamilia.length?("<optgroup label=\"Fortificações da família\">"+fortsFamilia.map(f=>"<option value=\"fam:"+f.terrenoId+":"+f.fortId+"\" "+(fortValorAtual==="fam:"+f.terrenoId+":"+f.fortId?"selected":"")+">"+esc(f.nome)+" ("+esc(f.terrenoNome)+")</option>").join("")+"</optgroup>"):"")+
-      "<option value=\"manual\" "+(fortValorAtual==="manual"?"selected":"")+">✎ fortificação do inimigo (nome livre)</option>"+
-      "</select></div>";
-    if(fort){
-      const info=fortTipoInfo(fort);
-      if(fort.origem==="manual")out+="<div class=\"linha\"><input placeholder=\"nome da fortificação\" value=\""+esc(fort.nome||"")+"\" onchange=\"setFortificacaoManualCampo('nome',this.value)\">"+
-        "<select onchange=\"setFortificacaoManualCampo('tipoSimples',this.value)\">"+Object.keys(FORTIFICACAO_TIPOS).map(k=>"<option value=\""+k+"\" "+((fort.tipoSimples||"terreno")===k?"selected":"")+">"+FORTIFICACAO_TIPOS[k].nome+"</option>").join("")+"</select></div>";
-      out+="<div class=\"hint\">Redução de "+info.reducaoFerimentos+" dado(s) de ferimento pra quem ocupa. Ocupante atual: <b>"+(fort.ocupante==="propria"?"a família":fort.ocupante==="inimiga"?"o inimigo":"ninguém")+"</b>. Cerco: "+(fort.pontosCerco||0)+"/"+info.dificuldadeCerco+" pontos.</div>";
-      out+="<div class=\"linha\">"+
-        "<button class=\"ghost\" onclick=\"setFortificacaoOcupante('propria')\">marcar ocupada pela família</button>"+
-        "<button class=\"ghost\" onclick=\"setFortificacaoOcupante('inimiga')\">marcar ocupada pelo inimigo</button>"+
-        "<button class=\"ghost\" onclick=\"setFortificacaoOcupante(null)\">marcar vazia/disputada</button>"+
-        "<input type=\"number\" style=\"width:70px\" placeholder=\"+pontos\" onchange=\"addPontosCerco(this.value);this.value=''\" title=\"adicionar pontos de cerco manualmente\">"+
-        "</div>";
-    }
-
-    out+="<div style=\"margin:10px 0;display:flex;gap:8px;flex-wrap:wrap\">";
-    if(b.modoRolagem!=="mesa")out+="<button onclick=\"rodarTurnoBatalha()\">🎲 Rodar Turno de Batalha</button>";
-    else out+="<button onclick=\"confirmarTurnoManual()\">✔ Confirmar Turno de Batalha (resultados digitados abaixo)</button>";
-    out+="</div>";
-
-    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Participantes</div>";
-    const colsManuais=b.modoRolagem==="mesa"?"<th>Dano (mesa)</th><th>Glória (mesa)</th><th>Especial (mesa)</th>":"";
-    out+="<div class=\"tabwrap\"><table class=\"ctab\"><thead><tr><th></th><th>Personagem</th><th>Engajamento</th><th>Ordem</th><th>Tropa vinculada</th><th>Modo</th>"+colsManuais+"<th>Dano</th><th>Glória</th><th></th></tr></thead><tbody>";
-    if(!S.personagens.length){
-      out+="<tr><td colspan=\"10\" class=\"hint\">Nenhum personagem criado ainda.</td></tr>";
-    }else{
-      const ordensDisponiveis=ORDENS_BATALHA.filter(o=>!o.assaltaFortificacao||(fort&&fort.ocupante!=="propria"));
-      S.personagens.forEach(p=>{
-        const part=b.participantes.find(x=>x.personagemId===p.id);
-        let manuaisTd="";
-        if(b.modoRolagem==="mesa"){
-          manuaisTd="<td><input type=\"number\" style=\"width:56px\" value=\""+(part?(part._manualDano||0):0)+"\" onchange=\"setManualResultado('"+p.id+"','dano',this.value)\" "+(part?"":"disabled")+"></td>"+
-            "<td><input type=\"number\" style=\"width:56px\" value=\""+(part?(part._manualGloria||0):0)+"\" onchange=\"setManualResultado('"+p.id+"','gloria',this.value)\" "+(part?"":"disabled")+"></td>"+
-            "<td><select onchange=\"setManualResultado('"+p.id+"','especial',this.value)\" "+(part?"":"disabled")+"><option value=\"\">nenhum</option><option value=\"duelo\" "+(part&&part._manualEspecial==="duelo"?"selected":"")+">Duelo</option><option value=\"heroica\" "+(part&&part._manualEspecial==="heroica"?"selected":"")+">Oportunidade Heroica</option></select></td>";
-        }
-        out+="<tr><td><input type=\"checkbox\" "+(part?"checked":"")+" onchange=\"toggleParticipante('"+p.id+"')\"></td>"+
-          "<td>"+esc(p.nome||"sem nome")+(b.generalId===p.id?" <span class=\"tag\">(general)</span>":"")+"</td>"+
-          "<td>"+(part?("<select onchange=\"setEngajamento('"+p.id+"',this.value)\">"+ENGAJAMENTO.map(e=>"<option value=\""+e.idx+"\" "+(part.engajamentoIdx===e.idx?"selected":"")+" title=\""+esc(e.desc)+"\">"+esc(e.nome)+"</option>").join("")+"</select>"):"—")+"</td>"+
-          "<td>"+(part?("<select onchange=\"setOrdem('"+p.id+"',this.value)\">"+ordensDisponiveis.map(o=>"<option value=\""+o.id+"\" "+((part.ordemId||"manter")===o.id?"selected":"")+" title=\""+esc(o.desc)+"\">"+esc(o.nome)+"</option>").join("")+"</select>"):"—")+"</td>"+
-          "<td>"+(part?("<select onchange=\"setParticipanteTropa('"+p.id+"',this.value)\"><option value=\"\">— nenhuma —</option>"+(b.tropasComprometidas||[]).map(tid=>{const t=S.tropas.find(x=>x.id===tid);if(!t)return"";return"<option value=\""+tid+"\" "+(part.tropaId===tid?"selected":"")+">"+esc(TROPA_TIPOS[t.tipo]?TROPA_TIPOS[t.tipo].nome:t.tipo)+(t.local?(" — "+esc(t.local)):"")+"</option>";}).join("")+"</select>"):"—")+"</td>"+
-          "<td>"+(part&&part.tropaId?("<select onchange=\"setModoParticipante('"+p.id+"',this.value)\" title=\"Participação: rola a Tabela de Batalha pessoal, como sempre. Liderança: empresta Água+Batalha ao Confronto da tropa vinculada em vez de rolar sozinho.\"><option value=\"participacao\" "+((part.modo||"participacao")==="participacao"?"selected":"")+">Participação</option><option value=\"lideranca\" "+(part.modo==="lideranca"?"selected":"")+">Liderança</option></select>"):(part?"<span class=\"hint\">vincule a tropa</span>":"—"))+"</td>"+
-          manuaisTd+
-          "<td>"+(Number(p.danoAtual)||0)+"</td>"+
-          "<td>"+(Number(p.gloriaRank)||0).toFixed(1)+"</td>"+
-          "<td>"+(part?"<button class=\"ghost\" title=\"Retirada definitiva — custa Honra (e Glória se testemunhado)\" onclick=\"confirmarRetirada('"+p.id+"')\">retirar-se</button>":"")+"</td></tr>";
-      });
-    }
-    out+="</tbody></table></div>";
-    if(b.modoRolagem==="mesa")out+="<div class=\"hint\" style=\"margin-top:4px\">Modo Mesa: o grupo rolou fisicamente — digite dano e Glória de cada participante e clique em \"Confirmar turno\" acima.</div>";
-    out+="<div class=\"hint\" style=\"margin-top:4px\">Postura agora é da tropa (veja acima) — vincule o personagem a uma tropa comprometida pra herdar o modificador dela no roll.</div>";
-
-    const sugestao=sugerirResultadoBatalha(b);
-    const resultadoAtual=b.resultado||sugestao;
     out+="<div class=\"linha\" style=\"margin-top:14px;flex-wrap:wrap\"><input class=\"campo-medio\" style=\"flex:2\" value=\""+esc(b.desfecho||"")+"\" placeholder=\"desfecho da batalha (preencha antes de encerrar)\" onchange=\"setBatalhaCampo('desfecho',this.value)\">"+
-      "<select onchange=\"setBatalhaResultado(this.value)\">"+["vitoria","empate","derrota"].map(r=>"<option value=\""+r+"\" "+(resultadoAtual===r?"selected":"")+">"+(r==="vitoria"?"Vitória":r==="derrota"?"Derrota":"Empate")+(sugestao===r&&!b.resultado?" (sugerido)":"")+"</option>").join("")+"</select>"+
+      "<select onchange=\"setBatalhaResultado(this.value)\"><option value=\"\">— escolha o resultado —</option>"+["vitoria","empate","derrota"].map(r=>"<option value=\""+r+"\" "+(b.resultado===r?"selected":"")+">"+(r==="vitoria"?"Vitória":r==="derrota"?"Derrota":"Empate")+"</option>").join("")+"</select>"+
       "<button class=\"ghost\" onclick=\"encerrarBatalha()\">encerrar e arquivar</button></div>";
-    out+="<div class=\"hint\">Encerrar gera automaticamente uma Conquista (aba Família → Conquistas) com o efeito do resultado nos atributos — pode editar ou apagar depois lá.</div>";
+    out+="<div class=\"hint\">O resultado é escolha sua — o app não tenta adivinhar. Encerrar gera uma Conquista (aba Família → Conquistas) com o efeito do resultado nos atributos, que dá pra editar ou apagar lá depois.</div>";
 
-    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Log da batalha</div>";
-    out+="<div class=\"log\">"+(b.log.length?b.log.map(l=>"<p>Turno "+l.turno+" — "+l.texto.replace(/^Turno \d+ — /,"")+"</p>").join(""):"<p style=\"color:var(--muted-tx)\">Nenhum turno rodado ainda.</p>")+"</div>";
+    out+="<div class=\"tag\" style=\"display:block;margin:14px 0 6px;text-transform:uppercase;letter-spacing:1px;font-size:11px\">Log da batalha</div>";
+    out+="<div class=\"linha\" style=\"flex-wrap:wrap\"><input id=\"batalhaLogInput\" class=\"campo-medio\" style=\"flex:3\" placeholder=\"o que aconteceu neste turno...\" onkeydown=\"if(event.key==='Enter')addLogBatalhaDoCampo()\">"+
+      "<button class=\"ghost\" onclick=\"addLogBatalhaDoCampo()\">registrar</button></div>";
+    out+="<div class=\"log\" style=\"margin-top:8px\">"+((b.log||[]).length?
+      b.log.map((l,i)=>"<p>Turno "+l.turno+" — "+esc(l.texto)+" <button class=\"ghost btnicon\" onclick=\"delLogBatalha("+i+")\" title=\"apagar\">✕</button></p>").join("")
+      :"<p style=\"color:var(--muted-tx)\">Nada registrado ainda.</p>")+"</div>";
     box.innerHTML=out;
   }
 
   const hist=document.getElementById("batalhaHistoricoBox");
   if(hist){
-    const list=S.batalhas||[];
-    hist.innerHTML=list.length?list.map(bt=>
+    const lista=S.batalhas||[];
+    hist.innerHTML=lista.length?lista.map(bt=>
       "<div class=\"torncard\"><div class=\"on\">"+esc(bt.nome||"sem nome")+"</div>"+
       (bt.inimigo?"<div class=\"ed\">contra "+esc(bt.inimigo)+"</div>":"")+
       (bt.desfecho?"<div class=\"ed\">"+esc(bt.desfecho)+"</div>":"")+
-      "<div class=\"hint\">"+esc(bt.criada||"")+" — "+esc(bt.encerrada||"")+" · "+(bt.turno||0)+" turno(s) · "+((bt.participantes||[]).length)+" participante(s)</div>"+
+      "<div class=\"hint\">"+esc(bt.criada||"")+" — "+esc(bt.encerrada||"")+" · "+(bt.turno||0)+" turno(s) · "+((bt.pecas||[]).length)+" peça(s)</div>"+
       "<button class=\"ghost\" onclick=\"delBatalhaHistorico('"+bt.id+"')\">remover</button></div>"
     ).join(""):"<div class=\"hint\">Nenhuma batalha encerrada ainda.</div>";
   }
+
+  renderDados();
 
   const op=document.getElementById("oportunidadesBox");
   if(op&&!op.dataset.filled){
@@ -3766,6 +3235,39 @@ function renderBatalha(){
     op.dataset.filled="1";
   }
 }
+/* Atalho: põe no campo a tropa escolhida no select do cadastro da família. */
+function addPecaDoRoster(){
+  const sel=document.getElementById("batalhaTropaSel");
+  const id=sel?sel.value:"";
+  if(!id){flashHint("Escolha uma tropa do cadastro no seletor ao lado.");return;}
+  addPecaBatalha("familia",id);}
+function renderDados(){
+  const box=document.getElementById("dadosBox");
+  if(!box)return;
+  let out="<div class=\"linha\" style=\"flex-wrap:wrap\">"+
+    "<span class=\"grp\">Dados <input type=\"number\" min=\"1\" max=\"30\" value=\""+dadosState.qtd+"\" style=\"width:66px\" onchange=\"setDadoCampo('qtd',this.value)\"></span>"+
+    "<span class=\"grp\">Manter <input type=\"number\" min=\"1\" max=\"30\" value=\""+dadosState.manter+"\" style=\"width:66px\" onchange=\"setDadoCampo('manter',this.value)\"></span>"+
+    "<span class=\"grp\">Modificador <input type=\"number\" value=\""+dadosState.mod+"\" style=\"width:70px\" onchange=\"setDadoCampo('mod',this.value)\"></span>"+
+    "<span class=\"grp\"><label><input type=\"checkbox\" "+(dadosState.explode?"checked":"")+" onchange=\"setDadoCampo('explode',this.checked)\"> explodir 10s</label></span>"+
+    "<button onclick=\"rolarDados()\">🎲 Rolar "+dadosState.qtd+"k"+dadosState.manter+(dadosState.mod?(dadosState.mod>0?"+":"")+dadosState.mod:"")+"</button>"+
+    "</div>";
+  const r=dadosState.ultimo;
+  if(r){
+    out+="<div class=\"qbResultado\"><div class=\"qbTotal\">"+r.total+"</div>"+
+      "<div class=\"qbConta\">"+r.qtd+"k"+r.manter+(r.mod?(r.mod>0?"+":"")+r.mod:"")+
+      " · mantidos somam "+r.somaMantidos+(r.mod?(r.mod>0?" +"+r.mod:" "+r.mod):"")+"</div></div>";
+    out+="<div class=\"qbDados\">"+r.dados.map(d=>
+      "<span class=\"qbDado"+(d.mantido?" mantido":"")+(d.explodiu?" explodiu":"")+"\" title=\""+(d.explodiu?"explodiu: "+d.chain.join(" + "):"")+"\">"+d.total+
+      (d.explodiu?"<span class=\"qbCadeia\">"+d.chain.join("+")+"</span>":"")+"</span>").join("")+"</div>";
+    out+="<div class=\"hint\">Os dados em destaque são os mantidos. "+(r.explode?"Dado que caiu 10 rolou de novo e somou — a cadeia aparece embaixo dele.":"Explosão desligada nesta rolagem.")+"</div>";
+    out+="<div class=\"linha\" style=\"margin-top:8px\"><button class=\"ghost\" onclick=\"mandarRolagemProLog()\">registrar no log da batalha</button></div>";
+  }else{
+    out+="<div class=\"hint\">Nenhuma rolagem ainda.</div>";
+  }
+  box.innerHTML=out;
+}
+
+
 function renderFeed(){
   const l=document.getElementById("log");
   const f=S.feed||[];
