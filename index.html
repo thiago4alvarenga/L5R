@@ -278,6 +278,130 @@
   .inv .it{font-size:11px;background:rgba(44,38,32,.05);border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--ink2);display:inline-flex;align-items:center;gap:4px}
   .inv .it.on{background:#e3ead9;border-color:#a9c39c;color:#3f5c38}
   .inv .it button{background:none;border:none;color:inherit;cursor:pointer;padding:0}
+
+  /* ============================================================================
+     CELULAR E TABLET (2026-08-04) — só CSS, nenhum comportamento de JS muda.
+     Dois degraus: 820px pega tablet e celular deitado; 560px pega celular em pé.
+     A base já ajudava bastante (viewport meta, box-sizing:border-box, flex-wrap
+     em quase tudo e .tabwrap com rolagem lateral), então aqui é mais apertar
+     espaçamento, soltar larguras fixas e engordar alvo de toque.
+     ============================================================================ */
+
+  /* Impede o iOS de inflar texto sozinho quando o aparelho vira de lado. */
+  html{-webkit-text-size-adjust:100%}
+
+  @media(max-width:820px){
+    .wrap{padding:12px}
+    .panel{padding:14px 14px;margin-bottom:12px}
+    .panel h2{font-size:20px;margin-bottom:12px}
+    .panel h2 .kan{font-size:23px}
+    .panel h2 .sub{margin-left:32px}
+    /* O banner come muita altura vertical numa tela pequena — encolhe tudo junto
+       pra não empurrar o conteúdo pra baixo da dobra. */
+    .herobanner{height:132px}
+    .crestbig{left:16px;bottom:16px;width:72px;height:72px;font-size:22px}
+    .herotitles{left:100px;bottom:18px;max-width:60%}
+    .herotitles h1{font-size:26px}
+    .herotitles .tag{font-size:13px}
+    .ringcluster{margin:16px 0;gap:10px}
+    .rolesrow{gap:16px;margin-top:12px}
+    .eventgrid{max-height:420px}
+    .origens{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+    .mapaViewport{height:58vh;min-height:320px}
+    /* Tabuleiros: o rótulo da fileira era largo demais e roubava espaço das casas. */
+    .tabuleiroLinha{grid-template-columns:88px 1fr}
+    .shogiGrid{grid-template-columns:68px repeat(3,1fr)}
+    .shogiCasa{min-height:56px;padding:4px}
+    .shogiToken{font-size:11px;padding:2px 7px}
+  }
+
+  @media(max-width:560px){
+    .wrap{padding:9px}
+    .panel{padding:12px 11px;border-radius:10px}
+    .panel h2{font-size:18px}
+    .panel h2 .kan{font-size:21px}
+    .panel h2 .sub{margin-left:0;flex-basis:100%}
+
+    /* background-attachment:fixed é conhecido por engasgar (e às vezes renderizar
+       errado) no Safari do iPhone. No celular a textura passa a rolar junto. */
+    body{background-attachment:scroll,scroll,scroll,scroll;font-size:14.5px}
+
+    .herobanner{height:104px}
+    .crestbig{left:12px;bottom:12px;width:56px;height:56px;font-size:18px}
+    .herotitles{left:78px;bottom:14px;max-width:64%}
+    .herotitles h1{font-size:21px;line-height:1.15}
+    .herotitles .tag{font-size:11.5px}
+
+    /* Alvo de toque: 6px de padding vira difícil de acertar com o polegar.
+       ~38px de altura é um meio-termo entre o recomendado (44px) e não deixar
+       a tela virar um paredão de botões gigantes. */
+    select,button,input[type=text],input[type=number]{padding:9px 11px;min-height:38px}
+    /* Fonte 16px em campo de formulário é o que impede o Safari do iPhone de dar
+       aquele zoom automático ao focar o campo (qualquer coisa abaixo disso dispara).
+       Vale pra TODO campo, inclusive os de dentro de tabela. */
+    input,select,textarea{font-size:16px}
+    .ctab input,.ctab select{font-size:16px;padding:7px 6px}
+    .btnicon{font-size:12px;padding:5px 9px;min-height:0}
+    .inv .it button{min-height:0;padding:0}
+
+    /* Larguras fixas em px (inclusive as escritas direto no atributo style, por
+       isso o !important) viram largura cheia — no celular empilhar é melhor que
+       espremer. */
+    .grp{width:100%}
+    .grp input,.grp select,.grp textarea{width:100%!important;min-width:0!important;flex:1}
+    .controls .grp{width:100%;justify-content:space-between}
+    .topbar{gap:8px 10px}
+    .topbar input,.topbar select{width:100%!important;min-width:0!important}
+    .linha{padding:9px 10px}
+    .linha input[type=text],.linha select{min-width:0}
+    .campo-medio{width:100%!important;min-width:0!important}
+
+    .tabbar{gap:4px}
+    .tabbtn{padding:9px 10px;font-size:12px;flex:1 1 auto;text-align:center}
+
+    /* A rolagem lateral da tabela continua sendo a saída (mexer na estrutura
+       exigiria tocar no JS que gera as tabelas). O que dá pra fazer só com CSS é
+       deixar a rolagem com inércia no iOS e garantir que a tabela não se esmague
+       a ponto de ficar ilegível — melhor rolar do que espremer. */
+    .tabwrap{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+    .ctab{min-width:560px}
+    .ctab th{font-size:10px;padding:4px 5px 7px}
+    .ctab td{padding:8px 5px}
+
+    .attrrow{grid-template-columns:44px 1fr auto;gap:9px;padding:10px 0}
+    .anelRow{gap:9px;padding:9px 10px}
+    .anelIcon{width:42px;height:42px}
+    .anelRow .tracos{flex-wrap:wrap}
+    .terrainrow{gap:9px}
+    .terrainrow .tbody{min-width:0}
+    .ledgerline{flex-wrap:wrap;gap:4px}
+    .saldos{gap:5px}
+    .saldo{font-size:11.5px;padding:5px 8px}
+    .origens{grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:8px}
+    .eventgrid{max-height:340px}
+    .rolesrow{gap:12px}
+    .fichapanel{padding:11px 10px}
+    .divisor{height:18px}
+
+    /* Mapa: o visor fica um pouco menor pra sobrar espaço pros botões, e os
+       elementos de HUD encolhem junto. O arraste de um dedo e os botões de zoom
+       continuam funcionando; pinch de dois dedos ficaria pra uma passada em JS. */
+    .mapaViewport{height:52vh;min-height:280px}
+    .mapaEscala{left:9px;bottom:9px;padding:5px 8px}
+    .mapaEscalaTxt{font-size:10px}
+    .mapaMarcaIcone{font-size:16px}
+    .mapaMarcaNome{font-size:10px;max-width:104px;padding:1px 5px}
+
+    .tabuleiroLinha{grid-template-columns:66px 1fr;min-height:54px}
+    .tabuleiroRotulo{font-size:10px;padding:6px 7px}
+    .tabuleiroLado{padding:7px 8px;gap:5px}
+    .chip{font-size:12px;padding:4px 10px}
+    .shogiGrid{grid-template-columns:52px repeat(3,1fr)}
+    .shogiRotulo,.shogiHead{font-size:9.5px;padding:5px 5px}
+    .shogiCasa{min-height:52px;padding:3px;gap:3px}
+    .shogiToken{font-size:10px;padding:2px 6px}
+    .log{max-height:260px}
+  }
 </style>
 </head>
 <body>
