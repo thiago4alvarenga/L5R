@@ -1,0 +1,33 @@
+module.exports={T:[
+ {id:"planicies",nome:"Planícies",custo:3},
+ {id:"colinas",nome:"Colinas",custo:5},
+ {id:"montanhas",nome:"Montanhas",custo:7},
+ {id:"alagadas",nome:"Terras Alagadas",custo:1}
+],C:[
+ {id:"aldeia",nome:"Aldeia",custo:3,fortuna:1},
+ {id:"vila",nome:"Vila",custo:7,fortuna:2},
+ {id:"grande_vila",nome:"Grande Vila",custo:10,fortuna:3},
+ {id:"cidade",nome:"Cidade",custo:15,fortuna:4},
+ {id:"grande_cidade",nome:"Grande Cidade",custo:20,fortuna:6},
+ {id:"campos_arroz",nome:"Campos de Arroz",custo:5,fortuna:3},
+ {id:"terras_cultivaveis",nome:"Terras Cultiváveis Diversas",custo:3,fortuna:1},
+ {id:"pastagens",nome:"Pastagens",custo:3,fortuna:1},
+ {id:"riachos",nome:"Riachos",custo:2,fortuna:1},
+ {id:"lagos",nome:"Lagos",custo:3,fortuna:1},
+ {id:"rio_navegavel",nome:"Rio Navegável",custo:5,fortuna:2},
+ {id:"floresta_leve",nome:"Floresta Leve",custo:2,fortuna:1},
+ {id:"floresta_densa",nome:"Floresta Densa",custo:4,fortuna:1},
+ {id:"minas",nome:"Minas",custo:7,fortuna:3},
+ {id:"costa",nome:"Costa",custo:5,fortuna:2},
+ {id:"ilha",nome:"Ilha",custo:5,fortuna:1},
+ {id:"rota_comercial",nome:"Rota Comercial Externa",custo:7,fortuna:3},
+ {id:"porto",nome:"Porto",custo:10,fortuna:4},
+ {id:"estrada",nome:"Estrada Pavimentada",custo:5,fortuna:-2},
+ {id:"ponte",nome:"Ponte",custo:3,fortuna:-1},
+ {id:"mercado_regional",nome:"Mercado Regional",custo:7,fortuna:3},
+ {id:"templo_santuario",nome:"Templo ou Santuário",custo:5,fortuna:-1},
+ {id:"peregrinacao",nome:"Local de Peregrinação",custo:5,fortuna:0},
+ {id:"ruinas_antigas",nome:"Ruínas Antigas",custo:3,fortuna:0},
+ {id:"campo_batalha",nome:"Campo de Batalha Antigo",custo:1,fortuna:0},
+ {id:"area_impura",nome:"Área Impura",custo:-10,fortuna:-4}
+]};

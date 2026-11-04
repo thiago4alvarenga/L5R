@@ -1,0 +1,184 @@
+{
+ "tipos": {
+  "camponesa": {
+   "terra": 2,
+   "agua": 1,
+   "ar": 2,
+   "fogo": 2,
+   "vazio": 1,
+   "treino": 1,
+   "armadura": "nenhuma"
+  },
+  "ashigaru": {
+   "terra": 2,
+   "agua": 2,
+   "ar": 2,
+   "fogo": 2,
+   "vazio": 2,
+   "treino": 1,
+   "armadura": "leve"
+  },
+  "arqueiros": {
+   "terra": 2,
+   "agua": 2,
+   "ar": 3,
+   "fogo": 1,
+   "vazio": 2,
+   "treino": 1,
+   "armadura": "leve",
+   "arcos": true
+  },
+  "samurai": {
+   "terra": 2,
+   "agua": 2,
+   "ar": 2,
+   "fogo": 3,
+   "vazio": 2,
+   "treino": 1,
+   "armadura": "pesada"
+  },
+  "cavalaria": {
+   "terra": 2,
+   "agua": 4,
+   "ar": 2,
+   "fogo": 3,
+   "vazio": 2,
+   "treino": 1,
+   "armadura": "leve",
+   "montada": true
+  }
+ },
+ "tamanhos": {
+  "pequena": {
+   "terra": -1,
+   "fogo": 0,
+   "agua": 1,
+   "vazio": 0
+  },
+  "media": {
+   "terra": 0,
+   "fogo": 0,
+   "agua": 0,
+   "vazio": 0
+  },
+  "grande": {
+   "terra": 0,
+   "fogo": 1,
+   "agua": -1,
+   "vazio": 0
+  },
+  "massiva": {
+   "terra": 2,
+   "fogo": 1,
+   "agua": -1,
+   "vazio": -1
+  }
+ },
+ "armadura": {
+  "nenhuma": 0,
+  "leve": 3,
+  "pesada": 5
+ },
+ "pesadaAgua": -1,
+ "ataqueTotal": [
+  1,
+  1,
+  -5
+ ],
+ "cargaBonus": [
+  1,
+  0
+ ],
+ "montadaBonus": [
+  1,
+  0
+ ],
+ "tnBase": 5,
+ "tnPorAr": 5,
+ "tnPorTreino": 0,
+ "atkMassa": {
+  "pequena": 0,
+  "media": 1,
+  "grande": 2,
+  "massiva": 3
+ },
+ "tamFogo": true,
+ "clanModo": "k0",
+ "liderModo": "k0",
+ "liderAtk": 1,
+ "moralSempre": true,
+ "yariBonus": [
+  1,
+  1
+ ],
+ "lancasBonus": [
+  1,
+  0
+ ],
+ "clanGolpes": 1,
+ "golpesPorNivelMult": 1,
+ "golpeMargem": 5,
+ "moralTN": 15,
+ "moralPorNivel": 3,
+ "desercaoMargem": 5,
+ "fugaFalha": 10,
+ "pc": {
+  "pequena": {
+   "danoPorGolpe": 20,
+   "ataques": 3,
+   "atk": [
+    3,
+    1
+   ],
+   "danoFogo": 1,
+   "danoK": 2,
+   "pen": [
+    1,
+    0
+   ]
+  },
+  "media": {
+   "danoPorGolpe": 25,
+   "ataques": 4,
+   "atk": [
+    3,
+    1
+   ],
+   "danoFogo": 2,
+   "danoK": 2,
+   "pen": [
+    1,
+    1
+   ]
+  },
+  "grande": {
+   "danoPorGolpe": 35,
+   "ataques": 5,
+   "atk": [
+    4,
+    1
+   ],
+   "danoFogo": 3,
+   "danoK": 3,
+   "pen": [
+    2,
+    1
+   ]
+  },
+  "massiva": {
+   "danoPorGolpe": 50,
+   "ataques": 6,
+   "atk": [
+    5,
+    1
+   ],
+   "danoFogo": 4,
+   "danoK": 3,
+   "pen": [
+    3,
+    1
+   ]
+  }
+ },
+ "_m": 1
+}
