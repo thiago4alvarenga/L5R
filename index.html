@@ -684,6 +684,16 @@
   .menucorpo .opcao{flex-direction:row;align-items:center;gap:8px;font-size:13px;color:var(--ink)}
   @media(max-width:560px){.resumolinha{background-size:cover;margin-left:-8px;margin-right:-8px;padding-left:8px;padding-right:8px;margin-bottom:-10px;padding-bottom:10px}.resumolinha::before{background:linear-gradient(90deg,var(--panel) 0%,rgba(244,237,223,.9) 55%,rgba(244,237,223,.35) 100%)}}
   @media(prefers-reduced-motion:reduce){#particulas{display:none!important}.avisoestacao{transition:none}}
+
+  /* origem, temas e filtro */
+  .torncard .tipo{display:flex;gap:8px;flex-wrap:wrap;align-items:baseline;min-height:0}
+  .torncard .tipo.t-favoravel{color:var(--good)} .torncard .tipo.t-origem{color:var(--kin)}
+  .torncard .tipo .tema{font-weight:500;color:var(--muted-tx)}
+  .filtrotema{display:flex;gap:4px;flex-wrap:wrap;margin:0 0 8px}
+  .filtrotema button{font-size:12.5px;padding:3px 10px}
+  .filtrotema button.on{background:var(--panel);border-color:var(--cla);color:var(--ink);font-weight:700}
+  .eventgrid.origens{max-height:420px}
+  #origemBox{margin-bottom:12px}
   @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -750,11 +760,13 @@
       <div class="grp">Ramo Familiar <input type="text" id="ramoInput" placeholder="ex.: um ramo da família Kakita" style="width:220px" list="ramoSugestoes"><datalist id="ramoSugestoes"></datalist></div>
       <div class="grp">Idade da Família
         <select id="idadeSel">
-          <option value="recente">Recente (2 eventos)</option>
-          <option value="jovem">Jovem (4 eventos)</option>
-          <option value="estabelecida">Estabelecida (6 eventos)</option>
-          <option value="antiga">Antiga (8 eventos)</option>
-          <option value="anciã">Anciã (10 eventos)</option>
+          <option value="nascente">Nascente (só a origem)</option>
+          <option value="recente">Recente (origem + 1 evento)</option>
+          <option value="jovem">Jovem (origem + 3)</option>
+          <option value="estabelecida">Estabelecida (origem + 5)</option>
+          <option value="antiga">Antiga (origem + 7)</option>
+          <option value="anciã">Anciã (origem + 9)</option>
+          <option value="milenar">Milenar (origem + 11)</option>
         </select>
       </div>
     </div>
@@ -776,8 +788,9 @@
     <div class="gcorpo">
 <div class="grid">
 <div><div class="panel"><h2><span class="kan">史</span>Eventos Históricos<span class="sub" id="eventosSub">0/0 escolhidos</span></h2>
-        <button class="ghost" id="btnSortearEventos" style="margin-bottom:8px">🎲 sortear os que faltam</button>
-        <button class="ghost" id="btnLimparEventos" style="margin-bottom:8px">limpar escolhidos</button>
+        <button class="ghost" id="btnSortearEventos" style="margin-bottom:8px">🎲 sortear o que falta</button>
+        <button class="ghost" id="btnLimparEventos" style="margin-bottom:8px">limpar os eventos</button>
+        <div id="origemBox"></div>
         <div class="eventgrid" id="eventos"></div>
         <div style="margin-top:16px;padding-top:12px;border-top:1px dashed var(--line)">
           <div class="tag" style="display:block;margin-bottom:8px;font-size:11px">Conquistas registradas pelo Mestre</div>
@@ -926,8 +939,10 @@ const SUPA_TABELA="l5r_familias";
 const ATRIBUTOS=[["dominio","Domínio"],["riqueza","Riqueza"],["influencia","Influência"],["autoridade","Autoridade"],["vazio","Vazio"]];
 const POOL_ATTRS={dominio:1,influencia:1,autoridade:1,riqueza:1}; /* atributos que funcionam como "pontos" gastáveis: o total é histórico (não encolhe sozinho), só a disponibilidade (pool) é gasta */
 
-const IDADE={recente:2,jovem:4,estabelecida:6,antiga:8,"anciã":10};
-const IDADE_LABEL={recente:"Recente",jovem:"Jovem",estabelecida:"Estabelecida",antiga:"Antiga","anciã":"Anciã"};
+/* 2026-11-04: sete idades. O número inclui a origem, que é sempre o primeiro evento. */
+const IDADE={nascente:1,recente:2,jovem:4,estabelecida:6,antiga:8,"anciã":10,milenar:12};
+const IDADE_ORDEM=["nascente","recente","jovem","estabelecida","antiga","anciã","milenar"];
+const IDADE_LABEL={nascente:"Nascente",recente:"Recente",jovem:"Jovem",estabelecida:"Estabelecida",antiga:"Antiga","anciã":"Anciã",milenar:"Milenar"};
 /* Criação sem dado (2026-11): a família nasce de uma base por idade, igual para todo mundo
    daquela idade, mais o clã, os eventos escolhidos e PONTOS_LIVRES para distribuir.
    Base 34/35/37/38/39 (Recente → Anciã) com um perfil: família nova cresceu pela espada e pelo
@@ -936,15 +951,18 @@ const IDADE_LABEL={recente:"Recente",jovem:"Jovem",estabelecida:"Estabelecida",a
    eventos, com o custo cheio. Calibrado em sim/cria_v2.js: a Estabelecida mantém a soma
    mediana de antes (~250) e a Autoridade mediana ~49, então custo de tropa, Dojo e Equilíbrio
    continuam valendo. */
-const BASE_IDADE={
+const BASE_IDADE={ /* recalibrada em 2026-11-04 com a origem e os eventos novos (sim/cria_v3.js) */
+ nascente:    {dominio:33,riqueza:36,influencia:32,autoridade:38,vazio:33},
  recente:     {dominio:32,riqueza:36,influencia:32,autoridade:38,vazio:32},
- jovem:       {dominio:32,riqueza:36,influencia:34,autoridade:37,vazio:34},
- estabelecida:{dominio:32,riqueza:37,influencia:37,autoridade:37,vazio:37},
- antiga:      {dominio:31,riqueza:36,influencia:40,autoridade:36,vazio:40},
- "anciã":     {dominio:30,riqueza:36,influencia:42,autoridade:36,vazio:42}
+ jovem:       {dominio:31,riqueza:36,influencia:34,autoridade:37,vazio:34},
+ estabelecida:{dominio:28,riqueza:36,influencia:37,autoridade:36,vazio:37},
+ antiga:      {dominio:25,riqueza:35,influencia:39,autoridade:36,vazio:39},
+ "anciã":     {dominio:22,riqueza:35,influencia:40,autoridade:35,vazio:40},
+ milenar:     {dominio:18,riqueza:34,influencia:41,autoridade:35,vazio:41}
 };
 const PONTOS_LIVRES=10,PONTOS_MAX_ATTR=5;
-const TIPO_EVENTO_LABEL={favoravel:"favorável",adverso:"adverso",ambiguo:"ambíguo"};
+const TIPO_EVENTO_LABEL={favoravel:"favorável",adverso:"adverso",ambiguo:"ambíguo",origem:"origem"};
+const TEMA_EVENTO={guerra:"Guerra",corte:"Corte",espirito:"Espírito",terra:"Terra",comercio:"Comércio"};
 
 /* tier: "maior" (Grandes Clãs), "menor" (Clãs Menores), "imperial" (Famílias Imperiais).
    familias: ramos/famílias reais daquele clã, na 4ª edição — usadas só como sugestão de nome
@@ -1119,65 +1137,135 @@ function aplicarTemaCla(){
    Os mods antigos ficam em EVENTOS_MODS_V1, só para a migração das fichas salvas. */
 const EVENTOS_MODS_V1={fundacao_decreto:{influencia:4,vazio:4},recompensa_militar:{autoridade:4,vazio:4},terras_conflito:{dominio:6,riqueza:4,autoridade:-4,vazio:1},alianca_casamento:{riqueza:2,influencia:4,vazio:2},ramo_elevado:{dominio:5,influencia:4,autoridade:-2,vazio:4},ascensao_heroi:{dominio:2,autoridade:4,vazio:2},fundacao_religiosa:{autoridade:2,vazio:6},funcao_administrativa:{riqueza:2,influencia:2,autoridade:4},adocao_familia:{influencia:2,autoridade:4,vazio:2},usurpacao_terras:{dominio:4,influencia:-4,vazio:-4},vitoria_torneio:{influencia:2,vazio:4},refem_prestigio:{riqueza:-2,influencia:2,vazio:2},rivalidade_juramentada:{vazio:-2},acordo_comercial:{dominio:6,riqueza:4,influencia:2,vazio:-1},artesao_renomado:{dominio:2,riqueza:4,vazio:2},escola_artistica:{riqueza:2,influencia:4,vazio:2},construcao_fortaleza:{dominio:8,riqueza:-4,influencia:2,autoridade:4},desastre_natural:{dominio:-6,riqueza:-4,vazio:2},fome_prolongada:{dominio:-4,influencia:-2,autoridade:-2},era_prosperidade:{dominio:4,riqueza:6,autoridade:-2},magistrado_renome:{influencia:4,autoridade:4,vazio:4},corrupcao_escandalo:{influencia:-4,vazio:-8},gloria_batalha:{autoridade:4,vazio:2},derrota_marcante:{autoridade:-4,vazio:-2},contato_terras_sombrias:{autoridade:2,vazio:-6},bencao_kami:{vazio:4},templo_importante:{dominio:6,autoridade:-1,vazio:4},intervencao_senhor:{influencia:-2,vazio:-2},guerra_prolongada:{dominio:-6,riqueza:-2,influencia:-2,autoridade:-2},segredo_guardado:{riqueza:2,influencia:4,autoridade:2,vazio:4},reforma_interna:{dominio:2,influencia:2,autoridade:4,vazio:2},revolta_camponesa:{dominio:-4,riqueza:-2,autoridade:-2,vazio:-2},migracao_massa:{dominio:2,riqueza:2,autoridade:-4},recurso_valioso:{dominio:11,riqueza:6,influencia:2,autoridade:-2},isolamento_deliberado:{riqueza:-4,influencia:-4,autoridade:2},tradicao_marcial:{dominio:2,autoridade:4,vazio:2},decadencia_administrativa:{dominio:-2,riqueza:-4,influencia:-2,autoridade:-4,vazio:-2},figura_espiritual:{dominio:10,riqueza:-2,influencia:4,autoridade:2,vazio:10},perda_territorio:{dominio:-8,riqueza:-2,autoridade:-4,vazio:-2},reconstrucao_pos_guerra:{dominio:2,autoridade:-2,vazio:2},heranca_castelo_amaldicoado:{dominio:9,autoridade:-1},ruinas_ancestrais_descobertas:{dominio:3,riqueza:-1,vazio:4},porto_herdado_afogados:{dominio:6,riqueza:5},fortaleza_cedida_cla:{dominio:14,riqueza:-6,autoridade:6,vazio:4}};
 const EVENTOS=[
- {id:"fundacao_decreto",nome:"Fundação por Decreto Imperial",tipo:"favoravel",mods:{influencia:10,autoridade:-6,vazio:2}},
- {id:"recompensa_militar",nome:"Recompensa por Serviço Militar",tipo:"favoravel",mods:{dominio:-6,autoridade:10,vazio:2}},
- {id:"terras_conflito",nome:"Terras Concedidas após Conflito",tipo:"favoravel",mods:{dominio:7,riqueza:3,influencia:-6,autoridade:8},
+ {id:"fundacao_decreto",nome:"Fundação por Decreto Imperial",tipo:"origem",tema:"corte",mods:{influencia:10,autoridade:-6,vazio:2}},
+ {id:"recompensa_militar",nome:"Recompensa por Serviço Militar",tipo:"origem",tema:"guerra",mods:{dominio:-6,autoridade:10,vazio:2}},
+ {id:"terras_conflito",nome:"Terras Concedidas após Conflito",tipo:"favoravel",tema:"guerra",mods:{dominio:7,riqueza:3,influencia:-6,autoridade:8},
   concede:{tipo:"terreno",terreno:"planicies",c1:"campo_batalha",nomeSugerido:"Campos de Kessen-no-Hara"}},
- {id:"alianca_casamento",nome:"Aliança de Casamento Estratégico",tipo:"favoravel",mods:{riqueza:2,influencia:9,vazio:-5}},
- {id:"ramo_elevado",nome:"Ramo Elevado de Grande Família",tipo:"favoravel",mods:{dominio:13,influencia:8,autoridade:-6,vazio:3},
+ {id:"alianca_casamento",nome:"Aliança de Casamento Estratégico",tipo:"favoravel",tema:"corte",mods:{riqueza:2,influencia:9,vazio:-5}},
+ {id:"ramo_elevado",nome:"Ramo Elevado de Grande Família",tipo:"origem",tema:"corte",mods:{dominio:13,influencia:8,autoridade:-6,vazio:3},
   concede:{tipo:"terreno",terreno:"planicies",c1:"vila",nomeSugerido:"Vila-Dote da Grande Casa"}},
- {id:"ascensao_heroi",nome:"Ascensão de Herói Local",tipo:"favoravel",mods:{influencia:-6,autoridade:9,vazio:3}},
- {id:"fundacao_religiosa",nome:"Fundação Religiosa ou Profética",tipo:"favoravel",mods:{autoridade:-5,vazio:10}},
- {id:"funcao_administrativa",nome:"Criação para Função Administrativa",tipo:"favoravel",mods:{riqueza:9,autoridade:2,vazio:-5}},
- {id:"adocao_familia",nome:"Adoção da Família",tipo:"favoravel",mods:{influencia:9,autoridade:2,vazio:-5}},
- {id:"usurpacao_terras",nome:"Usurpação ou Apropriação de Terras",tipo:"ambiguo",mods:{dominio:10,influencia:-4,vazio:-8}},
- {id:"vitoria_torneio",nome:"Vitória em Torneio",tipo:"favoravel",mods:{influencia:2,autoridade:-5,vazio:9}},
- {id:"refem_prestigio",nome:"Refém de Prestígio",tipo:"favoravel",mods:{influencia:9,autoridade:-5,vazio:2}},
- {id:"rivalidade_juramentada",nome:"Rivalidade Juramentada",tipo:"ambiguo",mods:{influencia:-6,autoridade:8,vazio:-4}},
- {id:"acordo_comercial",nome:"Acordo Comercial Duradouro",tipo:"favoravel",mods:{dominio:10,riqueza:10,influencia:2,vazio:-6},
+ {id:"ascensao_heroi",nome:"Ascensão de Herói Local",tipo:"origem",tema:"guerra",mods:{influencia:-6,autoridade:9,vazio:3}},
+ {id:"fundacao_religiosa",nome:"Fundação Religiosa ou Profética",tipo:"origem",tema:"espirito",mods:{autoridade:-5,vazio:10}},
+ {id:"funcao_administrativa",nome:"Criação para Função Administrativa",tipo:"origem",tema:"comercio",mods:{riqueza:9,autoridade:2,vazio:-5}},
+ {id:"adocao_familia",nome:"Adoção da Família",tipo:"origem",tema:"corte",mods:{influencia:9,autoridade:2,vazio:-5}},
+ {id:"usurpacao_terras",nome:"Usurpação ou Apropriação de Terras",tipo:"origem",tema:"terra",mods:{dominio:10,autoridade:3,vazio:-8}},
+ {id:"vitoria_torneio",nome:"Vitória em Torneio",tipo:"favoravel",tema:"guerra",mods:{influencia:2,autoridade:-5,vazio:9}},
+ {id:"refem_prestigio",nome:"Refém de Prestígio",tipo:"favoravel",tema:"corte",mods:{influencia:9,autoridade:-5,vazio:2}},
+ {id:"rivalidade_juramentada",nome:"Rivalidade Juramentada",tipo:"ambiguo",tema:"corte",mods:{influencia:-6,autoridade:8,vazio:-4}},
+ {id:"acordo_comercial",nome:"Acordo Comercial Duradouro",tipo:"favoravel",tema:"comercio",mods:{dominio:10,riqueza:10,influencia:2,vazio:-6},
   concede:{tipo:"terreno",terreno:"costa",c1:"porto",nomeSugerido:"Porto de Shiro-Minato"}},
- {id:"artesao_renomado",nome:"Ascensão de um Artesão Renomado",tipo:"favoravel",mods:{riqueza:9,influencia:3,autoridade:-6}},
- {id:"escola_artistica",nome:"Escola Artística ou Estilo Famoso",tipo:"favoravel",mods:{influencia:10,autoridade:-6,vazio:2}},
- {id:"construcao_fortaleza",nome:"Construção de Fortaleza",tipo:"favoravel",mods:{dominio:16,riqueza:-5,autoridade:10},
+ {id:"artesao_renomado",nome:"Ascensão de um Artesão Renomado",tipo:"favoravel",tema:"comercio",mods:{riqueza:9,influencia:3,autoridade:-6}},
+ {id:"escola_artistica",nome:"Escola Artística ou Estilo Famoso",tipo:"favoravel",tema:"corte",mods:{influencia:10,autoridade:-6,vazio:2}},
+ {id:"construcao_fortaleza",nome:"Construção de Fortaleza",tipo:"favoravel",tema:"guerra",mods:{dominio:16,riqueza:-5,autoridade:10},
   concede:{tipo:"terreno",terreno:"colinas",c1:"shiro",c2:"area_impura",nomeSugerido:"Shiro da Bruma Esquecida"}},
- {id:"desastre_natural",nome:"Desastre Natural",tipo:"adverso",mods:{dominio:-10,autoridade:2,vazio:6}},
- {id:"fome_prolongada",nome:"Fome Prolongada",tipo:"adverso",mods:{riqueza:-10,autoridade:2,vazio:6}},
- {id:"era_prosperidade",nome:"Era de Prosperidade",tipo:"favoravel",mods:{dominio:2,riqueza:10,autoridade:-6}},
- {id:"magistrado_renome",nome:"Magistrado de Renome",tipo:"favoravel",mods:{influencia:9,autoridade:-6,vazio:2}},
- {id:"corrupcao_escandalo",nome:"Corrupção ou Escândalo",tipo:"adverso",mods:{riqueza:2,influencia:6,vazio:-10}},
- {id:"gloria_batalha",nome:"Glória em Batalha",tipo:"favoravel",mods:{dominio:-6,autoridade:3,vazio:9}},
- {id:"derrota_marcante",nome:"Derrota Marcante",tipo:"adverso",mods:{influencia:2,autoridade:-10,vazio:6}},
- {id:"contato_terras_sombrias",nome:"Contato com as Terras Sombrias",tipo:"adverso",mods:{dominio:2,autoridade:6,vazio:-10}},
- {id:"bencao_kami",nome:"Bênção dos Kami",tipo:"favoravel",mods:{influencia:-4,vazio:10}},
- {id:"templo_importante",nome:"Templo ou Santuário Importante",tipo:"favoravel",mods:{dominio:16,riqueza:-5,vazio:10},
+ {id:"desastre_natural",nome:"Desastre Natural",tipo:"adverso",tema:"terra",mods:{dominio:-10,autoridade:2,vazio:6}},
+ {id:"fome_prolongada",nome:"Fome Prolongada",tipo:"adverso",tema:"terra",mods:{riqueza:-10,autoridade:2,vazio:6}},
+ {id:"era_prosperidade",nome:"Era de Prosperidade",tipo:"favoravel",tema:"comercio",mods:{dominio:2,riqueza:10,autoridade:-6}},
+ {id:"magistrado_renome",nome:"Magistrado de Renome",tipo:"favoravel",tema:"corte",mods:{influencia:9,autoridade:-6,vazio:2}},
+ {id:"corrupcao_escandalo",nome:"Corrupção ou Escândalo",tipo:"adverso",tema:"corte",mods:{riqueza:2,influencia:6,vazio:-10}},
+ {id:"gloria_batalha",nome:"Glória em Batalha",tipo:"favoravel",tema:"guerra",mods:{dominio:-6,autoridade:3,vazio:9}},
+ {id:"derrota_marcante",nome:"Derrota Marcante",tipo:"adverso",tema:"guerra",mods:{influencia:2,autoridade:-10,vazio:6}},
+ {id:"contato_terras_sombrias",nome:"Contato com as Terras Sombrias",tipo:"adverso",tema:"espirito",mods:{dominio:2,autoridade:6,vazio:-10}},
+ {id:"bencao_kami",nome:"Bênção dos Kami",tipo:"favoravel",tema:"espirito",mods:{influencia:-4,vazio:10}},
+ {id:"templo_importante",nome:"Templo ou Santuário Importante",tipo:"favoravel",tema:"espirito",mods:{dominio:16,riqueza:-5,vazio:10},
   concede:{tipo:"terreno",terreno:"planicies",c1:"templo_santuario",c2:"peregrinacao",nomeSugerido:"Santuário do Véu Sereno"}},
- {id:"intervencao_senhor",nome:"Intervenção de um Grande Senhor",tipo:"adverso",mods:{influencia:-10,autoridade:6,vazio:2}},
- {id:"guerra_prolongada",nome:"Guerra Prolongada",tipo:"adverso",mods:{riqueza:-10,autoridade:6,vazio:2}},
- {id:"segredo_guardado",nome:"Segredo Guardado",tipo:"favoravel",mods:{influencia:10,vazio:-4}},
- {id:"reforma_interna",nome:"Reforma Interna Bem-Sucedida",tipo:"favoravel",mods:{riqueza:9,influencia:-5,autoridade:2}},
- {id:"revolta_camponesa",nome:"Revolta Camponesa",tipo:"adverso",mods:{dominio:-10,influencia:2,autoridade:6}},
- {id:"migracao_massa",nome:"Migração em Massa para as Terras",tipo:"favoravel",mods:{dominio:9,riqueza:2,autoridade:-6}},
- {id:"recurso_valioso",nome:"Descoberta de Recurso Valioso",tipo:"favoravel",mods:{dominio:21,riqueza:10,autoridade:-4,vazio:-2},
+ {id:"intervencao_senhor",nome:"Intervenção de um Grande Senhor",tipo:"adverso",tema:"corte",mods:{influencia:-10,autoridade:6,vazio:2}},
+ {id:"guerra_prolongada",nome:"Guerra Prolongada",tipo:"adverso",tema:"guerra",mods:{riqueza:-10,autoridade:6,vazio:2}},
+ {id:"segredo_guardado",nome:"Segredo Guardado",tipo:"favoravel",tema:"corte",mods:{influencia:10,vazio:-4}},
+ {id:"reforma_interna",nome:"Reforma Interna Bem-Sucedida",tipo:"favoravel",tema:"comercio",mods:{riqueza:9,influencia:-5,autoridade:2}},
+ {id:"revolta_camponesa",nome:"Revolta Camponesa",tipo:"adverso",tema:"terra",mods:{dominio:-10,influencia:2,autoridade:6}},
+ {id:"migracao_massa",nome:"Migração em Massa para as Terras",tipo:"favoravel",tema:"terra",mods:{dominio:9,riqueza:2,autoridade:-6}},
+ {id:"recurso_valioso",nome:"Descoberta de Recurso Valioso",tipo:"favoravel",tema:"comercio",mods:{dominio:21,riqueza:10,autoridade:-4,vazio:-2},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"minas",nomeSugerido:"Veio de Kaiu-zan"}},
- {id:"isolamento_deliberado",nome:"Isolamento Deliberado",tipo:"adverso",mods:{dominio:2,influencia:-10,vazio:6}},
- {id:"tradicao_marcial",nome:"Tradição Marcial Distinta",tipo:"favoravel",mods:{influencia:-6,autoridade:8,vazio:4}},
- {id:"decadencia_administrativa",nome:"Decadência Administrativa",tipo:"adverso",mods:{riqueza:2,influencia:6,autoridade:-10}},
- {id:"figura_espiritual",nome:"Ascensão de Figura Espiritual",tipo:"favoravel",mods:{dominio:24,riqueza:-6,influencia:2,vazio:10},
+ {id:"isolamento_deliberado",nome:"Isolamento Deliberado",tipo:"adverso",tema:"corte",mods:{dominio:2,influencia:-10,vazio:6}},
+ {id:"tradicao_marcial",nome:"Tradição Marcial Distinta",tipo:"favoravel",tema:"guerra",mods:{influencia:-6,autoridade:8,vazio:4}},
+ {id:"decadencia_administrativa",nome:"Decadência Administrativa",tipo:"adverso",tema:"comercio",mods:{riqueza:2,influencia:6,autoridade:-10}},
+ {id:"figura_espiritual",nome:"Ascensão de Figura Espiritual",tipo:"favoravel",tema:"espirito",mods:{dominio:24,riqueza:-6,influencia:2,vazio:10},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"templo_santuario",c2:"peregrinacao",nomeSugerido:"Retiro do Iluminado"}},
- {id:"perda_territorio",nome:"Perda de Território",tipo:"adverso",mods:{dominio:-10,autoridade:6,vazio:2}},
- {id:"reconstrucao_pos_guerra",nome:"Reconstrução Pós-Guerra",tipo:"adverso",mods:{dominio:-8,autoridade:4,vazio:2}},
- {id:"heranca_castelo_amaldicoado",nome:"Herança de um Castelo Amaldiçoado",tipo:"favoravel",mods:{dominio:20,influencia:2,autoridade:9,vazio:-6},
+ {id:"perda_territorio",nome:"Perda de Território",tipo:"adverso",tema:"terra",mods:{dominio:-10,autoridade:6,vazio:2}},
+ {id:"reconstrucao_pos_guerra",nome:"Reconstrução Pós-Guerra",tipo:"adverso",tema:"terra",mods:{dominio:-8,autoridade:4,vazio:2}},
+ {id:"heranca_castelo_amaldicoado",nome:"Herança de um Castelo Amaldiçoado",tipo:"favoravel",tema:"terra",mods:{dominio:20,influencia:2,autoridade:9,vazio:-6},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"shiro",c2:"area_impura",nomeSugerido:"Kage no Shiro, o Castelo da Sombra"}},
- {id:"ruinas_ancestrais_descobertas",nome:"Descoberta de Ruínas Ancestrais",tipo:"favoravel",mods:{dominio:3,riqueza:-5,influencia:2,vazio:9},
+ {id:"ruinas_ancestrais_descobertas",nome:"Descoberta de Ruínas Ancestrais",tipo:"favoravel",tema:"espirito",mods:{dominio:3,riqueza:-5,influencia:2,vazio:9},
   concede:{tipo:"terreno",terreno:"floresta_densa",c1:"ruinas_antigas",nomeSugerido:"Ruínas de Tsuki-no-Mura"}},
- {id:"porto_herdado_afogados",nome:"Porto Herdado de Aliados Afogados",tipo:"favoravel",mods:{dominio:10,riqueza:9,vazio:-4},
+ {id:"porto_herdado_afogados",nome:"Porto Herdado de Aliados Afogados",tipo:"favoravel",tema:"comercio",mods:{dominio:10,riqueza:9,vazio:-4},
   concede:{tipo:"terreno",terreno:"costa",c1:"porto",nomeSugerido:"Porto de Nami-Nageki"}},
- {id:"fortaleza_cedida_cla",nome:"Fortaleza Cedida pelo Clã",tipo:"favoravel",mods:{dominio:34,influencia:-5,autoridade:8,vazio:2},
-  concede:{tipo:"terreno",terreno:"montanhas",c1:"kyuden",nomeSugerido:"Kyuden da Linhagem"}}
+ {id:"fortaleza_cedida_cla",nome:"Fortaleza Cedida pelo Clã",tipo:"favoravel",tema:"guerra",mods:{dominio:34,influencia:-5,autoridade:8,vazio:2},
+  concede:{tipo:"terreno",terreno:"montanhas",c1:"kyuden",nomeSugerido:"Kyuden da Linhagem"}},
+ /* 2026-11-04: origens novas e eventos novos (ver "Eventos de Origem - Proposta.md") */
+ {id:"mercadores_nome",nome:"Mercadores que Compraram um Nome",tipo:"origem",tema:"comercio",mods:{riqueza:10,influencia:2,vazio:-6}},
+ {id:"ronin_elevados",nome:"Ronin Elevados",tipo:"origem",tema:"guerra",mods:{dominio:2,influencia:-6,autoridade:9}},
+ {id:"casa_caida",nome:"Sobreviventes de uma Casa Caída",tipo:"origem",tema:"espirito",mods:{riqueza:-6,influencia:2,vazio:9}},
+ {id:"linhagem_primeiros",nome:"Linhagem dos Primeiros",tipo:"origem",tema:"espirito",idadeMin:"antiga",mods:{influencia:4,autoridade:-6,vazio:8}},
+ {id:"exilados_cla",nome:"Exilados de Outro Clã",tipo:"origem",tema:"comercio",mods:{riqueza:8,influencia:-6,autoridade:3}},
+ {id:"guardioes_fronteira",nome:"Guardiões da Fronteira",tipo:"origem",tema:"guerra",mods:{dominio:16,influencia:-5,autoridade:8,vazio:2},
+  concede:{tipo:"terreno",terreno:"colinas",c1:"torre_vigia",nomeSugerido:"Torre do Passo Esquecido"}},
+ {id:"escolhidos_kami",nome:"Escolhidos pelos Kami",tipo:"origem",tema:"espirito",mods:{dominio:-6,influencia:3,vazio:9}},
+ {id:"uniao_duas_casas",nome:"União de Duas Casas",tipo:"origem",tema:"corte",mods:{riqueza:3,influencia:8,vazio:-6}},
+ {id:"rota_comercial_cedida",nome:"Rota Comercial Cedida",tipo:"favoravel",tema:"comercio",mods:{dominio:13,riqueza:9,influencia:2,vazio:-6},
+  concede:{tipo:"terreno",terreno:"planicies",c1:"rota_comercial",nomeSugerido:"Estrada dos Mil Fardos"}},
+ {id:"dojo_renomado",nome:"Dojo Renomado",tipo:"favoravel",tema:"guerra",mods:{riqueza:-6,autoridade:9,vazio:2}},
+ {id:"arquivo_pergaminhos",nome:"Arquivo de Pergaminhos",tipo:"favoravel",tema:"espirito",mods:{influencia:3,autoridade:-6,vazio:8}},
+ {id:"vila_pesqueira",nome:"Vila Pesqueira Próspera",tipo:"favoravel",tema:"terra",mods:{dominio:14,riqueza:9,influencia:-6,autoridade:2},
+  concede:{tipo:"terreno",terreno:"planicies",c1:"costa",c2:"aldeia",nomeSugerido:"Aldeia de Shio-hama"}},
+ {id:"corte_inverno",nome:"Convite à Corte de Inverno",tipo:"favoravel",tema:"corte",mods:{riqueza:-6,influencia:10,vazio:2}},
+ {id:"defesa_gloriosa",nome:"Defesa Gloriosa",tipo:"favoravel",tema:"guerra",mods:{riqueza:-6,autoridade:9,vazio:3}},
+ {id:"epidemia",nome:"Epidemia",tipo:"adverso",tema:"terra",mods:{dominio:-10,influencia:2,vazio:6}},
+ {id:"herdeiro_desonrado",nome:"Herdeiro Desonrado",tipo:"adverso",tema:"corte",mods:{influencia:6,autoridade:2,vazio:-10}},
+ {id:"desfalque_tesouro",nome:"Desfalque no Tesouro",tipo:"adverso",tema:"comercio",mods:{riqueza:-10,influencia:6,autoridade:2}},
+ {id:"traicao_vassalo",nome:"Traição de um Vassalo",tipo:"adverso",tema:"guerra",mods:{influencia:6,autoridade:-10,vazio:2}},
+ {id:"bandidos_piratas",nome:"Bandidos e Piratas",tipo:"adverso",tema:"terra",mods:{dominio:6,riqueza:-10,autoridade:2}},
+ {id:"incursao_macula",nome:"Incursão da Mácula",tipo:"adverso",tema:"espirito",mods:{dominio:2,autoridade:-10,vazio:6}},
+ {id:"maldicao_linhagem",nome:"Maldição sobre a Linhagem",tipo:"adverso",tema:"espirito",mods:{dominio:6,influencia:2,vazio:-10}},
+ {id:"ofensa_corte",nome:"Ofensa na Corte",tipo:"adverso",tema:"corte",mods:{riqueza:2,influencia:-10,vazio:6}},
+ {id:"grande_incendio",nome:"Grande Incêndio",tipo:"adverso",tema:"terra",mods:{riqueza:-10,influencia:6,vazio:2}},
+ {id:"divida_senhor",nome:"Dívida com um Senhor",tipo:"adverso",tema:"comercio",mods:{riqueza:6,influencia:-10,autoridade:2}},
+ {id:"pacto_ronin",nome:"Pacto com um Ronin Poderoso",tipo:"ambiguo",tema:"guerra",mods:{influencia:-4,autoridade:8,vazio:-6}},
+ {id:"casamento_abaixo",nome:"Casamento Abaixo da Posição",tipo:"ambiguo",tema:"corte",mods:{riqueza:8,influencia:-6,vazio:-4}},
+ {id:"contrabando_gaijin",nome:"Contrabando com Gaijin",tipo:"ambiguo",tema:"comercio",mods:{riqueza:10,influencia:-4,vazio:-8}},
+ {id:"duelo_morte",nome:"Duelo de Morte Vencido",tipo:"ambiguo",tema:"guerra",mods:{influencia:-6,autoridade:-4,vazio:8}},
+ {id:"chantagem",nome:"Chantagem",tipo:"ambiguo",tema:"corte",mods:{riqueza:-4,influencia:8,vazio:-6}}
 ];
 
 /* Descrições narrativas dos eventos (do L5R RPG.docx) — mostradas no card no lugar dos números */
 const EVENTO_DESC={
+ fundacao_decreto:"Um édito do Trono de Crisântemo criou a casa do nada, com nome, selo e lugar na corte. A família deve tudo à corte imperial, e a corte nunca deixa ninguém esquecer disso.",
+ recompensa_militar:"Um soldado comum fez no campo de batalha o que nenhum samurai fez, e o senhor o recompensou com um nome e o direito de passá-lo adiante. A casa nasceu da espada, e é por ela que ainda é medida.",
+ fundacao_religiosa:"Um oráculo, um monge ou um profeta viu em sonho a fundação desta casa, e os primeiros membros juraram cumprir a visão. A família vive entre a devoção e o peso de uma profecia que ninguém lembra por inteiro.",
+ funcao_administrativa:"A casa foi criada para administrar alguma coisa: um porto, um armazém de arroz, um posto de fronteira. Contas, registros e selos são a sua herança, e os guerreiros do clã a olham com uma ponta de desdém.",
+ adocao_familia:"A família veio de fora: outro clã, outra terra, ou o nada. Foi adotada por este clã num juramento solene, e cada geração ainda precisa provar que o juramento valeu a pena.",
+ ascensao_heroi:"Quando a região mais precisou, um único homem ou mulher do povo a salvou. O senhor fez dele samurai, e a família inteira nasceu dessa história, contada nas aldeias até hoje.",
+ usurpacao_terras:"A casa tomou à força as terras que hoje governa, de alguém que não pôde ou não soube defendê-las. A posse foi aceita com o tempo, mas há quem ainda lembre como tudo começou.",
+ alianca_casamento:"Um casamento arranjado com cuidado uniu a família a uma casa mais poderosa. Os laços abriram portas na corte e trouxeram um dote generoso, mas os ancestrais de cada lado nunca se entenderam bem.",
+ mercadores_nome:"Uma família de comerciantes heimin enriqueceu tanto que comprou a posição de samurai, com ouro e favores ao senhor certo. Tem cofres cheios e um nome novo, e a velha nobreza nunca vai deixar de notar o cheiro de moeda.",
+ ronin_elevados:"Uma companhia de ronin fez por um senhor o que os vassalos dele não tiveram coragem de fazer. Em troca, ganhou um nome e um pedaço de terra. A casa sabe lutar, mas a corte não esquece que ela já foi uma onda sem senhor.",
+ casa_caida:"Uma família antiga foi destruída por guerra, desgraça ou maldição, e o último ramo que sobrou refundou o nome. Os ancestrais ainda cobram o que se perdeu, e os cofres nunca se recuperaram.",
+ linhagem_primeiros:"A casa descende de um dos companheiros dos Kami nos primeiros dias do Império. O sangue é antigo e reverenciado, e a família vive mais da memória do que da força.",
+ exilados_cla:"A família deixou o clã de origem, por escolha ou por ordem, e foi acolhida por este. Trouxe ofícios, segredos e riquezas de fora, e nunca é tratada inteiramente como uma das suas.",
+ guardioes_fronteira:"A casa foi criada para vigiar um passo nas colinas, onde termina a terra do clã. A torre de vigia é o seu coração, e a corte fica longe demais para lembrar dela. Concede: uma Torre de Vigia (sobre Colinas).",
+ escolhidos_kami:"Um shugenja de poder raro fundou a casa, e os kami parecem ainda ouvir o seu nome. A família tem pouca terra e muitos rituais, e espera de cada geração um novo prodígio.",
+ uniao_duas_casas:"Duas famílias menores, cada uma fraca demais sozinha, se fundiram num casamento arranjado com cuidado. A casa nova tem aliados dos dois lados e ancestrais que nem sempre concordam.",
+ rota_comercial_cedida:"Uma estrada de comércio entre duas províncias passou para as mãos da família, com seus pedágios e postos de troca. O dinheiro corre, e com ele a tentação de esquecer que samurai não deve contar moedas. Concede: uma Rota Comercial (sobre Planícies).",
+ dojo_renomado:"Um sensei famoso escolheu as terras da família para ensinar, e jovens de toda a província vieram treinar. O dojo traz guerreiros e prestígio, e custa caro manter.",
+ arquivo_pergaminhos:"A casa guarda uma biblioteca de pergaminhos antigos, alguns que nem os monges conhecem. Estudiosos vêm de longe pedir para ler, e os guerreiros da família passam mais tempo entre livros do que no pátio.",
+ vila_pesqueira:"Uma aldeia de pescadores na costa passou a pagar tributo à família, e o peixe salgado vai para meio clã. O mar dá e o mar cobra, e a corte torce o nariz para senhores que cheiram a peixe. Concede: uma Aldeia na Costa (sobre Planícies).",
+ corte_inverno:"A família foi convidada para a corte de inverno e brilhou lá: um poema lembrado, uma aliança costurada, um rival humilhado com elegância. A viagem e os presentes esvaziaram os cofres.",
+ defesa_gloriosa:"A casa segurou uma posição que ninguém esperava que segurasse, contra um inimigo muito maior. A história é cantada nas tavernas, e a reconstrução levou anos de tributo.",
+ epidemia:"Uma peste atravessou as aldeias e esvaziou campos inteiros. Os templos ficaram cheios, e a família aprendeu a rezar como nunca antes.",
+ herdeiro_desonrado:"O herdeiro da casa cometeu uma desonra tão grave que só o seppuku a lavou. A família perdeu o filho e boa parte da honra, e aprendeu a medir cada palavra na corte.",
+ desfalque_tesouro:"Um karō de confiança roubou os cofres por anos antes de ser descoberto. O dinheiro não volta, mas a família ganhou aliados entre os magistrados que a ajudaram a caçá-lo.",
+ traicao_vassalo:"Um vassalo leal por gerações virou a casaca na hora errada e levou suas tropas com ele. A família reconstruiu o exército com dificuldade e aprendeu a escolher amigos com mais cuidado.",
+ bandidos_piratas:"As estradas e a costa viraram terra sem lei, e as caravanas da família pararam de chegar. A casa fortificou as aldeias e passou a vigiar cada vau.",
+ incursao_macula:"Criaturas das Terras Sombrias atravessaram a fronteira e levaram soldados que nunca voltaram. Os que sobreviveram juraram purificar a terra, e os templos da família nunca mais ficaram vazios.",
+ maldicao_linhagem:"Um espírito ofendido amaldiçoou a casa, e desde então nascem menos filhos e morrem mais cedo. A família se agarrou à terra como se ela fosse a única coisa que a maldição não pode levar.",
+ ofensa_corte:"Um membro da família humilhou em público alguém que não devia, e as portas da corte se fecharam. A casa voltou-se para os templos e para as próprias terras, à espera de que a memória da corte encurte.",
+ grande_incendio:"O fogo levou o castelo, os armazéns e metade da cidade numa só noite de vento. As casas aliadas mandaram ajuda, e a família ficou devendo favores a todas elas.",
+ divida_senhor:"Um empréstimo num ano ruim virou uma coleira: o credor é um grande senhor, e cada pedido dele chega como ordem. A família aprendeu a contar cada koku.",
+ pacto_ronin:"Uma espada de aluguel resolveu um problema que a família não podia resolver às claras. O problema sumiu, o ronin ficou, e todo mundo sabe que a casa paga quem não tem senhor.",
+ casamento_abaixo:"Um membro da família casou abaixo da posição, por dinheiro ou por amor. O dote encheu os cofres, e a corte nunca perdoou.",
+ contrabando_gaijin:"A casa negociou em segredo com estrangeiros, coisa proibida pelas leis do Império. O lucro foi enorme, e o segredo, se vier à tona, pode custar tudo.",
+ duelo_morte:"Um campeão da família matou em duelo o filho de uma casa poderosa. A vitória foi limpa e honrada, e a casa poderosa jurou que um dia cobra.",
+ chantagem:"A família sabe de algo que não devia saber, e cobra por isso. A influência cresceu na corte, e o preço de manter o segredo também.",
  vitoria_torneio:"Em um torneio digno de memória, um membro da família alcançou vitória incontestável, superando rivais diante de olhares atentos da corte. Desde então, o nome da família ecoa com prestígio, mas também atrai a inveja daqueles que foram derrotados.",
  refem_prestigio:"Por dever político, um herdeiro foi enviado à corte de outro senhor, vivendo não como prisioneiro, mas como garantia de lealdade. Retornou transformado — nem totalmente de casa, nem totalmente de fora.",
  rivalidade_juramentada:"Uma ofensa jamais esquecida deu origem a uma rivalidade formal, selada por palavras que nenhum dos lados pode retirar. A honra da família está sempre à prova diante de seu adversário.",
@@ -1671,7 +1759,7 @@ function esc(s){return(s||"").toString().replace(/&/g,"&amp;").replace(/"/g,"&qu
 function estadoInicial(){return{
   nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",idade:"recente",versaoAtrib:2,
   base:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},
-  pontos:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},
+  pontos:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},origem:null,versaoEventos:3,
   eventos:[],terrenos:[],personagens:[],tropas:[],conversoes:[],feed:[],
   conquistas:[],estacaoIdx:0,anoEstacao:1,sacrificios:[],
   batalhaAtual:null,batalhas:[],marcacoesMapa:[],
@@ -1855,7 +1943,24 @@ function migrarBatalhaV7(st){
   }
   return mudou;
 }
-function migrarEstado(st){const a=migrarAtributosV2(st),b=migrarBatalhaV7(st);return a||b;}
+/* Migração para a origem (2026-11-04): a primeira origem que estiver entre os eventos vira
+   S.origem. A Usurpação de Terras mudou de valor ao virar origem; a diferença vai para o ajuste,
+   para o total da família não mudar. */
+function migrarOrigemV3(st,jaEraV2){
+  if(!st||st.versaoEventos>=3)return false;
+  st.eventos=st.eventos||[];
+  if(st.origem===undefined){
+    const i=st.eventos.findIndex(id=>{const e=EVENTOS.find(x=>x.id===id);return e&&e.tipo==="origem";});
+    st.origem=i>=0?st.eventos.splice(i,1)[0]:null;
+  }
+  /* só compensa ficha que já estava no formato decimal: a migração do 7d10 já usa o valor novo */
+  if(jaEraV2&&(st.origem==="usurpacao_terras"||st.eventos.includes("usurpacao_terras"))&&st.base){
+    st.base.influencia=(Number(st.base.influencia)||0)-4;st.base.autoridade=(Number(st.base.autoridade)||0)-3;
+  }
+  /* outras origens que tenham ficado entre os eventos comuns continuam lá, valendo o mesmo */
+  st.versaoEventos=3;return true;
+}
+function migrarEstado(st){const jaV2=!!st&&st.versaoAtrib>=2;const a=migrarAtributosV2(st),b=migrarBatalhaV7(st),c=migrarOrigemV3(st,jaV2);return a||b||c;}
 migrarEstado(S);
 if(!S.batalhas)S.batalhas=[];
 if(S.batalhaAtual===undefined)S.batalhaAtual=null;
@@ -1876,12 +1981,12 @@ let papel="mestre";
    selecionado ({lado:"familia"|"inimiga",id}) esperando um clique numa casa pra se mover. */
 /* estado só de tela (não salva): se a lista de clãs/eventos aparece cheia ou só o que já foi escolhido */
 let verTodosClas=!S.cla;
-let verTodosEventos=S.eventos.length<maxEventos();
+let verTodosEventos=S.eventos.length<vagasEventos();
 
 /* ============ MOTOR DE CÁLCULO ============ */
 function claAtual(){return CLAS.find(c=>c.id===S.cla);}
 function claMod(attr){const c=claAtual();return c?(c.mods[attr]||0):0;}
-function eventosMod(attr){let s=0;S.eventos.forEach(id=>{const e=EVENTOS.find(x=>x.id===id);if(e)s+=(e.mods[attr]||0);});return s;}
+function eventosMod(attr){let s=0;(S.origem?[S.origem]:[]).concat(S.eventos).forEach(id=>{const e=EVENTOS.find(x=>x.id===id);if(e)s+=(e.mods[attr]||0);});return s;}
 function conquistasMod(attr){let s=0;(S.conquistas||[]).forEach(c=>{(c.itens||[]).forEach(it=>{if(it.attr===attr)s+=(Number(it.delta)||0);});});return s;}
 function personagemMod(attr){let s=0;S.personagens.forEach(p=>{const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito===attr)s+=papel.valor;});return s;}
 function fortunaPersonagem(){let s=0;S.personagens.forEach(p=>{const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito==="fortuna")s+=papel.valor;});return s;}
@@ -2083,10 +2188,15 @@ function personagemMaisGraduado(){
   return{personagem:melhor,rank:melhorRank};
 }
 function maxEventos(){return IDADE[S.idade]||0;}
+/* Vagas de evento comum: a idade menos a origem. */
+function vagasEventos(){return Math.max(0,maxEventos()-1);}
+function eventoInfo(id){return EVENTOS.find(x=>x.id===id);}
+function origemPermitida(e,idade){return !e.idadeMin||IDADE_ORDEM.indexOf(idade||S.idade)>=IDADE_ORDEM.indexOf(e.idadeMin);}
+function origensDisponiveis(){return EVENTOS.filter(e=>e.tipo==="origem"&&origemPermitida(e));}
 /* A cada 3 eventos, 1 precisa ser adverso ou ambíguo: sem isso, escolher os eventos renderia
    bem mais que sorteá-los (na Estabelecida, +34 contra +19; com a regra, +18). */
-function minAdversos(){return Math.floor(maxEventos()/3);}
-function eventoEhAdverso(id){const e=EVENTOS.find(x=>x.id===id);return!!e&&e.tipo!=="favoravel";}
+function minAdversos(){return Math.floor(vagasEventos()/3);}
+function eventoEhAdverso(id){const e=EVENTOS.find(x=>x.id===id);return!!e&&(e.tipo==="adverso"||e.tipo==="ambiguo");}
 function adversosEscolhidos(){return S.eventos.filter(eventoEhAdverso).length;}
 function contarPapel(re){return S.personagens.filter(p=>re.test(p.categoria||"")).length;}
 function rosterCounts(){
@@ -2143,12 +2253,14 @@ function selecionarCla(id){if(bloqueadoLeitura())return;S.cla=id;verTodosClas=fa
 function trocarCla(){if(bloqueadoLeitura())return;verTodosClas=true;render();}
 function setBase(attr,val){if(bloqueadoLeitura())return;S.base[attr]=parseFloat(val)||0;salvar();render();} /* o "ajuste" do atributo */
 function setIdade(v){if(bloqueadoLeitura())return;S.idade=v;
-  if(S.eventos.length>maxEventos()){
-    S.eventos.slice(maxEventos()).forEach(id=>removerConcessaoEvento(id));
-    S.eventos=S.eventos.slice(0,maxEventos());
+  if(S.eventos.length>vagasEventos()){
+    S.eventos.slice(vagasEventos()).forEach(id=>removerConcessaoEvento(id));
+    S.eventos=S.eventos.slice(0,vagasEventos());
   }
-  verTodosEventos=S.eventos.length<maxEventos();
-  feedPush("Idade da família: "+IDADE_LABEL[v]+" ("+maxEventos()+" eventos históricos).");salvar();render();}
+  const o=S.origem&&eventoInfo(S.origem);
+  if(o&&!origemPermitida(o)){removerConcessaoEvento(o.id);S.origem=null;feedPush(o.nome+" só existe para famílias "+IDADE_LABEL[o.idadeMin]+" ou mais velhas: escolha outra origem.");}
+  verTodosEventos=S.eventos.length<vagasEventos();
+  feedPush("Idade da família: "+IDADE_LABEL[v]+" (origem e mais "+vagasEventos()+" eventos históricos).");salvar();render();}
 function setNome(v){if(bloqueadoLeitura())return;S.nome=(v||"Família").trim()||"Família";salvar();render();}
 function setDaimyo(v){if(bloqueadoLeitura())return;S.daimyo=v;salvar();render();}
 function setRamoFamiliar(v){if(bloqueadoLeitura())return;S.ramoFamiliar=v;salvar();render();}
@@ -2168,40 +2280,61 @@ function delSacrificio(id){if(bloqueadoLeitura())return;S.sacrificios=S.sacrific
 
 function toggleEvento(id){
   if(bloqueadoLeitura())return;
+  const e=eventoInfo(id);if(!e)return;
+  if(e.tipo==="origem")return escolherOrigem(id);
   const i=S.eventos.indexOf(id);
   if(i>=0){S.eventos.splice(i,1);verTodosEventos=true;removerConcessaoEvento(id);}
   else{
-    if(S.eventos.length>=maxEventos()){flashHint("Sem vagas de evento — aumente a Idade da Família ou remova outro.");return;}
-    const vagasLivres=maxEventos()-S.eventos.length,faltaAdv=Math.max(0,minAdversos()-adversosEscolhidos());
-    if(!eventoEhAdverso(id)&&vagasLivres<=faltaAdv){feedPush("As vagas que sobram são de eventos adversos ou ambíguos: a cada 3 eventos, 1 precisa ser.");salvar();render();return;}
+    if(S.eventos.length>=vagasEventos()){feedPush("Sem vagas de evento: aumente a idade da família ou remova outro.");salvar();render();return;}
+    const vagasLivres=vagasEventos()-S.eventos.length,faltaAdv=Math.max(0,minAdversos()-adversosEscolhidos());
+    if(!eventoEhAdverso(id)&&vagasLivres<=faltaAdv){feedPush("As vagas que sobram são de eventos adversos ou ambíguos: a cada 3 eventos depois da origem, 1 precisa ser.");salvar();render();return;}
     S.eventos.push(id);
-    if(S.eventos.length>=maxEventos())verTodosEventos=false;
+    if(S.eventos.length>=vagasEventos())verTodosEventos=false;
     aplicarConcessaoEvento(id);
   }
-  const e=EVENTOS.find(x=>x.id===id);
-  feedPush((i>=0?"Removido: ":"Adicionado: ")+(e?e.nome:id)+".");
+  feedPush((i>=0?"Removido: ":"Adicionado: ")+e.nome+".");
   salvar();render();
 }
+/* Origem: como a família surgiu. Sempre uma, sempre o primeiro evento. */
+let verTodasOrigens=false;
+function escolherOrigem(id){
+  if(bloqueadoLeitura())return;
+  const e=eventoInfo(id);if(!e||e.tipo!=="origem")return;
+  if(!origemPermitida(e)){feedPush(e.nome+" só existe para famílias "+IDADE_LABEL[e.idadeMin]+" ou mais velhas.");salvar();render();return;}
+  if(S.origem)removerConcessaoEvento(S.origem);
+  S.origem=id;aplicarConcessaoEvento(id);verTodasOrigens=false;
+  feedPush("Origem da família: "+e.nome+".");salvar();render();
+}
+function trocarOrigem(){if(bloqueadoLeitura())return;verTodasOrigens=true;render();}
+function sortearOrigem(){
+  const lista=origensDisponiveis();if(!lista.length)return;
+  if(S.origem)removerConcessaoEvento(S.origem);
+  const e=pickRandom(lista);S.origem=e.id;aplicarConcessaoEvento(e.id);verTodasOrigens=false;
+}
+/* Sorteio: origem primeiro (se faltar), depois o mínimo de adversos, e em cada vaga que sobra
+   15% de chance de mais um adverso ou ambíguo; o resto sai dos favoráveis. */
+const CHANCE_ADVERSO_EXTRA=0.15;
 function sortearEventosFaltantes(){
   if(bloqueadoLeitura())return;
-  const restantes=EVENTOS.filter(e=>!S.eventos.includes(e.id));
-  let vagas=maxEventos()-S.eventos.length;
+  if(!S.origem)sortearOrigem();
+  const restantes=EVENTOS.filter(e=>e.tipo!=="origem"&&!S.eventos.includes(e.id));
+  let vagas=vagasEventos()-S.eventos.length;
   while(vagas>0&&restantes.length){
-    /* primeiro completa os adversos que a regra pede, depois sorteia entre todos */
-    const precisaAdv=adversosEscolhidos()<minAdversos();
-    const pool=precisaAdv?restantes.filter(e=>e.tipo!=="favoravel"):restantes;
+    const querAdv=adversosEscolhidos()<minAdversos()||Math.random()<CHANCE_ADVERSO_EXTRA;
+    let pool=restantes.filter(e=>querAdv?e.tipo!=="favoravel":e.tipo==="favoravel");
+    if(!pool.length)pool=restantes;
     const escolhido=pool[Math.floor(Math.random()*pool.length)];
-    const i=restantes.indexOf(escolhido);
-    S.eventos.push(restantes[i].id);aplicarConcessaoEvento(restantes[i].id);restantes.splice(i,1);vagas--;
+    restantes.splice(restantes.indexOf(escolhido),1);
+    S.eventos.push(escolhido.id);aplicarConcessaoEvento(escolhido.id);vagas--;
   }
   verTodosEventos=false;
-  feedPush("Sorteados eventos históricos até completar "+maxEventos()+".");
+  feedPush("Sorteados a origem e os eventos históricos que faltavam.");
   salvar();render();
 }
 function limparEventos(){
   if(bloqueadoLeitura())return;
   S.eventos.forEach(id=>removerConcessaoEvento(id));
-  S.eventos=[];verTodosEventos=true;feedPush("Eventos históricos limpos.");salvar();render();
+  S.eventos=[];verTodosEventos=true;feedPush("Eventos históricos limpos (a origem continua).");salvar();render();
 }
 function verEventosCompletos(){if(bloqueadoLeitura())return;verTodosEventos=true;render();}
 
@@ -2319,8 +2452,9 @@ function randomizarFamilia(){
   S.base={dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0};
   sortearPontos();
   limparEventos();
+  sortearOrigem();
   sortearEventosFaltantes();
-  feedPush("Uma família inteira nasceu por sorteio: "+c.nome+".");
+  feedPush("Uma família inteira nasceu por sorteio: "+c.nome+", "+(eventoInfo(S.origem)||{nome:"sem origem"}).nome+".");
   salvar();render();
 }
 
@@ -2851,6 +2985,7 @@ function render(){
    if(S.daimyo)meta.push("<span>Daimyō <b>"+esc(S.daimyo)+"</b></span>");
    if(S.ramoFamiliar)meta.push("<span>"+esc(S.ramoFamiliar)+"</span>");
    meta.push("<span>Família "+esc((IDADE_LABEL[S.idade]||"").toLowerCase())+"</span>");
+   const og=S.origem&&eventoInfo(S.origem);if(og)meta.push("<span>Origem <b>"+esc(og.nome)+"</b></span>");
    document.getElementById("claLab").innerHTML=meta.join("");
    document.body.classList.toggle("modo-jogador",papel==="jogador");
    const sl=document.getElementById("seloLeitura");if(sl)sl.hidden=papel!=="jogador";
@@ -2982,7 +3117,8 @@ function renderResumo(){
   const al=[];
   ATRIBUTOS.forEach(([k,l])=>{const sc=sobrecarga(k);if(sc>0)al.push(l+" em sobrecarga de "+sc.toFixed(0)+(S.liberar&&S.liberar[k]?": falhou na manutenção e precisa liberar algo":": nada novo deste pool e manutenção mais difícil"));});
   const usados=pontosUsados();if(usados<PONTOS_LIVRES)al.push("Faltam "+(PONTOS_LIVRES-usados)+" pontos para distribuir nos atributos (Identidade).");
-  if(S.eventos.length<maxEventos())al.push("Faltam "+(maxEventos()-S.eventos.length)+" eventos históricos (Crônica).");
+  if(!S.origem)al.push("Falta a origem da família (Crônica).");
+  if(S.eventos.length<vagasEventos())al.push("Faltam "+(vagasEventos()-S.eventos.length)+" eventos históricos (Crônica).");
   if(!S.cla)al.push("Escolha o clã da família (Identidade).");
   document.getElementById("resumoAlertas").innerHTML=al.map(t=>"<div>"+esc(t)+"</div>").join("");
 }
@@ -3014,8 +3150,9 @@ function renderTesteFamilia(){
 }
 function eventoCardHTML(e,opts){
   opts=opts||{};
-  const sel=S.eventos.includes(e.id);
-  const cheio=!sel&&S.eventos.length>=maxEventos();
+  const sel=e.tipo==="origem"?S.origem===e.id:S.eventos.includes(e.id);
+  const bloqueada=e.tipo==="origem"&&!origemPermitida(e);
+  const cheio=e.tipo==="origem"?bloqueada:(!sel&&S.eventos.length>=vagasEventos());
   const chips=ATRIBUTOS.filter(([k])=>e.mods[k]).map(([k,l])=>{
     const v=e.mods[k];return "<span class=\""+(v>0?"pos":"neg")+"\">"+l.slice(0,3)+" "+(v>0?"+":"")+v+"</span>";
   }).join("");
@@ -3023,24 +3160,41 @@ function eventoCardHTML(e,opts){
   let presente="";
   if(e.concede){const c=e.concede,x=terrenoLinhaCalc({terreno:c.terreno,c1:c.c1||"",c2:c.c2||"",c3:c.c3||"",c4:c.c4||""});
     presente="<div class=\"gift\" title=\"o Domínio do evento já paga esse bem, que ocupa o Domínio\">🎁 concede "+esc(c.nomeSugerido||"uma posse")+" · já pago ("+(x.custoDefesa+x.custoTerras)+" de Domínio)</div>";}
-  const tipo=e.tipo&&e.tipo!=="favoravel"?"<div class=\"tipo\">"+TIPO_EVENTO_LABEL[e.tipo]+"</div>":"";
+  const tipo="<div class=\"tipo t-"+(e.tipo||"favoravel")+"\">"+(e.tipo&&e.tipo!=="favoravel"?TIPO_EVENTO_LABEL[e.tipo]:"")+(e.tema?"<span class=\"tema\">"+TEMA_EVENTO[e.tema]+"</span>":"")+
+    (e.idadeMin?"<span class=\"tema\">só "+IDADE_LABEL[e.idadeMin]+" ou mais velha</span>":"")+"</div>";
   const remover=opts.comRemover?"<button class=\"ghost\" style=\"margin-top:6px\" onclick=\"event.stopPropagation();toggleEvento('"+e.id+"')\">✕ remover</button>":"";
   const onclick=opts.comRemover?"":(cheio?"":"toggleEvento('"+e.id+"')");
   return "<div class=\""+(opts.compact?"torncard sel escolhido":"torncard "+(sel?"sel":"")+(cheio?" dis":""))+"\" title=\"passe o mouse para ver os modificadores\" "+(onclick?"onclick=\""+onclick+"\"":"")+">"+
     tipo+"<div class=\"en\">"+esc(e.nome)+"</div><div class=\"ed\">"+esc(desc)+"</div>"+presente+"<div class=\"em reveal\">"+chips+"</div>"+remover+"</div>";
 }
+let filtroTema="";
+function setFiltroTema(t){filtroTema=(filtroTema===t?"":t);renderEventos();}
 function renderEventos(){
-  const max=maxEventos();
-  const madv=minAdversos();
-  document.getElementById("eventosSub").textContent=S.eventos.length+"/"+max+" escolhidos ("+IDADE_LABEL[S.idade]+")"+(madv?" · adversos "+adversosEscolhidos()+" (mínimo "+madv+")":"");
+  const vagas=vagasEventos(),madv=minAdversos();
+  document.getElementById("eventosSub").textContent="origem e "+S.eventos.length+"/"+vagas+" eventos ("+IDADE_LABEL[S.idade]+")"+(madv?", adversos "+adversosEscolhidos()+" (mínimo "+madv+")":"");
+  const ob=document.getElementById("origemBox");
+  const o=S.origem&&eventoInfo(S.origem);
+  if(ob){
+    if(o&&!verTodasOrigens){
+      ob.innerHTML="<div class=\"secao\">Origem</div>"+eventoCardHTML(o,{compact:true})+
+        "<button class=\"ghost\" style=\"margin-top:6px\" onclick=\"trocarOrigem()\">trocar a origem</button>";
+    }else{
+      ob.innerHTML="<div class=\"secao\">Origem: como a família surgiu</div><div class=\"hint\" style=\"margin:0 0 8px\">Toda família tem uma, e ela é o primeiro evento da história.</div>"+
+        "<div class=\"eventgrid origens\">"+EVENTOS.filter(e=>e.tipo==="origem").map(e=>eventoCardHTML(e,{origem:true})).join("")+"</div>"+
+        (o?"<button class=\"ghost\" style=\"margin-top:6px\" onclick=\"verTodasOrigens=false;render()\">manter "+esc(o.nome)+"</button>":"");
+    }
+  }
   const box=document.getElementById("eventos");
   if(S.eventos.length>0&&!verTodosEventos){
-    const escolhidos=S.eventos.map(id=>EVENTOS.find(e=>e.id===id)).filter(Boolean);
-    box.innerHTML=escolhidos.map(e=>eventoCardHTML(e,{compact:true,comRemover:true})).join("")+
-      "<div class=\"torncard\" style=\"display:flex;align-items:center;justify-content:center;cursor:pointer\" onclick=\"verEventosCompletos()\"><div class=\"en\">👁 ver lista completa / trocar</div></div>";
+    const escolhidos=S.eventos.map(id=>eventoInfo(id)).filter(Boolean);
+    box.innerHTML="<div class=\"secao\">Eventos históricos</div>"+escolhidos.map(e=>eventoCardHTML(e,{compact:true,comRemover:true})).join("")+
+      "<div class=\"torncard\" style=\"display:flex;align-items:center;justify-content:center;cursor:pointer\" onclick=\"verEventosCompletos()\"><div class=\"en\">ver lista completa ou trocar</div></div>";
     return;
   }
-  box.innerHTML=EVENTOS.map(e=>eventoCardHTML(e)).join("");
+  const filtros="<div class=\"filtrotema\" role=\"group\" aria-label=\"Filtrar por tema\">"+
+    ["",...Object.keys(TEMA_EVENTO)].map(t=>"<button class=\"ghost"+(filtroTema===t?" on":"")+"\" onclick=\"setFiltroTema('"+t+"')\">"+(t?TEMA_EVENTO[t]:"Todos")+"</button>").join("")+"</div>";
+  const lista=EVENTOS.filter(e=>e.tipo!=="origem"&&(!filtroTema||e.tema===filtroTema));
+  box.innerHTML="<div class=\"secao\">Eventos históricos</div>"+(vagas?filtros+lista.map(e=>eventoCardHTML(e)).join(""):"<div class=\"hint\">Uma família Nascente só tem a origem.</div>");
 }
 function opcoesAtributoConquista(sel,id,itemId){
   return "<select onchange=\"setConquistaItem('"+id+"','"+itemId+"','attr',this.value)\">"+

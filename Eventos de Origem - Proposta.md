@@ -1,11 +1,11 @@
 # Eventos de origem, mais eventos e mais idades
 
-Proposta para aprovar antes de mexer no `index.html`. Números de `sim/proposta_origens.js` e `sim/cria_v3.js`.
+Aprovada em 2026-11-04 e implementada no `index.html`. Números de `sim/proposta_origens.js` e `sim/cria_v3.js`.
 
 ## O que a varredura achou
 
 - Dos 44 eventos, **8 já são de origem**: contam como a família surgiu, e não algo que aconteceu com ela depois. São Fundação por Decreto Imperial, Recompensa por Serviço Militar, Ramo Elevado de Grande Família, Fundação Religiosa ou Profética, Criação para Função Administrativa, Adoção da Família, Ascensão de Herói Local e Usurpação de Terras.
-- Esses mesmos 8 são os únicos **sem texto de descrição** na ficha (aparece o genérico "Um capítulo da história da família").
+- Sete desses 8 não tinham **texto de descrição** na ficha (aparecia o genérico "Um capítulo da história da família"), e a Aliança de Casamento também não. Todos ganharam texto.
 - Com a regra de 1 adverso a cada 3, há poucos adversos para variar: 12, mais 2 ambíguos. Uma família Anciã já usa 3 deles.
 
 ## A regra nova
