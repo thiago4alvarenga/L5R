@@ -117,7 +117,7 @@ Base igual nos cinco atributos, como num personagem, que sobe com a idade, mais 
 
 Família nova cresceu pela espada e pelo comércio: tem Autoridade e Riqueza, falta nome e ancestrais. Família velha tem rede de alianças, ancestrais e kami do lado, e a ambição esfriou. O Domínio da base desconta com a idade porque a terra das famílias velhas chega pelos eventos, com o custo cheio.
 
-Depois disso, **10 pontos para distribuir**, no máximo +5 num atributo.
+Depois disso, **10 pontos para distribuir**, no máximo +5 num atributo. *(Removidos em 2026-11-04: a Riqueza e os investimentos fazem esse papel. As fichas antigas guardaram os pontos no ajuste.)*
 
 ---
 

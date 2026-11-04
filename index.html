@@ -164,6 +164,34 @@
   .cmdbox input[type=number],.ucard input[type=number]{width:54px!important;padding:3px 4px;text-align:center}
   .chipini{font-size:12px;padding:2px 8px;border-radius:10px;border:1px solid var(--line);border-left:4px solid #3f6ca6}
   .chipini.ladoIni{border-left-color:#a63f3f} .chipini.ladoAli{border-left-color:#4a8a5c}
+  .chipini b{font-variant-numeric:tabular-nums}
+  .termo{text-decoration:underline dotted;text-decoration-color:var(--muted-tx);text-underline-offset:3px;cursor:help}
+  .termo:focus{outline:2px solid var(--accent);outline-offset:1px;border-radius:2px}
+  #dicaBalao{position:fixed;z-index:9999;display:none;background:#2a211b;color:#f4ecdc;font-size:12.5px;line-height:1.45;padding:8px 11px;border-radius:7px;
+    box-shadow:0 6px 18px rgba(0,0,0,.35);pointer-events:none;font-family:var(--font-body)}
+  .turnobar{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;margin-top:10px;padding:9px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel)}
+  .turnobar .tbturno,.turnobar .tbordem{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .turnobar .tbturno b{font-family:var(--font-display);font-size:20px;min-width:26px;text-align:center}
+  .batsec{margin-top:14px;border-top:1px solid var(--line);padding-top:6px}
+  .batsec>summary{cursor:pointer;font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--ink2);padding:4px 0;list-style-position:inside}
+  .batsec>summary small{font-family:var(--font-body);font-weight:400;font-size:11.5px;color:var(--muted-tx);margin-left:6px}
+  .cmdtit{font-size:12px;letter-spacing:.4px;color:var(--muted-tx);margin-bottom:2px}
+  .cmdpasso{display:flex;gap:9px;margin-top:9px;padding-top:8px;border-top:1px dotted var(--line)}
+  .cmdnum{flex:none;width:20px;height:20px;border-radius:50%;background:var(--ink2);color:var(--panel);font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .cmdcorpo{flex:1;min-width:0}
+  .cmdrot{font-family:var(--font-display);font-size:13.5px} .cmdrot small{font-family:var(--font-body);font-size:11px;color:var(--muted-tx);margin-left:4px}
+  .tag.bad{color:var(--bad);border-color:var(--bad)}
+  .campo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;align-items:start}
+  .campocol{display:flex;flex-direction:column;gap:10px;min-width:0}
+  .campotit{font-family:var(--font-display);font-size:15px;font-weight:600;padding-bottom:4px;border-bottom:3px solid #3f6ca6}
+  .campotit.ladoIni{border-bottom-color:#a63f3f} .campotit small{font-family:var(--font-body);font-weight:400;color:var(--muted-tx);margin-left:4px}
+  @media(max-width:900px){.campo{grid-template-columns:minmax(0,1fr)}}
+  .uresumo{font-size:12px;color:var(--ink2);margin-top:6px;line-height:1.6}
+  .uedit{margin-top:4px} .uedit>summary{cursor:pointer;font-size:11.5px;color:var(--muted-tx)}
+  .ubloco{margin-top:8px;padding-top:6px;border-top:1px dashed var(--line)}
+  .ubloco .ulinha{margin-top:4px}
+  .ubtit{font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted-tx)}
+  .uefeito{font-size:11.5px;color:var(--muted-tx);margin-top:3px;line-height:1.45}
   tr.fichalinha td{font-size:11px;color:var(--muted-tx);border-top:none;padding-top:0}
   @media (max-width:720px){.cmdgrid{grid-template-columns:1fr}.ugrid{grid-template-columns:minmax(0,1fr)}}
   .qbResultado{display:flex;align-items:baseline;gap:12px;margin-top:12px;flex-wrap:wrap}
@@ -219,6 +247,11 @@
   .attrrow .brk input{width:48px;padding:3px 4px;font-size:11.5px;text-align:center}
   .attrrow .brk b{color:var(--ink2)}
   .attrrow .pool{grid-column:1/-1;font-size:11px;color:var(--muted-tx);margin-top:-2px}
+  .attrrow .conta{grid-column:1/-1;font-size:12px;margin-top:4px;border-top:1px dotted var(--line);padding-top:4px}
+  .attrrow .conta .cl{display:flex;justify-content:space-between;gap:10px;padding:1px 0;color:var(--ink2)}
+  .attrrow .conta .cl small{color:var(--muted-tx);margin-left:4px}
+  .attrrow .conta .cl b{font-variant-numeric:tabular-nums} .attrrow .conta .cl.pos b{color:var(--good)} .attrrow .conta .cl.neg b{color:var(--bad)}
+  .attrrow .conta .cl.tot{border-top:1px solid var(--line);margin-top:2px;padding-top:3px;font-weight:600;color:var(--ink)}
   .attrrow .pool .rest.bad{color:var(--bad);font-weight:600}
   .attrrow .pool .rest.good{color:var(--good);font-weight:600}
   .attrrow .numwrap{text-align:right}
@@ -240,9 +273,69 @@
   .torncard .tipo{display:inline-block;font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--bad);margin-bottom:3px}
 
   .saldos{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+  .lotes{display:flex;flex-direction:column;gap:5px}
+  .lote{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--good);border-radius:8px;padding:6px 10px;font-size:12.5px}
+  .lote.neg{border-left-color:var(--bad)}
+  .lote .lv{font-family:var(--font-display);font-weight:600;min-width:120px}
+  .lote.pos .lv{color:var(--good)} .lote.neg .lv{color:var(--bad)}
+  .lote .lm{flex:1;min-width:140px;color:var(--ink2)}
+  .lote .lp{font-size:11.5px;color:var(--muted-tx);white-space:nowrap}
+  .invlist{display:flex;flex-direction:column;gap:4px}
+  .invrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12.5px}
+  .invrow .il{min-width:170px;font-family:var(--font-display)} .invrow .il small{font-family:var(--font-body);color:var(--muted-tx)}
+  .invrow button{font-size:12px;padding:4px 9px}
+  .acontult{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:9px 12px;margin-bottom:6px}
+  .acontult.t-bom{border-left-color:var(--good)} .acontult.t-ruim{border-left-color:var(--bad)}
+  .acontult .an{font-family:var(--font-display);font-size:15px;margin:2px 0}
+  .acontult .ad{font-size:12.5px;color:var(--ink2);font-style:italic}
+  .acontult .ar{font-size:12.5px;margin-top:5px} .acontult .ar b.good{color:var(--good)} .acontult .ar b.bad{color:var(--bad)}
+  .acontult .ae{font-size:12.5px;margin-top:4px;color:var(--ink)}
+  .acontult .dados{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+  .acontult .dados span{border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12px;color:var(--muted-tx)}
+  .acontult .dados span.k{color:var(--ink);border-color:var(--accent);font-weight:600}
+  #viewEstacoes .secao{margin-top:12px}
+  .estcab{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .estcab .estnome{font-family:var(--font-display);font-size:22px}
+  .acontlista{display:flex;flex-direction:column;gap:6px}
+  .acontult.mini{padding:7px 10px;margin:0} .acontult.mini .an{font-size:13.5px}
+  .acontaberto{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;margin-bottom:10px}
+  .acontaberto.t-bom{border-left-color:var(--good)} .acontaberto.t-ruim{border-left-color:var(--bad)}
+  .acontaberto .an{font-family:var(--font-display);font-size:16px;margin:2px 0} .acontaberto .an small{font-family:var(--font-body);font-size:11px;color:var(--muted-tx);margin-left:6px}
+  .acontaberto .ad{font-size:12.5px;color:var(--ink2);font-style:italic}
+  .acontaberto .ae{font-size:12.5px;margin-top:4px} .acontaberto .ar{font-size:12.5px;margin-top:4px}
+  .acontaberto .ar b.good{color:var(--good)} .acontaberto .ar b.bad{color:var(--bad)}
+  .acontaberto .dados{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+  .acontaberto .dados span{border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12px;color:var(--muted-tx)} .acontaberto .dados span.k{color:var(--ink);border-color:var(--accent);font-weight:600}
+  .apasso{display:flex;gap:9px;margin-top:9px;padding-top:8px;border-top:1px dotted var(--line)}
+  .acontaberto .ajv{min-width:24px;text-align:center;font-family:var(--font-display);font-size:16px}
+  .acontaberto .anota{width:100%;min-height:44px;margin-top:6px;padding:6px 8px;font:inherit;font-size:12.5px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--ink)}
+  .obras{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
+  .obra{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+  .obra .ol{font-family:var(--font-display)} .obra .ol small{font-family:var(--font-body);color:var(--muted-tx)}
+  .obra .medidor{grid-column:1;height:8px;border-radius:4px;background:var(--panel2);border:1px solid var(--line);overflow:hidden}
+  .obra .medidor i{display:block;height:100%;background:var(--accent)}
+  .obra .op{grid-column:1;font-size:11.5px;color:var(--muted-tx)}
+  .obra .del{grid-column:2;grid-row:1 / span 3}
+  .estlink{background:none;border:none;padding:0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+  #viewEstacoes .tfl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px}
+  body.modo-jogador .so-mestre{display:none!important}
+  @media (max-width:640px){
+    .lote{display:grid;grid-template-columns:1fr auto;gap:2px 8px}
+    .lote .lv{grid-column:1} .lote .del{grid-column:2;grid-row:1 / span 3;align-self:center}
+    .lote .lm,.lote .lp{grid-column:1;min-width:0}
+    .invrow .il{flex-basis:100%}
+  }
   .saldo{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;color:var(--muted-tx)}
   .saldo b{font-variant-numeric:tabular-nums;font-family:var(--font-display)}
   .saldo b.good{color:var(--good)} .saldo b.bad{color:var(--bad)}
+  .casaresumo{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--cla,var(--accent));border-radius:8px;padding:10px 12px;font-size:13.5px;line-height:1.55;margin-bottom:10px}
+  .casaresumo .formal{font-size:12px;color:var(--muted-tx);margin-top:6px;font-style:italic}
+  textarea.historia{width:100%;min-height:110px;padding:8px 10px;font:inherit;font-size:13px;line-height:1.5;background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--ink)}
+  .vassala{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:6px}
+  .vassala .vlinha{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px} .vassala .vlinha input{flex:1;min-width:120px}
+  .vassala .vnome{font-family:var(--font-display);font-size:14.5px}
+  .vassala .vef{font-size:11.5px;color:var(--muted-tx)}
+  .resv{font-size:11.5px;font-weight:600} .resv.good{color:var(--good)} .resv.bad{color:var(--bad)}
 
   .ctab{width:100%;border-collapse:collapse;font-size:12.5px;font-family:var(--font-body)}
   .ctab th{text-align:left;color:var(--muted-tx);font-weight:500;padding:4px 6px 8px;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--line)}
@@ -307,7 +400,7 @@
   .origem.escolhido{cursor:default}
   .torncard .en{font-size:14.5px;font-weight:600;margin-bottom:4px;font-family:var(--font-display)}
   .torncard .ed{font-size:15px;color:var(--ink2);line-height:1.6;font-family:var(--font-voice);font-style:italic}
-  .torncard .gift{display:inline-block;margin-top:8px;font-size:11.5px;color:var(--seal)}
+  .torncard .gift{display:block;margin-top:6px;font-size:11.5px;color:var(--seal)} .torncard .gift.neg{color:var(--bad)}
   .torncard .em{font-size:10.5px;color:var(--muted-tx);display:flex;flex-wrap:wrap;gap:4px;border-top:1px dashed var(--line);padding-top:6px}
   .torncard .em span{background:rgba(44,38,32,.06);border-radius:4px;padding:1px 5px}
   .torncard .em span.pos{color:var(--good)} .torncard .em span.neg{color:var(--bad)}
@@ -546,6 +639,8 @@
   .attrrow .brk.reveal{display:none}
   .attrrow.aberto .brk.reveal{display:flex;opacity:1;max-height:none;pointer-events:auto;margin-top:6px}
   .attrrow:hover .brk.reveal{opacity:1}
+  .attrrow .conta.reveal{display:none}
+  .attrrow.aberto .conta.reveal{display:block;opacity:1;max-height:none;pointer-events:auto}
   .attrrow input,.attrrow button{cursor:auto}
 
   /* abas */
@@ -643,6 +738,12 @@
   .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(470px,100%),1fr));gap:12px}
   .tcard{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--cla-t);border-radius:var(--radius);padding:10px}
   .testand{width:64px;height:auto;align-self:start;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+  .tcena{grid-column:1/-1;height:96px;margin:-10px -10px 0;border-radius:var(--radius) var(--radius) 0 0;background:center 40%/cover no-repeat;
+    -webkit-mask-image:linear-gradient(180deg,#000 50%,transparent);mask-image:linear-gradient(180deg,#000 50%,transparent)}
+  .ucena{height:64px;margin:-10px -10px -24px;background:center 40%/cover no-repeat;opacity:.85;
+    -webkit-mask-image:linear-gradient(180deg,#000 30%,transparent);mask-image:linear-gradient(180deg,#000 30%,transparent)}
+  .ucard .uhead{position:relative}
+  .utaisa{width:20px;height:20px;border-radius:50%;object-fit:cover;object-position:50% 15%;vertical-align:-5px;margin:0 3px;border:1px solid var(--line)}
   .tcorpo{display:flex;flex-direction:column;gap:7px;min-width:0}
   .thead{display:flex;gap:6px;align-items:center}
   .thead select{font-size:13px;padding:4px 6px}
@@ -694,6 +795,13 @@
   .filtrotema button.on{background:var(--panel);border-color:var(--cla);color:var(--ink);font-weight:700}
   .eventgrid.origens{max-height:420px}
   #origemBox{margin-bottom:12px}
+
+  /* atributos derivados explicados */
+  button.derivado{background:none;border:none;border-bottom:1px dotted var(--muted-tx);border-radius:0;padding:0 0 1px;font-size:13px;color:var(--ink2);cursor:help}
+  button.derivado:hover,button.derivado.on{border-bottom-color:var(--cla);color:var(--ink)}
+  .derivadoexp{flex-basis:100%;margin-top:6px;padding:8px 10px;border-left:3px solid var(--cla);background:rgba(255,255,255,.45);font-size:13px;color:var(--ink2);line-height:1.5;max-width:75ch}
+  .ledgerline.derivado-l{cursor:help;flex-wrap:wrap}
+  .ledgerline.derivado-l .derivadoexp{margin-bottom:4px}
   @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -731,6 +839,7 @@
 
   <div class="tabbar" id="mainTabs">
     <button class="tabbtn on" id="tabBtnFamilia" onclick="setAbaPrincipal('familia')"><span class="ti" aria-hidden="true">家</span><span>Família</span></button>
+    <button class="tabbtn" id="tabBtnEstacoes" onclick="setAbaPrincipal('estacoes')"><span class="ti" aria-hidden="true">季</span><span>Estações <span class="tag" id="tabEstacoesCount"></span></span></button>
     <button class="tabbtn" id="tabBtnPersonagens" onclick="setAbaPrincipal('personagens')"><span class="ti" aria-hidden="true">人</span><span>Personagens <span class="tag" id="tabPersonagensCount"></span></span></button>
     <button class="tabbtn" id="tabBtnBatalha" onclick="setAbaPrincipal('batalha')"><span class="ti" aria-hidden="true">兵</span><span>Batalha<span class="tl-longo"> em Massa</span></span></button>
     <button class="tabbtn" id="tabBtnMapa" onclick="setAbaPrincipal('mapa')"><span class="ti" aria-hidden="true">図</span><span>Mapa<span class="tl-longo"> de Rokugan</span></span></button>
@@ -741,8 +850,8 @@
     <div class="aneisgrid" id="resumoAneis"></div>
     <div class="resumolinha" id="resumoLinha">
       <div class="resumovals" id="resumoVals"></div>
-      <div class="resumoestacao"><span id="estacaoLabel"></span>
-        <button class="primary" id="btnAvancarEstacao" title="Rola o teste de manutenção dos Anéis que a estação favorece (TN 5 × Nível + 10)">Avançar estação</button></div>
+      <div class="resumoestacao"><button type="button" class="estlink" id="estacaoLabel" onclick="setAbaPrincipal('estacoes')" title="abrir a aba Estações: acontecimentos, temporários e investimentos"></button>
+        <button class="primary" id="btnAvancarEstacao" title="Vira a estação: vencem os lotes, os investimentos prontos viram atributo e a estação nova traz um acontecimento em aberto, que o Mestre resolve na aba Estações.">Avançar estação</button></div>
     </div>
     <div class="resumoalertas" id="resumoAlertas"></div>
   </section>
@@ -757,7 +866,6 @@
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px">
       <div class="grp">Nome <input type="text" id="nomeInput" placeholder="Nome da família" style="width:170px"></div>
       <div class="grp">Daimyo <input type="text" id="daimyoInput" placeholder="Nome do Daimyo" style="width:150px"></div>
-      <div class="grp">Ramo Familiar <input type="text" id="ramoInput" placeholder="ex.: um ramo da família Kakita" style="width:220px" list="ramoSugestoes"><datalist id="ramoSugestoes"></datalist></div>
       <div class="grp">Idade da Família
         <select id="idadeSel">
           <option value="nascente">Nascente (só a origem)</option>
@@ -773,11 +881,11 @@
     <div class="hint" style="margin-bottom:6px">Clã — define os modificadores de base da família.</div>
     <div class="origens" id="clasList"></div>
   </div>
+<div class="panel"><h2><span class="kan">譜</span>A Casa<span class="sub">ramo, senhor, história e famílias vassalas</span></h2>
+    <div id="casaBox"></div>
+  </div>
 <div class="panel"><h2><span class="kan">性</span>Atributos<span class="sub">o que a família é, e o que ela faz</span></h2>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
-          <span class="tag" id="pontosLabel"></span>
-          <button class="ghost" onclick="zerarPontos()" title="Devolve os pontos distribuídos">zerar pontos</button>
-        </div>
+        <div class="hint" style="margin:0 0 10px">Idade, clã, origem e eventos fazem o atributo. Clique num atributo para ver a conta dele e a do disponível.</div>
         <div class="attrlist" id="attrs"></div>
         <div class="testefam" id="testeFamilia"></div>
       </div>
@@ -802,7 +910,7 @@
         <div class="log" id="log"></div>
       </div>
 <div class="panel"><h2><span class="kan">犠</span>Sacrifícios de Honra<span class="sub" id="sacrificiosTotal">nada sacrificado ainda</span></h2>
-        <div class="hint" style="margin-bottom:8px">Dois jeitos de gastar a Honra da família: um jogador queima Honra por um bônus durante a aventura (fica registrado quem e quando), ou a família faz algo desonroso pra progredir mais rápido, trocando Honra por pontos em outro atributo.</div>
+        <div class="hint" style="margin-bottom:8px">Dois jeitos de gastar a Honra da família: um jogador queima Honra por um bônus durante a aventura (fica registrado quem e quando), ou a família faz algo desonroso pra progredir mais rápido, trocando Honra por disponível num pool (Domínio, Riqueza, Influência ou Autoridade), sem mexer no atributo.</div>
         <div class="linhas" id="sacrificios"></div>
         <div style="display:flex;gap:8px;margin-top:8px">
           <button class="ghost" id="btnAddSacrificioRolamento">+ rolamento em jogo</button>
@@ -878,9 +986,21 @@
     </div>
     <div class="panel">
       <h2><span class="kan">巻</span>Referência para o Mestre<span class="sub">oportunidades heroicas</span></h2>
-      <div class="hint" style="margin-bottom:10px">Situações prontas pra jogar num personagem no meio da batalha, tiradas da 4ª edição. Nenhuma delas tem efeito automático aqui — são ganchos de cena. "Comando" são as que dependem de liderar tropa; "Pessoal" são as que o personagem resolve sozinho.</div>
+      <div class="hint" style="margin-bottom:10px">Situações prontas pra jogar num personagem no meio da batalha, tiradas da 4ª edição. Nenhuma delas tem efeito automático aqui — são ganchos de cena. "Comando" são as que dependem de liderar tropa; "Pessoal" são as que o personagem resolve sozinho. Na conversão para este modelo: "+5 no Battle Roll do general" vira +1k1 na próxima Inspiração ou Mudança de Tática; "−5 no próximo turno do general inimigo" vira "ele não pode Inspirar no próximo turno"; +3 / −3 vira +1k0 / −1k0.</div>
       <div class="linha" style="margin-bottom:10px"><button class="ghost" onclick="sortearOportunidade('pessoal')">Sortear (Pessoal)</button><button class="ghost" onclick="sortearOportunidade('comando')">Sortear (Comando)</button></div>
       <div class="linhas" id="oportunidadesBox"></div>
+    </div>
+  </div>
+
+  <div id="viewEstacoes" style="display:none">
+    <div class="panel"><div id="estCabecalho"></div></div>
+    <div class="grid">
+      <div><div class="panel"><h2><span class="kan">季</span>Acontecimentos<span class="sub">o que cada estação trouxe</span></h2><div id="estAcont"></div></div></div>
+      <div>
+        <div class="panel"><h2><span class="kan">蔵</span>Temporários<span class="sub">ganhos e perdas com prazo; somam no disponível, não no Nível</span></h2><div id="estReserva"></div></div>
+        <div class="panel"><h2><span class="kan">築</span>Investimentos<span class="sub">disponível virando atributo, com tempo</span></h2><div id="estInvest"></div></div>
+        <div class="panel so-mestre"><h2><span class="kan">令</span>Ferramentas do Mestre<span class="sub">fora do sorteio da estação</span></h2><div id="estMestre"></div></div>
+      </div>
     </div>
   </div>
 
@@ -960,7 +1080,9 @@ const BASE_IDADE={ /* recalibrada em 2026-11-04 com a origem e os eventos novos 
  "anciã":     {dominio:22,riqueza:35,influencia:40,autoridade:35,vazio:40},
  milenar:     {dominio:18,riqueza:34,influencia:41,autoridade:35,vazio:41}
 };
-const PONTOS_LIVRES=10,PONTOS_MAX_ATTR=5;
+/* 2026-11 (Thiago): sem pontos livres na criação; a Riqueza e os investimentos fazem esse papel.
+   As fichas antigas guardam o que tinham distribuído no ajuste (migrarPontosV6). */
+const PONTOS_LIVRES=0,PONTOS_MAX_ATTR=0;
 const TIPO_EVENTO_LABEL={favoravel:"favorável",adverso:"adverso",ambiguo:"ambíguo",origem:"origem"};
 const TEMA_EVENTO={guerra:"Guerra",corte:"Corte",espirito:"Espírito",terra:"Terra",comercio:"Comércio"};
 
@@ -1029,8 +1151,26 @@ const ESTANDARTE_CLA=new Set(["caranguejo","garca","dragao","leao","louva","feni
 function estandarteSrc(cla){return "img/estandartes/"+(ESTANDARTE_CLA.has(cla)?cla:(cla?"listrado":"gota"))+".png";}
 /* Retratos padrão dos personagens (img/retratos). Um link próprio substitui o padrão. */
 /* O ukiyo-e é o padrão até cada jogador personalizar o seu. */
-const RETRATOS=[["ukiyoe","Gravura ukiyo-e","img/retratos/ukiyoe.jpg"],["padrao","Samurai de armadura","img/retratos/padrao.png"],["tinta","Bushi em tinta","img/retratos/tinta.png"]];
-function retratoSrc(p){if(p.retratoUrl)return p.retratoUrl;const r=RETRATOS.find(x=>x[0]===p.retrato);return(r||RETRATOS[0])[2];}
+/* 2026-11: um retrato ukiyo-e por papel, homem e mulher (gerados pelo Thiago a partir de
+   "Prompts de retratos.md"). O padrão é "pelo papel": muda sozinho quando o papel muda. */
+const RETRATO_PAPEIS=[["bushi","Bushi"],["cortesao","Cortesão"],["shugenja","Shugenja"],["monge","Monge"],["daimyo","Daimyō"]];
+const RETRATOS=[["auto_h","Pelo papel, homem",""],["auto_m","Pelo papel, mulher",""]]
+  .concat(...RETRATO_PAPEIS.map(([k,l])=>[[k+"_h",l+", homem","img/retratos/"+k+"_h.jpg"],[k+"_m",l+", mulher","img/retratos/"+k+"_m.jpg"]]))
+  .concat([["gunso","Gunsō","img/retratos/gunso.jpg"],["ukiyoe","Gravura ukiyo-e","img/retratos/ukiyoe.jpg"],["padrao","Samurai de armadura","img/retratos/padrao.png"],["tinta","Bushi em tinta","img/retratos/tinta.png"]]);
+function papelRetrato(cat){
+  cat=cat||"";
+  if(/^Bushi/.test(cat))return"bushi";if(/^Cortesão/.test(cat))return"cortesao";if(/^Shugenja/.test(cat))return"shugenja";if(/^Monge/.test(cat))return"monge";
+  const pp=PERSONAGEM_PAPEL.find(x=>x.nome===cat);if(pp&&pp.efeito==="fortuna")return"daimyo";
+  return"";
+}
+function retratoSrc(p){
+  if(p.retratoUrl)return p.retratoUrl;
+  const sel=p.retrato||"auto_h";
+  if(sel==="auto_h"||sel==="auto_m"){const k=papelRetrato(p.categoria);return k?"img/retratos/"+k+(sel==="auto_m"?"_m":"_h")+".jpg":"img/retratos/ukiyoe.jpg";}
+  const r=RETRATOS.find(x=>x[0]===sel);return r&&r[2]?r[2]:"img/retratos/ukiyoe.jpg";
+}
+/* imagem de cada tipo de tropa (img/tropas) */
+function tropaCenaSrc(tipo){return "img/tropas/"+(TROPA_TIPOS[tipo]?tipo:"ashigaru")+".jpg";}
 function cenaPrincipal(){
   let melhor=null,custo=-1;
   (S.terrenos||[]).forEach(t=>{const x=terrenoLinhaCalc(t),c=x.custoDefesa+x.custoTerras;if(c>custo){custo=c;melhor=t;}});
@@ -1137,18 +1277,20 @@ function aplicarTemaCla(){
    Os mods antigos ficam em EVENTOS_MODS_V1, só para a migração das fichas salvas. */
 const EVENTOS_MODS_V1={fundacao_decreto:{influencia:4,vazio:4},recompensa_militar:{autoridade:4,vazio:4},terras_conflito:{dominio:6,riqueza:4,autoridade:-4,vazio:1},alianca_casamento:{riqueza:2,influencia:4,vazio:2},ramo_elevado:{dominio:5,influencia:4,autoridade:-2,vazio:4},ascensao_heroi:{dominio:2,autoridade:4,vazio:2},fundacao_religiosa:{autoridade:2,vazio:6},funcao_administrativa:{riqueza:2,influencia:2,autoridade:4},adocao_familia:{influencia:2,autoridade:4,vazio:2},usurpacao_terras:{dominio:4,influencia:-4,vazio:-4},vitoria_torneio:{influencia:2,vazio:4},refem_prestigio:{riqueza:-2,influencia:2,vazio:2},rivalidade_juramentada:{vazio:-2},acordo_comercial:{dominio:6,riqueza:4,influencia:2,vazio:-1},artesao_renomado:{dominio:2,riqueza:4,vazio:2},escola_artistica:{riqueza:2,influencia:4,vazio:2},construcao_fortaleza:{dominio:8,riqueza:-4,influencia:2,autoridade:4},desastre_natural:{dominio:-6,riqueza:-4,vazio:2},fome_prolongada:{dominio:-4,influencia:-2,autoridade:-2},era_prosperidade:{dominio:4,riqueza:6,autoridade:-2},magistrado_renome:{influencia:4,autoridade:4,vazio:4},corrupcao_escandalo:{influencia:-4,vazio:-8},gloria_batalha:{autoridade:4,vazio:2},derrota_marcante:{autoridade:-4,vazio:-2},contato_terras_sombrias:{autoridade:2,vazio:-6},bencao_kami:{vazio:4},templo_importante:{dominio:6,autoridade:-1,vazio:4},intervencao_senhor:{influencia:-2,vazio:-2},guerra_prolongada:{dominio:-6,riqueza:-2,influencia:-2,autoridade:-2},segredo_guardado:{riqueza:2,influencia:4,autoridade:2,vazio:4},reforma_interna:{dominio:2,influencia:2,autoridade:4,vazio:2},revolta_camponesa:{dominio:-4,riqueza:-2,autoridade:-2,vazio:-2},migracao_massa:{dominio:2,riqueza:2,autoridade:-4},recurso_valioso:{dominio:11,riqueza:6,influencia:2,autoridade:-2},isolamento_deliberado:{riqueza:-4,influencia:-4,autoridade:2},tradicao_marcial:{dominio:2,autoridade:4,vazio:2},decadencia_administrativa:{dominio:-2,riqueza:-4,influencia:-2,autoridade:-4,vazio:-2},figura_espiritual:{dominio:10,riqueza:-2,influencia:4,autoridade:2,vazio:10},perda_territorio:{dominio:-8,riqueza:-2,autoridade:-4,vazio:-2},reconstrucao_pos_guerra:{dominio:2,autoridade:-2,vazio:2},heranca_castelo_amaldicoado:{dominio:9,autoridade:-1},ruinas_ancestrais_descobertas:{dominio:3,riqueza:-1,vazio:4},porto_herdado_afogados:{dominio:6,riqueza:5},fortaleza_cedida_cla:{dominio:14,riqueza:-6,autoridade:6,vazio:4}};
 const EVENTOS=[
- {id:"fundacao_decreto",nome:"Fundação por Decreto Imperial",tipo:"origem",tema:"corte",mods:{influencia:10,autoridade:-6,vazio:2}},
- {id:"recompensa_militar",nome:"Recompensa por Serviço Militar",tipo:"origem",tema:"guerra",mods:{dominio:-6,autoridade:10,vazio:2}},
+ {id:"fundacao_decreto",nome:"Fundação por Decreto Imperial",tipo:"origem",tema:"corte",mods:{influencia:5,autoridade:-6,vazio:2}},
+ {id:"recompensa_militar",nome:"Recompensa por Serviço Militar",tipo:"origem",tema:"guerra",mods:{dominio:-6,autoridade:5,vazio:2}},
  {id:"terras_conflito",nome:"Terras Concedidas após Conflito",tipo:"favoravel",tema:"guerra",mods:{dominio:7,riqueza:3,influencia:-6,autoridade:8},
   concede:{tipo:"terreno",terreno:"planicies",c1:"campo_batalha",nomeSugerido:"Campos de Kessen-no-Hara"}},
  {id:"alianca_casamento",nome:"Aliança de Casamento Estratégico",tipo:"favoravel",tema:"corte",mods:{riqueza:2,influencia:9,vazio:-5}},
  {id:"ramo_elevado",nome:"Ramo Elevado de Grande Família",tipo:"origem",tema:"corte",mods:{dominio:13,influencia:8,autoridade:-6,vazio:3},
   concede:{tipo:"terreno",terreno:"planicies",c1:"vila",nomeSugerido:"Vila-Dote da Grande Casa"}},
- {id:"ascensao_heroi",nome:"Ascensão de Herói Local",tipo:"origem",tema:"guerra",mods:{influencia:-6,autoridade:9,vazio:3}},
+ {id:"ascensao_heroi",nome:"Ascensão de Herói Local",tipo:"origem",tema:"guerra",mods:{influencia:-6,autoridade:4,vazio:3}},
  {id:"fundacao_religiosa",nome:"Fundação Religiosa ou Profética",tipo:"origem",tema:"espirito",mods:{autoridade:-5,vazio:10}},
- {id:"funcao_administrativa",nome:"Criação para Função Administrativa",tipo:"origem",tema:"comercio",mods:{riqueza:9,autoridade:2,vazio:-5}},
- {id:"adocao_familia",nome:"Adoção da Família",tipo:"origem",tema:"corte",mods:{influencia:9,autoridade:2,vazio:-5}},
- {id:"usurpacao_terras",nome:"Usurpação ou Apropriação de Terras",tipo:"origem",tema:"terra",mods:{dominio:10,autoridade:3,vazio:-8}},
+ {id:"funcao_administrativa",nome:"Criação para Função Administrativa",tipo:"origem",tema:"comercio",mods:{dominio:9,riqueza:4,autoridade:2,vazio:-5},
+  concede:{tipo:"terreno",terreno:"planicies",c1:"aldeia",nomeSugerido:"Aldeia de Yakuba-mura"}},
+ {id:"adocao_familia",nome:"Adoção da Família",tipo:"origem",tema:"corte",mods:{influencia:4,autoridade:2,vazio:-5}},
+ {id:"usurpacao_terras",nome:"Usurpação ou Apropriação de Terras",tipo:"origem",tema:"terra",mods:{dominio:19,autoridade:3,vazio:-8},
+  concede:{tipo:"terreno",terreno:"planicies",c1:"terras_cultivaveis",nomeSugerido:"Campos de Ubai-no-Hara"}},
  {id:"vitoria_torneio",nome:"Vitória em Torneio",tipo:"favoravel",tema:"guerra",mods:{influencia:2,autoridade:-5,vazio:9}},
  {id:"refem_prestigio",nome:"Refém de Prestígio",tipo:"favoravel",tema:"corte",mods:{influencia:9,autoridade:-5,vazio:2}},
  {id:"rivalidade_juramentada",nome:"Rivalidade Juramentada",tipo:"ambiguo",tema:"corte",mods:{influencia:-6,autoridade:8,vazio:-4}},
@@ -1193,15 +1335,16 @@ const EVENTOS=[
  {id:"fortaleza_cedida_cla",nome:"Fortaleza Cedida pelo Clã",tipo:"favoravel",tema:"guerra",mods:{dominio:34,influencia:-5,autoridade:8,vazio:2},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"kyuden",nomeSugerido:"Kyuden da Linhagem"}},
  /* 2026-11-04: origens novas e eventos novos (ver "Eventos de Origem - Proposta.md") */
- {id:"mercadores_nome",nome:"Mercadores que Compraram um Nome",tipo:"origem",tema:"comercio",mods:{riqueza:10,influencia:2,vazio:-6}},
- {id:"ronin_elevados",nome:"Ronin Elevados",tipo:"origem",tema:"guerra",mods:{dominio:2,influencia:-6,autoridade:9}},
- {id:"casa_caida",nome:"Sobreviventes de uma Casa Caída",tipo:"origem",tema:"espirito",mods:{riqueza:-6,influencia:2,vazio:9}},
+ {id:"mercadores_nome",nome:"Mercadores que Compraram um Nome",tipo:"origem",tema:"comercio",mods:{riqueza:5,influencia:2,vazio:-6}},
+ {id:"ronin_elevados",nome:"Ronin Elevados",tipo:"origem",tema:"guerra",mods:{dominio:2,influencia:-6,autoridade:4}},
+ {id:"casa_caida",nome:"Sobreviventes de uma Casa Caída",tipo:"origem",tema:"espirito",mods:{dominio:5,riqueza:-6,influencia:2,vazio:9},
+  concede:{tipo:"terreno",terreno:"alagadas",c1:"ruinas_antigas",nomeSugerido:"Ruínas de Kuzure-no-Yashiki"}},
  {id:"linhagem_primeiros",nome:"Linhagem dos Primeiros",tipo:"origem",tema:"espirito",idadeMin:"antiga",mods:{influencia:4,autoridade:-6,vazio:8}},
  {id:"exilados_cla",nome:"Exilados de Outro Clã",tipo:"origem",tema:"comercio",mods:{riqueza:8,influencia:-6,autoridade:3}},
  {id:"guardioes_fronteira",nome:"Guardiões da Fronteira",tipo:"origem",tema:"guerra",mods:{dominio:16,influencia:-5,autoridade:8,vazio:2},
   concede:{tipo:"terreno",terreno:"colinas",c1:"torre_vigia",nomeSugerido:"Torre do Passo Esquecido"}},
  {id:"escolhidos_kami",nome:"Escolhidos pelos Kami",tipo:"origem",tema:"espirito",mods:{dominio:-6,influencia:3,vazio:9}},
- {id:"uniao_duas_casas",nome:"União de Duas Casas",tipo:"origem",tema:"corte",mods:{riqueza:3,influencia:8,vazio:-6}},
+ {id:"uniao_duas_casas",nome:"União de Duas Casas",tipo:"origem",tema:"corte",mods:{riqueza:3,influencia:4,vazio:-6}},
  {id:"rota_comercial_cedida",nome:"Rota Comercial Cedida",tipo:"favoravel",tema:"comercio",mods:{dominio:13,riqueza:9,influencia:2,vazio:-6},
   concede:{tipo:"terreno",terreno:"planicies",c1:"rota_comercial",nomeSugerido:"Estrada dos Mil Fardos"}},
  {id:"dojo_renomado",nome:"Dojo Renomado",tipo:"favoravel",tema:"guerra",mods:{riqueza:-6,autoridade:9,vazio:2}},
@@ -1604,7 +1747,7 @@ const CLA_TROPA={
  dragao:{anel:"vazio",esp:["Mente quieta","A postura Centro dá +2k2 mais o Vazio, em vez de +1k1 mais o Vazio."],man:["Dois Céus","fogo",20,"Ataca duas unidades adjacentes, sem penalidade em nenhuma."]},
  leao:{anel:"fogo",esp:["Coragem dos Akodo","+1 dado rolado em moral; no primeiro teste falhado da batalha, fica Abalada em vez de descer mais."],man:["Fúria Matsu","fogo",15,"Carga que ignora o bônus da postura do alvo e causa +1 golpe; depois, -5 no TN até a próxima ativação."]},
  fenix:{anel:"vazio",esp:["Bênção dos kami","Rerrola um teste da unidade, uma vez por batalha."],man:["Guarda Shiba","terra",15,"Até a próxima ativação, os golpes que uma unidade aliada adjacente receberia vêm para esta."]},
- escorpiao:{anel:"ar",esp:["Emboscada","No turno em que é revelada, quem ela ataca não pode mudar de postura."],man:["Bandeiras Falsas","ar",0,"Contest contra o Rikugunshōkan inimigo: ele tem -1k1 no próximo Contest de Comando e não pode Inspirar no próximo turno; a unidade se reposiciona até Água casas sem tomar ataque grátis."]},
+ escorpiao:{anel:"ar",esp:["Emboscada","No turno em que é revelada, quem ela ataca não pode mudar de postura."],man:["Bandeiras Falsas","ar",0,"Contest contra o Rikugunshōkan inimigo: ele não pode Inspirar no próximo turno; a unidade se reposiciona até Água casas sem tomar ataque grátis."]},
  unicornio:{anel:"agua",esp:["Cavaleiros","Se começou o turno fora de contato, a Carga ganha +1 casa e +1k0."],man:["Tempestade Utaku","agua",20,"Carga que atravessa a unidade alvo e termina do outro lado; o alvo testa moral."]},
  louva:{anel:"agua",esp:["Lâminas de aluguel","Pode receber o Treinamento de outro clã, pagando o instrutor estrangeiro, e mantém esta especialidade."],man:["Abordagem","agua",15,"Move para o contato ignorando água, muralha e terreno difícil, e ataca com +1k0 (+1k1 em batalha naval)."]},
  texugo:{anel:"terra",esp:["Filhos da montanha","+1k0 em tudo em terreno montanhoso."],man:["Avalanche","terra",20,"Carga a partir de terreno mais alto, com +2k1 em vez de +1k1."]},
@@ -1628,7 +1771,8 @@ const CLA_TROPA={
    Anéis, as posturas são as cinco da 4ª edição, cada manobra e tática pertence a um Anel.
    Modelo completo e números da calibração em "Batalha em Massa - Modelo v7.md". O
    Rikugunshōkan não comanda as unidades: cada jogador comanda a sua (é o Taisa dela); o
-   comandante pesa pela Tática, pelo Discurso, pela Mudança de Tática e pela Presença. */
+   comandante pesa pela Tática (antes da batalha), por Inspirar (uma vez por turno) e pela
+   Mudança de Tática, quando o campo dá motivo. */
 
 const TERRENO_BATALHA_VISUAL={
  "":{nome:"Terreno não definido",emoji:"◻",cor:"transparent"},
@@ -1698,7 +1842,7 @@ const TATICAS=[
  {id:"martelo",nome:"Martelo e Bigorna",anel:"agua",tn:20,efeito:"Flanquear tem TN -5 e +1k0 no ataque.",raise:"+1k1 em vez de +1k0"},
  {id:"atrito",nome:"Atrito",anel:"agua",tn:15,efeito:"A partir do 3º turno, as unidades inimigas têm +5 no TN dos testes de moral.",raise:"a partir do 2º turno"},
  {id:"cunha",nome:"Cunha",anel:"fogo",tn:20,efeito:"Toda Carga ganha +1k0.",raise:"+1k1 em vez de +1k0"},
- {id:"cabeca",nome:"Golpe na Cabeça",anel:"fogo",tn:25,efeito:"Unidades que atacam o posto de comando inimigo ganham +1k1; o comandante inimigo tem -1k0 no Contest de Comando.",raise:"-1k1"},
+ {id:"cabeca",nome:"Golpe na Cabeça",anel:"fogo",tn:25,efeito:"Unidades que atacam o posto de comando inimigo ganham +1k1; o comandante inimigo tem -1k0 para Inspirar e para Mudar de Tática.",raise:"-1k1 em vez de -1k0"},
  {id:"emboscada",nome:"Emboscada",anel:"ar",tn:25,efeito:"Exige terreno que esconda. As unidades escondidas só aparecem quando agem e não podem ser atacadas antes.",raise:"uma unidade a mais escondida"},
  {id:"fraqueza",nome:"Falsa Fraqueza",anel:"ar",tn:20,efeito:"Fingir Retirada ganha +1k1, e o inimigo que a seguir tem -10 no TN em vez de -5.",raise:"+1k1 a mais"},
  {id:"coracao",nome:"Um Só Coração",anel:"vazio",tn:20,efeito:"Toda unidade começa com +1 Ponto de Vazio.",raise:"+2 em vez de +1"}
@@ -1757,9 +1901,9 @@ const CONVERSAO_REGRAS={
 function uid(){return Math.random().toString(36).slice(2,8);}
 function esc(s){return(s||"").toString().replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
 function estadoInicial(){return{
-  nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",idade:"recente",versaoAtrib:2,
+  nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",familiaPrincipal:"",senhor:"",sede:"",lema:"",historia:"",vassalas:[],idade:"recente",versaoAtrib:2,
   base:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},
-  pontos:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},origem:null,versaoEventos:3,
+  pontos:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},origem:null,versaoEventos:3,reservas:[],versaoReservas:2,investimentos:[],historicoAcontecimentos:[],acontAbertos:[],versaoPontos:1,versaoCasa:1,
   eventos:[],terrenos:[],personagens:[],tropas:[],conversoes:[],feed:[],
   conquistas:[],estacaoIdx:0,anoEstacao:1,sacrificios:[],
   batalhaAtual:null,batalhas:[],marcacoesMapa:[],
@@ -1777,21 +1921,7 @@ const ESTACOES=["Primavera","Verão","Outono","Inverno"];
 const ESTACAO_FOCO={Primavera:["dominio","riqueza"],"Verão":["autoridade"],Outono:["riqueza","dominio"],Inverno:["influencia","vazio"]};
 function d10(){return 1+Math.floor(Math.random()*10);}
 function pickRandom(arr){return arr[Math.floor(Math.random()*arr.length)];}
-/* Pontos livres da criação: PONTOS_LIVRES no total, no máximo PONTOS_MAX_ATTR num atributo. */
-function setPonto(attr,delta){
-  if(bloqueadoLeitura())return;
-  if(!S.pontos)S.pontos={};
-  const atual=pontosAttr(attr),novo=atual+delta;
-  if(novo<0||novo>PONTOS_MAX_ATTR)return;
-  if(delta>0&&pontosUsados()>=PONTOS_LIVRES)return;
-  S.pontos[attr]=novo;salvar();render();
-}
-function sortearPontos(){
-  S.pontos={dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0};
-  let guarda=0;
-  while(pontosUsados()<PONTOS_LIVRES&&guarda++<200){const k=pickRandom(ATRIBUTOS)[0];if(S.pontos[k]<PONTOS_MAX_ATTR)S.pontos[k]++;}
-}
-function zerarPontos(){if(bloqueadoLeitura())return;S.pontos={dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0};salvar();render();}
+function sortearPontos(){S.pontos={dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0};}
 function salvarLocal(){try{localStorage.setItem("l5r_familia_v1",JSON.stringify(S));}catch(e){}}
 function salvar(){salvarLocal();agendarPush();}
 function carregar(){try{const r=localStorage.getItem("l5r_familia_v1");return r?JSON.parse(r):null;}catch(e){return null;}}
@@ -1960,7 +2090,52 @@ function migrarOrigemV3(st,jaEraV2){
   /* outras origens que tenham ficado entre os eventos comuns continuam lá, valendo o mesmo */
   st.versaoEventos=3;return true;
 }
-function migrarEstado(st){const jaV2=!!st&&st.versaoAtrib>=2;const a=migrarAtributosV2(st),b=migrarBatalhaV7(st),c=migrarOrigemV3(st,jaV2);return a||b||c;}
+/* Migração para a Reserva (2026-11): a ficha ganha a lista de lotes. Três origens passaram a dar
+   uma terra concreta, e o Domínio delas subiu o custo dela; nas fichas que já existiam a terra não
+   veio, então a diferença sai do ajuste e o total não muda. Os personagens dados pela origem só
+   valem para origem escolhida daqui em diante. */
+const ORIGEM_TERRA_V4={funcao_administrativa:9,usurpacao_terras:9,casa_caida:5};
+function migrarReservasV4(st,jaEraV2){
+  if(!st||st.versaoReservas>=1)return false;
+  st.reservas=st.reservas||[];
+  if(jaEraV2&&st.base){
+    const ids=(st.origem?[st.origem]:[]).concat(st.eventos||[]);
+    let d=0;ids.forEach(id=>{d+=ORIGEM_TERRA_V4[id]||0;});
+    if(d)st.base.dominio=(Number(st.base.dominio)||0)-d;
+  }
+  st.versaoReservas=1;return true;
+}
+/* Migração v5 (2026-11): metade do Anel principal de oito origens virou lote. A ficha antiga não
+   recebe o lote; a metade volta ao ajuste e o total não muda. Personagem, conversão, Honra
+   queimada e manutenção de tropa passaram para o disponível: o disponível não muda, mas o total
+   e o Nível dos pools podem cair, porque deixaram de contar ali. */
+const ORIGEM_METADE_V5={fundacao_decreto:["influencia",5],recompensa_militar:["autoridade",5],ascensao_heroi:["autoridade",5],
+  funcao_administrativa:["riqueza",5],adocao_familia:["influencia",5],mercadores_nome:["riqueza",5],ronin_elevados:["autoridade",5],uniao_duas_casas:["influencia",4]};
+function migrarReservasV5(st,jaEraV2){
+  if(!st||st.versaoReservas>=2)return false;
+  if(jaEraV2&&st.base){
+    (st.origem?[st.origem]:[]).concat(st.eventos||[]).forEach(id=>{const m=ORIGEM_METADE_V5[id];if(m)st.base[m[0]]=(Number(st.base[m[0]])||0)+m[1];});
+  }
+  st.investimentos=st.investimentos||[];
+  st.versaoReservas=2;return true;
+}
+/* Migração v6 (2026-11): sem pontos livres. O que a ficha tinha distribuído vai para o ajuste;
+   o total não muda. */
+function migrarPontosV6(st){
+  if(!st||st.versaoPontos>=1)return false;
+  st.base=st.base||{};const pts=st.pontos||{};
+  Object.keys(pts).forEach(k=>{const v=Number(pts[k])||0;if(v)st.base[k]=(Number(st.base[k])||0)+v;});
+  st.pontos={dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0};
+  st.versaoPontos=1;return true;
+}
+/* Migração v7 (2026-11): "um ramo da família Kakita" vira a família principal. */
+function migrarCasaV7(st){
+  if(!st||st.versaoCasa>=1)return false;
+  const m=/^\s*um ramo da fam[ií]lia\s+(\S+)\s*$/i.exec(st.ramoFamiliar||"");
+  if(m&&!st.familiaPrincipal){st.familiaPrincipal=m[1];st.ramoFamiliar="";}
+  st.vassalas=st.vassalas||[];st.versaoCasa=1;return true;
+}
+function migrarEstado(st){const jaV2=!!st&&st.versaoAtrib>=2;const a=migrarAtributosV2(st),b=migrarBatalhaV7(st),c=migrarOrigemV3(st,jaV2),d=migrarReservasV4(st,jaV2),e=migrarReservasV5(st,jaV2),f=migrarPontosV6(st),g=migrarCasaV7(st);return a||b||c||d||e||f||g;}
 migrarEstado(S);
 if(!S.batalhas)S.batalhas=[];
 if(S.batalhaAtual===undefined)S.batalhaAtual=null;
@@ -1991,7 +2166,10 @@ function conquistasMod(attr){let s=0;(S.conquistas||[]).forEach(c=>{(c.itens||[]
 function personagemMod(attr){let s=0;S.personagens.forEach(p=>{const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito===attr)s+=papel.valor;});return s;}
 function fortunaPersonagem(){let s=0;S.personagens.forEach(p=>{const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito==="fortuna")s+=papel.valor;});return s;}
 function personagemCusto(cat){const p=PERSONAGEM_PAPEL.find(x=>x.nome===cat);return p?p.custo:0;}
-function personagensCustoTotal(){return S.personagens.reduce((s,p)=>s+personagemCusto(p.categoria),0);}
+/* 2026-11: personagem dado pela origem (doado) não custa Influência. Se o Mestre subir o papel
+   dele (Bushi Jovem → Experiente), paga só a diferença. */
+function personagemCustoP(p){const c=personagemCusto(p.categoria);return p&&p.doado?Math.max(0,c-personagemCusto(p.categoriaDoada)):c;}
+function personagensCustoTotal(){return S.personagens.reduce((s,p)=>s+personagemCustoP(p),0);}
 /* O Honor Rank oficial da 4ª edição (0-10, na trilha de Honra/Glória/Status/Mancha)
    de cada personagem pesa no Vazio da família — vivos ainda representam a casa no
    dia a dia, mortos deixam a Honra deles como legado que não se apaga. Os dois
@@ -2120,17 +2298,39 @@ function terrenoLinhaCalc(row){
 function terrenosTotais(){let cd=0,ct=0,f=0;S.terrenos.forEach(r=>{const x=terrenoLinhaCalc(r);cd+=x.custoDefesa;ct+=x.custoTerras;f+=x.fortuna;});return{custoDefesa:cd,custoTerras:ct,fortuna:f};}
 function honraSacrificadaTotal(){return(S.sacrificios||[]).reduce((s,x)=>s+(Number(x.valor)||0),0);}
 function sacrificioProgressoMod(attr){let s=0;(S.sacrificios||[]).forEach(x=>{if(x.tipo==="progresso"&&x.attrGanho===attr)s+=(Number(x.attrValor)||0);});return s;}
+/* 2026-11 (Thiago: "tropas e etc gastam sempre o pool, nunca o atributo"): nos quatro pools,
+   o que vem de personagem, conversão, Honra queimada e manutenção de tropa mexe só no
+   disponível (poolBonus e poolGasto), nunca no Atributo nem no Nível. No Vazio, que não tem
+   pool, esses efeitos continuam no atributo. */
 function modificador(attr){
-  /* Conversões: o GANHO (destino) é crescimento real e sempre soma ao total.
-     O GASTO (origem) só é abatido direto do total se o atributo NÃO for um "pool"
-     (Domínio/Influência/Autoridade/Riqueza) — pra esses, o gasto de conversão
-     conta como pool gasto (ver poolGasto), não como perda histórica do atributo. */
-  let m=personagemMod(attr)+conversaoGanho(attr)+sacrificioProgressoMod(attr);
-  if(!POOL_ATTRS[attr])m-=conversaoGasto(attr);
-  if(attr==="autoridade"||attr==="dominio"||attr==="vazio")m+=tropaMod(attr);
-  if(attr==="vazio")m+=personagensHonraBonus()-honraSacrificadaTotal()*5;
+  if(POOL_ATTRS[attr])return 0;
+  let m=personagemMod(attr)+conversaoGanho(attr)+sacrificioProgressoMod(attr)-conversaoGasto(attr);
+  if(attr==="vazio")m+=tropaMod(attr)+personagensHonraBonus()-honraSacrificadaTotal()*5+vassalaBonus("vazio");
   return m;
 }
+/* Conta do disponível, linha por linha, para mostrar no atributo e na faixa dos Anéis. */
+function contaDisponivel(attr){
+  const L=[],add=(nome,v,l)=>{if(v)L.push([nome,v,l||null]);};
+  add("terras",-(attr==="dominio"?terrenosTotais().custoDefesa+terrenosTotais().custoTerras:0));
+  add("personagens",-(attr==="influencia"?personagensCustoTotal():0));
+  add("tropas",-(attr==="autoridade"?tropasCustoTotal():0));
+  add("manutenção das tropas",(attr==="autoridade"||attr==="dominio")?tropaMod(attr):0);
+  add("escolas",-escolasCustoTotal(attr));
+  add("conversões feitas",-conversaoGasto(attr));
+  add("investimentos em andamento",-investComprometido(attr));
+  add("efeito dos personagens",personagemMod(attr));
+  add("conversões recebidas",conversaoGanho(attr));
+  add("Honra queimada",sacrificioProgressoMod(attr));
+  add("famílias vassalas",vassalaBonus(attr));
+  add("manter as vassalas",-(attr==="influencia"?vassalasCusto():0));
+  reservasDe(attr).forEach(l=>add(l.motivo||"temporário",Number(l.valor)||0,l));
+  return L;
+}
+function contaDisponivelTxt(attr){
+  const f=v=>(v>0?"+":"−")+Math.abs(v).toFixed(0);
+  return "Atributo "+totalAttr(attr).toFixed(0)+contaDisponivel(attr).map(([n,v])=>" "+f(v)+" "+n).join("")+" = disponível "+poolRestante(attr).toFixed(0)+".";
+}
+function poolBonus(attr){return POOL_ATTRS[attr]?personagemMod(attr)+conversaoGanho(attr)+sacrificioProgressoMod(attr)+vassalaBonus(attr):0;}
 /* 2026-11: atributo decimal. O valor vive entre 0 e 100 (o que passa disso se perde) e o
    Nível é a dezena, de 0 a 10: é o Anel da família. Nos pools, o Nível vem do total; gastar
    ocupa capacidade, não derruba o Anel.
@@ -2151,10 +2351,13 @@ function poolGasto(attr){
   if(attr==="dominio")g+=terrenosTotais().custoDefesa+terrenosTotais().custoTerras;
   if(attr==="influencia")g+=personagensCustoTotal();
   if(attr==="autoridade")g+=tropasCustoTotal();
+  if(attr==="autoridade"||attr==="dominio")g-=tropaMod(attr); /* manutenção das tropas (patrulha, mobilizada, ferida…) */
+  if(POOL_ATTRS[attr])g+=investComprometido(attr);
+  if(attr==="influencia")g+=vassalasCusto();
   g+=escolasCustoTotal(attr); /* fundação/nível de Dojo/Salão/Shoin (dominio/influencia/autoridade) + Encantamentos Protegidos (riqueza) */
   return g;
 }
-function poolRestante(attr){return totalAttr(attr)-poolGasto(attr);}
+function poolRestante(attr){return POOL_ATTRS[attr]?totalAttr(attr)-poolGasto(attr)+poolBonus(attr)+reservaAttr(attr):0;}
 /* Sobrecarga: o pool caiu abaixo do que já está em jogo. Nada some sozinho; a família só não
    compra nada novo daquele pool, a manutenção da estação fica mais difícil (+5 de TN a cada 10
    de sobrecarga ou fração) e, se falhar o teste em sobrecarga, precisa liberar algo. */
@@ -2169,11 +2372,41 @@ function fortunas(){
     curvaLookup(CURVA_X,AUTORIDADE_Y,totalAttr("autoridade"))+
     DOMINIO_NIVEL_Y[nivelAttr("dominio")]+
     curvaLookup(CURVA_X,VAZIO_Y,totalAttr("vazio"))+
-    fortunaPersonagem();
+    fortunaPersonagem()+(S.vassalas||[]).length;
 }
 function favorDasFortunas(){return curvaLookup(FAVOR_FORTUNAS_X,FAVOR_FORTUNAS_Y,fortunas());}
-function equilibrioEspiritual(){return EQUILIBRIO_NIVEL[nivelAttr("vazio")];}
-function augurioKami(){return curvaLookup(CURVA_X,AUGURIO_Y,totalAttr("vazio"));}
+function equilibrioEspiritual(){return EQUILIBRIO_NIVEL[nivelAttr("vazio")]+gracaKami();}
+/* 2026-11-04: Augúrio por Nível do Vazio. Com o teto de 100, a tabela antiga nunca chegava a
+   Visão nem a Comunicação (pediam 101 e 111). */
+const AUGURIO_NIVEL=["","","","Sussurros","Sussurros","Sensações","Sensações","Fragmentos","Enigmas","Visão","Comunicação"];
+function augurioKami(){return AUGURIO_NIVEL[nivelAttr("vazio")];}
+/* O que cada atributo derivado quer dizer na mesa, com a conta da família na hora. Aparece ao
+   clicar (ou tocar) no valor, na faixa do resumo e no painel Status e Fortuna. */
+const AUGURIO_TEXTO={
+  "":"Silêncio: os kami não respondem. Rituais de adivinhação e augúrios da família não revelam nada.",
+  "Sussurros":"Sinais vagos e fáceis de perder: um vento fora de hora, um pássaro que pousa no lugar errado. O Mestre dá no máximo uma palavra de pista.",
+  "Sensações":"Pressentimentos claros de bom ou mau caminho, sem detalhes. A família sabe se deve ou não seguir, mas não por quê.",
+  "Fragmentos":"Imagens soltas do que vai acontecer, fora de ordem: um rosto, um estandarte, uma ponte em chamas.",
+  "Enigmas":"Mensagens completas, mas em forma de enigma ou metáfora. Quem decifrar entende o que vem.",
+  "Visão":"Uma cena clara do que vem, com lugar e tempo aproximados.",
+  "Comunicação":"Os kami respondem a perguntas diretas, como numa conversa. Raro e perigoso: o que os kami dizem, cobram."
+};
+function explicacaoDerivado(k){
+  const n=nivelAttr("vazio");
+  if(k==="fortunas"){
+    const p=[["curva da Autoridade",curvaLookup(CURVA_X,AUTORIDADE_Y,totalAttr("autoridade"))],["curva do Domínio (Nível "+nivelAttr("dominio")+")",DOMINIO_NIVEL_Y[nivelAttr("dominio")]],
+      ["curva do Vazio",curvaLookup(CURVA_X,VAZIO_Y,totalAttr("vazio"))],["terras",terrenosTotais().fortuna],["tropas",fortunaTropa()],["personagens com título",fortunaPersonagem()]];
+    return "Mede o prestígio e a sorte da casa. Soma: "+p.map(([l,v])=>l+" "+(v>0?"+":"")+v).join(", ")+". O Domínio tem pico no Nível 5 e 6: terra de menos ou de mais pesa contra. Fortunas altas viram Favor.";
+  }
+  if(k==="favor")return "Raises grátis que qualquer membro da família ganha em testes sociais no próprio território, em ações que ajudem a casa; no Teste da Família, valem no sucesso. Vem das Fortunas: abaixo de −5, −1 (desfavor, vira dificuldade); de −5 a 4, 0; de 5 a 11, +1; de 12 a 19, +2; 20 ou mais, +3.";
+  if(k==="dojo")return "Quantos samurai o dojo da família forma por estação, pelo Vazio: Nível do Vazio menos 3 (Nível "+n+" dá "+dojo()+"). Retidão e devoção atraem quem quer aprender. O Dojo Bushi e o Salão Cortesão, quando fundados, contam pela Autoridade e pela Influência.";
+  if(k==="equilibrio")return "Raises que um shugenja da família ganha ao conjurar para ajudar a casa, dentro do território. Negativo vira dificuldade: os kami estão incomodados. Pelo Nível do Vazio: 0 a 2, −2; 3 e 4, −1; 5, 0; 6 e 7, +1; 8, +2; 9 e 10, +3. A família está no Nível "+n+"."+(gracaKami()?" A graça dos kami na Reserva soma "+(gracaKami()>0?"+":"")+gracaKami()+".":"");
+  if(k==="augurio"){const a=augurioKami();return "Como os kami veem a família, pelo Nível do Vazio ("+n+"). "+AUGURIO_TEXTO[a]+" Escala: Nível 3 e 4 Sussurros; 5 e 6 Sensações; 7 Fragmentos; 8 Enigmas; 9 Visão; 10 Comunicação.";}
+  if(k==="tecnica")return "O dojo ensina até onde vai o samurai vivo de maior Rank da família: é a técnica dele que os alunos aprendem. Sem ninguém formado, o dojo não tem o que ensinar.";
+  return "";
+}
+let derivadoAberto="";
+function toggleDerivado(k){derivadoAberto=derivadoAberto===k?"":k;renderResumo();renderMeters();}
 function dojo(){return alunosPorNivel(nivelAttr("vazio"));}
 /* Quem hoje "puxa" o ensino do dojo: o samurai vivo de maior Rank da família — é a técnica dele
    que define o teto do que o dojo consegue ensinar (Rank de personagem, não Insight bruto). */
@@ -2356,7 +2589,8 @@ function delConquistaItem(id,itemId){if(bloqueadoLeitura())return;const c=S.conq
 /* ============ TESTE DA FAMÍLIA ============
    Uma rolagem de Anel, como na 4ª edição: Nível k Nível (mínimo 1k1), 10 explode, Regra dos
    Dez Dados, contra um TN. Apoios que o Mestre libera conforme a cena:
-   - recursos: gastar 5 do disponível do pool dá +1k0, até o Nível do Anel (sai do ajuste);
+   - recursos: gastar 5 do disponível do pool dá +1k0, até o Nível do Anel. Sai da Reserva primeiro;
+     o que faltar vira um lote negativo de um ano (o disponível volta depois). Nunca tira do atributo;
    - um personagem da família envolvido, com a perícia certa em 3+: +1k0; em 5+: +1k1;
    - Favor das Fortunas: Raises grátis no sucesso; desfavor soma +5 de TN por ponto. */
 const TN_FAMILIA=[[15,"Fácil"],[20,"Comum"],[25,"Difícil"],[30,"Muito Difícil"],[35,"Heroico"]];
@@ -2387,11 +2621,12 @@ function rolarTesteFamilia(){
   const ap=testeFam.apoio;
   const x=Math.max(1,n)+rec+(ap?1:0),y=Math.max(1,n)+(ap==="k1"?1:0);
   const favor=favorDasFortunas();
-  const tn=testeFam.tn+(favor<0?5*(-favor):0);
+  const graca=gracaKami();
+  const tn=testeFam.tn+(favor<0?5*(-favor):0)+(graca<0?5*(-graca):0);
   const r=rolarAnelL5R(x,y,0);
   const margem=r.total-tn,ok=margem>=0;
-  const raises=ok?Math.floor(margem/5)+Math.max(0,favor):0;
-  if(rec>0)S.base[attr]=(Number(S.base[attr])||0)-5*rec;
+  const raises=ok?Math.floor(margem/5)+Math.max(0,favor)+Math.max(0,graca):0;
+  if(rec>0){const falta=consumirReserva(attr,5*rec);if(falta>0)criarLote(attr,-falta,4,"recursos gastos num Teste da Família");}
   testeFam.ultimo={attr,n,x,y,tn,total:r.total,ok,margem,raises,rec,dados:r.dados};
   testeFam.recursos=0;
   feedPush("Teste da Família — "+l+" (Nível "+n+", "+x+"k"+y+(rec?", gastou "+(5*rec)+" de "+l:"")+") contra TN "+tn+": "+r.total+", "+
@@ -2399,41 +2634,262 @@ function rolarTesteFamilia(){
   salvar();render();
 }
 
-/* ============ ESTAÇÕES: TESTE DE MANUTENÇÃO ============
-   O Mestre avança a estação quando achar apropriado. Cada estação testa os Anéis que ela
-   favorece (Primavera e Outono: Terra e Água; Verão: Fogo; Inverno: Ar e Vazio) com um Teste
-   da Família contra o TN de manutenção, 5 × Nível + 10: casa grande custa mais para manter.
-   Em sobrecarga, +5 de TN a cada 10 (ou fração). Pela margem:
-   - falhou por 10 ou mais: presságio ruim, o atributo cai 3 a 6;
-   - falhou: estação comum, nada muda;
-   - passou: bênção, sobe 3 a 6;
-   - passou por 10 ou mais: favor evidente dos Kami, sobe o dobro.
-   Simulado em sim/estacoes.js: em 3 anos, as famílias fortes e as fracas andam quase igual
-   (+11 / −4 na soma), em vez de as fortes dispararem como no d10 + Favor de antes. A família
-   cresce de verdade pelo que acontece em jogo. Se falhar estando em sobrecarga, precisa liberar
-   algo daquele pool (S.liberar) até sair dela. */
-function tnManutencao(attr){return 5*nivelAttr(attr)+10+5*Math.ceil(sobrecarga(attr)/10);}
+/* ============ RESERVA: LOTES COM PRAZO ============
+   2026-11 (aprovado pelo Thiago): o Atributo é o que a família é (o Anel, o Nível) e muda pouco:
+   Conquista do Mestre ou investimento. A Reserva é o que a família tem à mão, em lotes com valor,
+   motivo e prazo. Soma no disponível do pool, mas não muda o Nível. Quando um lote vence e algo
+   dependia dele, a família cai em sobrecarga (a regra de sempre).
+   No Vazio o lote vale Raises (a graça dos kami): positivo dá Raise grátis no Teste da Família e
+   soma no Equilíbrio; negativo soma +5 de TN por ponto e tira do Equilíbrio.
+   Prazo em estações: o lote vale nas próximas "d" estações; d nulo = até gastar.
+   S.reservas: [{id,attr,valor,motivo,vence (estação absoluta em que deixa de valer) ou null,origemEvento?}] */
+const PRAZOS_LOTE=[[1,"1 estação"],[2,"2 estações"],[4,"1 ano"],[8,"2 anos"],[0,"até gastar"]];
+function estacaoAbs(){return((S.anoEstacao||1)-1)*4+(S.estacaoIdx||0);}
+function nomeEstacaoAbs(a){return ESTACOES[((a%4)+4)%4]+" do ano "+(Math.floor(a/4)+1);}
+function reservasDe(attr){return(S.reservas||[]).filter(l=>l.attr===attr);}
+function reservaAttr(attr){return reservasDe(attr).reduce((s,l)=>s+(Number(l.valor)||0),0);}
+function gracaKami(){return Math.max(-3,Math.min(3,reservaAttr("vazio")));}
+function prazoLoteTxt(l){if(l.vence==null)return"até gastar";const ult=l.vence-1;return ult<estacaoAbs()?"vencido":"até o fim de "+nomeEstacaoAbs(ult);}
+/* d estações a partir da próxima (o resto da estação atual vem de brinde). */
+function criarLote(attr,valor,d,motivo,extra){
+  valor=Math.round(Number(valor)||0);if(!valor)return null;
+  S.reservas=S.reservas||[];
+  const l=Object.assign({id:uid(),attr,valor,motivo:motivo||"",vence:d?estacaoAbs()+1+d:null},extra||{});
+  S.reservas.push(l);return l;
+}
+/* Gasta da reserva positiva, o lote que vence primeiro antes. Devolve o que faltou. */
+function consumirReserva(attr,qtd){
+  let q=qtd;
+  (S.reservas||[]).filter(l=>l.attr===attr&&l.valor>0).sort((a,b)=>(a.vence==null?1e9:a.vence)-(b.vence==null?1e9:b.vence)).forEach(l=>{
+    if(q<=0)return;const u=Math.min(l.valor,q);l.valor-=u;q-=u;});
+  S.reservas=(S.reservas||[]).filter(l=>l.valor!==0);
+  return q;
+}
+function reservaPositiva(attr){return reservasDe(attr).reduce((s,l)=>s+Math.max(0,l.valor),0);}
+/* Chamada ao entrar numa estação nova: o que venceu sai, e quem ficou em sobrecarga é avisado. */
+function expirarLotes(){
+  const a=estacaoAbs(),venc=(S.reservas||[]).filter(l=>l.vence!=null&&l.vence<=a);
+  if(!venc.length)return[];
+  S.reservas=S.reservas.filter(l=>!(l.vence!=null&&l.vence<=a));
+  return venc;
+}
+function rotuloAttr(k){return(ATRIBUTOS.find(a=>a[0]===k)||[k,k])[1];}
+function fmtLote(attr,v){return attr==="vazio"?(v>0?"+":"")+v+" Raise"+(Math.abs(v)===1?"":"s")+" (graça)":rotuloAttr(attr)+" "+(v>0?"+":"")+v;}
+function addLoteLivre(){
+  if(bloqueadoLeitura())return;
+  const f=loteForm;const v=Math.round(Number(f.valor)||0);
+  if(!v){feedPush("O lote precisa de um valor diferente de zero.");salvar();render();return;}
+  criarLote(f.attr,v,Number(f.prazo)||0,f.motivo||"lançado pelo Mestre");
+  feedPush("Temporário: "+fmtLote(f.attr,v)+", "+(f.motivo||"lançado pelo Mestre")+" ("+((PRAZOS_LOTE.find(p=>p[0]===(Number(f.prazo)||0))||[0,"até gastar"])[1])+").");
+  loteForm={attr:f.attr,valor:6,prazo:4,motivo:""};
+  salvar();render();
+}
+function delLote(id){if(bloqueadoLeitura())return;S.reservas=(S.reservas||[]).filter(l=>l.id!==id);salvar();render();}
+let loteForm={attr:"riqueza",valor:6,prazo:4,motivo:""};
+function setLoteForm(campo,val){loteForm[campo]=val;}
+
+/* ============ INVESTIR: RESERVA VIRANDO ATRIBUTO ============
+   2026-11 (Thiago: atributo mais difícil de melhorar, e investimento leva tempo): +1 permanente
+   custa o Nível atual × 3 (mínimo 3), pago na hora da reserva do próprio Anel, e fica pronto
+   depois de Nível estações (mínimo 2). Um investimento por Anel de cada vez. A Riqueza é o
+   coringa: paga o de qualquer Anel pelo dobro, e o dela pelo preço normal. O Vazio só cresce via
+   Riqueza. Cancelar devolve metade, como lote até gastar.
+   Simulado em sim/reservas_sim.js: investindo tudo, em 10 anos a soma dos cinco atributos sobe
+   uns 7 numa família de Nível 2, 2 numa de Nível 4 e fica parada numa de Nível 6 (os custos
+   permanentes de Honra dos acontecimentos comem o resto). Crescer de verdade é Conquista. */
+function custoInvestir(attr,viaRiqueza){const c=Math.max(1,nivelAttr(attr))*3;return viaRiqueza&&attr!=="riqueza"?c*2:c;}
+function duracaoInvestir(attr){return Math.max(2,nivelAttr(attr));}
+function investimentoDe(attr){return(S.investimentos||[]).find(i=>i.attr===attr);}
+/* o que fica preso na obra, tirado do disponível, até ela ficar pronta */
+function investComprometido(attr){return(S.investimentos||[]).filter(i=>i.fonte===attr).reduce((s,i)=>s+(Number(i.comprometido)||0),0);}
+function podeInvestir(attr,via){
+  if(totalAttr(attr)>=100||investimentoDe(attr))return false;
+  if(!via&&attr==="vazio")return false;
+  return poolRestante(via?"riqueza":attr)>=custoInvestir(attr,via);
+}
+function investir(attr,via){
+  if(bloqueadoLeitura())return;
+  if(investimentoDe(attr)){feedPush("Já há um investimento em andamento em "+rotuloAttr(attr)+".");salvar();render();return;}
+  if(!podeInvestir(attr,via)){feedPush("Disponível insuficiente para investir em "+rotuloAttr(attr)+".");salvar();render();return;}
+  const fonte=via?"riqueza":attr,custo=custoInvestir(attr,via),dur=duracaoInvestir(attr);
+  /* paga primeiro com os ganhos temporários (gastos de vez); o resto fica preso na obra */
+  const falta=consumirReserva(fonte,custo);
+  S.investimentos=S.investimentos||[];
+  S.investimentos.push({id:uid(),attr,fonte,custo,deTemporarios:custo-falta,comprometido:falta,inicio:estacaoAbs(),dur});
+  feedPush("Investimento começou: "+rotuloAttr(attr)+" +1, custa "+custo+" de "+rotuloAttr(fonte)+
+    (custo-falta?" ("+(custo-falta)+" gastos dos ganhos temporários"+(falta?", "+falta+" presos no disponível até a obra ficar pronta":"")+")":", presos no disponível até a obra ficar pronta")+"; fica pronto em "+dur+" estações.");
+  salvar();render();
+}
+function progressoInvestimento(i){return Math.max(0,Math.min(i.dur,estacaoAbs()-i.inicio));}
+function cancelarInvestimento(id){
+  if(bloqueadoLeitura())return;
+  const i=(S.investimentos||[]).find(x=>x.id===id);if(!i)return;
+  S.investimentos=S.investimentos.filter(x=>x.id!==id);
+  const volta=Math.floor((i.deTemporarios!=null?i.deTemporarios:i.custo)/2);
+  if(volta)criarLote(i.fonte,volta,0,"metade de um investimento cancelado");
+  feedPush("Investimento em "+rotuloAttr(i.attr)+" cancelado."+(i.comprometido?" O disponível preso volta.":"")+(volta?" Voltam "+volta+" de "+rotuloAttr(i.fonte)+" do que foi gasto.":""));
+  salvar();render();
+}
+/* chamada ao entrar numa estação nova */
+function concluirInvestimentos(){
+  const prontos=(S.investimentos||[]).filter(i=>progressoInvestimento(i)>=i.dur);
+  prontos.forEach(i=>{
+    const n0=nivelAttr(i.attr);
+    S.base[i.attr]=(Number(S.base[i.attr])||0)+1;
+    S.investido=S.investido||{};S.investido[i.attr]=(S.investido[i.attr]||0)+1;
+    const n1=nivelAttr(i.attr);
+    feedPush("Investimento pronto: "+rotuloAttr(i.attr)+" +1 permanente."+(n1>n0?" "+rotuloAttr(i.attr)+" chegou ao Nível "+n1+".":""));
+  });
+  if(prontos.length)S.investimentos=S.investimentos.filter(i=>!prontos.includes(i));
+  return prontos;
+}
+
+/* ============ ESTAÇÕES: ACONTECIMENTOS ============
+   (Versão de antes da mudança "o jogo não é automático"; a regra atual está logo abaixo do
+   catálogo.) A cada estação sai um acontecimento da estação, bom ou ruim. A família rola o Anel ligado a ele
+   (Nível k Nível) contra 5 × Nível + 5, mais 5 a cada 10 de sobrecarga. Cada efeito escala pelo
+   resultado:
+   - efeito bom: falhou por 10+ = nada; falhou = metade; passou = cheio, +¼ por Raise (até o dobro);
+   - efeito ruim: falhou por 10+ = 1,5×; falhou = cheio; passou = ¾, −¼ por Raise (3 Raises anulam).
+   A graça dos kami dá Raises grátis no sucesso. Um acontecimento pode ter os dois lados (o
+   empréstimo traz Riqueza e uma dívida), e cada lado escala pela sua regra.
+   O TN ficou 5 abaixo do antigo teste de manutenção: com dois lados em jogo, uma casa média passa
+   cerca de metade das vezes (sim/reservas_sim.js). Se falhar estando em sobrecarga no Anel do
+   teste, a família precisa liberar algo daquele pool (S.liberar), como antes.
+   Efeitos: d = estações (4 = um ano), d:0 = até gastar, perm = muda o atributo para sempre. */
+const ACONTECIMENTOS=[
+ {id:"migracao_esporadica",est:0,anel:"dominio",nome:"Migração esporádica",texto:"Famílias de camponeses de outra província chegam com suas ferramentas.",ef:[{a:"dominio",v:8,d:8}]},
+ {id:"leva_camponeses",est:0,anel:"dominio",nome:"Leva de camponeses",texto:"A família arma os camponeses para a temporada; os campos ficam com menos mãos.",ef:[{a:"autoridade",v:6,d:2},{a:"dominio",v:-2,d:4}]},
+ {id:"cheias_primavera",est:0,anel:"dominio",nome:"Cheias de primavera",texto:"O degelo transborda os rios e leva diques e mudas.",ef:[{a:"dominio",v:-6,d:4},{a:"riqueza",v:-3,d:4}]},
+ {id:"boa_negociacao",est:0,anel:"riqueza",nome:"Boa negociação",texto:"Um contrato de seda ou de sal fechado na hora certa.",ef:[{a:"riqueza",v:12,d:0}]},
+ {id:"emprestimo",est:0,anel:"riqueza",nome:"Empréstimo de um mercador",texto:"Dinheiro agora, juros por dois anos. Quem negocia bem paga menos.",ef:[{a:"riqueza",v:15,d:0},{a:"riqueza",v:-8,d:8}]},
+ {id:"praga_mudas",est:0,anel:"riqueza",nome:"Praga nas mudas",texto:"Os brotos de arroz amarelam antes do verão.",ef:[{a:"riqueza",v:-8,d:4}]},
+ {id:"alistamento_obrigatorio",est:1,anel:"autoridade",nome:"Alistamento obrigatório",texto:"O senhor exige homens; a família convoca, e a honra da casa paga o preço.",ef:[{a:"autoridade",v:10,d:4},{a:"vazio",v:-2,perm:true}]},
+ {id:"mercenarios",est:1,anel:"autoridade",nome:"Mercenários contratados",texto:"Ronin de aluguel reforçam a guarnição por uma temporada.",ef:[{a:"autoridade",v:8,d:2},{a:"riqueza",v:-6,d:4}]},
+ {id:"saque_guerra",est:1,anel:"autoridade",nome:"Saque de guerra",texto:"Uma vitória numa escaramuça deixa baús para levar. Saquear não é honroso.",ef:[{a:"riqueza",v:10,d:0},{a:"vazio",v:-1,perm:true}]},
+ {id:"bandidos_estrada",est:1,anel:"autoridade",nome:"Bandidos nas estradas",texto:"Caravanas atacadas e patrulhas desmoralizadas.",ef:[{a:"autoridade",v:-6,d:4},{a:"riqueza",v:-3,d:4}]},
+ {id:"desercao",est:1,anel:"autoridade",nome:"Deserção na guarnição",texto:"Ashigaru somem à noite, levando as lanças.",ef:[{a:"autoridade",v:-8,d:4}]},
+ {id:"torneio_verao",est:1,anel:"autoridade",nome:"Vitória num torneio de verão",texto:"Um samurai da casa vence diante de convidados importantes.",ef:[{a:"autoridade",v:6,d:4},{a:"influencia",v:4,d:4}]},
+ {id:"colheita_extraordinaria",est:2,anel:"riqueza",nome:"Colheita extraordinária",texto:"Os celeiros não dão conta do arroz.",ef:[{a:"riqueza",v:8,d:4}]},
+ {id:"tributo_vassalo",est:2,anel:"influencia",nome:"Tributo de um vassalo",texto:"Uma família menor manda presentes e pede proteção.",ef:[{a:"influencia",v:6,d:4}]},
+ {id:"refugiados",est:2,anel:"dominio",nome:"Refugiados acolhidos",texto:"Gente fugida da guerra pede abrigo: braços para o campo, bocas para alimentar.",ef:[{a:"dominio",v:6,d:4},{a:"riqueza",v:-3,d:4}]},
+ {id:"feira_outono",est:2,anel:"riqueza",nome:"Feira de outono",texto:"Mercadores de três províncias montam tendas nas terras da família.",ef:[{a:"riqueza",v:6,d:4},{a:"influencia",v:2,d:4}]},
+ {id:"geada_precoce",est:2,anel:"riqueza",nome:"Geada precoce",texto:"O frio chega antes da colheita terminar.",ef:[{a:"riqueza",v:-8,d:4}]},
+ {id:"incendio_celeiros",est:2,anel:"dominio",nome:"Incêndio nos celeiros",texto:"Uma noite de vento e uma lanterna derrubada.",ef:[{a:"dominio",v:-4,d:4},{a:"riqueza",v:-4,d:4}]},
+ {id:"favor_daimyo",est:3,anel:"influencia",nome:"Favor de um daimyō",texto:"Na corte de inverno, um senhor importante lembra o nome da família.",ef:[{a:"influencia",v:10,d:4}]},
+ {id:"dote_casamento",est:3,anel:"influencia",nome:"Dote de casamento",texto:"Um casamento acertado na corte traz um dote generoso.",ef:[{a:"riqueza",v:8,d:0}]},
+ {id:"intriga_corte",est:3,anel:"influencia",nome:"Intriga na corte de inverno",texto:"Um boato bem plantado faz a família perder lugares à mesa.",ef:[{a:"influencia",v:-8,d:4}]},
+ {id:"graca_kami",est:3,anel:"vazio",nome:"Graça dos kami",texto:"Os ritos de inverno saem perfeitos; os kami respondem.",ef:[{a:"vazio",v:1,d:4}]},
+ {id:"pressagio_sombrio",est:3,anel:"vazio",nome:"Presságio sombrio",texto:"Um corvo branco, um sino que racha sozinho.",ef:[{a:"vazio",v:-1,d:4}]},
+ {id:"inverno_rigoroso",est:3,anel:"dominio",nome:"Inverno rigoroso",texto:"Neve até os beirais; estradas fechadas e guarnições com frio.",ef:[{a:"dominio",v:-4,d:4},{a:"autoridade",v:-4,d:4}]}
+];
+function acontecimentoInfo(id){return ACONTECIMENTOS.find(c=>c.id===id);}
+function tipoAcontecimento(c){const p=c.ef.some(e=>e.v>0),n=c.ef.some(e=>e.v<0);return p&&n?"misto":(p?"bom":"ruim");}
+/* 2026-11 (Thiago: "o jogo não é automático"): o acontecimento abre, não se aplica sozinho.
+   Ele vira gancho de aventura. O Teste da Família, se o Mestre rolar, só mostra a tendência; as
+   ações dos jogadores sobem ou descem o resultado; o Mestre fecha e aplica quando a história
+   terminar, ou descarta se os jogadores evitaram tudo.
+   Grau do resultado: -2 falhou por 10 ou mais, -1 falhou, 0 passou, 1 a 4 = Raises.
+   - efeito bom:  -2 nada; -1 metade; 0 cheio; +¼ por grau, até o dobro;
+   - efeito ruim: -2 1,5×; -1 cheio; 0 ¾; −¼ por grau, 3 anulam. */
+const GRAUS_ACONT=[[-2,"Desastre (falhou por 10 ou mais)"],[-1,"Falhou"],[0,"Passou"],[1,"Passou com 1 Raise"],[2,"Passou com 2 Raises"],[3,"Passou com 3 Raises"],[4,"Passou com 4 Raises"]];
+function multBomG(g){return g<=-2?0:(g===-1?0.5:Math.min(2,1+0.25*g));}
+function multRuimG(g){return g<=-2?1.5:(g===-1?1:Math.max(0,0.75-0.25*g));}
+function grauDoTeste(rol){return !rol?0:(rol.margem<=-10?-2:(rol.margem<0?-1:Math.min(4,rol.raises)));}
+function grauFinal(a){const g=a.grauMestre!=null?a.grauMestre:grauDoTeste(a.rol)+(Number(a.ajuste)||0);return Math.max(-2,Math.min(4,g));}
+function rotuloGrau(g){return(GRAUS_ACONT.find(x=>x[0]===g)||[g,String(g)])[1];}
+function tnManutencao(attr){return 5*nivelAttr(attr)+5+5*Math.ceil(sobrecarga(attr)/10);}
+/* Rola o Anel do acontecimento. Só mostra; não aplica nada. */
+function rolarAcontecimento(c){
+  const n=nivelAttr(c.anel),tn=tnManutencao(c.anel),graca=gracaKami();
+  const tnF=tn+(graca<0?5*(-graca):0);
+  const r=rolarAnelL5R(Math.max(1,n),Math.max(1,n),0),m=r.total-tnF;
+  const raises=m>=0?Math.floor(m/5)+Math.max(0,graca):0;
+  return{n,tn:tnF,total:r.total,margem:m,raises,dados:r.dados};
+}
+/* o que cada efeito vira num grau, sem aplicar */
+function efeitosNoGrau(c,g){
+  return c.ef.map(e=>{const mult=e.v>0?multBomG(g):multRuimG(g);return{e,v:Math.sign(e.v)*Math.round(Math.abs(e.v)*mult)};});
+}
+function txtEfeito(e,v){
+  if(!v)return(e.perm?rotuloAttr(e.a)+" "+e.v:fmtLote(e.a,e.v))+" anulado";
+  if(e.perm)return rotuloAttr(e.a)+" "+(v>0?"+":"")+v+" permanente";
+  return fmtLote(e.a,v)+" ("+(e.d?(PRAZOS_LOTE.find(p=>p[0]===e.d)||[0,e.d+" estações"])[1]:"até gastar")+")";
+}
+/* Aplica no grau dado. Usado ao fechar um acontecimento em aberto. */
+function aplicarAcontecimento(c,g,quando,rol,extra){
+  const partes=[];
+  efeitosNoGrau(c,g).forEach(({e,v})=>{
+    partes.push(txtEfeito(e,v));if(!v)return;
+    if(e.perm){S.base[e.a]=(Number(S.base[e.a])||0)+v;return;}
+    criarLote(e.a,v,e.d||0,c.nome,{acontecimento:c.id});
+  });
+  if(g<0&&sobrecarga(c.anel)>0){S.liberar=S.liberar||{};S.liberar[c.anel]=true;partes.push("em sobrecarga, a família precisa liberar algo de "+rotuloAttr(c.anel));}
+  const tier=rotuloGrau(g)+(extra||"");
+  S.ultimoAcontecimento={id:c.id,quando:quando||nomeEstacaoAbs(estacaoAbs()),rol:rol?{n:rol.n,tn:rol.tn,total:rol.total,margem:rol.margem,raises:rol.raises,dados:rol.dados}:null,partes,tier,grau:g};
+  S.historicoAcontecimentos=S.historicoAcontecimentos||[];
+  S.historicoAcontecimentos.unshift(S.ultimoAcontecimento);
+  if(S.historicoAcontecimentos.length>24)S.historicoAcontecimentos.length=24;
+  return c.nome+" ("+tier+"): "+partes.join("; ");
+}
+function sortearAcontecimento(estIdx){const op=ACONTECIMENTOS.filter(c=>c.est===estIdx);return op[Math.floor(Math.random()*op.length)];}
+/* ---- acontecimentos em aberto ---- */
+function abrirAcontecimento(c,origem){
+  S.acontAbertos=S.acontAbertos||[];
+  const a={id:uid(),acId:c.id,quando:nomeEstacaoAbs(estacaoAbs()),origem:origem||"estacao",rol:null,ajuste:0,grauMestre:null,notas:""};
+  S.acontAbertos.push(a);return a;
+}
+function acontAberto(id){return(S.acontAbertos||[]).find(a=>a.id===id);}
+let acontForm={id:""};
+function lancarAcontecimento(){
+  if(bloqueadoLeitura())return;
+  const c=acontecimentoInfo(acontForm.id)||sortearAcontecimento(S.estacaoIdx||0);
+  abrirAcontecimento(c,"mestre");
+  feedPush("Acontecimento aberto pelo Mestre: "+c.nome+". Fica em aberto até a história se resolver.");salvar();render();
+}
+function rolarTendencia(id){
+  if(bloqueadoLeitura())return;const a=acontAberto(id),c=a&&acontecimentoInfo(a.acId);if(!c)return;
+  a.rol=rolarAcontecimento(c);a.grauMestre=null;
+  feedPush("Teste da Família para "+c.nome+" ("+rotuloAttr(c.anel)+" "+a.rol.n+"k"+a.rol.n+" contra TN "+a.rol.tn+"): "+a.rol.total+", tendência: "+rotuloGrau(grauDoTeste(a.rol)).toLowerCase()+".");
+  salvar();render();
+}
+function ajusteAcont(id,d){if(bloqueadoLeitura())return;const a=acontAberto(id);if(!a)return;a.grauMestre=null;a.ajuste=Math.max(-6,Math.min(6,(Number(a.ajuste)||0)+d));salvar();render();}
+function setGrauAcont(id,v){if(bloqueadoLeitura())return;const a=acontAberto(id);if(!a)return;a.grauMestre=v===""?null:Number(v);salvar();render();}
+function setNotaAcont(id,v){if(bloqueadoLeitura())return;const a=acontAberto(id);if(!a)return;a.notas=v;salvar();}
+function fecharAcontecimento(id){
+  if(bloqueadoLeitura())return;const a=acontAberto(id),c=a&&acontecimentoInfo(a.acId);if(!c)return;
+  const g=grauFinal(a);
+  const extra=(a.ajuste&&a.grauMestre==null?" ("+(a.ajuste>0?"+":"")+a.ajuste+" pelas ações dos jogadores)":"")+(a.grauMestre!=null?" (decidido pelo Mestre)":"");
+  const txt=aplicarAcontecimento(c,g,a.quando,a.rol,extra);
+  S.acontAbertos=S.acontAbertos.filter(x=>x.id!==id);
+  feedPush("Acontecimento resolvido — "+txt+"."+(a.notas?" "+a.notas:""));salvar();render();
+}
+function descartarAcontecimento(id){
+  if(bloqueadoLeitura())return;const a=acontAberto(id),c=a&&acontecimentoInfo(a.acId);if(!a)return;
+  S.acontAbertos=S.acontAbertos.filter(x=>x.id!==id);
+  if(c){S.historicoAcontecimentos=S.historicoAcontecimentos||[];
+    S.historicoAcontecimentos.unshift({id:c.id,quando:a.quando,rol:a.rol,partes:["sem efeito"+(a.notas?": "+a.notas:"")],tier:"descartado: não aconteceu ou os jogadores evitaram",grau:null});}
+  feedPush("Acontecimento descartado: "+(c?c.nome:"")+".");salvar();render();
+}
 function avancarEstacao(){
   if(bloqueadoLeitura())return;
   if(S.estacaoIdx===undefined)S.estacaoIdx=0;
   if(S.anoEstacao===undefined)S.anoEstacao=1;
-  const estacao=ESTACOES[S.estacaoIdx];
-  const alvos=ESTACAO_FOCO[estacao]||["vazio"];
-  const partes=[];
-  alvos.forEach(attr=>{
-    const n=nivelAttr(attr),tn=tnManutencao(attr),sc=sobrecarga(attr);
-    const r=rolarAnelL5R(Math.max(1,n),Math.max(1,n),0),m=r.total-tn;
-    const mult=m<=-10?-1:(m<0?0:(m<10?1:2));
-    const tier=mult===-1?"presságio ruim":(mult===0?"estação comum":(mult===1?"bênção":"favor evidente dos Kami"));
-    const l=(ATRIBUTOS.find(a=>a[0]===attr)||[attr,attr])[1];
-    let txt=l+" "+r.total+" contra TN "+tn+", "+tier;
-    if(mult!==0){const delta=mult*(3+Math.floor(Math.random()*4));S.base[attr]=(Number(S.base[attr])||0)+delta;txt+=" ("+(delta>0?"+":"")+delta+")";}
-    if(m<0&&sc>0){S.liberar=S.liberar||{};S.liberar[attr]=true;txt+=". Em sobrecarga, a família precisa liberar algo de "+l;}
-    partes.push(txt);
-  });
-  feedPush("Manutenção — "+estacao+" do ano "+S.anoEstacao+": "+partes.join("; ")+".");
+  const estacao=ESTACOES[S.estacaoIdx],ano=S.anoEstacao;
+  const abertos=(S.acontAbertos||[]).length;
   S.estacaoIdx=(S.estacaoIdx+1)%4;
   if(S.estacaoIdx===0)S.anoEstacao=(S.anoEstacao||1)+1;
+  const venc=expirarLotes();
+  concluirInvestimentos();
+  /* a estação que começa traz o seu acontecimento, em aberto: é gancho de aventura */
+  const c=sortearAcontecimento(S.estacaoIdx);abrirAcontecimento(c,"estacao");
+  feedPush("Fim de "+estacao.toLowerCase()+" do ano "+ano+"."+(abertos?" "+(abertos===1?"Um acontecimento continua":abertos+" acontecimentos continuam")+" em aberto.":"")+
+    " Começa "+ESTACOES[S.estacaoIdx].toLowerCase()+" com um acontecimento: "+c.nome+".");
+  if(venc.length){
+    feedPush("Venceram: "+venc.map(l=>fmtLote(l.attr,l.valor)+" ("+(l.motivo||"lote")+")").join("; ")+".");
+    const sc=[...new Set(venc.map(l=>l.attr))].filter(k=>sobrecarga(k)>0);
+    if(sc.length)feedPush("Sem esses lotes, "+sc.map(k=>rotuloAttr(k)+" ficou em sobrecarga de "+sobrecarga(k).toFixed(0)).join(" e ")+".");
+  }
   feedPush(ESTACAO_FRASE[estacaoAtualKey()]);
   salvar();render();avisoEstacao();particulas.rajada();
 }
@@ -2447,8 +2903,7 @@ function randomizarFamilia(){
   if(bloqueadoLeitura())return;
   const c=pickRandom(CLAS);
   selecionarCla(c.id);
-  if(c.familias&&c.familias.length)S.ramoFamiliar="um ramo da família "+pickRandom(c.familias);
-  else S.ramoFamiliar="";
+  S.familiaPrincipal=c.familias&&c.familias.length?pickRandom(c.familias):"";S.ramoFamiliar="";
   S.base={dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0};
   sortearPontos();
   limparEventos();
@@ -2468,17 +2923,66 @@ function delTerreno(id){if(bloqueadoLeitura())return;S.terrenos=S.terrenos.filte
    bem já está embutido nos mods do próprio evento (por isso "sai de graça" —
    quem paga é a história, não o jogador). O bem fica marcado com origemEvento
    para poder ser removido de volta se o evento for desfeito. */
+/* 2026-11 (pedido do Thiago): toda origem dá, sem custo, o daimyō e dois ou três samurais jovens
+   do tipo que combina com ela. Algumas dão uma terra (paga pelo Domínio da própria origem, como
+   as outras concessões) e as adversas cobram um lote negativo por dois anos: um lado bom e um ruim.
+   Os personagens nascem "(a definir)" para o jogador fazer a ficha. Se a origem mudar, os que
+   ninguém mexeu saem; os que já têm nome ou jogador ficam, e passam a custar Influência. */
+const DAIMYO_ORIGEM="Senhor menor, domínio limitado";
+/* Oito origens nasceram de dinheiro, favor ou fama, coisas que passam: metade do Anel principal
+   delas saiu do atributo e volta em dobro como lote (2 anos, ou até gastar quando é dinheiro). */
+const ORIGEM_DOA={
+ fundacao_decreto:{p:["Cortesão Jovem","Cortesão Jovem","Bushi Jovem"],lotes:[{attr:"influencia",valor:10,d:8,motivo:"o decreto ainda é lembrado na corte"}]},
+ recompensa_militar:{p:["Bushi Experiente","Bushi Jovem"],lotes:[{attr:"autoridade",valor:10,d:8,motivo:"veteranos da campanha a serviço da casa"}]},
+ ramo_elevado:{p:["Cortesão Jovem","Bushi Jovem"]},
+ fundacao_religiosa:{p:["Monge Jovem","Shugenja Jovem"]},
+ funcao_administrativa:{p:["Cortesão Jovem","Cortesão Jovem"],lotes:[{attr:"riqueza",valor:10,d:8,motivo:"a verba do cargo"}]},
+ adocao_familia:{p:["Bushi Jovem","Cortesão Jovem"],lotes:[{attr:"influencia",valor:10,d:8,motivo:"os padrinhos da família adotiva"}]},
+ ascensao_heroi:{p:["Bushi Jovem","Bushi Jovem"],lotes:[{attr:"autoridade",valor:10,d:8,motivo:"a fama do herói atrai voluntários"}]},
+ usurpacao_terras:{p:["Bushi Jovem","Bushi Jovem"],lotes:[{attr:"influencia",valor:-6,d:8,motivo:"vizinhos que não esquecem a terra tomada"}]},
+ mercadores_nome:{p:["Cortesão Jovem","Bushi Jovem"],lotes:[{attr:"riqueza",valor:10,d:0,motivo:"o ouro que comprou o nome"}]},
+ ronin_elevados:{p:["Bushi Jovem","Bushi Jovem","Bushi Jovem"],lotes:[{attr:"autoridade",valor:10,d:8,motivo:"o bando de ronin ainda unido"}]},
+ casa_caida:{p:["Monge Jovem","Bushi Jovem"],lotes:[{attr:"riqueza",valor:-6,d:8,motivo:"dívidas da casa que caiu"}]},
+ linhagem_primeiros:{p:["Shugenja Jovem","Cortesão Jovem"]},
+ exilados_cla:{p:["Cortesão Jovem","Bushi Jovem"],lotes:[{attr:"influencia",valor:-6,d:8,motivo:"desconfiança com quem trocou de clã"}]},
+ guardioes_fronteira:{p:["Bushi Jovem","Bushi Jovem"]},
+ escolhidos_kami:{p:["Shugenja Jovem","Shugenja Jovem"]},
+ uniao_duas_casas:{p:["Cortesão Jovem","Bushi Jovem","Shugenja Jovem"],lotes:[{attr:"influencia",valor:8,d:8,motivo:"as duas casas ainda falam como uma"}]}
+};
+const NOME_PAPEL_CURTO=cat=>cat===DAIMYO_ORIGEM?"Daimyō":cat.replace(/ (Jovem|Experiente|Veterano)$/,"");
+function doacaoOrigem(id){const d=ORIGEM_DOA[id];if(!d)return null;return{personagens:[DAIMYO_ORIGEM].concat(d.p||[]),lotes:d.lotes||[]};}
+function prazoLoteCurto(d){return d?(d%4?d+" estações":(d===4?"1 ano":(d/4)+" anos")):"até gastar";}
+function nomeDoado(cat){return NOME_PAPEL_CURTO(cat)+" (a definir)";}
 function aplicarConcessaoEvento(eventId){
   const e=EVENTOS.find(x=>x.id===eventId);
-  if(!e||!e.concede||e.concede.tipo!=="terreno")return;
-  const c=e.concede;
-  S.terrenos.push({id:uid(),nome:c.nomeSugerido||"",terreno:c.terreno,c1:c.c1||"",c2:c.c2||"",c3:c.c3||"",c4:c.c4||"",origemEvento:eventId});
-  feedPush("A história trouxe consigo "+(c.nomeSugerido||"uma nova posse")+".");
+  if(!e)return;
+  if(e.concede&&e.concede.tipo==="terreno"){
+    const c=e.concede;
+    S.terrenos.push({id:uid(),nome:c.nomeSugerido||"",terreno:c.terreno,c1:c.c1||"",c2:c.c2||"",c3:c.c3||"",c4:c.c4||"",origemEvento:eventId});
+    feedPush("A história trouxe consigo "+(c.nomeSugerido||"uma nova posse")+".");
+  }
+  const d=e.tipo==="origem"&&doacaoOrigem(eventId);
+  if(d){
+    d.personagens.forEach(cat=>S.personagens.push(fichaBase({id:uid(),nome:nomeDoado(cat),categoria:cat,estado:"Vivo",jogador:"",experiencia:"",honra:0,notas:"",
+      cla4e:"",familia4e:"",escola4e:"",doado:true,categoriaDoada:cat,origemEvento:eventId})));
+    d.lotes.forEach(l=>criarLote(l.attr,l.valor,l.d,l.motivo,{origemEvento:eventId}));
+    feedPush("A origem trouxe "+d.personagens.map(NOME_PAPEL_CURTO).join(", ")+", sem custo de Influência"+
+      d.lotes.map(l=>"; "+(l.valor>0?"temporário":"e um peso")+": "+fmtLote(l.attr,l.valor)+" ("+prazoLoteCurto(l.d)+", "+l.motivo+")").join("")+".");
+  }
 }
 function removerConcessaoEvento(eventId){
   const tinha=S.terrenos.some(t=>t.origemEvento===eventId);
   S.terrenos=S.terrenos.filter(t=>t.origemEvento!==eventId);
   if(tinha)feedPush("A posse ligada a esse capítulo da história foi removida junto com ele.");
+  const dela=S.personagens.filter(p=>p.origemEvento===eventId);
+  if(dela.length){
+    const intocado=p=>p.nome===nomeDoado(p.categoriaDoada||p.categoria)&&!p.jogador;
+    const ficam=dela.filter(p=>!intocado(p));
+    S.personagens=S.personagens.filter(p=>p.origemEvento!==eventId||!intocado(p));
+    ficam.forEach(p=>{delete p.doado;delete p.categoriaDoada;delete p.origemEvento;});
+    if(ficam.length)feedPush(ficam.map(p=>p.nome).join(", ")+(ficam.length===1?" já tinha ficha e ficou":" já tinham ficha e ficaram")+", agora pagando Influência.");
+  }
+  if((S.reservas||[]).some(l=>l.origemEvento===eventId))S.reservas=S.reservas.filter(l=>l.origemEvento!==eventId);
 }
 
 function addPersonagem(){if(bloqueadoLeitura())return;if(bloqueadoSobrecarga("influencia","um personagem novo"))return;S.personagens.push(fichaBase({id:uid(),nome:"Novo personagem",categoria:"",estado:"Vivo",jogador:"",experiencia:"",honra:0,notas:"",cla4e:"",familia4e:"",escola4e:""}));salvar();render();}
@@ -2519,8 +3023,8 @@ function toggleTropaEquip(id,eqId){if(bloqueadoLeitura())return;const t=S.tropas
 function delTropa(id){if(bloqueadoLeitura())return;S.tropas=S.tropas.filter(x=>x.id!==id);salvar();render();}
 
 /* ---- Ciclo de vida da batalha ---- */
-function comandoVazio(){return{personagemId:"",nome:"",battle:3,percepcao:3,consciencia:3,oratoria:0,anel:3,
-  tatica:"",taticaAtiva:null,taticaTotal:null,gunshi:false,gunshiBattle:3,gunshiAnel:3,gatilho:false,discurso:null};}
+function comandoVazio(){return{personagemId:"",nome:"",battle:3,consciencia:3,anel:3,
+  tatica:"",taticaAtiva:null,taticaTotal:null,taticaRaises:0,raisesLivres:0,gunshi:false,gatilho:false,abalado:false};}
 function iniciarBatalha(){if(bloqueadoLeitura())return;
   S.batalhaAtual={id:uid(),v:7,nome:"",inimigo:"",desfecho:"",terreno:"",periodo:"dia",
     criada:(ESTACOES[S.estacaoIdx||0])+" ano "+(S.anoEstacao||1),
@@ -2653,6 +3157,9 @@ function testarMoralUnidade(id){
   const bon=consumirBonusRolagem(u,f);x+=bon.r;k+=bon.k;det.push(...bon.txt);
   if(o.mr||o.mk){x+=o.mr;k+=o.mk;det.push("ajuste "+(o.mr>=0?"+":"")+o.mr+"k"+o.mk);}
   if(u.manterLinha>0){u.manterLinha--;u.moralPendente=false;o.ultimo={texto:nomeUnidade(u)+" ignora o teste de moral (Manter a Linha)."};addLogBatalha(o.ultimo.texto);return;}
+  const cmdEx=b.comando&&b.comando[exercitoDoLado(u.lado)];
+  if(cmdEx&&cmdEx.abalado&&!u.primeiroMoral){x-=1;det.push("exército abalado -1k0");}
+  u.primeiroMoral=true;
   const r=rolarPool(x,k),tn=f.moralTN,falha=tn-r.total;
   let res;
   if(r.total>=tn)res={passo:f.moral===3?2:f.moral,golpes:0,txt:f.moral===3?"passou: volta a Debandando":"passou"};
@@ -2745,68 +3252,76 @@ function manobraUnidade(id){
   addLogBatalha(texto);
 }
 
-/* ---- Rikugunshōkan ---- */
+/* ---- Rikugunshōkan (simplificado em 2026-11, a pedido do Thiago) ----
+   Antes eram cinco rolagens: Discurso, Gunshi e Tática antes da batalha, e Contest de Comando e
+   Inspirar a cada turno. Ficaram duas coisas:
+   - a Tática, uma rolagem antes da batalha: (Anel da Tática + Battle) k Anel contra o TN. Um
+     Gunshi no exército dá +1k1, sem rolar. Cada Raise vale o efeito extra da tática (uma vez) ou
+     +1 Ponto de Vazio numa unidade (o que antes era o Discurso). Falhar por 10 ou mais: o
+     exército começa abalado, toda unidade tem -1k0 no primeiro teste de moral;
+   - Inspirar, uma vez por turno: Battle / Consciência contra TN 15, +1 Ponto de Vazio numa
+     unidade que ele vê.
+   A Mudança de Tática continua presa a um gatilho no campo, com TN +10. */
 function cmdInfo(ex){
   const b=bat(),c=b&&b.comando&&b.comando[ex];if(!c)return null;
   const p=c.personagemId?(S.personagens||[]).find(x=>x.id===c.personagemId):null;
-  if(p){fichaBase(p);return{nome:p.nome||"sem nome",battle:periciaRank(p,RE_BATTLE),percepcao:Number(p.traits.perception)||2,consciencia:Number(p.traits.awareness)||2,
-    oratoria:periciaRank(p,RE_ORATORIA),aneis:aneisPersonagem(p)};}
+  if(p){fichaBase(p);return{nome:p.nome||"sem nome",battle:periciaRank(p,RE_BATTLE),consciencia:Number(p.traits.awareness)||2,aneis:aneisPersonagem(p)};}
   const a=Math.max(1,Number(c.anel)||2);
-  return{nome:c.nome||"Rikugunshōkan",battle:Number(c.battle)||0,percepcao:Number(c.percepcao)||2,consciencia:Number(c.consciencia)||2,oratoria:Number(c.oratoria)||0,
-    aneis:{terra:a,agua:a,ar:a,fogo:a,vazio:a}};
+  return{nome:c.nome||"Rikugunshōkan",battle:Number(c.battle)||0,consciencia:Number(c.consciencia)||2,aneis:{terra:a,agua:a,ar:a,fogo:a,vazio:a}};
 }
 function setComando(ex,campo,val){
   if(bloqueadoLeitura())return;const b=bat();if(!b)return;b.comando=b.comando||{familia:comandoVazio(),inimiga:comandoVazio()};
   const c=b.comando[ex];if(!c)return;
-  const num=["battle","percepcao","consciencia","oratoria","anel","gunshiBattle","gunshiAnel"];
+  const num=["battle","consciencia","anel"];
   c[campo]=num.includes(campo)?Math.max(0,parseInt(val)||0):(campo==="gunshi"||campo==="gatilho"?!!val:val);
   salvar();render();}
-function rolarDiscurso(ex){
-  if(bloqueadoLeitura())return;const c=bat().comando[ex],i=cmdInfo(ex);
-  const r=rolarPool(i.consciencia+i.oratoria,i.consciencia),m=r.total-15;
-  let txt;
-  if(m>=0){const rz=Math.floor(m/5);txt="sucesso: toda unidade do exército ganha +1k0 no primeiro teste de moral"+(rz?"; "+rz+" Raise"+(rz===1?"":"s")+": +1 Ponto de Vazio numa unidade à escolha por Raise"+(rz>=3?" (ou +1 em todas)":""):"");}
-  else txt=m<=-10?"falhou por "+(-m)+": soou falso, toda unidade tem -1k0 no primeiro teste de moral":"falhou por "+(-m);
-  c.discurso=txt;
-  addLogBatalha("Discurso de "+i.nome+" (Oratória "+poolTxt(i.consciencia+i.oratoria,i.consciencia)+" contra TN 15): "+r.total+", "+txt+".");
-}
 function rolarTatica(ex,mudanca){
   if(bloqueadoLeitura())return;const b=bat(),c=b.comando[ex],i=cmdInfo(ex);
   const t=TATICAS.find(x=>x.id===c.tatica);if(!t){feedPush("Escolha a tática.");return render();}
   if(mudanca&&!c.gatilho){feedPush("A Mudança de Tática só pode ser tentada depois de um gatilho no campo.");return render();}
   const anel=i.aneis[t.anel]||2;let x=anel+i.battle,k=anel;const det=[];
-  if(c.gunshi&&!mudanca){const ga=Math.max(1,Number(c.gunshiAnel)||2),g=rolarPool(ga+(Number(c.gunshiBattle)||0),ga);
-    if(g.total>=15){const gr=Math.floor((g.total-15)/5);x+=1+gr;k+=1;det.push("Gunshi "+g.total+": +1k1"+(gr?" +"+gr+"k0":""));}else det.push("Gunshi "+g.total+": falhou");}
+  if(c.gunshi){x+=1;k+=1;det.push("Gunshi +1k1");}
+  const tatOutro=taticaAtivaDe(b,ex==="familia"?"inimiga":"familia");
+  if(mudanca&&tatOutro&&tatOutro.id==="cabeca"){x-=1;if(tatOutro.raises>0)k-=1;det.push("Golpe na Cabeça do inimigo");}
   const tn=t.tn+(mudanca?10:0),r=rolarPool(x,k);
   const ok=r.total>=tn,rz=ok?Math.floor((r.total-tn)/5):0;
-  if(ok){c.taticaAtiva=t.id;c.taticaRaises=rz;c.taticaTotal=r.total;
-    if(t.id==="coracao"){(b.unidades||[]).filter(u=>exercitoDoLado(u.lado)===ex).forEach(u=>{u.vp=(Number(u.vp)||0)+(rz>0?2:1);});det.push("Pontos de Vazio somados nas unidades");}}
-  else if(mudanca||!c.taticaAtiva){c.taticaAtiva=null;c.taticaRaises=0;c.taticaTotal=null;}
+  let extra="";
+  if(ok){c.taticaAtiva=t.id;c.taticaRaises=0;c.raisesLivres=rz;c.taticaTotal=r.total;c.abalado=false;
+    if(t.id==="coracao"){(b.unidades||[]).filter(u=>exercitoDoLado(u.lado)===ex).forEach(u=>{u.vp=(Number(u.vp)||0)+1;});det.push("+1 Ponto de Vazio em todas as unidades");}
+    if(rz)extra=" Cada Raise: o efeito extra da tática ("+t.raise+"), uma vez, ou +1 Ponto de Vazio numa unidade.";}
+  else{
+    if(mudanca||!c.taticaAtiva){c.taticaAtiva=null;c.taticaRaises=0;c.raisesLivres=0;c.taticaTotal=null;}
+    if(!mudanca&&r.total<=tn-10){c.abalado=true;extra=" Falhou por 10 ou mais: o exército começa abalado, toda unidade tem -1k0 no primeiro teste de moral.";}
+  }
   if(mudanca)c.gatilho=false;
-  const outro=b.comando[ex==="familia"?"inimiga":"familia"];
-  let comp="";if(ok&&!mudanca&&outro&&outro.taticaTotal!=null)comp=r.total>outro.taticaTotal?" Total maior que o do outro lado: +5 na Iniciativa das unidades deste exército no primeiro turno.":(r.total<outro.taticaTotal?" O outro lado tirou mais: ele ganha +5 na Iniciativa no primeiro turno.":"");
   addLogBatalha((mudanca?"Mudança de Tática":"Tática")+" de "+i.nome+": "+t.nome+" ("+ANEL_NOME[t.anel]+" "+poolTxt(x,k)+" contra TN "+tn+"): "+r.total+", "+
-    (ok?"vale"+(rz?" com "+rz+" Raise"+(rz===1?"":"s")+" ("+t.raise+")":""):"falhou"+(mudanca?": a tática antiga também se perde":": o exército luta sem tática"))+"."+(det.length?" ["+det.join("; ")+"]":"")+comp);
+    (ok?"vale"+(rz?" com "+rz+" Raise"+(rz===1?"":"s"):""):"falhou"+(mudanca?": a tática antiga também se perde":": o exército luta sem tática"))+"."+(det.length?" ["+det.join("; ")+"]":"")+extra);
 }
-function contestComando(){
-  if(bloqueadoLeitura())return;const b=bat();
-  const rol=ex=>{const i=cmdInfo(ex);let x=i.percepcao+i.battle,k=i.percepcao;
-    const tatOutro=taticaAtivaDe(b,ex==="familia"?"inimiga":"familia");
-    if(tatOutro&&tatOutro.id==="cabeca"){x-=1;if(tatOutro.raises>0)k-=1;}
-    return{i,r:rolarPool(x,k),pool:poolTxt(x,k)};};
-  const A=rol("familia"),B=rol("inimiga");
-  const venc=A.r.total>B.r.total?"familia":(B.r.total>A.r.total?"inimiga":"");
-  b.contest={turno:Number(b.turno)||1,vencedor:venc};
-  addLogBatalha("Contest de Comando: "+A.i.nome+" "+A.r.total+" ("+A.pool+") × "+B.i.nome+" "+B.r.total+" ("+B.pool+") — "+(venc?(venc==="familia"?A.i.nome:B.i.nome)+" vence: +5 na Iniciativa das suas unidades neste turno":"empate")+".");
+/* Raise da Tática: no efeito extra (uma vez) ou +1 Ponto de Vazio numa unidade */
+function usarRaiseTatica(ex,uso){
+  if(bloqueadoLeitura())return;const b=bat(),c=b&&b.comando&&b.comando[ex];if(!c||!(c.raisesLivres>0))return;
+  const t=TATICAS.find(x=>x.id===c.taticaAtiva);if(!t)return;
+  if(uso==="efeito"){if(c.taticaRaises>0)return;c.taticaRaises=1;c.raisesLivres--;
+    if(t.id==="coracao")(b.unidades||[]).filter(u=>exercitoDoLado(u.lado)===ex).forEach(u=>{u.vp=(Number(u.vp)||0)+1;});
+    addLogBatalha("Raise da tática no efeito extra: "+t.nome+", "+t.raise+".");return;}
+  const u=bUnit(c.raiseAlvo);if(!u){feedPush("Escolha a unidade que recebe o Ponto de Vazio.");return render();}
+  u.vp=(Number(u.vp)||0)+1;c.raisesLivres--;
+  addLogBatalha("Raise da tática: "+nomeUnidade(u)+" ganha +1 Ponto de Vazio.");
 }
 function inspirarUnidade(ex){
   if(bloqueadoLeitura())return;const b=bat(),c=b.comando[ex],i=cmdInfo(ex);
   const u=bUnit(c.inspirarAlvo);if(!u){feedPush("Escolha a unidade que o comandante vai inspirar.");return render();}
-  const r=rolarPool(i.consciencia+i.battle,i.consciencia),ok=r.total>=15;
+  const turno=Number(b.turno)||1;
+  if(c.inspirouTurno===turno){feedPush("O comandante já inspirou neste turno.");return render();}
+  let x=i.consciencia+i.battle,k=i.consciencia;const det=[];
+  const tatOutro=taticaAtivaDe(b,ex==="familia"?"inimiga":"familia");
+  if(tatOutro&&tatOutro.id==="cabeca"){x-=1;if(tatOutro.raises>0)k-=1;det.push("Golpe na Cabeça do inimigo");}
+  const r=rolarPool(x,k),ok=r.total>=15;
   if(ok)u.vp=(Number(u.vp)||0)+1;
-  addLogBatalha(i.nome+" inspira "+nomeUnidade(u)+" (Battle/Consciência "+poolTxt(i.consciencia+i.battle,i.consciencia)+" contra TN 15): "+r.total+(ok?", +1 Ponto de Vazio":", falhou")+".");
+  c.inspirouTurno=turno;
+  addLogBatalha(i.nome+" inspira "+nomeUnidade(u)+" (Battle / "+TRACO_PT.awareness+" "+poolTxt(x,k)+" contra TN 15): "+r.total+(ok?", +1 Ponto de Vazio":", falhou")+"."+(det.length?" ["+det.join("; ")+"]":""));
 }
-function bonusIniContest(u){const b=bat();return b&&b.contest&&b.contest.turno===(Number(b.turno)||1)&&b.contest.vencedor===exercitoDoLado(u.lado)?5:0;}
+function bonusIniContest(){return 0;}
 
 /* ---- Cerrar Fileiras: duas unidades aliadas, Castigada ou pior, viram uma só, Veterana ---- */
 let cerrarSel={a:"",b:""};
@@ -2975,15 +3490,13 @@ function render(){
   document.getElementById("familiaNome").textContent=S.nome||"Família";
   document.getElementById("nomeInput").value=S.nome||"";
   document.getElementById("daimyoInput").value=S.daimyo||"";
-  if(document.activeElement!==document.getElementById("ramoInput"))document.getElementById("ramoInput").value=S.ramoFamiliar||"";
   const c0=claAtual();
-  document.getElementById("ramoSugestoes").innerHTML=(c0&&c0.familias?c0.familias:[]).map(f=>"<option value=\""+esc(f)+"\">").join("");
-  document.getElementById("idadeSel").value=S.idade||"recente";
+    document.getElementById("idadeSel").value=S.idade||"recente";
   limparPendenciasLiberar();
   {const c=claAtual(),meta=[];
    meta.push(c?"<span>Clã <b>"+esc(c.nome)+"</b></span>":"<span>Sem clã escolhido</span>");
    if(S.daimyo)meta.push("<span>Daimyō <b>"+esc(S.daimyo)+"</b></span>");
-   if(S.ramoFamiliar)meta.push("<span>"+esc(S.ramoFamiliar)+"</span>");
+   {const fp=familiaPrincipal();if(fp&&fp!==S.nome)meta.push("<span>ramo da família <b>"+esc(fp)+"</b></span>");}
    meta.push("<span>Família "+esc((IDADE_LABEL[S.idade]||"").toLowerCase())+"</span>");
    const og=S.origem&&eventoInfo(S.origem);if(og)meta.push("<span>Origem <b>"+esc(og.nome)+"</b></span>");
    document.getElementById("claLab").innerHTML=meta.join("");
@@ -2993,7 +3506,7 @@ function render(){
    aplicarTemaCla();}
   const claDoCrest=claAtual();
   document.getElementById("crest").innerHTML=claDoCrest?("<img src=\""+monSrc(claDoCrest.id)+"\" alt=\"\" onerror=\"this.parentNode.textContent='家'\">"):"家";
-  renderClas();renderMeters();renderResumo();renderAttrs();renderTesteFamilia();renderEventos();renderConquistas();renderSacrificios();renderTerrenos();renderPersonagens();renderTropas();renderEscolas();renderConversoes();renderFeed();renderSync();
+  renderClas();renderMeters();renderResumo();renderAttrs();renderTesteFamilia();renderEventos();renderConquistas();renderSacrificios();renderCasa();renderEstacoes();renderTerrenos();renderPersonagens();renderTropas();renderEscolas();renderConversoes();renderFeed();renderSync();
   document.getElementById("tabPersonagensCount").textContent=S.personagens.length?("("+S.personagens.length+")"):"";
   if(abaPrincipal==="personagens")renderCharTabs();
   if(abaPrincipal==="batalha")renderBatalha();
@@ -3037,7 +3550,9 @@ function renderMeters(){
   const favorTxt=favor>0?(" · favor das Fortunas "+fmtRaise(favor)):(favor<0?(" · desfavor das Fortunas "+fmtRaise(favor)):"");
   if(estLab)estLab.textContent=(ESTACOES[S.estacaoIdx||0])+" do ano "+(S.anoEstacao||1);
   aplicarTemaEstacao();
-  const linha=(lbl,val,titulo,cls)=>"<div class=\"ledgerline\" title=\""+esc(titulo)+"\"><span class=\"lbl\">"+lbl+"</span><span class=\"fill\"></span><span class=\"val"+(cls?" "+cls:"")+"\">"+val+"</span></div>";
+  const CH={[METER_INFO.fortunas]:"fortunas",[METER_INFO.favor]:"favor",[METER_INFO.dojo]:"dojo",[METER_INFO.tecnicaDojo]:"tecnica",[METER_INFO.equilibrio]:"equilibrio",[METER_INFO.augurio]:"augurio"};
+  const linha=(lbl,val,titulo,cls)=>{const k=CH[titulo]||"";return "<div class=\"ledgerline derivado-l"+(derivadoAberto===k?" on":"")+"\" role=\"button\" tabindex=\"0\" title=\""+esc(titulo)+"\" onclick=\"toggleDerivado('"+k+"')\" onkeydown=\"if(event.key==='Enter')toggleDerivado('"+k+"')\"><span class=\"lbl\">"+lbl+"</span><span class=\"fill\"></span><span class=\"val"+(cls?" "+cls:"")+"\">"+val+"</span>"+
+    (derivadoAberto===k&&k?"<div class=\"derivadoexp\">"+esc(explicacaoDerivado(k))+"</div>":"")+"</div>";};
   const favorVal=fmtRaise(favor);
   const favorCls=favor>0?"good small":(favor<0?"bad small":"small");
   const eqVal=fmtRaise(eq);
@@ -3049,7 +3564,7 @@ function renderMeters(){
     linha("Dojo — alunos por temporada",dojo(),METER_INFO.dojo)+
     linha("Técnica mais alta do Dojo",tecVal,METER_INFO.tecnicaDojo,"small")+
     linha("Equilíbrio Espiritual",eqVal,METER_INFO.equilibrio,eqCls)+
-    linha("Augúrio dos Kami",augurioKami()||"—",METER_INFO.augurio,"small")+
+    linha("Augúrio dos Kami",augurioKami()||"silêncio",METER_INFO.augurio,"small")+
     "<div class=\"rolesrow\" title=\""+esc(METER_INFO.samurai)+"\">"+
       "<div class=\"rolewrap\" title=\"Guerreiros que defendem a família em combate.\"><img src=\"img/papeis/bushi.png\" alt=\"\" onerror=\"this.style.display='none'\"><div class=\"n\">"+r.bushi+"</div><div class=\"l\">bushi</div></div>"+
       "<div class=\"rolewrap\" title=\"Diplomatas que representam a família na corte e nas alianças.\"><img src=\"img/papeis/cortesao.png\" alt=\"\" onerror=\"this.style.display='none'\"><div class=\"n\">"+r.cortesao+"</div><div class=\"l\">cortesão</div></div>"+
@@ -3058,9 +3573,6 @@ function renderMeters(){
     "</div>";
 }
 function renderAttrs(){
-  const usados=pontosUsados();
-  const pl=document.getElementById("pontosLabel");
-  if(pl)pl.textContent="Pontos para distribuir: "+(PONTOS_LIVRES-usados)+" de "+PONTOS_LIVRES+" (máximo +"+PONTOS_MAX_ATTR+" num atributo) · base "+IDADE_LABEL[S.idade];
   document.getElementById("attrs").innerHTML=ATRIBUTOS.map(([k,l])=>{
     const ajuste=Number(S.base[k])||0,bi=baseIdade(k),pts=pontosAttr(k),cla=claMod(k),ev=eventosMod(k),cq=conquistasMod(k),mod=modificador(k);
     const bruto=totalBruto(k),tot=totalAttr(k),n=nivelAttr(k);
@@ -3068,27 +3580,27 @@ function renderAttrs(){
     let poolHtml="",alerta="";
     if(POOL_ATTRS[k]){
       const rest=poolRestante(k),sc=sobrecarga(k);
-      poolHtml="<div class=\"pool\">disponível: <span class=\"rest "+(rest<0?"bad":"good")+"\">"+rest.toFixed(0)+"</span> de "+tot.toFixed(0)+"</div>";
-      if(sc>0)alerta="<div class=\"alerta\">Sobrecarga de "+sc.toFixed(0)+": nada novo deste pool, manutenção com TN +"+(5*Math.ceil(sc/10))+
-        (S.liberar&&S.liberar[k]?". Falhou na manutenção: a família precisa liberar algo até sair da sobrecarga.":".")+"</div>";
+      poolHtml="<div class=\"pool\">disponível <span class=\"rest "+(rest<0?"bad":"good")+"\">"+rest.toFixed(0)+"</span></div>"+
+        "<div class=\"conta reveal\"><div class=\"cl\"><span>Atributo</span><b>"+tot.toFixed(0)+"</b></div>"+
+        contaDisponivel(k).map(([nome,v,l])=>"<div class=\"cl "+(v>0?"pos":"neg")+"\"><span>"+esc(nome)+(l?" <small>"+esc(prazoLoteTxt(l))+"</small>":"")+"</span><b>"+(v>0?"+":"−")+Math.abs(v).toFixed(0)+"</b></div>").join("")+
+        "<div class=\"cl tot\"><span>Disponível</span><b>"+rest.toFixed(0)+"</b></div></div>";
+      if(sc>0)alerta="<div class=\"alerta\">Sobrecarga de "+sc.toFixed(0)+": nada novo deste pool, teste da estação com TN +"+(5*Math.ceil(sc/10))+
+        (S.liberar&&S.liberar[k]?". Falhou no teste da estação: a família precisa liberar algo até sair da sobrecarga.":".")+"</div>";
     }
     const tip=flavor?(flavor.sub+" "+flavor.desc):"";
     const ring=ATTR_RING[k]||"vazio";
     const icon="<img class=\"ic\" src=\"img/aneis/"+ring+".png\" alt=\"\" onerror=\"this.style.visibility='hidden'\">";
     const sinal=v=>(v>0?"+":"")+v.toFixed(0);
-    const ptsHtml=(usados<PONTOS_LIVRES||pts>0)?"<div class=\"pts\">pontos "+sinal(pts)+
-      " <button class=\"ghost\" onclick=\"setPonto('"+k+"',-1)\" "+(pts<=0?"disabled":"")+">−</button>"+
-      "<button class=\"ghost\" onclick=\"setPonto('"+k+"',1)\" "+(pts>=PONTOS_MAX_ATTR||usados>=PONTOS_LIVRES?"disabled":"")+">+</button></div>":"";
     const perda=bruto>100?" <b>passa de 100</b> "+(bruto-100).toFixed(0)+" sem efeito":(bruto<0?" <b>abaixo de 0</b> "+bruto.toFixed(0)+" sem efeito":"");
     return "<div class=\"attrrow"+(attrAbertos.has(k)?" aberto":"")+"\" title=\""+esc(tip)+"\" onclick=\"if(!event.target.closest('input,button'))toggleAttrAberto('"+k+"')\">"+icon+
       "<div><div class=\"name\">"+l+"</div>"+(flavor?"<div class=\"desc\">"+esc(flavor.sub)+"</div>":"")+"</div>"+
       "<div class=\"numwrap\"><div class=\"num\">"+tot.toFixed(0)+"</div><div class=\"nivel\">Nível <b>"+n+"</b></div>"+
       "<div class=\"barra\" title=\""+(n<10?(tot%10).toFixed(0)+" de 10 rumo ao Nível "+(n+1):"Nível máximo")+"\"><i style=\"width:"+(n<10?(tot%10)*10:100)+"%\"></i></div></div>"+
-      ptsHtml+alerta+
-      "<div class=\"brk reveal\"><b>Idade</b>"+bi+" <b>Pontos</b>"+sinal(pts)+" <b>Clã</b>"+sinal(cla)+" <b>Eventos</b>"+sinal(ev)+
-      (cq?" <b>Conquistas</b>"+sinal(cq):"")+" <b>Outros</b>"+sinal(mod)+
+      alerta+
+      "<div class=\"brk reveal\"><b>Idade</b>"+bi+(pts?" <b>Pontos</b>"+sinal(pts):"")+" <b>Clã</b>"+sinal(cla)+" <b>Eventos</b>"+sinal(ev)+
+      (cq?" <b>Conquistas</b>"+sinal(cq):"")+(POOL_ATTRS[k]?"":" <b>Outros</b>"+sinal(mod))+
       " <b>Ajuste</b><input type=\"number\" value=\""+ajuste+"\" title=\"Estações, testes, o Mestre, e o que a migração da ficha antiga guardou\" onchange=\"setBase('"+k+"',this.value)\">"+
-      " <b>Manutenção</b>TN "+tnManutencao(k)+perda+"</div>"+poolHtml+"</div>";
+      " <b>Estação</b>TN "+tnManutencao(k)+perda+"</div>"+poolHtml+(k==="vazio"&&gracaKami()?"<div class=\"pool\">graça dos kami: <span class=\"resv "+(gracaKami()>0?"good":"bad")+"\">"+fmtRaise(gracaKami())+"</span></div>":"")+"</div>";
   }).join("");
 }
 /* Faixa dos Cinco Anéis: o que a mesa consulta o tempo todo, sempre à vista. */
@@ -3100,27 +3612,205 @@ function renderResumo(){
     const ring=ATTR_RING[k]||"vazio",tot=totalAttr(k),n=nivelAttr(k),resto=tot-n*10;
     let ticks="";for(let i=0;i<10;i++)ticks+=i<n?"<i class=\"on\"></i>":(i===n&&resto>0?"<i class=\"meio\" style=\"--p:"+(resto*10)+"%\"></i>":"<i></i>");
     let disp="";
-    if(POOL_ATTRS[k]){const r=poolRestante(k);disp="<div class=\"disp"+(r<0?" bad":"")+"\">"+(r<0?"sobrecarga <b>"+(-r).toFixed(0)+"</b>":"livre <b>"+r.toFixed(0)+"</b>")+"</div>";}
-    else disp="<div class=\"disp\">não gasta</div>";
+    if(POOL_ATTRS[k]){const r=poolRestante(k);disp="<div class=\"disp"+(r<0?" bad":"")+"\" title=\""+esc(contaDisponivelTxt(k))+"\">"+(r<0?"sobrecarga <b>"+(-r).toFixed(0)+"</b>":"disponível <b>"+r.toFixed(0)+"</b>")+"</div>";}
+    else disp="<div class=\"disp\">"+(gracaKami()?"graça <b>"+(gracaKami()>0?"+":"")+gracaKami()+"</b>":"não gasta")+"</div>";
     return "<div class=\"anelcel\" style=\"--cor:var(--anel-"+ring+")\"><img src=\"img/aneis/"+ring+".png\" alt=\"\">"+
       "<div class=\"an\">"+l+"<small>Anel "+({terra:"da Terra",agua:"da Água",ar:"do Ar",fogo:"do Fogo",vazio:"do Vazio"})[ring]+"</small></div>"+
       "<div class=\"av\"><b>"+tot.toFixed(0)+"</b><span>Nível "+n+"</span></div><div class=\"ticks\" aria-hidden=\"true\">"+ticks+"</div>"+disp+"</div>";
   }).join("");
   const f=fortunas(),fav=favorDasFortunas(),eq=equilibrioEspiritual();
   const cls=v=>v>0?"good":(v<0?"bad":"");
+  const bt=(k,html)=>"<button type=\"button\" class=\"derivado"+(derivadoAberto===k?" on":"")+"\" aria-expanded=\""+(derivadoAberto===k)+"\" title=\""+esc(explicacaoDerivado(k))+"\" onclick=\"toggleDerivado('"+k+"')\">"+html+"</button>";
   document.getElementById("resumoVals").innerHTML=
-    "<span title=\""+esc(METER_INFO.fortunas)+"\">Fortunas <b>"+f.toFixed(0)+"</b></span>"+
-    "<span title=\""+esc(METER_INFO.favor)+"\">Favor <b class=\""+cls(fav)+"\">"+(fav>0?"+":"")+fav+"</b></span>"+
-    "<span title=\""+esc(METER_INFO.dojo)+"\">Dojo <b>"+dojo()+"</b> por estação</span>"+
-    "<span title=\""+esc(METER_INFO.equilibrio)+"\">Equilíbrio <b class=\""+cls(eq)+"\">"+(eq>0?"+":"")+eq+"</b></span>"+
-    "<span title=\""+esc(METER_INFO.augurio)+"\">Augúrio <b>"+(augurioKami()||"silêncio")+"</b></span>";
+    bt("fortunas","Fortunas <b>"+f.toFixed(0)+"</b>")+
+    bt("favor","Favor <b class=\""+cls(fav)+"\">"+(fav>0?"+":"")+fav+"</b>")+
+    bt("dojo","Dojo <b>"+dojo()+"</b> por estação")+
+    bt("equilibrio","Equilíbrio <b class=\""+cls(eq)+"\">"+(eq>0?"+":"")+eq+"</b>")+
+    bt("augurio","Augúrio <b>"+(augurioKami()||"silêncio")+"</b>")+
+    (derivadoAberto?"<div class=\"derivadoexp\">"+esc(explicacaoDerivado(derivadoAberto))+"</div>":"");
   const al=[];
-  ATRIBUTOS.forEach(([k,l])=>{const sc=sobrecarga(k);if(sc>0)al.push(l+" em sobrecarga de "+sc.toFixed(0)+(S.liberar&&S.liberar[k]?": falhou na manutenção e precisa liberar algo":": nada novo deste pool e manutenção mais difícil"));});
-  const usados=pontosUsados();if(usados<PONTOS_LIVRES)al.push("Faltam "+(PONTOS_LIVRES-usados)+" pontos para distribuir nos atributos (Identidade).");
+  ATRIBUTOS.forEach(([k,l])=>{const sc=sobrecarga(k);if(sc>0)al.push(l+" em sobrecarga de "+sc.toFixed(0)+(S.liberar&&S.liberar[k]?": falhou no teste da estação e precisa liberar algo":": nada novo deste pool e teste da estação mais difícil"));});
   if(!S.origem)al.push("Falta a origem da família (Crônica).");
+  {const na=(S.acontAbertos||[]).length;if(na)al.push((na===1?"Um acontecimento em aberto":na+" acontecimentos em aberto")+" esperando a aventura (Estações).");}
   if(S.eventos.length<vagasEventos())al.push("Faltam "+(vagasEventos()-S.eventos.length)+" eventos históricos (Crônica).");
   if(!S.cla)al.push("Escolha o clã da família (Identidade).");
   document.getElementById("resumoAlertas").innerHTML=al.map(t=>"<div>"+esc(t)+"</div>").join("");
+}
+/* Aba Estações (2026-11): acontecimentos, reserva e investimentos ficam aqui, fora da Família. */
+function htmlAcontecimento(u,grande){
+  const uc=acontecimentoInfo(u.id);if(!uc)return"";
+  const tipo=tipoAcontecimento(uc);
+  return "<div class=\"acontult t-"+tipo+(grande?"":" mini")+"\"><div class=\"tag\">"+esc(u.quando)+" · resolvido</div>"+
+    "<div class=\"an\">"+esc(uc.nome)+"</div>"+(grande?"<div class=\"ad\">"+esc(uc.texto)+"</div>":"")+
+    (u.rol?"<div class=\"ar\">"+rotuloAttr(uc.anel)+" "+u.rol.n+"k"+u.rol.n+": <b>"+u.rol.total+"</b> contra TN "+u.rol.tn+" · <b class=\""+(u.rol.margem>=0?"good":"bad")+"\">"+esc(u.tier)+"</b>"+
+      (grande?"<div class=\"dados\">"+(u.rol.dados||[]).map(d=>"<span class=\""+(d.mantido?"k":"")+"\">"+d.chain.join("+")+"</span>").join("")+"</div>":"")+"</div>":"<div class=\"ar\">"+esc(u.tier)+"</div>")+
+    "<div class=\"ae\">"+u.partes.map(esc).join(" · ")+"</div></div>";
+}
+function htmlAcontAberto(a){
+  const c=acontecimentoInfo(a.acId);if(!c)return"";
+  const tipo=tipoAcontecimento(c),gT=a.rol?grauDoTeste(a.rol):null,g=grauFinal(a);
+  const cheio=c.ef.map(e=>e.perm?rotuloAttr(e.a)+" "+(e.v>0?"+":"")+e.v+" permanente":fmtLote(e.a,e.v)+(e.d?" por "+prazoLoteCurto(e.d):" até gastar")).join("; ");
+  let h="<div class=\"acontaberto t-"+tipo+"\"><div class=\"tag\">"+esc(a.quando)+" · em aberto"+(a.origem==="mestre"?" · lançado pelo Mestre":"")+"</div>"+
+    "<div class=\"an\">"+esc(c.nome)+" <small>"+({bom:"bom",ruim:"ruim",misto:"bom e ruim"})[tipo]+"</small></div>"+
+    "<div class=\"ad\">"+esc(c.texto)+"</div>"+
+    "<div class=\"ae\">Efeito cheio: "+esc(cheio)+". Anel ligado: "+rotuloAttr(c.anel)+".</div>";
+  /* 1. tendência */
+  h+="<div class=\"apasso\"><span class=\"cmdnum\">1</span><div class=\"cmdcorpo\"><div class=\"cmdrot\">Teste da Família <small>a tendência, se o Mestre quiser rolar</small></div>";
+  if(a.rol)h+="<div class=\"ar\">"+rotuloAttr(c.anel)+" "+a.rol.n+"k"+a.rol.n+": <b>"+a.rol.total+"</b> contra TN "+a.rol.tn+" · <b class=\""+(a.rol.margem>=0?"good":"bad")+"\">"+esc(rotuloGrau(gT))+"</b>"+
+    "<div class=\"dados\">"+(a.rol.dados||[]).map(d=>"<span class=\""+(d.mantido?"k":"")+"\">"+d.chain.join("+")+"</span>").join("")+"</div></div>";
+  h+="<div class=\"uacoes so-mestre\"><button class=\"ghost\" onclick=\"rolarTendencia('"+a.id+"')\">"+(a.rol?"rolar de novo":"rolar "+rotuloAttr(c.anel)+" "+Math.max(1,nivelAttr(c.anel))+"k"+Math.max(1,nivelAttr(c.anel))+" contra TN "+tnManutencao(c.anel))+"</button></div></div></div>";
+  /* 2. jogadores */
+  h+="<div class=\"apasso\"><span class=\"cmdnum\">2</span><div class=\"cmdcorpo\"><div class=\"cmdrot\">A aventura <small>o que os jogadores fizeram</small></div>"+
+    "<div class=\"uacoes\"><span class=\"tag\" data-dica=\"Cada sucesso dos jogadores que mexe na situação sobe um passo; cada fracasso desce um. Dois passos acima de Falhou é Passou com 1 Raise.\">ações dos jogadores</span>"+
+    "<button class=\"ghost so-mestre\" onclick=\"ajusteAcont('"+a.id+"',-1)\" aria-label=\"piorar um passo\">−</button><b class=\"ajv\">"+((Number(a.ajuste)||0)>0?"+":"")+(Number(a.ajuste)||0)+"</b>"+
+    "<button class=\"ghost so-mestre\" onclick=\"ajusteAcont('"+a.id+"',1)\" aria-label=\"melhorar um passo\">+</button></div>"+
+    "<textarea class=\"anota so-mestre\" placeholder=\"o que aconteceu na aventura (vai para o registro)\" onchange=\"setNotaAcont('"+a.id+"',this.value)\">"+esc(a.notas||"")+"</textarea></div></div>";
+  /* 3. desfecho */
+  const pv=efeitosNoGrau(c,g).map(({e,v})=>txtEfeito(e,v)).join("; ");
+  h+="<div class=\"apasso\"><span class=\"cmdnum\">3</span><div class=\"cmdcorpo\"><div class=\"cmdrot\">Desfecho <small>o Mestre fecha quando a história terminar</small></div>"+
+    "<div class=\"uacoes\"><select class=\"so-mestre\" onchange=\"setGrauAcont('"+a.id+"',this.value)\"><option value=\"\" "+(a.grauMestre==null?"selected":"")+">pelo teste e pelas ações: "+esc(rotuloGrau(grauDoTeste(a.rol)+(Number(a.ajuste)||0)<-2?-2:Math.min(4,grauDoTeste(a.rol)+(Number(a.ajuste)||0))))+"</option>"+
+      GRAUS_ACONT.map(([v,l])=>"<option value=\""+v+"\" "+(a.grauMestre===v?"selected":"")+">"+esc(l)+"</option>").join("")+"</select></div>"+
+    "<div class=\"ae\">Fica assim: <b>"+esc(pv)+"</b>.</div>"+
+    "<div class=\"uacoes so-mestre\"><button class=\"primary\" onclick=\"fecharAcontecimento('"+a.id+"')\">aplicar o desfecho</button>"+
+    "<button class=\"ghost\" onclick=\"descartarAcontecimento('"+a.id+"')\">descartar (não aconteceu)</button></div></div></div>";
+  return h+"</div>";
+}
+function renderEstacoes(){
+  const cab=document.getElementById("estCabecalho");if(!cab)return;
+  const prox=ESTACOES[S.estacaoIdx||0];
+  cab.innerHTML="<div class=\"estcab\"><div><div class=\"tag\">agora</div><div class=\"estnome\">"+esc(prox+" do ano "+(S.anoEstacao||1))+"</div>"+
+    "<div class=\"hint\" style=\"margin:2px 0 0\">Ao avançar, os lotes vencidos saem, os investimentos prontos viram atributo e a estação nova traz um acontecimento em aberto: um gancho de aventura, que o Mestre resolve quando a história terminar.</div></div>"+
+    "<button class=\"primary so-mestre\" onclick=\"avancarEstacao()\">Avançar estação</button></div>";
+  /* acontecimentos */
+  const hist=S.historicoAcontecimentos||[],abertos=S.acontAbertos||[];
+  document.getElementById("estAcont").innerHTML=
+    (abertos.length?"<div class=\"secao\" style=\"margin-top:0\">Em aberto</div>"+abertos.map(htmlAcontAberto).join(""):
+      "<div class=\"linha-vazia\">Nenhum acontecimento em aberto. O próximo chega quando o Mestre avançar a estação, ou pelas Ferramentas do Mestre.</div>")+
+    (hist.length?"<div class=\"secao\">Resolvidos</div><div class=\"acontlista\">"+hist.slice(0,12).map((u,i)=>htmlAcontecimento(u,i===0&&!abertos.length)).join("")+"</div>":"");
+  /* reserva */
+  const saldos=ATRIBUTOS.map(([k,l])=>{const r=reservaAttr(k),g=gracaKami();
+    return "<div class=\"saldo\">"+l+" <b class=\""+((k==="vazio"?g:r)>0?"good":((k==="vazio"?g:r)<0?"bad":""))+"\">"+(k==="vazio"?(g>0?"+":"")+g+" Raise"+(Math.abs(g)===1?"":"s"):(r>0?"+":"")+r)+"</b></div>";}).join("");
+  const lotes=(S.reservas||[]).slice().sort((x,y)=>(x.vence==null?1e9:x.vence)-(y.vence==null?1e9:y.vence));
+  document.getElementById("estReserva").innerHTML="<div class=\"saldos\">"+saldos+"</div><div class=\"lotes\">"+(lotes.length?lotes.map(l=>"<div class=\"lote "+(l.valor>0?"pos":"neg")+"\"><span class=\"lv\">"+esc(fmtLote(l.attr,l.valor))+"</span>"+
+      "<span class=\"lm\">"+esc(l.motivo||"sem motivo")+"</span><span class=\"lp\">"+esc(prazoLoteTxt(l))+"</span>"+
+      "<button class=\"ghost del so-mestre\" title=\"remover o lote\" onclick=\"delLote('"+l.id+"')\">✕</button></div>").join("")
+    :"<div class=\"linha-vazia\">Nada temporário agora. Acontecimentos, a origem e o Mestre criam ganhos e perdas com prazo.</div>")+"</div>"+
+    "<div class=\"hint\" style=\"margin:6px 0 0\">A conta completa de cada disponível fica em Família → Identidade → Atributos: clique no atributo.</div>";
+  /* investimentos */
+  const and=(S.investimentos||[]).map(i=>{const pg=progressoInvestimento(i),pct=Math.round(pg/i.dur*100);
+    return "<div class=\"obra\"><div class=\"ol\"><b>"+rotuloAttr(i.attr)+" +1</b> <small>"+i.custo+" de "+rotuloAttr(i.fonte)+(i.comprometido?", "+i.comprometido+" presos até ficar pronto":"")+"</small></div>"+
+      "<div class=\"medidor\" role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\""+i.dur+"\" aria-valuenow=\""+pg+"\"><i style=\"width:"+pct+"%\"></i></div>"+
+      "<div class=\"op\">"+pg+" de "+i.dur+" estações · pronto em "+esc(nomeEstacaoAbs(i.inicio+i.dur))+"</div>"+
+      "<button class=\"ghost del so-mestre\" title=\"cancelar (volta metade)\" onclick=\"cancelarInvestimento('"+i.id+"')\">✕</button></div>";}).join("");
+  const inv=ATRIBUTOS.map(([k,l])=>{
+    const c=custoInvestir(k,false),cr=custoInvestir(k,true),tem=reservaPositiva(k),ocup=investimentoDe(k);
+    const b1=ocup?"<span class=\"tag\">em andamento</span>":(k==="vazio"?"<span class=\"tag\">paga só via Riqueza</span>":"<button class=\"ghost\" "+(podeInvestir(k,false)?"":"disabled")+" onclick=\"investir('"+k+"',false)\">+1 por "+c+" de "+l+"</button>");
+    const b2=ocup||k==="riqueza"?"":"<button class=\"ghost\" "+(podeInvestir(k,true)?"":"disabled")+" onclick=\"investir('"+k+"',true)\">+1 por "+cr+" de Riqueza</button>";
+    return "<div class=\"invrow\"><span class=\"il\">"+l+" <small>Nível "+nivelAttr(k)+" · "+duracaoInvestir(k)+" estações"+(k!=="vazio"?" · disponível "+poolRestante(k).toFixed(0):"")+(S.investido&&S.investido[k]?" · já investido +"+S.investido[k]:"")+"</small></span>"+b1+b2+"</div>";
+  }).join("");
+  document.getElementById("estInvest").innerHTML=(and?"<div class=\"obras\">"+and+"</div>":"<div class=\"linha-vazia\">Nenhum investimento em andamento.</div>")+
+    "<div class=\"secao\">Começar</div><div class=\"hint\" style=\"margin:0 0 6px\">+1 permanente custa o Nível × 3 do disponível do próprio Anel e fica pronto depois de Nível estações (mínimo 2). Os ganhos temporários pagam primeiro e se gastam; o resto fica preso no disponível até a obra ficar pronta. Um por Anel de cada vez. A Riqueza paga qualquer Anel pelo dobro; o Vazio só cresce por ela.</div>"+
+    "<div class=\"invlist\">"+inv+"</div>";
+  /* ferramentas do Mestre */
+  const est=S.estacaoIdx||0;
+  const opts="<option value=\"\">sortear um "+({0:"da primavera",1:"do verão",2:"do outono",3:"do inverno"})[est]+"</option>"+
+    ESTACOES.map((e,i)=>"<optgroup label=\""+e+"\">"+ACONTECIMENTOS.filter(c=>c.est===i).map(c=>"<option value=\""+c.id+"\" "+(acontForm.id===c.id?"selected":"")+">"+esc(c.nome)+" ("+tipoAcontecimento(c)+")</option>").join("")+"</optgroup>").join("");
+  const sel=acontecimentoInfo(acontForm.id);
+  const prev=sel?"<div class=\"hint\" style=\"margin:4px 0 0\">"+esc(sel.texto)+" Testa "+rotuloAttr(sel.anel)+" (TN "+tnManutencao(sel.anel)+"). Cheio: "+
+    sel.ef.map(e=>e.perm?rotuloAttr(e.a)+" "+(e.v>0?"+":"")+e.v+" permanente":fmtLote(e.a,e.v)+(e.d?" por "+prazoLoteCurto(e.d):" até gastar")).join("; ")+".</div>":"";
+  const attrOpts=ATRIBUTOS.map(([k,l])=>"<option value=\""+k+"\" "+(loteForm.attr===k?"selected":"")+">"+l+(k==="vazio"?" (Raises)":"")+"</option>").join("");
+  const prazoOpts=PRAZOS_LOTE.map(([v,l])=>"<option value=\""+v+"\" "+(Number(loteForm.prazo)===v?"selected":"")+">"+l+"</option>").join("");
+  document.getElementById("estMestre").innerHTML="<div class=\"secao\" style=\"margin-top:0\">Abrir um acontecimento</div><div class=\"hint\" style=\"margin:0 0 4px\">Fora do sorteio da estação: fica em aberto, como os outros.</div>"+
+    "<div class=\"tfl\"><select onchange=\"acontForm.id=this.value;renderEstacoes()\">"+opts+"</select>"+
+    "<button class=\"ghost\" onclick=\"lancarAcontecimento()\">abrir</button></div>"+prev+
+    "<div class=\"secao\">Lote livre</div><div class=\"tfl\"><select onchange=\"setLoteForm('attr',this.value)\">"+attrOpts+"</select>"+
+    "<input type=\"number\" value=\""+esc(String(loteForm.valor))+"\" style=\"width:64px\" onchange=\"setLoteForm('valor',this.value)\" aria-label=\"valor\">"+
+    "<select onchange=\"setLoteForm('prazo',this.value)\">"+prazoOpts+"</select>"+
+    "<input type=\"text\" placeholder=\"motivo\" value=\""+esc(loteForm.motivo)+"\" style=\"flex:1;min-width:140px\" onchange=\"setLoteForm('motivo',this.value)\">"+
+    "<button class=\"ghost\" onclick=\"addLoteLivre()\">+ lote</button></div>";
+  const n=(S.acontAbertos||[]).length;
+  const tag=document.getElementById("tabEstacoesCount");if(tag)tag.textContent=n?"("+n+")":"";
+}
+/* ============ A CASA: RAMO, HISTÓRIA E FAMÍLIAS VASSALAS ============
+   2026-11 (Thiago). Em Rokugan, a família grande (Kakita) é uma casa de vários ramos, e a família
+   de vocês é um deles: uma família vassala com nome próprio. Dentro do clã, os membros usam o
+   nome da casa; fora, o da família principal; no formal, os dois ("Kakita Taro, da casa
+   Iwasaki"). O resumo junta o que a ficha já sabe; a história é texto livre.
+   Famílias vassalas da própria casa não se compram: o daimyō da família principal ou o Campeão
+   concede o nome, por Conquista do Mestre ou na aventura. Cada uma serve numa função: soma
+   +8 no disponível do pool da função (no Vazio, +3 no atributo), +1 de Fortuna, e custa 5 de
+   Influência para manter a lealdade. */
+const VASSALA_FUNCOES={
+ militar:{nome:"Militar",attr:"autoridade",txt:"guarnição, patrulhas e recrutas"},
+ corte:{nome:"Corte",attr:"influencia",txt:"cortesãos, correspondência e alianças"},
+ terra:{nome:"Terra",attr:"dominio",txt:"administração das aldeias e dos campos"},
+ comercio:{nome:"Comércio",attr:"riqueza",txt:"mercadores patronos, armazéns e contratos"},
+ espiritual:{nome:"Espiritual",attr:"vazio",txt:"templos, ritos e shugenja da casa"}
+};
+const VASSALA_BONUS=8,VASSALA_VAZIO=3,VASSALA_CUSTO=5;
+function vassalaBonus(attr){return(S.vassalas||[]).filter(v=>(VASSALA_FUNCOES[v.funcao]||{}).attr===attr).length*(attr==="vazio"?VASSALA_VAZIO:VASSALA_BONUS);}
+function vassalasCusto(){return(S.vassalas||[]).length*VASSALA_CUSTO;}
+function familiaPrincipal(){
+  if(S.familiaPrincipal)return S.familiaPrincipal;
+  const m=/fam[ií]lia\s+([A-ZÀ-Ú][\wÀ-ú]+)/.exec(S.ramoFamiliar||"");return m?m[1]:"";
+}
+function setCasa(campo,v){if(bloqueadoLeitura())return;S[campo]=v;salvar();render();}
+function addVassala(){
+  if(bloqueadoLeitura())return;
+  S.vassalas=S.vassalas||[];S.conquistas=S.conquistas||[];
+  const id=uid(),cq={id:uid(),titulo:"Concessão de uma família vassala",itens:[],vassalaId:id};
+  S.conquistas.push(cq);
+  S.vassalas.push({id,nome:"",funcao:"militar",daimyo:"",notas:"",conquistaId:cq.id,quando:nomeEstacaoAbs(estacaoAbs())});
+  feedPush("Conquista: a casa recebeu o direito de nomear uma família vassala.");salvar();render();
+}
+function setVassala(id,campo,v){if(bloqueadoLeitura())return;const x=(S.vassalas||[]).find(a=>a.id===id);if(!x)return;x[campo]=v;
+  if(campo==="nome"){const c=(S.conquistas||[]).find(q=>q.id===x.conquistaId);if(c)c.titulo="Concessão da família vassala "+(v||"sem nome");}
+  salvar();render();}
+function delVassala(id){if(bloqueadoLeitura())return;const x=(S.vassalas||[]).find(a=>a.id===id);if(!x)return;
+  S.vassalas=S.vassalas.filter(a=>a.id!==id);S.conquistas=(S.conquistas||[]).filter(q=>q.id!==x.conquistaId);
+  feedPush("A família vassala "+(x.nome||"sem nome")+" deixou de servir à casa.");salvar();render();}
+function resumoCasa(){
+  const c=claAtual(),fp=familiaPrincipal(),nome=S.nome||"Família",partes=[];
+  const og=S.origem&&eventoInfo(S.origem);
+  partes.push("A casa "+nome+(fp?" é um ramo da família "+fp:"")+(c?", do Clã "+c.nome:"")+(fp||c?".":" ainda não tem clã."));
+  if(og)partes.push("Família "+(IDADE_LABEL[S.idade]||"").toLowerCase()+". Origem: "+og.nome+".");
+  if(S.senhor)partes.push("Serve a "+S.senhor+".");
+  if(S.daimyo)partes.push("O daimyō da casa é "+S.daimyo+".");
+  if(S.sede)partes.push("A sede fica em "+S.sede+".");
+  const ev=(S.eventos||[]).map(id=>eventoInfo(id)).filter(Boolean).map(e=>e.nome);
+  if(ev.length)partes.push("Marcaram a história: "+ev.join(", ")+".");
+  const terras=(S.terrenos||[]).filter(t=>t.nome).map(t=>t.nome);
+  if(terras.length)partes.push("Terras: "+terras.join(", ")+".");
+  const vs=(S.vassalas||[]).filter(v=>v.nome);
+  if(vs.length)partes.push("Famílias vassalas: "+vs.map(v=>v.nome+" ("+(VASSALA_FUNCOES[v.funcao]||{nome:""}).nome.toLowerCase()+")").join(", ")+".");
+  if(S.lema)partes.push("Lema: “"+S.lema+"”.");
+  return partes.join(" ");
+}
+function nomeFormalCasa(){
+  const fp=familiaPrincipal(),nome=S.nome||"Família";
+  if(!fp||fp===nome)return"";
+  return "Dentro do clã, os membros se apresentam como "+nome+" Taro; fora dele, como "+fp+" Taro; no formal, “"+fp+" Taro, da casa "+nome+"”.";
+}
+function renderCasa(){
+  const box=document.getElementById("casaBox");if(!box)return;
+  const c=claAtual(),fams=c&&c.familias?c.familias:[],fp=familiaPrincipal();
+  const optsF="<option value=\"\">— independente ou outra —</option>"+fams.map(f=>"<option "+(fp===f?"selected":"")+">"+esc(f)+"</option>").join("")+(fp&&!fams.includes(fp)?"<option selected>"+esc(fp)+"</option>":"");
+  const campo=(rot,k,ph,w)=>"<label class=\"pcampo\" style=\"flex:1;min-width:"+(w||180)+"px\">"+rot+" <input value=\""+esc(S[k]||"")+"\" placeholder=\""+esc(ph)+"\" onchange=\"setCasa('"+k+"',this.value)\"></label>";
+  const vs=(S.vassalas||[]).map(v=>{const f=VASSALA_FUNCOES[v.funcao]||VASSALA_FUNCOES.militar;
+    return "<div class=\"vassala\"><div class=\"vlinha\"><input class=\"vnome\" value=\""+esc(v.nome||"")+"\" placeholder=\"nome da família vassala\" onchange=\"setVassala('"+v.id+"','nome',this.value)\">"+
+      "<select onchange=\"setVassala('"+v.id+"','funcao',this.value)\">"+Object.keys(VASSALA_FUNCOES).map(k=>"<option value=\""+k+"\" "+(v.funcao===k?"selected":"")+">"+VASSALA_FUNCOES[k].nome+"</option>").join("")+"</select>"+
+      "<button class=\"ghost so-mestre\" onclick=\"delVassala('"+v.id+"')\" aria-label=\"remover\">✕</button></div>"+
+      "<div class=\"vlinha\"><input value=\""+esc(v.daimyo||"")+"\" placeholder=\"daimyō da vassala\" onchange=\"setVassala('"+v.id+"','daimyo',this.value)\">"+
+      "<input style=\"flex:2\" value=\""+esc(v.notas||"")+"\" placeholder=\"por que receberam o nome, onde vivem\" onchange=\"setVassala('"+v.id+"','notas',this.value)\"></div>"+
+      "<div class=\"vef\">"+esc(f.txt)+": "+(f.attr==="vazio"?"+"+VASSALA_VAZIO+" no Vazio":"+"+VASSALA_BONUS+" no disponível de "+rotuloAttr(f.attr))+", +1 de Fortuna, −"+VASSALA_CUSTO+" de Influência para manter a lealdade."+(v.quando?" Concedida em "+esc(v.quando)+".":"")+"</div></div>";}).join("");
+  box.innerHTML="<div class=\"casaresumo\">"+esc(resumoCasa())+(nomeFormalCasa()?"<div class=\"formal\">"+esc(nomeFormalCasa())+"</div>":"")+"</div>"+
+    "<div class=\"tlinha\" style=\"flex-wrap:wrap;gap:10px\"><label class=\"pcampo\" style=\"min-width:180px\">Família principal <select onchange=\"setCasa('familiaPrincipal',this.value)\">"+optsF+"</select></label>"+
+      campo("Ramo","ramoFamiliar","ex.: descendentes do segundo filho de Kakita Yoshi",240)+"</div>"+
+    "<div class=\"tlinha\" style=\"flex-wrap:wrap;gap:10px\">"+campo("Serve a","senhor","ex.: Kakita Ryoku, daimyō da família")+campo("Sede","sede","ex.: Shiro Iwasaki, nas colinas de Kintani")+campo("Lema da casa","lema","uma frase que a casa repete")+"</div>"+
+    "<label class=\"pcampo\" style=\"margin-top:8px\">História da casa <textarea class=\"historia\" placeholder=\"o que a família conta sobre si mesma: o fundador, os mortos honrados, as rixas, os segredos...\" onchange=\"setCasa('historia',this.value)\">"+esc(S.historia||"")+"</textarea></label>"+
+    "<div class=\"secao\">Famílias vassalas</div><div class=\"hint\" style=\"margin:0 0 6px\">Não se compram: o daimyō da família principal ou o Campeão concede o nome, como Conquista do Mestre ou na aventura. Cada uma serve numa função.</div>"+
+    (vs||"<div class=\"linha-vazia\">Nenhuma ainda.</div>")+
+    "<button class=\"ghost so-mestre\" style=\"margin-top:8px\" onclick=\"addVassala()\">+ conceder família vassala (Conquista)</button>";
 }
 function renderTesteFamilia(){
   const box=document.getElementById("testeFamilia");if(!box)return;
@@ -3133,7 +3823,10 @@ function renderTesteFamilia(){
   const ap="<select onchange=\"setTesteFam('apoio',this.value)\"><option value=\"\">sem personagem</option>"+
     "<option value=\"k0\" "+(t.apoio==="k0"?"selected":"")+">personagem com perícia 3+ (+1k0)</option>"+
     "<option value=\"k1\" "+(t.apoio==="k1"?"selected":"")+">personagem com perícia 5+ (+1k1)</option></select>";
-  const favTxt=favor>0?" · Favor: +"+favor+" Raise"+(favor===1?"":"s")+" grátis no sucesso":(favor<0?" · Desfavor: TN +"+(5*-favor):"");
+  const gr=gracaKami();
+  const favTxt=(favor>0?" · Favor: +"+favor+" Raise"+(favor===1?"":"s")+" grátis no sucesso":(favor<0?" · Desfavor: TN +"+(5*-favor):""))+
+    (gr>0?" · graça dos kami: +"+gr+" Raise"+(gr===1?"":"s"):(gr<0?" · presságio: TN +"+(5*-gr):""))+
+    (POOL_ATTRS[attr]?" · recursos saem do disponível: primeiro dos ganhos temporários ("+reservaPositiva(attr)+"), o resto fica comprometido por um ano":"");
   let res="";
   const u=t.ultimo;
   if(u){
@@ -3160,6 +3853,12 @@ function eventoCardHTML(e,opts){
   let presente="";
   if(e.concede){const c=e.concede,x=terrenoLinhaCalc({terreno:c.terreno,c1:c.c1||"",c2:c.c2||"",c3:c.c3||"",c4:c.c4||""});
     presente="<div class=\"gift\" title=\"o Domínio do evento já paga esse bem, que ocupa o Domínio\">🎁 concede "+esc(c.nomeSugerido||"uma posse")+" · já pago ("+(x.custoDefesa+x.custoTerras)+" de Domínio)</div>";}
+  const doa=e.tipo==="origem"&&doacaoOrigem(e.id);
+  if(doa){
+    const cont={};doa.personagens.forEach(c=>{const n=NOME_PAPEL_CURTO(c)+(/Experiente/.test(c)?" experiente":(c===DAIMYO_ORIGEM?" menor":" jovem"));cont[n]=(cont[n]||0)+1;});
+    presente+="<div class=\"gift\" title=\"personagens sem custo de Influência, para os jogadores fazerem a ficha\">👥 "+Object.entries(cont).map(([n,q])=>(q>1?q+" ":"")+n).join(", ")+", sem custo</div>";
+    doa.lotes.forEach(l=>{presente+="<div class=\"gift"+(l.valor<0?" neg":"")+"\" title=\"temporário: soma no disponível, não no Nível\">"+(l.valor<0?"⚖ ":"蔵 ")+esc(fmtLote(l.attr,l.valor))+" temporário, "+prazoLoteCurto(l.d)+": "+esc(l.motivo)+"</div>";});
+  }
   const tipo="<div class=\"tipo t-"+(e.tipo||"favoravel")+"\">"+(e.tipo&&e.tipo!=="favoravel"?TIPO_EVENTO_LABEL[e.tipo]:"")+(e.tema?"<span class=\"tema\">"+TEMA_EVENTO[e.tema]+"</span>":"")+
     (e.idadeMin?"<span class=\"tema\">só "+IDADE_LABEL[e.idadeMin]+" ou mais velha</span>":"")+"</div>";
   const remover=opts.comRemover?"<button class=\"ghost\" style=\"margin-top:6px\" onclick=\"event.stopPropagation();toggleEvento('"+e.id+"')\">✕ remover</button>":"";
@@ -3236,7 +3935,7 @@ function sacrificioLinhaHTML(s){
     "</div>"+
     (progresso?("<div style=\"display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px\">"+
       "<span class=\"grp\">Ganha em <select onchange=\"setSacrificioCampo('"+s.id+"','attrGanho',this.value)\">"+
-        ATRIBUTOS.map(([k,l])=>"<option value=\""+k+"\" "+(s.attrGanho===k?"selected":"")+">"+l+"</option>").join("")+"</select></span>"+
+        ATRIBUTOS.filter(([k])=>POOL_ATTRS[k]||s.attrGanho===k).map(([k,l])=>"<option value=\""+k+"\" "+(s.attrGanho===k?"selected":"")+">"+l+"</option>").join("")+"</select> <small>no disponível</small></span>"+
       "<span class=\"grp\">Quanto <input type=\"number\" style=\"width:56px\" value=\""+(Number(s.attrValor)||0)+"\" onchange=\"setSacrificioCampo('"+s.id+"','attrValor',this.value)\"></span>"+
     "</div>"):"")+
     "</div>";
@@ -3296,7 +3995,7 @@ function opcoesCategoria(sel){
 function renderPersonagens(){
   document.getElementById("personagensSaldo").innerHTML=saldoChip("influencia");
   const cards=S.personagens.map(p=>{
-    const custo=personagemCusto(p.categoria),est=(p.estado||"Vivo");
+    const custo=personagemCustoP(p),est=(p.estado||"Vivo");
     const cls="est-"+est.toLowerCase().normalize("NFD").replace(/[^a-z]/g,"");
     return "<div class=\"pcard "+cls+"\">"+
       "<div class=\"pret\"><img src=\""+esc(retratoSrc(p))+"\" alt=\"\" loading=\"lazy\" onerror=\"this.src='img/retratos/ukiyoe.jpg'\"><span class=\"pselo\">"+esc(est)+"</span></div>"+
@@ -3306,9 +4005,9 @@ function renderPersonagens(){
         "<div class=\"plinha\"><label class=\"pcampo\">Estado <select onchange=\"setPersonagem('"+p.id+"','estado',this.value)\">"+ESTADO_PERSONAGEM.map(e=>"<option "+(est===e?"selected":"")+">"+e+"</option>").join("")+"</select></label>"+
           "<label class=\"pcampo curto\" title=\"Honor Rank oficial (0 a 10); soma no Vazio da família, vivo ou morto\">Honra <input type=\"number\" min=\"0\" max=\"10\" step=\"0.1\" value=\""+(Number(p.honorRank)||0).toFixed(1)+"\" onchange=\"setStatusInd('"+p.id+"','honorRank',this.value)\"></label></div>"+
         "<div class=\"plinha\"><label class=\"pcampo\">Jogador <input value=\""+esc(p.jogador||"")+"\" placeholder=\"quem joga\" onchange=\"setPersonagem('"+p.id+"','jogador',this.value)\"></label>"+
-          "<label class=\"pcampo\">Retrato <select onchange=\"setPersonagem('"+p.id+"','retrato',this.value)\">"+RETRATOS.map(r=>"<option value=\""+r[0]+"\" "+((p.retrato||"ukiyoe")===r[0]?"selected":"")+">"+r[1]+"</option>").join("")+"</select></label></div>"+
+          "<label class=\"pcampo\">Retrato <select onchange=\"setPersonagem('"+p.id+"','retrato',this.value)\">"+RETRATOS.map(r=>"<option value=\""+r[0]+"\" "+((p.retrato||"auto_h")===r[0]?"selected":"")+">"+r[1]+"</option>").join("")+"</select></label></div>"+
         "<label class=\"pcampo\">Link de imagem própria <input value=\""+esc(p.retratoUrl||"")+"\" placeholder=\"https://… (opcional)\" onchange=\"setPersonagem('"+p.id+"','retratoUrl',this.value.trim())\"></label>"+
-        "<div class=\"pacoes\"><span class=\"pcusto\">"+custo+" de Influência</span>"+
+        "<div class=\"pacoes\"><span class=\"pcusto\""+(p.doado?" title=\"dado pela origem: não custa Influência; subir o papel paga só a diferença\"":"")+">"+(p.doado?(custo?custo+" de Influência (dado pela origem, paga a diferença)":"dado pela origem"):custo+" de Influência")+"</span>"+
           "<button class=\"ghost\" onclick=\"abrirFichaPersonagem('"+p.id+"')\">Abrir ficha</button>"+
           "<button class=\"ghost\" onclick=\"delPersonagem('"+p.id+"')\" aria-label=\"Remover personagem\">✕</button></div>"+
       "</div></div>";
@@ -3369,6 +4068,8 @@ function setAbaPrincipal(a){
   document.getElementById("viewPersonagens").style.display=(a==="personagens")?"":"none";
   document.getElementById("viewBatalha").style.display=(a==="batalha")?"":"none";
   document.getElementById("viewMapa").style.display=(a==="mapa")?"":"none";
+  document.getElementById("viewEstacoes").style.display=(a==="estacoes")?"":"none";
+  document.getElementById("tabBtnEstacoes").className="tabbtn"+(a==="estacoes"?" on":"");
   document.getElementById("tabBtnFamilia").className="tabbtn"+(a==="familia"?" on":"");
   document.getElementById("tabBtnPersonagens").className="tabbtn"+(a==="personagens"?" on":"");
   document.getElementById("tabBtnBatalha").className="tabbtn"+(a==="batalha"?" on":"");
@@ -4345,7 +5046,7 @@ function renderCharSheet(){
   const box=document.getElementById("charSheet");
   const p=S.personagens.find(x=>x.id===personagemAtivoId);
   if(!p){box.innerHTML="";return;}
-  const custo=personagemCusto(p.categoria);
+  const custo=personagemCustoP(p);
   const papelInfo=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);
   const efeitoLabel=papelInfo?(ATRIBUTOS.find(a=>a[0]===papelInfo.efeito)||[papelInfo.efeito,papelInfo.efeito])[1]:"";
   box.innerHTML=
@@ -4412,6 +5113,7 @@ function renderTropas(){
     const custoTip="recrutar "+c.recrut+(tropaClaEstrangeiro(t)?" (clã de fora, +50%)":"")+", armadura "+c.armadura+", equipamento "+c.equip+", treino "+c.treino;
     const manut=TROPA_ESTADO[t.estado]?(TROPA_ESTADO[t.estado].autoridade||0)*tropaMultManut(t,"autoridade"):0;
     return "<div class=\"tcard\" style=\"--cla-t:"+(CLA_COR[t.clan]||"var(--muted-tx)")+"\">"+
+      "<div class=\"tcena\" style=\"background-image:url('"+tropaCenaSrc(t.tipo)+"')\" aria-hidden=\"true\"></div>"+
       "<img class=\"testand\" src=\""+estandarteSrc(t.clan)+"\" alt=\"\" loading=\"lazy\">"+
       "<div class=\"tcorpo\">"+
         "<div class=\"thead\"><input class=\"tnome\" aria-label=\"Nome da tropa\" value=\""+esc(t.local||"")+"\" placeholder=\""+esc(tropaTipo(t).nome+" "+z.nome)+"\" onchange=\"setTropa('"+t.id+"','local',this.value)\">"+
@@ -4435,9 +5137,10 @@ function renderTropas(){
 
 /* ============ BATALHA EM MASSA v7 — render ============ */
 function trilhaDanoHTML(u,f){
-  let h="<div class=\"trilha\" title=\"clique numa casa para marcar os golpes até ali\">";
+  let h="<div class=\"trilha\">";
   for(let n=0;n<3;n++){
-    h+="<span class=\"nivelbox\"><span class=\"nl\">"+DANO_NIVEIS[n+1].nome+"</span>";
+    const nv=DANO_NIVEIS[n+1],efeito=["-1k0 em tudo.","-1k1 em tudo, -1 Água, sem Carga nem Ataque Total.","Sai da grid."][n];
+    h+="<span class=\"nivelbox\"><span class=\"nl termo\" tabindex=\"0\" data-dica=\""+esc(nv.nome+": "+efeito+" "+f.golpesNivel+" golpes por nível.")+"\">"+nv.nome+"</span>";
     for(let i=0;i<f.golpesNivel;i++){const idx=n*f.golpesNivel+i+1,on=(Number(u.golpes)||0)>=idx;
       h+="<i class=\""+(on?"on":"")+"\" onclick=\"setUnidade('"+u.id+"','golpes',"+(on&&(Number(u.golpes)||0)===idx?idx-1:idx)+")\"></i>";}
     h+="</span>";
@@ -4445,66 +5148,96 @@ function trilhaDanoHTML(u,f){
   return h+"</div>";
 }
 function trilhaMoralHTML(u,f){
-  return "<div class=\"trilha\">"+MORAL_PASSOS.map((m,i)=>"<span class=\"passo"+(f.moral===i?" on":"")+"\" title=\""+esc(m.efeito)+"\" onclick=\"setUnidade('"+u.id+"','moral',"+i+")\">"+m.nome+"</span>").join("")+"</div>";
+  return "<div class=\"trilha\">"+MORAL_PASSOS.map((m,i)=>"<span class=\"passo"+(f.moral===i?" on":"")+"\" data-dica=\""+esc(m.nome+": "+(m.efeito||"sem penalidade")+".")+"\" onclick=\"setUnidade('"+u.id+"','moral',"+i+")\">"+m.nome+"</span>").join("")+"</div>";
 }
+function taisaRetrato(u){const p=u.taisaId?(S.personagens||[]).find(x=>x.id===u.taisaId):null;return p?retratoSrc(p):"img/retratos/gunso.jpg";}
+const VP_USOS=[["rolagem","+1k1 na próxima rolagem"],["golpe","ignorar 1 golpe"],["tn","+10 no TN"],["ini","+10 na Iniciativa"]];
 function unidadeCardHTML(u,b){
   const f=fichaUnidade(u,b),o=ui(u.id),lado=BAT_LADOS[u.lado]||BAT_LADOS.familia;
   const inimigos=(b.unidades||[]).filter(x=>exercitoDoLado(x.lado)!==exercitoDoLado(u.lado));
   const fora=f.nivel>=3;
-  const taisaHtml=(u.lado==="inimiga"||!u.tropaId&&!u.taisaId&&u.taisaNome)?
-    "<input style=\"width:120px\" value=\""+esc(u.taisaNome||"")+"\" placeholder=\"Taisa (vazio = Gunsō)\" onchange=\"setUnidade('"+u.id+"','taisaNome',this.value)\">"+
-      " Battle <input type=\"number\" style=\"width:44px\" value=\""+(Number(u.taisaBattle)||0)+"\" onchange=\"setUnidade('"+u.id+"','taisaBattle',this.value)\">"+
-      " Anéis <input type=\"number\" style=\"width:44px\" value=\""+(Number(u.taisaAnel)||2)+"\" onchange=\"setUnidade('"+u.id+"','taisaAnel',this.value)\">":
+  const taisaEdit=(u.lado==="inimiga"||!u.tropaId&&!u.taisaId&&u.taisaNome)?
+    "<input style=\"width:130px\" value=\""+esc(u.taisaNome||"")+"\" placeholder=\"Taisa (vazio = Gunsō)\" onchange=\"setUnidade('"+u.id+"','taisaNome',this.value)\">"+
+      " Battle <input type=\"number\" value=\""+(Number(u.taisaBattle)||0)+"\" onchange=\"setUnidade('"+u.id+"','taisaBattle',this.value)\">"+
+      " Anéis <input type=\"number\" value=\""+(Number(u.taisaAnel)||2)+"\" onchange=\"setUnidade('"+u.id+"','taisaAnel',this.value)\">":
     "<select onchange=\"setUnidade('"+u.id+"','taisaId',this.value)\">"+optsPersonagens(u.taisaId,"Gunsō (Battle 1)")+"</select>";
-  const lider=f.lider?" · Liderança: +1k0 no ataque, +"+f.lider+"k0 em moral":"";
-  const cla=f.cla?(CLAS.find(c=>c.id===u.clan)||{}).nome+": "+CLA_ANEL_BONUS[f.anelCla]+"; "+f.cla.esp[0]+" — "+f.cla.esp[1]:"Ronin: +1 Treinamento";
-  const tip="Tipo "+f.tipo.nome+" · "+f.tam.nome+" (Volume +"+f.volume+") · Armadura "+(ARMADURAS_TROPA[u.armadura]||{}).nome+" · "+cla+lider;
-  const manobras=[...MANOBRAS_TROPA.map(m=>[m.id,m.nome+" ("+ANEL_NOME[m.anel]+(m.tn==="reagrupar"?", TN "+(15+5*Math.min(2,f.nivel)):(m.tn?", TN "+m.tn:", Contest"))+")"])];
+  const claInfo=f.cla?(CLAS.find(c=>c.id===u.clan)||{}).nome:"";
+  const claDica=f.cla?claInfo+": "+CLA_ANEL_BONUS[f.anelCla]+". "+f.cla.esp[0]+": "+f.cla.esp[1]+" Manobra: "+f.cla.man[0]+".":"Ronin ou sem clã: +1 Treinamento, sem especialidade nem manobra.";
+  const arm=ARMADURAS_TROPA[u.armadura]||ARMADURAS_TROPA.nenhuma;
+  const taisaNome=f.taisa.nome||"Gunsō";
+  const ehGunso=/Gunsō/.test(taisaNome);
+  const liderTxt=f.lider?" · "+dicaTexto("Liderança",DICA_BATALHA.lideranca+" Esta unidade: +1k0 no ataque, +"+f.lider+"k0 em moral."):"";
+  /* resumo da ficha, sempre à vista */
+  const resumo=dicaTexto(esc(f.tipo.nome),f.tipo.nome+(f.arcos?": tem Arcos, pode Disparar.":(f.montada?": Montada, +1k0 na Carga; não entra em floresta densa, pântano nem fortificação; sem Ataque Total.":".")))+
+    " · "+dicaTexto(esc(f.tam.nome),f.tam.nome+": "+f.tam.min+" a "+f.tam.max+" homens. Volume +"+f.volume+".")+
+    " · "+dicaTexto(esc(claInfo||"ronin"),claDica)+
+    " · "+dicaTexto("armadura "+esc(arm.nome.toLowerCase()),arm.nome+": +"+arm.tn+" no TN"+(arm.agua?", "+arm.agua+" Água":"")+".")+
+    " · "+dica("Treino "+f.treino,"treino")+(u.veterana?" · "+dica("veterana","veterana"):"")+
+    " · "+dica("Taisa","taisa")+" <img class=\"utaisa\" src=\""+esc(taisaRetrato(u))+"\" alt=\"\" loading=\"lazy\">"+(ehGunso?dica("Gunsō","gunso"):esc(taisaNome))+liderTxt;
+  const edit=o.editAberto!=null?o.editAberto:!u.tropaId&&u.lado!=="familia";
+  const stat=(v,l,ch,extra)=>"<span class=\"termo\" tabindex=\"0\" data-dica=\""+esc(DICA_BATALHA[ch]+(extra||""))+"\"><b>"+v+"</b>"+l+"</span>";
+  const manobras=MANOBRAS_TROPA.map(m=>[m.id,m.nome+" ("+ANEL_NOME[m.anel]+(m.tn==="reagrupar"?", TN "+(15+5*Math.min(2,f.nivel)):(m.tn?", TN "+m.tn:", Contest"))+")"]);
   if(f.cla)manobras.push(["cla",f.cla.man[0]+" — clã ("+ANEL_NOME[f.cla.man[1]]+(f.cla.man[2]?", TN "+f.cla.man[2]:", Contest")+", 1 PV)"]);
   const mSel=manobraInfo(u,o.manobra);
-  const iniTot=u.ini!=null?u.ini+bonusIniContest(u):null;
+  const post=POSTURAS_TROPA[u.postura||"ataque"]||POSTURAS_TROPA.ataque;
+  const reac=REACOES_PRONTIDAO.find(x=>x.id===u.reacao);
+  const iniTot=u.ini!=null?u.ini:null;
   let h="<div class=\"ucard "+lado.classe+(fora?" fora":"")+"\">";
+  h+="<div class=\"ucena\" style=\"background-image:url('"+tropaCenaSrc(u.tipo)+"')\" aria-hidden=\"true\"></div>";
   h+="<div class=\"uhead\"><img class=\"uestand\" src=\""+estandarteSrc(u.clan)+"\" alt=\"\"><input class=\"unome\" value=\""+esc(u.nome||"")+"\" placeholder=\""+esc(nomeUnidade(u))+"\" onchange=\"setUnidade('"+u.id+"','nome',this.value)\">"+
-    "<select onchange=\"setUnidade('"+u.id+"','lado',this.value)\">"+opts(BAT_LADO_ORDEM.map(l=>[l,BAT_LADOS[l].nome]),u.lado)+"</select>"+
+    "<select onchange=\"setUnidade('"+u.id+"','lado',this.value)\" aria-label=\"lado\">"+opts(BAT_LADO_ORDEM.map(l=>[l,BAT_LADOS[l].nome]),u.lado)+"</select>"+
     "<button class=\"ghost btnicon\" onclick=\"delUnidadeBatalha('"+u.id+"')\" title=\"tirar do campo\">✕</button></div>";
-  h+="<div class=\"ulinha\"><select onchange=\"setUnidade('"+u.id+"','tipo',this.value)\">"+opts(Object.keys(TROPA_TIPOS).map(k=>[k,TROPA_TIPOS[k].nome]),u.tipo)+"</select>"+
+  h+="<div class=\"uresumo\">"+resumo+"</div>";
+  h+="<details class=\"uedit\""+(edit?" open":"")+" ontoggle=\"ui('"+u.id+"').editAberto=this.open\"><summary>editar a ficha</summary>"+
+    "<div class=\"ulinha\"><select onchange=\"setUnidade('"+u.id+"','tipo',this.value)\">"+opts(Object.keys(TROPA_TIPOS).map(k=>[k,TROPA_TIPOS[k].nome]),u.tipo)+"</select>"+
     "<select onchange=\"setUnidade('"+u.id+"','tamanho',this.value)\">"+opts(TAMANHO_ORDEM.map(k=>[k,TROPA_TAMANHOS[k].nome]),u.tamanho)+"</select>"+
     "<select onchange=\"setUnidade('"+u.id+"','clan',this.value)\">"+optsClaTropa(u.clan)+"</select>"+
     "<select onchange=\"setUnidade('"+u.id+"','armadura',this.value)\">"+opts(Object.keys(ARMADURAS_TROPA).map(k=>[k,ARMADURAS_TROPA[k].nome]),u.armadura)+"</select>"+
-    " Treino <input type=\"number\" style=\"width:42px\" min=\"0\" max=\"5\" value=\""+(Number(u.treino)||0)+"\" onchange=\"setUnidade('"+u.id+"','treino',this.value)\">"+(u.veterana?" <span class=\"tag\">veterana</span>":"")+"</div>";
-  h+="<div class=\"ulinha\"><span class=\"tag\">Taisa</span> "+taisaHtml+"</div>";
-  h+="<div class=\"ustats\" title=\""+esc(tip)+"\">"+
-    ANEL_ORDEM.map(k=>"<span><b>"+f[k]+"</b>"+ANEL_NOME[k]+"</span>").join("")+
-    "<span><b>"+f.tn+"</b>TN</span><span><b>"+fmtPool(f.atk)+"</b>Ataque</span>"+(f.arcos?"<span><b>"+fmtPool(f.disparo)+"</b>Disparo</span>":"")+
-    "<span><b>"+fmtPool(f.moralPool)+"</b>Moral TN "+f.moralTN+"</span><span><b>"+(iniTot!=null?iniTot:fmtPool(f.ini))+"</b>Iniciativa</span>"+
-    "<span><b>"+f.move+"</b>Move</span><span><b>"+f.homens+"</b>de "+f.homensMax+" homens</span></div>";
+    " "+dica("Treino","treino")+" <input type=\"number\" min=\"0\" max=\"5\" value=\""+(Number(u.treino)||0)+"\" onchange=\"setUnidade('"+u.id+"','treino',this.value)\"></div>"+
+    "<div class=\"ulinha\">"+dica("Taisa","taisa")+" "+taisaEdit+"</div></details>";
+  h+="<div class=\"ustats\">"+
+    ANEL_ORDEM.map(k=>stat(f[k],ANEL_NOME[k],k)).join("")+
+    stat(f.tn,"TN","tn"," Agora: base "+f.tnBase+(f.tn!==f.tnBase?", com postura e extras "+f.tn:"")+".")+
+    stat(fmtPool(f.atk),"Ataque","ataque"," Volume desta unidade: +"+f.volume+".")+
+    (f.arcos?stat(fmtPool(f.disparo),"Disparo","disparo"):"")+
+    stat(fmtPool(f.moralPool),"Moral TN "+f.moralTN,"moral")+
+    stat(iniTot!=null?iniTot:fmtPool(f.ini),"Iniciativa","iniciativa")+
+    stat(f.move,"Move","move")+
+    stat(f.homens,"de "+f.homensMax+" homens","homens")+"</div>";
   if(f.pen[0]||f.pen[1])h+="<div class=\"uaviso\">Penalidade de dano e moral: -"+f.pen[0]+"k"+f.pen[1]+" em tudo"+(f.nivel>=2?"; Quebrada: -1 Água, sem Carga nem Ataque Total":"")+".</div>";
   if(u.moralPendente&&!fora)h+="<div class=\"uaviso\">Tomou golpes: teste de moral pendente.</div>";
-  h+="<div class=\"ulinha\"><span class=\"tag\">Dano</span>"+trilhaDanoHTML(u,f)+"</div>";
-  h+="<div class=\"ulinha\"><span class=\"tag\">Moral</span>"+trilhaMoralHTML(u,f)+
-    " <span class=\"tag\">desertores</span> <input type=\"number\" style=\"width:48px\" value=\""+(Number(u.desertores)||0)+"\" onchange=\"setUnidade('"+u.id+"','desertores',this.value)\"></div>";
-  h+="<div class=\"ulinha\"><span class=\"tag\">Pontos de Vazio</span> <input type=\"number\" style=\"width:44px\" value=\""+(Number(u.vp)||0)+"\" onchange=\"setUnidade('"+u.id+"','vp',this.value)\"> de "+f.vpMax+
+  /* estado */
+  h+="<div class=\"ubloco\"><div class=\"ulinha\">"+dica("Dano","golpes")+trilhaDanoHTML(u,f)+"</div>";
+  h+="<div class=\"ulinha\">"+dica("Moral","moral")+trilhaMoralHTML(u,f)+
+    " "+dica("desertores","desertores")+" <input type=\"number\" value=\""+(Number(u.desertores)||0)+"\" onchange=\"setUnidade('"+u.id+"','desertores',this.value)\"></div>";
+  h+="<div class=\"ulinha\">"+dica("Pontos de Vazio","pv")+" <input type=\"number\" value=\""+(Number(u.vp)||0)+"\" onchange=\"setUnidade('"+u.id+"','vp',this.value)\"> de "+f.vpMax+
     (u.vpProx?" <span class=\"tag\">+1k1 na próxima</span>":"")+(u.centroProx?" <span class=\"tag\">Centro: bônus na próxima</span>":"")+(u.vpTN?" <span class=\"tag\">+10 TN</span>":"")+
-    " <select onchange=\"setUI('"+u.id+"','vpUso',this.value)\">"+opts([["rolagem","+1k1 na próxima rolagem"],["golpe","ignorar 1 golpe"],["tn","+10 no TN"],["ini","+10 na Iniciativa"]],o.vpUso)+"</select>"+
-    "<button class=\"ghost\" onclick=\"gastarVPUnidade('"+u.id+"')\">gastar</button></div>";
-  h+="<div class=\"ulinha\"><span class=\"tag\">Postura</span> <select onchange=\"setPosturaUnidade('"+u.id+"',this.value)\" title=\""+esc((POSTURAS_TROPA[u.postura||"ataque"]||{}).efeito||"")+"\">"+
-    opts(Object.keys(POSTURAS_TROPA).map(k=>[k,POSTURAS_TROPA[k].nome+" ("+ANEL_NOME[POSTURAS_TROPA[k].anel]+")"]),u.postura||"ataque")+"</select>"+
+    " <select onchange=\"setUI('"+u.id+"','vpUso',this.value)\" data-dica=\""+esc(DICA_BATALHA.pv)+"\">"+opts(VP_USOS,o.vpUso)+"</select>"+
+    "<button class=\"ghost\" onclick=\"gastarVPUnidade('"+u.id+"')\">gastar</button></div></div>";
+  /* ativação */
+  h+="<div class=\"ubloco uativ\"><div class=\"ubtit\">Ativação</div>";
+  h+="<div class=\"ulinha\"><span class=\"tag\">Postura</span> <select onchange=\"setPosturaUnidade('"+u.id+"',this.value)\" data-dica=\""+esc(post.nome+" ("+ANEL_NOME[post.anel]+"): "+post.efeito)+"\">"+
+    Object.keys(POSTURAS_TROPA).map(k=>"<option value=\""+k+"\" "+((u.postura||"ataque")===k?"selected":"")+" title=\""+esc(POSTURAS_TROPA[k].efeito)+"\">"+POSTURAS_TROPA[k].nome+" ("+ANEL_NOME[POSTURAS_TROPA[k].anel]+")</option>").join("")+"</select>"+
     (u.postura==="defesaTotal"?" <span class=\"tag\">+"+(Number(u.defTotalBonus)||0)+" TN</span>":"")+
-    " <span class=\"tag\">Reação</span> <select onchange=\"setUnidade('"+u.id+"','reacao',this.value)\"><option value=\"\">—</option>"+opts(REACOES_PRONTIDAO.map(r=>[r.id,r.nome]),u.reacao)+"</select>"+
-    " <span class=\"tag\">TN extra</span> <input type=\"number\" style=\"width:48px\" value=\""+(Number(u.tnExtra)||0)+"\" title=\"Formar Muralha, terreno, o que o Mestre decidir\" onchange=\"setUnidade('"+u.id+"','tnExtra',this.value)\"></div>";
-  h+="<div class=\"uacoes\"><select onchange=\"setUI('"+u.id+"','alvo',this.value)\"><option value=\"\">— alvo —</option>"+opts(inimigos.map(x=>[x.id,nomeUnidade(x)]),o.alvo)+"</select>"+
-    "<label><input type=\"checkbox\" "+(o.carga?"checked":"")+" onchange=\"setUI('"+u.id+"','carga',this.checked)\"> Carga</label>"+
-    "<label><input type=\"checkbox\" "+(o.flanco?"checked":"")+" onchange=\"setUI('"+u.id+"','flanco',this.checked)\"> Flanco</label>"+
-    "<label title=\"reação da Prontidão disparada\"><input type=\"checkbox\" "+(o.lancas?"checked":"")+" onchange=\"setUI('"+u.id+"','lancas',this.checked)\"> Lanças Firmes</label>"+
-    " <span class=\"tag\">ajuste</span> <input type=\"number\" style=\"width:40px\" value=\""+o.mr+"\" onchange=\"setUI('"+u.id+"','mr',this.value)\">k<input type=\"number\" style=\"width:40px\" value=\""+o.mk+"\" onchange=\"setUI('"+u.id+"','mk',this.value)\">"+
-    "<button class=\"ghost\" onclick=\"atacarUnidade('"+u.id+"',false)\">⚔ Atacar</button>"+
-    (f.arcos?"<button class=\"ghost\" onclick=\"atacarUnidade('"+u.id+"',true)\">🏹 Disparar</button>":"")+
-    "<button class=\"ghost\" onclick=\"testarMoralUnidade('"+u.id+"')\">Moral</button>"+
-    "<button class=\"ghost\" onclick=\"rolarIniciativaUnidade('"+u.id+"')\">Iniciativa</button></div>";
-  h+="<div class=\"uacoes\"><select onchange=\"setUI('"+u.id+"','manobra',this.value)\">"+opts(manobras,o.manobra)+"</select>"+
-    "<button class=\"ghost\" onclick=\"manobraUnidade('"+u.id+"')\">Manobra ("+esc(f.taisa.nome)+")</button>"+
-    (mSel?"<div class=\"hint\" style=\"margin:4px 0 0\">"+esc(mSel.efeito)+(mSel.raise?" Raise: "+esc(mSel.raise)+".":"")+"</div>":"")+"</div>";
-  if(u.reacao){const r=REACOES_PRONTIDAO.find(x=>x.id===u.reacao);if(r)h+="<div class=\"hint\" style=\"margin:4px 0 0\">Prontidão, "+esc(r.nome)+": quando "+esc(r.quando)+". "+esc(r.efeito)+"</div>";}
+    " "+dica("TN extra","tnextra")+" <input type=\"number\" value=\""+(Number(u.tnExtra)||0)+"\" onchange=\"setUnidade('"+u.id+"','tnExtra',this.value)\"></div>"+
+    "<div class=\"uefeito\">"+esc(post.efeito)+"</div>";
+  h+="<div class=\"uacoes\"><select onchange=\"setUI('"+u.id+"','alvo',this.value)\" data-dica=\""+esc(DICA_BATALHA.alvo)+"\"><option value=\"\">— alvo —</option>"+opts(inimigos.map(x=>[x.id,nomeUnidade(x)]),o.alvo)+"</select>"+
+    "<label data-dica=\""+esc(DICA_BATALHA.carga)+"\"><input type=\"checkbox\" "+(o.carga?"checked":"")+" onchange=\"setUI('"+u.id+"','carga',this.checked)\"> Carga</label>"+
+    "<label data-dica=\""+esc(DICA_BATALHA.flanco)+"\"><input type=\"checkbox\" "+(o.flanco?"checked":"")+" onchange=\"setUI('"+u.id+"','flanco',this.checked)\"> Flanco</label>"+
+    "<label data-dica=\""+esc(DICA_BATALHA.lancas)+"\"><input type=\"checkbox\" "+(o.lancas?"checked":"")+" onchange=\"setUI('"+u.id+"','lancas',this.checked)\"> Lanças Firmes</label>"+
+    " "+dica("ajuste","ajuste")+" <input type=\"number\" value=\""+o.mr+"\" onchange=\"setUI('"+u.id+"','mr',this.value)\">k<input type=\"number\" value=\""+o.mk+"\" onchange=\"setUI('"+u.id+"','mk',this.value)\"></div>"+
+    "<div class=\"uacoes\"><button class=\"ghost\" onclick=\"atacarUnidade('"+u.id+"',false)\" data-dica=\""+esc(DICA_BATALHA.ataque)+"\">⚔ Atacar "+fmtPool(f.atk)+"</button>"+
+    (f.arcos?"<button class=\"ghost\" onclick=\"atacarUnidade('"+u.id+"',true)\" data-dica=\""+esc(DICA_BATALHA.disparo)+"\">🏹 Disparar "+fmtPool(f.disparo)+"</button>":"")+
+    "<button class=\"ghost\" onclick=\"testarMoralUnidade('"+u.id+"')\" data-dica=\""+esc(DICA_BATALHA.moral)+"\">Moral</button>"+
+    "<button class=\"ghost\" onclick=\"rolarIniciativaUnidade('"+u.id+"')\" data-dica=\""+esc(DICA_BATALHA.iniciativa)+"\">Iniciativa</button></div>";
+  h+="<div class=\"uacoes\"><select onchange=\"setUI('"+u.id+"','manobra',this.value)\" data-dica=\""+esc(mSel?mSel.nome+": "+mSel.efeito+(mSel.raise?" Raise: "+mSel.raise+".":""):"")+"\">"+
+    manobras.map(([id,l])=>{const m=manobraInfo(u,id);return "<option value=\""+id+"\" "+(o.manobra===id?"selected":"")+" title=\""+esc(m?m.efeito:"")+"\">"+esc(l)+"</option>";}).join("")+"</select>"+
+    "<button class=\"ghost\" onclick=\"manobraUnidade('"+u.id+"')\">Manobra ("+esc(taisaNome)+")</button></div>"+
+    (mSel?"<div class=\"uefeito\">"+esc(mSel.efeito)+(mSel.raise?" Raise: "+esc(mSel.raise)+".":"")+"</div>":"");
+  h+="<div class=\"ulinha\">"+dica("Reação preparada","reacao")+" <select onchange=\"setUnidade('"+u.id+"','reacao',this.value)\" data-dica=\""+esc(reac?reac.nome+": quando "+reac.quando+". "+reac.efeito:DICA_BATALHA.reacao)+"\"><option value=\"\">nenhuma</option>"+
+    REACOES_PRONTIDAO.map(r=>"<option value=\""+r.id+"\" "+(u.reacao===r.id?"selected":"")+" title=\""+esc("Quando "+r.quando+". "+r.efeito)+"\">"+esc(r.nome)+"</option>").join("")+"</select></div>"+
+    (reac?"<div class=\"uefeito\">Quando "+esc(reac.quando)+": "+esc(reac.efeito)+"</div>":"");
+  h+="</div>";
   if(o.ultimo){const ul=o.ultimo;
     h+="<div class=\"uresult\">"+esc(ul.texto)+(ul.dados?"<div class=\"dados\">"+ul.dados.map(d=>"<span class=\""+(d.mantido?"k":"")+"\">"+d.chain.join("+")+"</span>").join("")+"</div>":"");
     if(ul.golpes&&ul.alvoId&&!ul.aplicado)h+="<button class=\"ghost\" onclick=\"aplicarGolpesUnidade('"+ul.alvoId+"',"+ul.golpes+",'"+u.id+"')\">aplicar "+ul.golpes+" golpe"+(ul.golpes===1?"":"s")+" em "+esc(nomeUnidade(bUnit(ul.alvoId)||{tipo:"ashigaru"}))+"</button>";
@@ -4512,26 +5245,109 @@ function unidadeCardHTML(u,b){
     h+="</div>";}
   return h+"</div>";
 }
+/* ============ BATALHA: DICAS DOS TERMOS ============
+   2026-11 (pedido do Thiago): todo termo, efeito de tática, postura, manobra e reação aparece ao
+   passar o mouse, ou ao tocar no celular. Os elementos levam data-dica, e um balão só, no corpo
+   da página, mostra o texto perto do elemento. */
+const DICA_BATALHA={
+ rikugunshokan:"O comandante do exército. Não dá ordens às unidades: cada jogador comanda a sua. Rola a Tática antes da batalha e pode Inspirar uma unidade por turno. Se ele cai, todas as unidades testam moral, a Tática deixa de valer e ninguém Inspira até alguém assumir.",
+ gunshi:"Estrategista do exército. Se houver um, o comandante rola a Tática com +1k1.",
+ tatica:"Plano do exército inteiro, rolado uma vez antes da batalha: (Anel da Tática + Battle) k Anel contra o TN. Cada Raise vale o efeito extra da tática (uma vez) ou +1 Ponto de Vazio numa unidade. Falhar por 10 ou mais deixa o exército abalado: -1k0 no primeiro teste de moral de cada unidade.",
+ inspirar:"Uma vez por turno, o comandante manda um mensageiro, um sinal ou vai pessoalmente até uma unidade que ele vê: Battle / Consciência contra TN 15. Se passar, a unidade ganha 1 Ponto de Vazio.",
+ gatilho:"O comandante só pode trocar de tática depois que o campo dá motivo: uma unidade Destruída ou Em Fuga, o comandante inimigo cai ou troca de tática, chegam reforços, o campo muda (noite, chuva, incêndio, ponte), ou uma Oportunidade Heroica de comando deu certo. Tenta uma vez, com TN +10; se falhar, perde a antiga também.",
+ turno:"A cada turno: o comandante pode Inspirar; as unidades agem em ordem de Iniciativa (postura, até Água casas, uma ação); testam moral as que tomaram golpes, perderam o Taisa ou estão Debandando; e os personagens em contato podem Buscar Glória.",
+ iniciativa:"(Ar + Treino) k Ar, rolada uma vez antes do primeiro turno. A ordem de ativação vai da maior para a menor.",
+ taisa:"Quem lidera a unidade: o personagem de um jogador ou um Gunsō. Escolhe a postura e a ação, e rola as manobras com (Anel + Battle) k Anel.",
+ gunso:"Sargento sem nome que lidera quando não há personagem: Battle 1, Anéis 2, sem Pontos de Vazio próprios.",
+ lideranca:"Taisa com Battle 3 ou 4: +1k0 no ataque e +1k0 em moral. Com 5 ou mais: +1k0 no ataque e +2k0 em moral.",
+ treino:"Treinamento, de 0 a 5: a perícia da unidade, entra em toda rolagem dela. Unidade ronin ou sem clã ganha +1.",
+ veterana:"Nasceu de Cerrar Fileiras: +1 Treinamento, uma vez só.",
+ terra:"Terra: aguentar. Cada nível de dano aguenta Terra golpes.",
+ agua:"Água: movimento. Casas por turno na grid.",
+ ar:"Ar: defesa, tiro e reação. Entra no TN, no Disparo e na Iniciativa.",
+ fogo:"Fogo: ímpeto. O ataque corpo a corpo rola com Fogo.",
+ vazio:"Vazio: moral e disciplina. A unidade começa com Pontos de Vazio iguais ao Vazio.",
+ tn:"O que o inimigo precisa tirar para acertar: 5 + Ar × 5 + armadura (leve +3, pesada +5), mais a postura e o TN extra.",
+ ataque:"Corpo a corpo: (Fogo + Treino + Volume) k Fogo contra o TN do alvo. Somam clã, Liderança, postura e Pontos de Vazio; dano e moral tiram. Cada 5 acima do TN é mais 1 golpe.",
+ disparo:"Só com Arcos: (Ar + Treino) k Ar contra o TN do alvo, alcance 3 + Ar casas. Cada 5 acima do TN é mais 1 golpe.",
+ moral:"Teste de moral: (Vazio + Treino) k Vazio contra TN 15, +3 por nível de dano. Testa quando toma golpes, perde o Taisa ou no fim do turno se estiver Debandando. Falhou: desce um passo.",
+ move:"Casas que a unidade anda por turno: Água, mais clã; Quebrada anda 1 a menos.",
+ homens:"Soldados de pé. Caem junto com os golpes. Servem para Cerrar Fileiras e voltam para a ficha da família no fim.",
+ volume:"Dados a mais no ataque corpo a corpo, pelo tamanho: muita gente empurrando a lança. Pequena +0, Média +1, Grande +2, Massiva +3.",
+ golpes:"Clique numa casa para marcar os golpes até ali. Castigada: -1k0 em tudo. Quebrada: -1k1, -1 Água, sem Carga nem Ataque Total. Destruída: sai da grid.",
+ desertores:"Soldados que fugiram nos testes de moral falhados em Debandando. Depois da batalha, metade volta para a unidade.",
+ pv:"Pontos de Vazio da unidade: no máximo um por turno, decidido pelo Taisa. +1k1 numa rolagem, ignorar 1 golpe, +10 no TN até a próxima ativação, ou +10 na Iniciativa até o fim. A manobra de clã custa 1 e não conta no limite.",
+ tnextra:"TN a mais anotado à mão: Formar Muralha, terreno, o que o Mestre decidir. Tire quando acabar.",
+ ajuste:"Dados a mais ou a menos que o Mestre der na hora: rolados k mantidos.",
+ carga:"Marcado, o ataque soma +1k0 da Carga (Montada +1k0 a mais; Cunha soma). Use a manobra Carga quando ela for a ação da unidade.",
+ flanco:"Ataque pelo lado ou por trás: o alvo tem -5 no TN e perde o bônus da postura de Defesa.",
+ lancas:"Reação Lanças Firmes da Prontidão disparada: ataca primeiro, com +1k0 (+1k1 a mais com Nagae Yari).",
+ reacao:"A reação que a unidade preparou com a manobra Prontidão. Dispara na ativação do inimigo, até a próxima ativação dela.",
+ alvo:"A unidade inimiga atacada.",
+ cerrar:"Duas unidades aliadas adjacentes, Castigada ou pior, viram uma só, Veterana. Rola o melhor Taisa: Terra, TN 20. Custa 1 Ponto de Vazio de cada uma.",
+ pcTropa:"Um personagem sozinho contra uma unidade é outra escala. O dano que ele rola vira golpes pela tabela do tamanho, e a unidade faz vários ataques nele por ativação."
+};
+function dica(txt,chave){const t=DICA_BATALHA[chave];return t?"<span class=\"termo\" tabindex=\"0\" data-dica=\""+esc(t)+"\">"+txt+"</span>":txt;}
+function dicaTexto(txt,texto){return texto?"<span class=\"termo\" tabindex=\"0\" data-dica=\""+esc(texto)+"\">"+txt+"</span>":txt;}
+/* balão único */
+(function(){
+  if(typeof document==="undefined"||!document.addEventListener)return;
+  let caixa=null,atual=null;
+  function esconder(){if(caixa)caixa.style.display="none";atual=null;}
+  function mostrar(t){
+    const txt=t.getAttribute&&t.getAttribute("data-dica");if(!txt)return;
+    if(!caixa){caixa=document.createElement("div");caixa.id="dicaBalao";caixa.setAttribute("role","tooltip");document.body.appendChild(caixa);}
+    atual=t;caixa.textContent=txt;caixa.style.display="block";
+    const r=t.getBoundingClientRect(),W=window.innerWidth,H=window.innerHeight;
+    caixa.style.maxWidth=Math.min(340,W-24)+"px";
+    const bw=caixa.offsetWidth,bh=caixa.offsetHeight;
+    let x=r.left+r.width/2-bw/2;x=Math.max(12,Math.min(W-bw-12,x));
+    let y=r.bottom+8;if(y+bh>H-8)y=Math.max(8,r.top-bh-8);
+    caixa.style.left=x+"px";caixa.style.top=y+"px";
+  }
+  const alvo=e=>e.target&&e.target.closest?e.target.closest("[data-dica]"):null;
+  document.addEventListener("mouseover",e=>{const t=alvo(e);if(t&&t!==atual)mostrar(t);else if(!t&&atual)esconder();});
+  document.addEventListener("focusin",e=>{const t=alvo(e);if(t)mostrar(t);});
+  document.addEventListener("focusout",()=>esconder());
+  if(window.addEventListener)window.addEventListener("scroll",()=>esconder(),{passive:true});
+})();
+
 function comandoHTML(b,ex){
   const c=b.comando[ex],i=cmdInfo(ex),t=TATICAS.find(x=>x.id===c.tatica),ativa=TATICAS.find(x=>x.id===c.taticaAtiva);
   const titulo=ex==="familia"?"Família e aliados":"Inimigo";
   const unidades=(b.unidades||[]).filter(u=>exercitoDoLado(u.lado)===ex);
-  let h="<div class=\"cmdbox\"><div class=\"tag\" style=\"font-size:11px\">Rikugunshōkan · "+titulo+"</div>";
+  const turno=Number(b.turno)||1;
+  const tatDica=x=>x.efeito+" Raise: "+x.raise+".";
+  let h="<div class=\"cmdbox\"><div class=\"cmdtit\">"+dica("Rikugunshōkan","rikugunshokan")+" · "+titulo+"</div>";
   if(ex==="familia")h+="<div class=\"ulinha\"><select onchange=\"setComando('"+ex+"','personagemId',this.value)\">"+optsPersonagens(c.personagemId,"comandante digitado")+"</select></div>";
-  if(!c.personagemId)h+="<div class=\"ulinha\"><input style=\"width:130px\" value=\""+esc(c.nome||"")+"\" placeholder=\"nome\" onchange=\"setComando('"+ex+"','nome',this.value)\">"+
-    ["battle","percepcao","consciencia","oratoria","anel"].map(k=>" "+({battle:"Battle",percepcao:TRACO_PT.perception,consciencia:TRACO_PT.awareness,oratoria:"Oratória",anel:"Anéis"})[k]+" <input type=\"number\" style=\"width:42px\" value=\""+(Number(c[k])||0)+"\" onchange=\"setComando('"+ex+"','"+k+"',this.value)\">").join("")+"</div>";
-  else h+="<div class=\"hint\" style=\"margin:4px 0\">"+esc(i.nome)+": Battle "+i.battle+", "+TRACO_PT.perception+" "+i.percepcao+", "+TRACO_PT.awareness+" "+i.consciencia+" · Oratória "+i.oratoria+" · "+ANEL_ORDEM.map(k=>ANEL_NOME[k]+" "+i.aneis[k]).join(", ")+"</div>";
-  h+="<div class=\"uacoes\"><button class=\"ghost\" onclick=\"rolarDiscurso('"+ex+"')\">Discurso</button>"+(c.discurso?"<span class=\"hint\" style=\"margin:0\">"+esc(c.discurso)+"</span>":"")+"</div>";
-  h+="<div class=\"uacoes\"><select onchange=\"setComando('"+ex+"','tatica',this.value)\"><option value=\"\">— tática —</option>"+opts(TATICAS.map(x=>[x.id,x.nome+" ("+ANEL_NOME[x.anel]+", TN "+x.tn+")"]),c.tatica)+"</select>"+
-    "<label><input type=\"checkbox\" "+(c.gunshi?"checked":"")+" onchange=\"setComando('"+ex+"','gunshi',this.checked)\"> Gunshi</label>"+
-    (c.gunshi?" Battle <input type=\"number\" style=\"width:42px\" value=\""+(Number(c.gunshiBattle)||0)+"\" onchange=\"setComando('"+ex+"','gunshiBattle',this.value)\"> Anel <input type=\"number\" style=\"width:42px\" value=\""+(Number(c.gunshiAnel)||2)+"\" onchange=\"setComando('"+ex+"','gunshiAnel',this.value)\">":"")+
-    "<button class=\"ghost\" onclick=\"rolarTatica('"+ex+"',false)\">Rolar tática</button></div>";
-  if(t)h+="<div class=\"hint\" style=\"margin:2px 0\">"+esc(t.efeito)+" Raise: "+esc(t.raise)+".</div>";
-  h+="<div class=\"ulinha\"><span class=\"tag\">Em vigor:</span> <b>"+(ativa?esc(ativa.nome)+(c.taticaRaises?" (+"+c.taticaRaises+" Raise"+(c.taticaRaises===1?"":"s")+")":""):"nenhuma")+"</b></div>";
-  h+="<div class=\"uacoes\"><label title=\""+esc(GATILHOS_TATICA.join("; "))+"\"><input type=\"checkbox\" "+(c.gatilho?"checked":"")+" onchange=\"setComando('"+ex+"','gatilho',this.checked)\"> o campo deu motivo (gatilho)</label>"+
-    "<button class=\"ghost\" "+(c.gatilho?"":"disabled")+" onclick=\"rolarTatica('"+ex+"',true)\">Mudar para a tática escolhida (TN +10)</button></div>";
-  h+="<div class=\"uacoes\"><select onchange=\"setComando('"+ex+"','inspirarAlvo',this.value)\"><option value=\"\">— unidade —</option>"+opts(unidades.map(u=>[u.id,nomeUnidade(u)]),c.inspirarAlvo)+"</select>"+
-    "<button class=\"ghost\" onclick=\"inspirarUnidade('"+ex+"')\">Inspirar (Battle / "+TRACO_PT.awareness+", TN 15, +1 PV)</button></div>";
+  if(!c.personagemId)h+="<div class=\"ulinha\"><input style=\"width:140px\" value=\""+esc(c.nome||"")+"\" placeholder=\"nome\" onchange=\"setComando('"+ex+"','nome',this.value)\">"+
+    " Battle <input type=\"number\" value=\""+(Number(c.battle)||0)+"\" onchange=\"setComando('"+ex+"','battle',this.value)\">"+
+    " "+TRACO_PT.awareness+" <input type=\"number\" value=\""+(Number(c.consciencia)||0)+"\" onchange=\"setComando('"+ex+"','consciencia',this.value)\">"+
+    " Anéis <input type=\"number\" value=\""+(Number(c.anel)||0)+"\" onchange=\"setComando('"+ex+"','anel',this.value)\"></div>";
+  else h+="<div class=\"hint\" style=\"margin:4px 0\">"+esc(i.nome)+": Battle "+i.battle+", "+TRACO_PT.awareness+" "+i.consciencia+" · "+ANEL_ORDEM.map(k=>ANEL_NOME[k]+" "+i.aneis[k]).join(", ")+"</div>";
+  /* 1. Tática */
+  h+="<div class=\"cmdpasso\"><span class=\"cmdnum\">1</span><div class=\"cmdcorpo\"><div class=\"cmdrot\">"+dica("Tática","tatica")+" <small>antes da batalha</small></div>";
+  if(ativa){
+    h+="<div class=\"ulinha\">Em vigor: "+dicaTexto("<b>"+esc(ativa.nome)+"</b>",tatDica(ativa))+(c.taticaRaises?" <span class=\"tag\">com o efeito extra</span>":"")+"</div>";
+    h+="<div class=\"hint\" style=\"margin:2px 0\">"+esc(ativa.efeito)+(c.taticaRaises?" Extra: "+esc(ativa.raise)+".":"")+"</div>";
+    if(c.raisesLivres>0)h+="<div class=\"uacoes raiseslivres\"><span class=\"tag\">"+c.raisesLivres+" Raise"+(c.raisesLivres===1?"":"s")+" para usar</span>"+
+      (c.taticaRaises?"":"<button class=\"ghost\" onclick=\"usarRaiseTatica('"+ex+"','efeito')\" data-dica=\""+esc("Efeito extra: "+ativa.raise+".")+"\">no efeito extra</button>")+
+      "<select onchange=\"setComando('"+ex+"','raiseAlvo',this.value)\"><option value=\"\">— unidade —</option>"+opts(unidades.map(u=>[u.id,nomeUnidade(u)]),c.raiseAlvo)+"</select>"+
+      "<button class=\"ghost\" onclick=\"usarRaiseTatica('"+ex+"','pv')\">+1 Ponto de Vazio</button></div>";
+  }else h+="<div class=\"ulinha\">Em vigor: <b>nenhuma</b>"+(c.abalado?" <span class=\"tag bad\" data-dica=\"A Tática falhou por 10 ou mais: cada unidade tem -1k0 no primeiro teste de moral.\">exército abalado</span>":"")+"</div>";
+  h+="<div class=\"uacoes\"><select onchange=\"setComando('"+ex+"','tatica',this.value)\" data-dica=\""+esc(t?tatDica(t):"Escolha a tática: cada uma é rolada com o seu Anel.")+"\"><option value=\"\">— tática —</option>"+
+    ANEL_ORDEM.map(an=>"<optgroup label=\""+ANEL_NOME[an]+"\">"+TATICAS.filter(x=>x.anel===an).map(x=>"<option value=\""+x.id+"\" "+(c.tatica===x.id?"selected":"")+" title=\""+esc(tatDica(x))+"\">"+esc(x.nome)+" (TN "+x.tn+")</option>").join("")+"</optgroup>").join("")+"</select>"+
+    "<label data-dica=\""+esc(DICA_BATALHA.gunshi)+"\"><input type=\"checkbox\" "+(c.gunshi?"checked":"")+" onchange=\"setComando('"+ex+"','gunshi',this.checked)\"> Gunshi +1k1</label>"+
+    (ativa?"":"<button class=\"ghost\" onclick=\"rolarTatica('"+ex+"',false)\">Rolar tática</button>")+"</div>";
+  if(t&&(!ativa||t.id!==ativa.id))h+="<div class=\"hint\" style=\"margin:2px 0\">"+esc(t.nome)+": "+esc(t.efeito)+" Raise: "+esc(t.raise)+".</div>";
+  if(ativa)h+="<div class=\"uacoes\"><label data-dica=\""+esc(DICA_BATALHA.gatilho)+"\"><input type=\"checkbox\" "+(c.gatilho?"checked":"")+" onchange=\"setComando('"+ex+"','gatilho',this.checked)\"> o campo deu motivo</label>"+
+    "<button class=\"ghost\" "+(c.gatilho&&t&&t.id!==ativa.id?"":"disabled")+" onclick=\"rolarTatica('"+ex+"',true)\" data-dica=\""+esc(DICA_BATALHA.gatilho)+"\">mudar para a escolhida (TN +10)</button></div>";
+  h+="</div></div>";
+  /* 2. Inspirar */
+  const ja=c.inspirouTurno===turno;
+  h+="<div class=\"cmdpasso\"><span class=\"cmdnum\">2</span><div class=\"cmdcorpo\"><div class=\"cmdrot\">"+dica("Inspirar","inspirar")+" <small>uma vez por turno</small></div>"+
+    "<div class=\"uacoes\"><select onchange=\"setComando('"+ex+"','inspirarAlvo',this.value)\"><option value=\"\">— unidade —</option>"+opts(unidades.map(u=>[u.id,nomeUnidade(u)]),c.inspirarAlvo)+"</select>"+
+    "<button class=\"ghost\" "+(ja?"disabled":"")+" onclick=\"inspirarUnidade('"+ex+"')\">"+(ja?"já inspirou no turno "+turno:"Inspirar (TN 15, +1 PV)")+"</button></div></div></div>";
   return h+"</div>";
 }
 function renderBatalha(){
@@ -4548,62 +5364,65 @@ function renderBatalha(){
     out+="<div class=\"linha\" style=\"flex-wrap:wrap;margin-top:8px\">"+
       "<span class=\"tag\">Terreno:</span><select onchange=\"setBatalhaCampo('terreno',this.value)\">"+Object.keys(TERRENO_BATALHA_VISUAL).map(k=>"<option value=\""+k+"\" "+((b.terreno||"")===k?"selected":"")+">"+TERRENO_BATALHA_VISUAL[k].emoji+" "+TERRENO_BATALHA_VISUAL[k].nome+"</option>").join("")+"</select>"+
       "<select onchange=\"setBatalhaCampo('periodo',this.value)\">"+opts([["dia","de dia"],["noite","à noite"]],b.periodo||"dia")+"</select>"+
-      "<span class=\"tag\" style=\"margin-left:10px\">Turno:</span>"+
-      "<button class=\"ghost\" onclick=\"avancarTurnoBatalha(-1)\">−</button>"+
-      "<b style=\"min-width:28px;text-align:center\">"+(b.turno||1)+"</b>"+
-      "<button class=\"ghost\" onclick=\"avancarTurnoBatalha(1)\" title=\"zera os Pontos de Vazio do turno e lembra quem testa moral\">próximo turno</button>"+
       "<span class=\"hint\" style=\"margin:0 0 0 6px\">iniciada em "+esc(b.criada||"")+"</span></div>";
-    out+="<div class=\"hint\" style=\"margin-top:8px\">Antes do primeiro turno: Discurso e Tática, e cada unidade rola Iniciativa. A cada turno: Contest de Comando e Inspirar; ativações por ordem de Iniciativa (postura, até Água casas, uma ação); moral de quem tomou golpes ou está Debandando; Glória.</div>";
+    /* turno: o que a mesa consulta a cada rodada */
+    const ordem=b.unidades.filter(u=>u.ini!=null).map(u=>({u,v:u.ini})).sort((x,y)=>y.v-x.v);
+    out+="<div class=\"turnobar\"><div class=\"tbturno\"><span class=\"tag\">"+dica("Turno","turno")+"</span>"+
+      "<button class=\"ghost\" onclick=\"avancarTurnoBatalha(-1)\" aria-label=\"turno anterior\">−</button><b>"+(b.turno||1)+"</b>"+
+      "<button class=\"ghost\" onclick=\"avancarTurnoBatalha(1)\" data-dica=\"Zera o limite de Pontos de Vazio do turno, libera o Inspirar e lembra quem testa moral.\">próximo turno</button></div>"+
+      "<div class=\"tbordem\"><span class=\"tag\">"+dica("Iniciativa","iniciativa")+"</span>"+
+      (ordem.length?ordem.map((x,i)=>"<span class=\"chipini "+(BAT_LADOS[x.u.lado]||BAT_LADOS.familia).classe+"\">"+(i+1)+"º · "+esc(nomeUnidade(x.u))+" <b>"+x.v+"</b></span>").join(""):"<span class=\"hint\" style=\"margin:0\">ninguém rolou</span>")+
+      "<button class=\"ghost\" onclick=\"rolarIniciativaTodas()\">rolar a de todas</button></div></div>";
+    out+="<div class=\"hint\" style=\"margin-top:6px\">Antes do primeiro turno: a "+dica("Tática","tatica")+" de cada lado e a "+dica("Iniciativa","iniciativa")+" de cada unidade. "+
+      "A cada turno: o comandante pode "+dica("Inspirar","inspirar")+"; cada unidade, na sua vez, escolhe a postura, anda até Água casas e faz uma ação; no fim, testa "+dica("moral","moral")+" quem tomou golpes ou está Debandando.</div>";
 
-    out+="<div class=\"secao\">Comando</div><div class=\"cmdgrid\">"+comandoHTML(b,"familia")+comandoHTML(b,"inimiga")+"</div>";
-    out+="<div class=\"uacoes\"><button class=\"ghost\" onclick=\"contestComando()\">Contest de Comando (Battle / "+TRACO_PT.perception+")</button>"+
-      (b.contest&&b.contest.turno===(Number(b.turno)||1)?"<span class=\"hint\" style=\"margin:0\">turno "+b.contest.turno+": "+(b.contest.vencedor?(b.contest.vencedor==="familia"?"família":"inimigo")+" com +5 na Iniciativa":"empate")+"</span>":"")+"</div>";
+    out+="<details class=\"batsec\" open><summary>Comando</summary><div class=\"cmdgrid\">"+comandoHTML(b,"familia")+comandoHTML(b,"inimiga")+"</div></details>";
 
-    const ordem=b.unidades.filter(u=>u.ini!=null).map(u=>({u,v:u.ini+bonusIniContest(u)})).sort((x,y)=>y.v-x.v);
-    out+="<div class=\"secao\">Ordem de Iniciativa</div><div class=\"uacoes\"><button class=\"ghost\" onclick=\"rolarIniciativaTodas()\">rolar a de todas</button>"+
-      (ordem.length?ordem.map(x=>"<span class=\"chipini "+(BAT_LADOS[x.u.lado]||BAT_LADOS.familia).classe+"\">"+x.v+" · "+esc(nomeUnidade(x.u))+"</span>").join(""):"<span class=\"hint\" style=\"margin:0\">ninguém rolou ainda</span>")+"</div>";
+    /* campo: os dois lados lado a lado */
+    const colFam=b.unidades.filter(u=>u.lado!=="inimiga"),colIni=b.unidades.filter(u=>u.lado==="inimiga");
+    out+="<div class=\"campo\">"+
+      "<div class=\"campocol\"><div class=\"campotit ladoFam\">Família e aliados <small>"+colFam.length+"</small></div>"+
+        "<div class=\"uacoes\"><select id=\"batalhaTropaSel\"><option value=\"\">— tropa da família —</option>"+
+        (S.tropas||[]).map(t=>"<option value=\""+t.id+"\">"+esc(tropaTipo(t).nome+" "+tropaTam(t).nome)+(t.local?(" — "+esc(t.local)):"")+"</option>").join("")+"</select>"+
+        "<button class=\"ghost\" onclick=\"addUnidadeDoCadastro()\">+ do cadastro</button>"+
+        "<button class=\"ghost\" onclick=\"addUnidadeBatalha('aliada',null)\">+ aliada</button></div>"+
+        (colFam.length?colFam.map(u=>unidadeCardHTML(u,b)).join(""):"<div class=\"hint\">Nenhuma unidade.</div>")+"</div>"+
+      "<div class=\"campocol\"><div class=\"campotit ladoIni\">Inimigos <small>"+colIni.length+"</small></div>"+
+        "<div class=\"uacoes\"><button class=\"ghost\" onclick=\"addUnidadeBatalha('inimiga',null)\">+ inimiga</button></div>"+
+        (colIni.length?colIni.map(u=>unidadeCardHTML(u,b)).join(""):"<div class=\"hint\">Nenhuma unidade.</div>")+"</div>"+
+      "</div>";
 
-    out+="<div class=\"secao\">Unidades em campo</div>";
-    out+="<div class=\"linha\" style=\"flex-wrap:wrap\">"+
-      "<select id=\"batalhaTropaSel\"><option value=\"\">— tropa da família —</option>"+
-      (S.tropas||[]).map(t=>"<option value=\""+t.id+"\">"+esc(tropaTipo(t).nome+" "+tropaTam(t).nome)+(t.local?(" — "+esc(t.local)):"")+"</option>").join("")+"</select>"+
-      "<button class=\"ghost\" onclick=\"addUnidadeDoCadastro()\">+ do cadastro</button>"+
-      "<button class=\"ghost\" onclick=\"addUnidadeBatalha('aliada',null)\">+ aliada</button>"+
-      "<button class=\"ghost\" onclick=\"addUnidadeBatalha('inimiga',null)\">+ inimiga</button></div>";
-    BAT_LADO_ORDEM.forEach(l=>{const us=b.unidades.filter(u=>u.lado===l);if(!us.length)return;
-      out+="<div class=\"tag\" style=\"margin:10px 0 4px\">"+BAT_LADOS[l].nome+"</div><div class=\"ugrid\">"+us.map(u=>unidadeCardHTML(u,b)).join("")+"</div>";});
-    if(!b.unidades.length)out+="<div class=\"hint\">Nenhuma unidade em campo.</div>";
-
+    /* ferramentas de vez em quando */
     const pv=(cerrarSel.a&&cerrarSel.b)?previaCerrar():null;
     const feridas=b.unidades.filter(u=>{const f=fichaUnidade(u,b);return f.nivel>=1&&f.nivel<3;});
-    out+="<div class=\"secao\">Cerrar Fileiras</div><div class=\"uacoes\">"+
+    let ferr="<div class=\"secao\" style=\"margin-top:4px\">"+dica("Cerrar Fileiras","cerrar")+"</div><div class=\"uacoes\">"+
       ["a","b"].map(k=>"<select onchange=\"setCerrar('"+k+"',this.value)\"><option value=\"\">— unidade ferida —</option>"+opts(feridas.map(u=>[u.id,nomeUnidade(u)+" ("+BAT_LADOS[u.lado].nome+")"]),cerrarSel[k])+"</select>").join("")+
       "<button class=\"ghost\" "+(pv&&!pv.erro?"":"disabled")+" onclick=\"cerrarFileiras()\">rolar (Terra, TN 20) e juntar</button></div>";
-    if(pv)out+="<div class=\"hint\">"+(pv.erro?esc(pv.erro):"Fica uma "+esc(tropaTipo(pv.nova).nome+" "+tropaTam(pv.nova).nome)+" Veterana com "+pv.homens+" homens, "+DANO_NIVEIS[pv.fN.nivel].nome+", Treino "+pv.nova.treino+", moral Firme, Pontos de Vazio cheios. "+esc(resumoFicha(pv.fN)))+"</div>";
-
+    if(pv)ferr+="<div class=\"hint\">"+(pv.erro?esc(pv.erro):"Fica uma "+esc(tropaTipo(pv.nova).nome+" "+tropaTam(pv.nova).nome)+" Veterana com "+pv.homens+" homens, "+DANO_NIVEIS[pv.fN.nivel].nome+", Treino "+pv.nova.treino+", moral Firme, Pontos de Vazio cheios. "+esc(resumoFicha(pv.fN)))+"</div>";
     const pu=bUnit(pcCalc.unidade);
-    out+="<div class=\"secao\">Personagem contra tropa</div><div class=\"uacoes\"><select onchange=\"setPcCalc('unidade',this.value)\"><option value=\"\">— unidade que ele enfrenta —</option>"+opts(b.unidades.map(u=>[u.id,nomeUnidade(u)]),pcCalc.unidade)+"</select>";
+    ferr+="<div class=\"secao\">"+dica("Personagem contra tropa","pcTropa")+"</div><div class=\"uacoes\"><select onchange=\"setPcCalc('unidade',this.value)\"><option value=\"\">— unidade que ele enfrenta —</option>"+opts(b.unidades.map(u=>[u.id,nomeUnidade(u)]),pcCalc.unidade)+"</select>";
     if(pu){const pf=fichaUnidade(pu,b),pt=PC_TROPA[pu.tamanho]||PC_TROPA.media,g=Math.floor(pcCalc.dano/pt.danoPorGolpe);
-      out+=" dano rolado <input type=\"number\" style=\"width:56px\" value=\""+pcCalc.dano+"\" onchange=\"setPcCalc('dano',this.value)\"> = <b>"+g+" golpe"+(g===1?"":"s")+"</b>"+
+      ferr+=" dano rolado <input type=\"number\" style=\"width:56px\" value=\""+pcCalc.dano+"\" onchange=\"setPcCalc('dano',this.value)\"> = <b>"+g+" golpe"+(g===1?"":"s")+"</b>"+
         (g?"<button class=\"ghost\" onclick=\"aplicarGolpesUnidade('"+pu.id+"',"+g+")\">aplicar</button>":"")+"</div>"+
         "<div class=\"hint\">Contra a "+esc(pf.tam.nome)+": "+pt.danoPorGolpe+" de dano por golpe (TN "+pf.tn+"). A unidade faz "+pt.ataques+" ataques nele por ativação, cada um "+(()=>{const m=/\+(\d+)k(\d+)/.exec(pt.bonus);return fmtPool([pf.atk[0]+Number(m[1]),pf.atk[1]+Number(m[2])]);})()+
         " (ataque "+fmtPool(pf.atk)+" "+pt.bonus+") contra o TN de Armadura dele; dano "+(pf.fogo+pt.dano[0])+"k"+pt.dano[1]+" e +1k0 por Raise de margem. Em contato, ele tem "+pt.pen+". Sair do contato: Atletismo/Agilidade TN "+(15+5*TAMANHO_ORDEM.indexOf(pu.tamanho))+".</div>";
-    }else out+="</div>";
+    }else ferr+="</div>";
+    out+="<details class=\"batsec\""+(feridas.length>=2||pcCalc.unidade?" open":"")+"><summary>Ferramentas <small>Cerrar Fileiras, personagem contra tropa</small></summary>"+ferr+"</details>";
 
-    out+="<div class=\"secao\">Anotações da batalha</div>";
-    out+="<textarea style=\"width:100%;min-height:64px;padding:8px 10px;font:inherit;color:var(--ink);background:var(--panel2);border:1px solid var(--line);border-radius:6px\" placeholder=\"plano do inimigo, objetivos, o que os jogadores não sabem ainda...\" onchange=\"setBatalhaCampo('notas',this.value)\">"+esc(b.notas||"")+"</textarea>";
+    out+="<details class=\"batsec\""+(b.notas?" open":"")+"><summary>Anotações do Mestre</summary>";
+    out+="<textarea style=\"width:100%;min-height:64px;padding:8px 10px;font:inherit;color:var(--ink);background:var(--panel2);border:1px solid var(--line);border-radius:6px\" placeholder=\"plano do inimigo, objetivos, o que os jogadores não sabem ainda...\" onchange=\"setBatalhaCampo('notas',this.value)\">"+esc(b.notas||"")+"</textarea></details>";
 
     out+="<div class=\"linha\" style=\"margin-top:14px;flex-wrap:wrap\"><input class=\"campo-medio\" style=\"flex:2\" value=\""+esc(b.desfecho||"")+"\" placeholder=\"desfecho da batalha (preencha antes de encerrar)\" onchange=\"setBatalhaCampo('desfecho',this.value)\">"+
       "<select onchange=\"setBatalhaResultado(this.value)\"><option value=\"\">— escolha o resultado —</option>"+["vitoria","empate","derrota"].map(r=>"<option value=\""+r+"\" "+(b.resultado===r?"selected":"")+">"+(r==="vitoria"?"Vitória":r==="derrota"?"Derrota":"Empate")+"</option>").join("")+"</select>"+
       "<button class=\"ghost\" onclick=\"encerrarBatalha()\">encerrar e arquivar</button></div>";
     out+="<div class=\"hint\">O resultado é escolha sua. Encerrar gera uma Conquista e devolve as tropas da família ao cadastro: Intacta continua Mobilizada; Castigada, Quebrada ou fugida volta Ferida; Destruída, Derrotada. Os Homens voltam com metade dos desertores, e Suprimentos Médicos recuperam um nível de dano.</div>";
 
-    out+="<div class=\"secao\">Log da batalha</div>";
+    out+="<details class=\"batsec\" open><summary>Log da batalha <small>"+((b.log||[]).length)+"</small></summary>";
     out+="<div class=\"linha\" style=\"flex-wrap:wrap\"><input id=\"batalhaLogInput\" class=\"campo-medio\" style=\"flex:3\" placeholder=\"o que aconteceu neste turno...\" onkeydown=\"if(event.key==='Enter')addLogBatalhaDoCampo()\">"+
       "<button class=\"ghost\" onclick=\"addLogBatalhaDoCampo()\">registrar</button></div>";
     out+="<div class=\"log\" style=\"margin-top:8px;max-height:260px\">"+((b.log||[]).length?
       b.log.map((l,i)=>"<p>Turno "+l.turno+" — "+esc(l.texto)+" <button class=\"ghost btnicon\" onclick=\"delLogBatalha("+i+")\" title=\"apagar\">✕</button></p>").join("")
-      :"<p style=\"color:var(--muted-tx)\">Nada registrado ainda.</p>")+"</div>";
+      :"<p style=\"color:var(--muted-tx)\">Nada registrado ainda.</p>")+"</div></details>";
     box.innerHTML=out;
   }
 
@@ -4669,7 +5488,6 @@ function renderFeed(){
 document.getElementById("btnRename").onclick=()=>{const n=prompt("Nome da família:",S.nome);if(n&&n.trim())setNome(n);};
 document.getElementById("nomeInput").onchange=e=>setNome(e.target.value);
 document.getElementById("daimyoInput").onchange=e=>setDaimyo(e.target.value);
-document.getElementById("ramoInput").onchange=e=>setRamoFamiliar(e.target.value);
 document.getElementById("idadeSel").onchange=e=>setIdade(e.target.value);
 document.getElementById("btnAvancarEstacao").onclick=avancarEstacao;
 document.getElementById("btnAddConquista").onclick=addConquista;

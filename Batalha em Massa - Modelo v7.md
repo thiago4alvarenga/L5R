@@ -28,7 +28,7 @@ Os números desta revisão **já passaram por simulação** (seção 15). O simu
 - Especialidade e manobra de cada clã, inclusive os menores.
 
 **Mudou nesta revisão:**
-- O Rikugunshōkan não comanda as unidades. Cada jogador comanda a sua; o comandante influencia pela Tática, pelo Discurso, pela Mudança de Tática (só quando o campo dá motivo) e pela Presença no campo.
+- O Rikugunshōkan não comanda as unidades. Cada jogador comanda a sua; o comandante influencia pela Tática, pelo Discurso, pela Mudança de Tática (só quando o campo dá motivo) e pela Presença no campo. (Em 2026-11, o comandante foi simplificado: ficaram a Tática e Inspirar; ver seção 3.)
 - Saem as Ordens.
 - Prontidão vira manobra.
 - As posturas são só as cinco dos personagens, adaptadas.
@@ -123,42 +123,42 @@ Adaptados da regra dos personagens (Core Book, p. 80). A unidade começa a batal
 
 O Taisa usa os **Pontos de Vazio dele mesmo** nas rolagens de Battle que ele faz.
 
-Os Pontos de Vazio da unidade só voltam pelo Discurso, pela Presença do Comandante (seção 3) ou depois da batalha.
+Os Pontos de Vazio da unidade só voltam pelos Raises da Tática, por Inspirar (seção 3) ou depois da batalha.
 
 ---
 
 ## 3. O Rikugunshōkan
 
-O **Rikugunshōkan** comanda o exército inteiro, mas **não dá ordens às unidades**: quem decide o que cada tropa faz é o Taisa dela, ou seja, o jogador. O comandante pesa na batalha de quatro jeitos.
+**Simplificado em 2026-11.** Antes eram cinco rolagens do comandante: Discurso, Gunshi e Tática antes da batalha, e Contest de Comando e Inspirar a cada turno. Com as rolagens das unidades, dos Taisa e da moral, era instância demais. Ficaram duas coisas, mais a troca de tática quando o campo dá motivo.
 
-### Discurso (antes da batalha)
+O **Rikugunshōkan** comanda o exército inteiro, mas **não dá ordens às unidades**: quem decide o que cada tropa faz é o Taisa dela, ou seja, o jogador.
 
-Uma vez, antes do primeiro turno: **Perform: Oratória / Consciência** contra TN 15.
-- **Sucesso:** toda unidade do exército ganha +1k0 no primeiro teste de moral.
-- **Cada Raise:** uma unidade à escolha do comandante ganha +1 Ponto de Vazio. Com 3 Raises, em vez disso, todas ganham +1.
-- **Falha por 10 ou mais:** o discurso soou falso, e toda unidade tem -1k0 no primeiro teste de moral.
+### 1. Tática (uma rolagem, antes da batalha)
 
-Outra pessoa pode fazer o discurso no lugar dele (um Taisa, um sacerdote, o daimyō). Mesmo assim, é um discurso só por exército.
+O comandante declara uma Tática para o exército inteiro e rola **(Anel da Tática + Battle) k Anel da Tática** contra o TN.
 
-### Tática (antes da batalha)
-
-O comandante declara uma Tática para o exército inteiro e rola **(Anel da Tática + Battle) k Anel da Tática** contra o TN. Cada Raise libera o efeito extra.
-
-- **Gunshi** (opcional): se o exército tem um estrategista, ele rola antes, com o mesmo Anel, contra TN 15. Se passar, o comandante ganha +1k1, e cada Raise do Gunshi soma +1k0.
+- **Gunshi:** se o exército tem um estrategista, o comandante rola com +1k1. Ele não rola à parte.
+- **Cada Raise** vale uma destas coisas, à escolha do comandante:
+  - o efeito extra da tática, uma vez;
+  - +1 Ponto de Vazio numa unidade (o que antes era o Discurso).
 - **Falha:** o exército luta sem tática.
-- **Se os dois lados declaram tática:** cada um rola a sua; quem tirar o total maior soma +5 na Iniciativa de todas as suas unidades no primeiro turno.
+- **Falha por 10 ou mais:** o exército começa abalado, e cada unidade tem -1k0 no primeiro teste de moral.
 
-| Anel | Tática | TN | Efeito | Raise |
+| Anel | Tática | TN | Efeito | Efeito extra (1 Raise) |
 |---|---|---|---|---|
 | Terra | Defesa em Profundidade | 15 | Unidades em Defesa ou Defesa Total: +1k0 em moral. | +1k0 a mais |
 | Terra | Muralha de Ferro | 15 | A manobra Prontidão tem TN -5 para todas as unidades. | também Formar Muralha |
 | Água | Martelo e Bigorna | 20 | Flanquear tem TN -5 e +1k0 no ataque. | +1k1 em vez de +1k0 |
 | Água | Atrito | 15 | A partir do 3º turno, as unidades inimigas têm +5 no TN dos testes de moral. | a partir do 2º turno |
 | Fogo | Cunha | 20 | Toda Carga ganha +1k0. | +1k1 em vez de +1k0 |
-| Fogo | Golpe na Cabeça | 25 | Unidades que atacam o posto de comando inimigo ganham +1k1; o comandante inimigo tem -1k0 no Contest de Comando. | -1k1 |
+| Fogo | Golpe na Cabeça | 25 | Unidades que atacam o posto de comando inimigo ganham +1k1; o comandante inimigo tem -1k0 para Inspirar e para Mudar de Tática. | -1k1 em vez de -1k0 |
 | Ar | Emboscada | 25 | Exige terreno que esconda. As unidades escondidas só aparecem quando agem e não podem ser atacadas antes. | uma unidade a mais escondida |
 | Ar | Falsa Fraqueza | 20 | A manobra Fingir Retirada ganha +1k1 e o inimigo que a seguir tem -10 no TN em vez de -5. | +1k1 a mais |
 | Vazio | Um Só Coração | 20 | Toda unidade começa com +1 Ponto de Vazio. | +2 em vez de +1 |
+
+### 2. Inspirar (uma vez por turno)
+
+O comandante rola **Battle / Consciência** contra TN 15 para mandar um mensageiro, um sinal ou ir pessoalmente até uma unidade que ele vê. Se passar, a unidade ganha **1 Ponto de Vazio**, e o Taisa dela decide como usar.
 
 ### Mudança de Tática (só quando o campo dá motivo)
 
@@ -174,23 +174,22 @@ Depois de um gatilho, ele pode tentar **uma vez**: rola a nova tática com **TN 
 - **Sucesso:** a tática nova substitui a antiga.
 - **Falha:** a antiga se perde também, e o exército fica sem tática até o próximo gatilho.
 
-### Presença do Comandante (a cada turno)
+### Se o Rikugunshōkan cai
 
-- **Contest de Comando:** no começo de cada turno, os dois comandantes fazem um Contest de Battle / Percepção. Quem vence soma **+5 na Iniciativa** de todas as suas unidades neste turno.
-- **Inspirar:** uma vez por turno, o comandante rola Battle / Consciência contra TN 15 para mandar um mensageiro, um sinal ou ir pessoalmente até uma unidade que ele vê. Se passar, a unidade ganha **1 Ponto de Vazio**, e o Taisa dela decide como usar.
-
-**Se o Rikugunshōkan cai:** todas as unidades do exército testam moral, a Tática deixa de valer e não há Contest nem Inspirar até alguém assumir. Assumir o comando custa a ação de um Taisa e conta como gatilho para Mudança de Tática.
+Todas as unidades do exército testam moral, a Tática deixa de valer e ninguém Inspira até alguém assumir. Assumir o comando custa a ação de um Taisa e conta como gatilho para Mudança de Tática.
 
 **Onde ele fica:** no **posto de comando**, uma casa da grid atrás das linhas. Ele pode liderar uma unidade e ser Taisa também, mas aí corre os riscos dela.
+
+**Saíram:** o Discurso (virou uso de Raise da Tática), a rolagem do Gunshi (virou +1k1 fixo), a comparação dos totais das táticas e o Contest de Comando a cada turno.
 
 ---
 
 ## 4. Estrutura do turno
 
-**Antes do primeiro turno:** Discurso e Tática. Cada unidade rola **Iniciativa** uma vez, (Ar + Treino) k Ar, como os personagens rolam num combate.
+**Antes do primeiro turno:** a Tática de cada lado. Cada unidade rola **Iniciativa** uma vez, (Ar + Treino) k Ar, como os personagens rolam num combate.
 
 **A cada turno:**
-1. **Comando:** Contest de Comando e Inspirar.
+1. **Comando:** o Rikugunshōkan pode Inspirar uma unidade.
 2. **Ativações:** em ordem de Iniciativa, da maior para a menor. Na sua ativação, a unidade:
    - assume ou mantém sua **Postura** (seção 5);
    - pode **mover até Água casas**;
@@ -280,7 +279,7 @@ Com isso, a tropa de clã vence uns 64%. Leão e Caranguejo foram medidos; os ou
 | Dragão | Vazio | **Mente quieta:** a postura Centro dá +2k2 mais o Vazio, em vez de +1k1 mais o Vazio. | **Dois Céus** (Fogo, 20): ataca duas unidades adjacentes, sem penalidade em nenhuma. |
 | Leão | Fogo | **Coragem dos Akodo:** +1 dado rolado em moral; no primeiro teste falhado da batalha, fica Abalada em vez de descer mais. | **Fúria Matsu** (Fogo, 15): Carga que ignora o bônus da postura do alvo e causa +1 golpe; depois, -5 no TN até a próxima ativação. |
 | Fênix | Vazio | **Bênção dos kami:** rerrola um teste da unidade, uma vez por batalha. | **Guarda Shiba** (Terra, 15): até a próxima ativação, os golpes que uma unidade aliada adjacente receberia vêm para esta. |
-| Escorpião | Ar | **Emboscada:** no turno em que é revelada, quem ela ataca não pode mudar de postura. | **Bandeiras Falsas** (Ar, Contest contra o Rikugunshōkan inimigo): ele tem -1k1 no próximo Contest de Comando e não pode Inspirar no próximo turno; a unidade se reposiciona até Água casas sem tomar ataque grátis. |
+| Escorpião | Ar | **Emboscada:** no turno em que é revelada, quem ela ataca não pode mudar de postura. | **Bandeiras Falsas** (Ar, Contest contra o Rikugunshōkan inimigo): ele não pode Inspirar no próximo turno; a unidade se reposiciona até Água casas sem tomar ataque grátis. |
 | Unicórnio | Água | **Cavaleiros:** se começou o turno fora de contato, a Carga ganha +1 casa e +1k0. | **Tempestade Utaku** (Água, 20): Carga que atravessa a unidade alvo e termina do outro lado; o alvo testa moral. |
 | Louva-a-Deus | Água | **Lâminas de aluguel:** pode receber o Treinamento de outro clã, pagando o instrutor estrangeiro, e mantém esta especialidade. | **Abordagem** (Água, 15): move para o contato ignorando água, muralha e terreno difícil, e ataca com +1k0 (+1k1 em batalha naval). |
 
@@ -376,9 +375,9 @@ Conversão dos efeitos escritos para a Tabela de Batalha da 4ª edição:
 
 | No texto original | Neste modelo |
 |---|---|
-| +5 / -5 no Battle Roll do general | +1k1 / -1k1 no próximo Contest de Comando ou numa Mudança de Tática |
+| +5 / -5 no Battle Roll do general | +1k1 / -1k1 na próxima Inspiração ou Mudança de Tática |
 | +3 / -3 no Battle Roll | +1k0 / -1k0 |
-| "-5 no próximo turno do general inimigo" | o Rikugunshōkan inimigo tem -1k1 no próximo Contest e não pode Inspirar no próximo turno |
+| "-5 no próximo turno do general inimigo" | o Rikugunshōkan inimigo não pode Inspirar no próximo turno |
 | Fortemente Engajado / Engajado | unidade em contato |
 | Reservas / Desengajado | unidade fora de contato |
 | Glória | igual, direto na ficha do personagem |
@@ -461,7 +460,9 @@ Sem tabuleiro. A aba vira o painel de guerra:
   - Prontidão com a reação escolhida;
   - Iniciativa;
   - Gastar Ponto de Vazio.
-- **Painel do Rikugunshōkan:** quem comanda, Discurso, Tática (com o Gunshi), Contest de Comando, Inspirar, os gatilhos de Mudança de Tática (para marcar quando acontecem) e a tentativa de mudança.
+- **Painel do Rikugunshōkan:** quem comanda, a Tática (com o Gunshi e o uso dos Raises), Inspirar e a Mudança de Tática quando o Mestre marca o gatilho.
+- **Organização da aba (2026-11):** no alto, a barra do turno com a ordem de Iniciativa; depois o Comando dos dois lados; o campo com Família e aliados de um lado e Inimigos do outro; e, recolhidos, Ferramentas (Cerrar Fileiras, personagem contra tropa), Anotações e Log. No cartão da unidade, a ficha fica num resumo de uma linha, com "editar a ficha" recolhido, e a parte de Ativação junta postura, ataque, manobra e reação.
+- **Dicas:** todo termo sublinhado, número da ficha, postura, manobra, reação, tática, passo de moral e nível de dano mostra o que faz ao passar o mouse, ou ao tocar no celular.
 - **Unidades inimigas rápidas:** tipo, clã, tamanho e armadura bastam para o site montar a ficha.
 - **Cerrar Fileiras:** escolher duas unidades e ver a unidade nova antes de confirmar.
 - **Oportunidades Heroicas:** botão Buscar Glória, com sorteio pelo modo e texto convertido.
@@ -521,7 +522,7 @@ O Rank 2 é um bushi com Agilidade 3, Kenjutsu 3, katana e armadura leve. O Rank
 **Ainda não simulado:**
 - as posturas Defesa, Defesa Total e Centro;
 - as manobras além de Carga e Prontidão, e as manobras de clã;
-- as Táticas, o Discurso e a Presença do Comandante;
+- as Táticas e o Inspirar;
 - os usos dos Pontos de Vazio além de +1k1;
 - Cerrar Fileiras e o Disparo à distância;
 - os clãs além de Leão e Caranguejo.

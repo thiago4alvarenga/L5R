@@ -1,0 +1,28 @@
+/* Catálogo de acontecimentos da estação (2026-11). d = duração em estações (4 = um ano);
+   d:null = até gastar; perm = muda o atributo para sempre. No Vazio, o lote vale Raises. */
+module.exports = [
+ {id:"migracao_esporadica",est:0,anel:"dominio",ef:[{a:"dominio",v:8,d:8}]},
+ {id:"leva_camponeses",est:0,anel:"dominio",ef:[{a:"autoridade",v:6,d:2},{a:"dominio",v:-2,d:4}]},
+ {id:"cheias_primavera",est:0,anel:"dominio",ef:[{a:"dominio",v:-6,d:4},{a:"riqueza",v:-3,d:4}]},
+ {id:"boa_negociacao",est:0,anel:"riqueza",ef:[{a:"riqueza",v:12,d:null}]},
+ {id:"emprestimo",est:0,anel:"riqueza",ef:[{a:"riqueza",v:15,d:null},{a:"riqueza",v:-8,d:8}]},
+ {id:"praga_mudas",est:0,anel:"riqueza",ef:[{a:"riqueza",v:-8,d:4}]},
+ {id:"alistamento_obrigatorio",est:1,anel:"autoridade",ef:[{a:"autoridade",v:10,d:4},{a:"vazio",v:-2,perm:true}]},
+ {id:"mercenarios",est:1,anel:"autoridade",ef:[{a:"autoridade",v:8,d:2},{a:"riqueza",v:-6,d:4}]},
+ {id:"saque_guerra",est:1,anel:"autoridade",ef:[{a:"riqueza",v:10,d:null},{a:"vazio",v:-1,perm:true}]},
+ {id:"bandidos_estrada",est:1,anel:"autoridade",ef:[{a:"autoridade",v:-6,d:4},{a:"riqueza",v:-3,d:4}]},
+ {id:"desercao",est:1,anel:"autoridade",ef:[{a:"autoridade",v:-8,d:4}]},
+ {id:"torneio_verao",est:1,anel:"autoridade",ef:[{a:"autoridade",v:6,d:4},{a:"influencia",v:4,d:4}]},
+ {id:"colheita_extraordinaria",est:2,anel:"riqueza",ef:[{a:"riqueza",v:8,d:4}]},
+ {id:"tributo_vassalo",est:2,anel:"influencia",ef:[{a:"influencia",v:6,d:4}]},
+ {id:"refugiados",est:2,anel:"dominio",ef:[{a:"dominio",v:6,d:4},{a:"riqueza",v:-3,d:4}]},
+ {id:"feira_outono",est:2,anel:"riqueza",ef:[{a:"riqueza",v:6,d:4},{a:"influencia",v:2,d:4}]},
+ {id:"geada_precoce",est:2,anel:"riqueza",ef:[{a:"riqueza",v:-8,d:4}]},
+ {id:"incendio_celeiros",est:2,anel:"dominio",ef:[{a:"dominio",v:-4,d:4},{a:"riqueza",v:-4,d:4}]},
+ {id:"favor_daimyo",est:3,anel:"influencia",ef:[{a:"influencia",v:10,d:4}]},
+ {id:"dote_casamento",est:3,anel:"influencia",ef:[{a:"riqueza",v:8,d:null}]},
+ {id:"intriga_corte",est:3,anel:"influencia",ef:[{a:"influencia",v:-8,d:4}]},
+ {id:"graca_kami",est:3,anel:"vazio",ef:[{a:"vazio",v:1,d:4}]},
+ {id:"pressagio_sombrio",est:3,anel:"vazio",ef:[{a:"vazio",v:-1,d:4}]},
+ {id:"inverno_rigoroso",est:3,anel:"dominio",ef:[{a:"dominio",v:-4,d:4},{a:"autoridade",v:-4,d:4}]},
+];
