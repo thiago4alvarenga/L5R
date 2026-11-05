@@ -3049,8 +3049,13 @@ function setLoteForm(campo,val){loteForm[campo]=val;}
    Simulado em sim/reservas_sim.js: investindo tudo, em 10 anos a soma dos cinco atributos sobe
    uns 7 numa família de Nível 2, 2 numa de Nível 4 e fica parada numa de Nível 6 (os custos
    permanentes de Honra dos acontecimentos comem o resto). Crescer de verdade é Conquista. */
-function custoInvestir(attr,viaRiqueza){const c=Math.max(1,nivelAttr(attr))*3;return viaRiqueza&&attr!=="riqueza"?c*2:c;}
-function duracaoInvestir(attr){return Math.max(2,nivelAttr(attr));}
+/* 2026-11-05 (Thiago: o Nível quase não se mexia numa campanha de poucos anos): cada investimento
+   dá +5 em vez de +1, custa Nível × 8 (era × 3) e leva metade do Nível + 1 estações (mínimo 2).
+   Uma casa Nível 5 que se dedica sobe um Nível em uns dois anos de jogo (duas obras de 4 estações). */
+const INVEST_PASSO=5;
+function passoInvestir(attr){return Math.max(0,Math.min(INVEST_PASSO,100-Math.floor(totalAttr(attr))));}
+function custoInvestir(attr,viaRiqueza){const c=Math.max(1,nivelAttr(attr))*8;return viaRiqueza&&attr!=="riqueza"?c*2:c;}
+function duracaoInvestir(attr){return Math.max(2,Math.ceil(nivelAttr(attr)/2)+1);}
 function investimentoDe(attr){return(S.investimentos||[]).find(i=>i.attr===attr);}
 /* o que fica preso na obra, tirado do disponível, até ela ficar pronta */
 function investComprometido(attr){return(S.investimentos||[]).filter(i=>i.fonte===attr).reduce((s,i)=>s+(Number(i.comprometido)||0),0);}
@@ -3068,8 +3073,9 @@ function investir(attr,via){
   let falta;
   if(fonte==="riqueza"){gastarRiqueza(custo);falta=0;}else falta=consumirReserva(fonte,custo);
   S.investimentos=S.investimentos||[];
-  S.investimentos.push({id:uid(),attr,fonte,custo,deTemporarios:custo-falta,comprometido:falta,inicio:estacaoAbs(),dur});
-  feedPush("Investimento começou: "+rotuloAttr(attr)+" +1, custa "+custo+" de "+rotuloAttr(fonte)+(fonte==="riqueza"?" (gastos do tesouro)":
+  const passo=passoInvestir(attr);
+  S.investimentos.push({id:uid(),attr,fonte,custo,deTemporarios:custo-falta,comprometido:falta,inicio:estacaoAbs(),dur,passo});
+  feedPush("Investimento começou: "+rotuloAttr(attr)+" +"+passo+", custa "+custo+" de "+rotuloAttr(fonte)+(fonte==="riqueza"?" (gastos do tesouro)":
     (custo-falta?" ("+(custo-falta)+" gastos dos ganhos temporários"+(falta?", "+falta+" presos no disponível até a obra ficar pronta":"")+")":", presos no disponível até a obra ficar pronta"))+"; fica pronto em "+dur+" estações.");
   salvar();render();
 }
@@ -3088,10 +3094,11 @@ function concluirInvestimentos(){
   const prontos=(S.investimentos||[]).filter(i=>progressoInvestimento(i)>=i.dur);
   prontos.forEach(i=>{
     const n0=nivelAttr(i.attr);
-    S.base[i.attr]=(Number(S.base[i.attr])||0)+1;
-    S.investido=S.investido||{};S.investido[i.attr]=(S.investido[i.attr]||0)+1;
+    const ps=Number(i.passo)||1;
+    S.base[i.attr]=(Number(S.base[i.attr])||0)+ps;
+    S.investido=S.investido||{};S.investido[i.attr]=(S.investido[i.attr]||0)+ps;
     const n1=nivelAttr(i.attr);
-    feedPush("Investimento pronto: "+rotuloAttr(i.attr)+" +1 permanente."+(n1>n0?" "+rotuloAttr(i.attr)+" chegou ao Nível "+n1+".":""));
+    feedPush("Investimento pronto: "+rotuloAttr(i.attr)+" +"+ps+" permanente."+(n1>n0?" "+rotuloAttr(i.attr)+" chegou ao Nível "+n1+".":""));
   });
   if(prontos.length)S.investimentos=S.investimentos.filter(i=>!prontos.includes(i));
   return prontos;
@@ -4078,20 +4085,20 @@ function renderEstacoes(){
     "<div class=\"hint\" style=\"margin:6px 0 0\">A conta completa de cada disponível fica em Família → Identidade → Atributos: clique no atributo.</div>";
   /* investimentos */
   const and=(S.investimentos||[]).map(i=>{const pg=progressoInvestimento(i),pct=Math.round(pg/i.dur*100);
-    return "<div class=\"obra\"><div class=\"ol\"><b>"+rotuloAttr(i.attr)+" +1</b> <small>"+i.custo+" de "+rotuloAttr(i.fonte)+(i.comprometido?", "+i.comprometido+" presos até ficar pronto":"")+"</small></div>"+
+    return "<div class=\"obra\"><div class=\"ol\"><b>"+rotuloAttr(i.attr)+" +"+(Number(i.passo)||1)+"</b> <small>"+i.custo+" de "+rotuloAttr(i.fonte)+(i.comprometido?", "+i.comprometido+" presos até ficar pronto":"")+"</small></div>"+
       "<div class=\"medidor\" role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\""+i.dur+"\" aria-valuenow=\""+pg+"\"><i style=\"width:"+pct+"%\"></i></div>"+
       "<div class=\"op\">"+pg+" de "+i.dur+" estações · pronto em "+esc(nomeEstacaoAbs(i.inicio+i.dur))+"</div>"+
       "<button class=\"ghost del so-mestre\" title=\"cancelar (volta metade)\" onclick=\"cancelarInvestimento('"+i.id+"')\">✕</button></div>";}).join("");
   const inv=ATRIBUTOS.map(([k,l])=>{
-    const c=custoInvestir(k,false),cr=custoInvestir(k,true),tem=reservaPositiva(k),ocup=investimentoDe(k);
-    const prev=(fonte,custo)=>{if(fonte==="riqueza")return l+" +1: custa "+custo+" de Riqueza, gastos do tesouro (a renda das estações repõe). Pronto em "+nomeEstacaoAbs(estacaoAbs()+duracaoInvestir(k))+"."+(poolRestante("riqueza")<custo?" Falta Riqueza: "+poolRestante("riqueza").toFixed(0)+" de "+custo+".":"");
-      const t=Math.min(reservaPositiva(fonte),custo),pr=custo-t;return l+" +1: custa "+custo+" de "+rotuloAttr(fonte)+". "+(t?t+" saem dos ganhos temporários (gastos)"+(pr?" e ":""):"")+(pr?pr+" ficam presos no disponível por "+duracaoInvestir(k)+" estações e depois voltam":"")+". Pronto em "+nomeEstacaoAbs(estacaoAbs()+duracaoInvestir(k))+"."+(poolRestante(fonte)<custo?" Falta disponível: "+poolRestante(fonte).toFixed(0)+" de "+custo+".":"");};
-    const b1=ocup?"<span class=\"tag\">em andamento</span>":(k==="vazio"?"<span class=\"tag\">paga só via Riqueza</span>":"<button class=\"ghost\" "+(podeInvestir(k,false)?"":"disabled")+" data-dica=\""+esc(prev(k,c))+"\" onclick=\"investir('"+k+"',false)\">+1 por "+c+" de "+l+"</button>");
-    const b2=ocup||k==="riqueza"?"":"<button class=\"ghost\" "+(podeInvestir(k,true)?"":"disabled")+" data-dica=\""+esc(prev("riqueza",cr))+"\" onclick=\"investir('"+k+"',true)\">+1 por "+cr+" de Riqueza</button>";
+    const c=custoInvestir(k,false),cr=custoInvestir(k,true),tem=reservaPositiva(k),ocup=investimentoDe(k),ps=passoInvestir(k);
+    const prev=(fonte,custo)=>{if(fonte==="riqueza")return l+" +"+ps+": custa "+custo+" de Riqueza, gastos do tesouro (a renda das estações repõe). Pronto em "+nomeEstacaoAbs(estacaoAbs()+duracaoInvestir(k))+"."+(poolRestante("riqueza")<custo?" Falta Riqueza: "+poolRestante("riqueza").toFixed(0)+" de "+custo+".":"");
+      const t=Math.min(reservaPositiva(fonte),custo),pr=custo-t;return l+" +"+ps+": custa "+custo+" de "+rotuloAttr(fonte)+". "+(t?t+" saem dos ganhos temporários (gastos)"+(pr?" e ":""):"")+(pr?pr+" ficam presos no disponível por "+duracaoInvestir(k)+" estações e depois voltam":"")+". Pronto em "+nomeEstacaoAbs(estacaoAbs()+duracaoInvestir(k))+"."+(poolRestante(fonte)<custo?" Falta disponível: "+poolRestante(fonte).toFixed(0)+" de "+custo+".":"");};
+    const b1=ocup?"<span class=\"tag\">em andamento</span>":(k==="vazio"?"<span class=\"tag\">paga só via Riqueza</span>":"<button class=\"ghost\" "+(podeInvestir(k,false)?"":"disabled")+" data-dica=\""+esc(prev(k,c))+"\" onclick=\"investir('"+k+"',false)\">+"+ps+" por "+c+" de "+l+"</button>");
+    const b2=ocup||k==="riqueza"?"":"<button class=\"ghost\" "+(podeInvestir(k,true)?"":"disabled")+" data-dica=\""+esc(prev("riqueza",cr))+"\" onclick=\"investir('"+k+"',true)\">+"+ps+" por "+cr+" de Riqueza</button>";
     return "<div class=\"invrow\"><span class=\"il\">"+l+" <small>Nível "+nivelAttr(k)+" · "+duracaoInvestir(k)+" estações"+(k!=="vazio"?" · disponível "+poolRestante(k).toFixed(0):"")+(S.investido&&S.investido[k]?" · já investido +"+S.investido[k]:"")+"</small></span>"+b1+b2+"</div>";
   }).join("");
   document.getElementById("estInvest").innerHTML=(and?"<div class=\"obras\">"+and+"</div>":"<div class=\"linha-vazia\">Nenhum investimento em andamento.</div>")+
-    "<div class=\"secao\">Começar</div><div class=\"hint\" style=\"margin:0 0 6px\">+1 permanente custa o Nível × 3 do disponível do próprio Anel e fica pronto depois de Nível estações (mínimo 2). Os ganhos temporários pagam primeiro e se gastam; o resto fica preso no disponível até a obra ficar pronta. Um por Anel de cada vez. A Riqueza paga qualquer Anel pelo dobro; o Vazio só cresce por ela.</div>"+
+    "<div class=\"secao\">Começar</div><div class=\"hint\" style=\"margin:0 0 6px\">+5 permanente custa o Nível × 8 do disponível do próprio Anel e fica pronto depois de metade do Nível + 1 estações (mínimo 2). Os ganhos temporários pagam primeiro e se gastam; o resto fica preso no disponível até a obra ficar pronta. Um por Anel de cada vez. A Riqueza paga qualquer Anel pelo dobro; o Vazio só cresce por ela.</div>"+
     "<div class=\"invlist\">"+inv+"</div>";
   /* ferramentas do Mestre */
   const est=S.estacaoIdx||0;
