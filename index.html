@@ -1078,6 +1078,36 @@
   #pergaminho.fechado .pgrolo{animation:pgChega .7s cubic-bezier(.2,.8,.3,1.2) both}
   @keyframes pgChega{from{transform:translateY(-40px) scale(.9);opacity:0}}
   @media (prefers-reduced-motion:reduce){#pergaminho *{animation-duration:.01s!important;animation-delay:0s!important;transition:none!important}}
+
+  /* 2026-11-05: fundação da família em etapas (Thiago: tudo de uma vez assusta) */
+  .assist{display:none}
+  body.criando .assist{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:4px 0 14px;box-shadow:0 2px 10px rgba(40,25,10,.08)}
+  .assist .apassos{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;margin:0 0 12px;scrollbar-width:thin}
+  .assist .ap{flex:1;min-width:74px;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:4px 2px;cursor:pointer;color:var(--muted-tx,#8a7d68);font-family:var(--font-body);font-size:11.5px}
+  .assist .ap:disabled{cursor:default;opacity:.55}
+  .assist .ap .apk{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:17px;border:1.5px solid var(--line);background:var(--panel2);color:var(--ink2)}
+  .assist .ap.feito .apk{background:var(--good);border-color:var(--good);color:#faf3e6}
+  .assist .ap.agora{color:var(--ink);font-weight:600}
+  .assist .ap.agora .apk{background:var(--seal);border-color:var(--seal);color:#faf3e6;box-shadow:0 0 0 4px rgba(181,53,43,.15)}
+  .assist .atit{font-family:var(--font-display);font-size:22px;margin:0 0 4px;display:flex;align-items:baseline;gap:10px}
+  .assist .atit small{font-family:var(--font-body);font-size:12px;color:var(--muted-tx,#8a7d68);font-weight:400}
+  .assist .atxt{color:var(--ink2);margin:0 0 10px;max-width:760px}
+  .assist .anav{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .assist .anav .falta{font-size:12.5px;color:var(--bad)}
+  .assist .anav .tudo{margin-left:auto;font-size:12px}
+  .assist .aresumo{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin:8px 0 12px}
+  .assist .aresumo div{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px}
+  .assist .aresumo b{display:block;font-family:var(--font-display);font-size:15px}
+  body.criando #viewFamilia .panel[data-p],body.criando #viewFamilia .panel:not([data-p]){display:none}
+  body.criando #viewFamilia details.grupo>summary,body.criando #viewFamilia .atalhos,body.criando #viewFamilia .aneisfaixa{display:none}
+  body.criando[data-passo="1"] #viewFamilia .panel[data-p~="1"],body.criando[data-passo="2"] #viewFamilia .panel[data-p~="2"],body.criando[data-passo="3"] #viewFamilia .panel[data-p~="3"],
+  body.criando[data-passo="4"] #viewFamilia .panel[data-p~="4"],body.criando[data-passo="5"] #viewFamilia .panel[data-p~="5"],body.criando[data-passo="6"] #viewFamilia .panel[data-p~="6"],
+  body.criando[data-passo="7"] #viewFamilia .panel[data-p~="7"]{display:block}
+  body.criando[data-passo="4"] #viewFamilia .aneisfaixa,body.criando[data-passo="8"] #viewFamilia .aneisfaixa{display:block}
+  body.criando[data-passo="4"] #viewFamilia .resumoestacao{display:none}
+  body.criando #viewFamilia details.grupo{border:0;background:none;padding:0;margin:0;box-shadow:none}
+  body.criando #tabBtnEstacoes,body.criando #tabBtnBatalha,body.criando #tabBtnCombate{display:none}
+  @media (max-width:640px){.assist .ap{min-width:56px;font-size:10.5px}.assist .ap .apk{width:30px;height:30px;font-size:15px}.assist .atit{font-size:19px}}
 </style>
 </head>
 <body>
@@ -1154,6 +1184,7 @@
   </div>
 
   <div id="viewFamilia">
+  <section id="assistente" class="assist" aria-label="Fundação da família, passo a passo"></section>
   <section class="aneisfaixa" aria-label="Os Cinco Anéis da família">
     <div class="aneisgrid" id="resumoAneis"></div>
     <div class="resumolinha" id="resumoLinha">
@@ -1164,12 +1195,12 @@
     <div class="resumoalertas" id="resumoAlertas"></div>
   </section>
   <nav class="atalhos" aria-label="Ir para">
-    <button type="button" onclick="irGrupo('identidade')">家 Identidade</button><button type="button" onclick="irGrupo('cronica')">史 Crônica</button><button type="button" onclick="irGrupo('dominio')">地 Domínio</button><button type="button" onclick="irGrupo('pessoas')">人 Pessoas</button>
+    <button type="button" class="so-mestre" onclick="refazerPassoAPasso()" title="volta a mostrar a fundação da família em etapas">⛩ passo a passo</button>    <button type="button" onclick="irGrupo('identidade')">家 Identidade</button><button type="button" onclick="irGrupo('cronica')">史 Crônica</button><button type="button" onclick="irGrupo('dominio')">地 Domínio</button><button type="button" onclick="irGrupo('pessoas')">人 Pessoas</button>
   </nav>
   <details class="grupo" data-g="identidade" open>
     <summary><span class="gk" aria-hidden="true">家</span><span class="gt">Identidade</span><span class="gd">nome, clã, idade e os Anéis em detalhe</span></summary>
     <div class="gcorpo">
-<div class="panel">
+<div class="panel" data-p="1">
     <h2><span class="kan">家</span>Informações da Família</h2>
     <div style="margin-bottom:10px">
       <button class="ghost" onclick="randomizarFamilia()" title="Sorteia clã, ramo familiar, atributos base e eventos históricos — tudo de uma vez, do zero">🎲 Sortear família inteira</button>
@@ -1193,10 +1224,10 @@
     <div class="hint" style="margin-bottom:6px">Clã — define os modificadores de base da família.</div>
     <div class="origens" id="clasList"></div>
   </div>
-<div class="panel"><h2><span class="kan">譜</span>A Casa<span class="sub">ramo, senhor, história e famílias vassalas</span></h2>
+<div class="panel" data-p="5"><h2><span class="kan">譜</span>A Casa<span class="sub">ramo, senhor, história e famílias vassalas</span></h2>
     <div id="casaBox"></div>
   </div>
-<div class="panel"><h2><span class="kan">性</span>Atributos<span class="sub">o que a família é, e o que ela faz</span></h2>
+<div class="panel" data-p="4"><h2><span class="kan">性</span>Atributos<span class="sub">o que a família é, e o que ela faz</span></h2>
         <div class="hint" style="margin:0 0 10px">Idade, clã, origem e eventos fazem o atributo. Clique num atributo para ver a conta dele e a do disponível.</div>
         <div class="attrlist" id="attrs"></div>
         <div class="testefam" id="testeFamilia"></div>
@@ -1206,7 +1237,7 @@
   <details class="grupo" data-g="cronica" open>
     <summary><span class="gk" aria-hidden="true">史</span><span class="gt">Crônica</span><span class="gd">eventos, conquistas, sacrifícios e registro</span></summary>
     <div class="gcorpo">
-<div class="panel cronpanel"><h2><span class="kan">史</span>Eventos Históricos<span class="sub" id="eventosSub">0/0 escolhidos</span></h2>
+<div class="panel cronpanel" data-p="2 3"><h2><span class="kan">史</span>Eventos Históricos<span class="sub" id="eventosSub">0/0 escolhidos</span></h2>
         <div class="cronbarra"><div id="cronProgresso" class="cronprog"></div>
           <button class="ghost" id="btnSortearEventos">🎲 sortear o que falta</button>
           <button class="ghost" id="btnLimparEventos">limpar os eventos</button></div>
@@ -1238,7 +1269,7 @@
 <div class="panel"><h2><span class="kan">運</span>Status e Fortuna<span class="sub">resultado do que a família é</span></h2>
         <div class="ledger" id="meters"></div>
       </div>
-<div class="panel"><h2><span class="kan">地</span>Terras e Defesa<span class="sub">gasta Domínio; gera Fortuna de manutenção</span></h2>
+<div class="panel" data-p="6"><h2><span class="kan">地</span>Terras e Defesa<span class="sub">gasta Domínio; gera Fortuna de manutenção</span></h2>
     <div class="saldos" id="terrenosSaldo"></div>
     <div class="terrainlist" id="terrenosTab"></div>
     <button class="ghost" id="btnAddTerreno" style="margin-top:8px">+ terreno</button>
@@ -1252,7 +1283,7 @@
   <details class="grupo" data-g="pessoas" open>
     <summary><span class="gk" aria-hidden="true">人</span><span class="gt">Pessoas</span><span class="gd">personagens, tropas e escolas</span></summary>
     <div class="gcorpo">
-<div class="panel"><h2><span class="kan">人</span>Personagens<span class="sub">gasta Influência</span></h2>
+<div class="panel" data-p="7"><h2><span class="kan">人</span>Personagens<span class="sub">gasta Influência</span></h2>
     <div class="saldos" id="personagensSaldo"></div>
     <div class="pgrid" id="personagensTab"></div>
     <button class="ghost" id="btnAddPersonagem" style="margin-top:8px">+ personagem</button>
@@ -2340,7 +2371,7 @@ const CONVERSAO_REGRAS={
 function uid(){return Math.random().toString(36).slice(2,8);}
 function esc(s){return(s||"").toString().replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
 function estadoInicial(){return{
-  nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",familiaPrincipal:"",vassalaLore:"",versaoRaridade:1,senhor:"",sede:"",lema:"",historia:"",vassalas:[],idade:null,versaoAtrib:2,
+  criacao:1,nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",familiaPrincipal:"",vassalaLore:"",versaoRaridade:1,senhor:"",sede:"",lema:"",historia:"",vassalas:[],idade:null,versaoAtrib:2,
   base:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},
   pontos:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},origem:null,versaoEventos:3,reservas:[],versaoReservas:2,investimentos:[],historicoAcontecimentos:[],acontAbertos:[],versaoPontos:1,versaoCasa:1,versaoTerra:1,versaoConv:1,pvFamiliaUsados:0,versaoTesouro:1,riquezaGasta:0,honraAjuste:0,gloriaRegistro:[],infame:false,
   eventos:[],terrenos:[],personagens:[],tropas:[],conversoes:[],feed:[],
@@ -3409,6 +3440,54 @@ function concluirInvestimentos(){
   return prontos;
 }
 
+/* ============ FUNDAÇÃO DA FAMÍLIA, PASSO A PASSO ============
+   2026-11-05 (Thiago: ver tudo de uma vez assusta). S.criacao = número do passo (1 a 8) enquanto
+   a família está sendo fundada; "concluida" (ou ausente, nas famílias antigas) mostra tudo. */
+const PASSOS_CRIACAO=[
+ {k:"家",nome:"Clã e idade",tit:"Nome, clã e idade",txt:"Comece pelo nome da casa e pelo clã a que ela serve; o clã dá os primeiros modificadores. A idade diz quantas gerações de história a família tem: quanto mais velha, mais eventos históricos ela acumula. Se preferir, o botão de sortear monta uma família inteira.",
+  falta:()=>[!S.cla&&"escolher o clã",!S.idade&&"escolher a idade"].filter(Boolean)},
+ {k:"源",nome:"Origem",tit:"Origem",txt:"Como a família surgiu. A origem dá os primeiros personagens da casa, sem custo, e às vezes uma terra. Escolha uma carta, ou sorteie.",
+  falta:()=>S.origem?[]:["escolher a origem"]},
+ {k:"史",nome:"Eventos",tit:"Eventos históricos",txt:"O que aconteceu com a casa ao longo das gerações. A cada três eventos, um precisa ser adverso ou ambíguo. Os eventos raros e lendários pesam mais. Use os filtros, ou sorteie o que falta.",
+  falta:()=>{const f=[],v=vagasEventos();if(S.eventos.length<v)f.push("escolher mais "+(v-S.eventos.length)+" evento"+(v-S.eventos.length===1?"":"s"));if(adversosEscolhidos()<minAdversos())f.push("pelo menos "+minAdversos()+" adverso"+(minAdversos()===1?"":"s")+" ou ambíguo"+(minAdversos()===1?"":"s"));return f;}},
+ {k:"性",nome:"Atributos",tit:"Os cinco Anéis da casa",txt:"Domínio, Riqueza, Influência, Autoridade e Vazio saem do clã, da idade, da origem e dos eventos. Aqui é só conferir. Clique num atributo para ver de onde veio cada ponto e quanto está disponível para gastar.",falta:()=>[]},
+ {k:"譜",nome:"A Casa",tit:"A Casa",txt:"O ramo da família, o senhor a quem ela serve, a sede, o lema e as famílias vassalas. Nada aqui é obrigatório: pode preencher agora ou deixar para depois.",falta:()=>[]},
+ {k:"地",nome:"Terras",tit:"Terras e defesa",txt:"As terras da família gastam Domínio, e as fortificações protegem o que a casa tem. As terras doadas pela origem e pelos eventos já aparecem aqui, sem custo. Dê nome aos rios, vilas e castelos.",falta:()=>[]},
+ {k:"人",nome:"Personagens",tit:"Os samurai da casa",txt:"Os personagens gastam Influência. Os que a origem doou não custam nada: falta só dar nome e fazer a ficha na aba Personagens. Tropas e escolas podem esperar a campanha começar.",falta:()=>[]},
+ {k:"成",nome:"Pronto",tit:"A casa está fundada",txt:"Confira o resumo. Ao concluir, o resto do app aparece: estações, batalhas, combate, conquistas e o registro da casa. Dá para voltar ao passo a passo pelo botão ⛩ no topo da aba.",falta:()=>[]}
+];
+function emCriacao(){return typeof S.criacao==="number"&&S.criacao>=1&&S.criacao<=PASSOS_CRIACAO.length;}
+function passoLiberado(n){for(let i=1;i<n;i++){if(PASSOS_CRIACAO[i-1].falta().length)return false;}return true;}
+function irPasso(n){if(bloqueadoLeitura())return;n=Math.max(1,Math.min(PASSOS_CRIACAO.length,n));if(!passoLiberado(n))return;
+  S.criacao=n;if(n===2&&!S.origem)verTodasOrigens=true;salvar();render();window.scrollTo&&window.scrollTo({top:0,behavior:"smooth"});}
+function concluirFundacao(){if(bloqueadoLeitura())return;S.criacao="concluida";feedPush("A casa "+(S.nome||"")+" está fundada.");salvar();render();}
+function refazerPassoAPasso(){if(bloqueadoLeitura())return;S.criacao=1;setAbaPrincipal("familia");salvar();render();}
+function renderAssistente(){
+  const box=document.getElementById("assistente"),b=document.body,on=emCriacao();
+  b.classList.toggle("criando",on);if(!box)return;
+  if(!on){delete b.dataset.passo;box.innerHTML="";return;}
+  const n=S.criacao;b.dataset.passo=String(n);
+  if(["estacoes","batalha","combate"].includes(typeof abaPrincipal!=="undefined"?abaPrincipal:""))setTimeout(()=>setAbaPrincipal("familia"),0);
+  document.querySelectorAll("#viewFamilia details.grupo").forEach(d=>d.open=true);
+  const P=PASSOS_CRIACAO[n-1],falta=P.falta();
+  const passos=PASSOS_CRIACAO.map((x,i)=>{const k=i+1,feito=k<n&&!x.falta().length,lib=passoLiberado(k);
+    return "<button type=\"button\" class=\"ap"+(feito?" feito":"")+(k===n?" agora":"")+"\" "+(lib?"":"disabled")+" onclick=\"irPasso("+k+")\"><span class=\"apk\">"+(feito?"✓":x.k)+"</span>"+esc(x.nome)+"</button>";}).join("");
+  let corpo="";
+  if(n===PASSOS_CRIACAO.length){
+    const cla=claAtual(),o=S.origem&&eventoInfo(S.origem);
+    corpo="<div class=\"aresumo\"><div>Família<b>"+esc(S.nome||"Família")+"</b>"+(S.daimyo?"daimyō "+esc(S.daimyo):"")+"</div>"+
+      "<div>Clã<b>"+esc(cla?cla.nome:"—")+"</b>"+esc(IDADE_LABEL[S.idade]||"")+"</div>"+
+      "<div>Origem<b>"+esc(o?o.nome:"—")+"</b>"+S.eventos.length+" eventos históricos</div>"+
+      ATRIBUTOS.map(([k,l])=>"<div>"+l+"<b>Nível "+nivelAttr(k)+"</b>"+totalAttr(k).toFixed(0)+" pontos</div>").join("")+
+      "<div>Glória da casa<b>"+gloriaCasa().toFixed(1)+"</b>"+(S.terrenos||[]).length+" terras · "+(S.personagens||[]).length+" personagens</div></div>";
+  }
+  box.innerHTML="<div class=\"apassos\">"+passos+"</div>"+
+    "<div class=\"atit\">"+esc(P.tit)+"<small>passo "+n+" de "+PASSOS_CRIACAO.length+"</small></div><p class=\"atxt\">"+esc(P.txt)+"</p>"+corpo+
+    "<div class=\"anav so-mestre\">"+(n>1?"<button class=\"ghost\" onclick=\"irPasso("+(n-1)+")\">← voltar</button>":"")+
+    (n<PASSOS_CRIACAO.length?"<button class=\"primary\" "+(falta.length?"disabled":"")+" onclick=\"irPasso("+(n+1)+")\">próximo: "+esc(PASSOS_CRIACAO[n].nome)+" →</button>":"<button class=\"primary\" onclick=\"concluirFundacao()\">concluir a fundação</button>")+
+    (falta.length?"<span class=\"falta\">falta "+esc(falta.join(" e "))+"</span>":"")+
+    "<button class=\"ghost tudo\" onclick=\"concluirFundacao()\" title=\"sai do passo a passo e mostra o app inteiro\">mostrar tudo de uma vez</button></div>";
+}
 /* ============ ESTAÇÕES: ACONTECIMENTOS ============
    (Versão de antes da mudança "o jogo não é automático"; a regra atual está logo abaixo do
    catálogo.) A cada estação sai um acontecimento da estação, bom ou ruim. A família rola o Anel ligado a ele
@@ -4261,6 +4340,7 @@ function hardReset(){const n=prompt("Isto apaga a família inteira. Para confirm
 
 /* ============ RENDER ============ */
 function render(){
+  try{renderAssistente();}catch(e){}
   try{setTimeout(verificarRevelacoes,0);}catch(e){}
   document.getElementById("familiaNome").textContent=S.nome||"Família";
   document.getElementById("nomeInput").value=S.nome||"";
