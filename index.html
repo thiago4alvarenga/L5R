@@ -1161,6 +1161,7 @@
   @media (max-width:640px){#cena .cdoc{min-width:0;margin:0 14px;padding:30px 22px}#cena .chanko{right:-6px;top:-48px;width:76px;height:76px;font-size:46px}#cena .cquadro{width:170px}}
   @media (prefers-reduced-motion:reduce){#cena *{animation-duration:.01s!important;animation-delay:0s!important}}
   .assist .acenas{font-size:11.5px;color:var(--muted-tx,#8a7d68);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
+  .clabarra{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:2px}
 </style>
 </head>
 <body>
@@ -3216,8 +3217,14 @@ function renderSync(){
 }
 
 /* ============ AÇÕES ============ */
-function selecionarCla(id){if(bloqueadoLeitura())return;const cenaC=emCriacao()&&S.cla!==id;if(S.cla!==id&&S.vassalaLore){S.vassalaLore="";S.familiaPrincipal="";}S.cla=id;verTodosClas=false;feedPush("Clã definido: "+(claAtual()?claAtual().nome:id)+".");salvar();render();if(cenaC)cenaCla();}
+function selecionarCla(id){if(bloqueadoLeitura())return;const cenaC=emCriacao()&&S.cla!==id;if(S.cla!==id&&S.vassalaLore){S.vassalaLore="";S.familiaPrincipal="";}{const nc=CLAS.find(x=>x.id===id);if(S.cla!==id&&S.familiaPrincipal&&nc&&!(nc.familias||[]).includes(S.familiaPrincipal))S.familiaPrincipal="";}S.cla=id;verTodosClas=false;feedPush("Clã definido: "+(claAtual()?claAtual().nome:id)+".");salvar();render();if(cenaC)cenaCla();}
 function trocarCla(){if(bloqueadoLeitura())return;verTodosClas=true;render();}
+/* 2026-11-05 (Thiago): sortear de novo só o clã, sem mexer em origem, eventos, terras e personagens. */
+function sortearCla(){if(bloqueadoLeitura())return;const op=CLAS.filter(c=>c.id!==S.cla);if(!op.length)return;const c=pickRandom(op);
+  const ant=claAtual();
+  if(S.familiaPrincipal&&!(c.familias||[]).includes(S.familiaPrincipal))S.familiaPrincipal="";
+  selecionarCla(c.id);if(ant){feedPush("Clã sorteado de novo: saiu "+ant.nome+", entrou "+c.nome+". Origem, eventos, terras e personagens continuam.");salvar();render();}}
+function manterCla(){verTodosClas=false;render();}
 function setBase(attr,val){if(bloqueadoLeitura())return;S.base[attr]=parseFloat(val)||0;salvar();render();} /* o "ajuste" do atributo */
 function setIdade(v){if(bloqueadoLeitura())return;S.idade=v||null;
   if(S.eventos.length>vagasEventos()){
@@ -4470,10 +4477,10 @@ function renderClas(){
     const tier=c.tier?"<div class=\"tag\" style=\"margin-top:4px\">"+TIER_LABEL[c.tier]+"</div>":"";
     const img="<img class=\"monimg\" src=\""+monSrc(c.id)+"\" alt=\"\" onerror=\"this.style.display='none'\">";
     box.innerHTML="<div class=\"origem sel escolhido\" title=\"passe o mouse para ver os modificadores\">"+img+"<div class=\"on\">"+esc(c.nome)+"</div>"+mote+tier+"<div class=\"om reveal\">"+chips+"</div></div>"+
-      "<button class=\"ghost\" onclick=\"trocarCla()\">trocar clã</button>";
+      "<div style=\"display:flex;flex-direction:column;gap:8px;align-self:start;align-items:flex-start\"><button class=\"ghost\" onclick=\"trocarCla()\">escolher outro clã</button><button class=\"ghost\" onclick=\"sortearCla()\" title=\"troca só o clã; origem, eventos, terras e personagens continuam\">🎲 sortear o clã de novo</button></div>";
     return;
   }
-  box.innerHTML=CLAS.map(c=>{
+  box.innerHTML="<div class=\"clabarra\"><button class=\"ghost\" onclick=\"sortearCla()\">🎲 sortear um clã</button>"+(S.cla&&claAtual()?"<button class=\"ghost\" onclick=\"manterCla()\">manter "+esc(claAtual().nome)+"</button>":"")+"</div>"+CLAS.map(c=>{
     const chips=ATRIBUTOS.filter(([k])=>c.mods[k]).map(([k,l])=>"<span>"+l.slice(0,3)+" "+(c.mods[k]>0?"+":"")+c.mods[k]+"</span>").join("");
     const mote=c.mote?"<div class=\"mote\">"+esc(c.mote)+"</div>":"";
     const tier=c.tier?"<div class=\"tag\" style=\"margin-top:4px\">"+TIER_LABEL[c.tier]+"</div>":"";
