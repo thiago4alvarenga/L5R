@@ -223,6 +223,8 @@
   .ledgerline .lbl{font-size:13.5px;color:var(--ink2);white-space:nowrap}
   .ledgerline .fill{flex:1;border-bottom:1px dotted var(--line);margin-bottom:4px;min-width:16px}
   .ledgerline .val{font-family:var(--font-display);font-size:19px;color:var(--seal);white-space:nowrap}
+  .ledgerline .val.small{white-space:normal;text-align:right;min-width:0} .ledgerline{flex-wrap:wrap}
+  #compraBox select{max-width:100%}
   .ledgerline .val.small{font-size:14px;color:var(--ink)}
   .ledgerline .val.good{color:var(--good)} .ledgerline .val.bad{color:var(--bad)}
 
@@ -329,6 +331,8 @@
   .saldo b{font-variant-numeric:tabular-nums;font-family:var(--font-display)}
   .saldo b.good{color:var(--good)} .saldo b.bad{color:var(--bad)}
   .casaresumo{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--cla,var(--accent));border-radius:8px;padding:10px 12px;font-size:13.5px;line-height:1.55;margin-bottom:10px}
+  .glorialista{display:flex;flex-direction:column;gap:2px;font-size:12.5px}
+  .glorialista .gl{display:flex;gap:6px;align-items:center} .glorialista .gl small{color:var(--muted-tx)} .glorialista b.good{color:var(--good)} .glorialista b.bad{color:var(--bad)}
   .casaresumo .formal{font-size:12px;color:var(--muted-tx);margin-top:6px;font-style:italic}
   textarea.historia{width:100%;min-height:110px;padding:8px 10px;font:inherit;font-size:13px;line-height:1.5;background:var(--panel2);border:1px solid var(--line);border-radius:6px;color:var(--ink)}
   .vassala{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:6px}
@@ -359,6 +363,7 @@
   .terrainrow .costs{margin-left:auto;display:flex;gap:14px;font-size:11.5px;color:var(--ink2);white-space:nowrap;align-self:center}
   .terrainrow .costs b{font-family:var(--font-display);color:var(--seal);font-size:16px}
   .terrainrow .fromevent{font-size:11px;color:var(--muted-tx);margin-top:2px;flex-basis:100%}
+  @media(max-width:560px){.terrainrow .costs{white-space:normal;flex-wrap:wrap;margin-left:0}}
 
   /* Ficha do personagem: cartões em vez de tabelas apertadas — menos "planilha", mais ficha de mesa */
   .fichapanel{background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-top:12px}
@@ -748,6 +753,7 @@
   .thead{display:flex;gap:6px;align-items:center}
   .thead select{font-size:13px;padding:4px 6px}
   .tficha{font-size:12px;color:var(--ink2)}
+  .tmelhora{display:flex;gap:6px;flex-wrap:wrap;align-items:center} .tmelhora button{font-size:12px;padding:4px 9px}
   .tcusto{font-size:12.5px;color:var(--ink2)} .tcusto b{font-family:var(--font-display);color:var(--seal);font-size:16px}
   .uestand{width:30px;height:auto;flex-shrink:0;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
   .carimbo{width:30px;height:30px;object-fit:contain;transform:rotate(-6deg);opacity:.9}
@@ -910,7 +916,7 @@
         <div class="log" id="log"></div>
       </div>
 <div class="panel"><h2><span class="kan">犠</span>Sacrifícios de Honra<span class="sub" id="sacrificiosTotal">nada sacrificado ainda</span></h2>
-        <div class="hint" style="margin-bottom:8px">Dois jeitos de gastar a Honra da família: um jogador queima Honra por um bônus durante a aventura (fica registrado quem e quando), ou a família faz algo desonroso pra progredir mais rápido, trocando Honra por disponível num pool (Domínio, Riqueza, Influência ou Autoridade), sem mexer no atributo.</div>
+        <div class="hint" style="margin-bottom:8px">Dois jeitos de gastar a Honra da família: um jogador queima Honra por um bônus durante a aventura (fica registrado quem e quando), ou a família faz algo desonroso pra progredir mais rápido, trocando Honra da casa (cada ponto sacrificado tira 1 da Honra da casa) por disponível num pool (Domínio, Riqueza, Influência ou Autoridade), sem mexer no atributo.</div>
         <div class="linhas" id="sacrificios"></div>
         <div style="display:flex;gap:8px;margin-top:8px">
           <button class="ghost" id="btnAddSacrificioRolamento">+ rolamento em jogo</button>
@@ -921,7 +927,7 @@
     </div>
   </details>
   <details class="grupo" data-g="dominio" open>
-    <summary><span class="gk" aria-hidden="true">地</span><span class="gt">Domínio</span><span class="gd">fortuna, terras e conversões</span></summary>
+    <summary><span class="gk" aria-hidden="true">地</span><span class="gt">Domínio</span><span class="gd">fortuna, terras e compras com Riqueza</span></summary>
     <div class="gcorpo">
 <div class="panel"><h2><span class="kan">運</span>Status e Fortuna<span class="sub">resultado do que a família é</span></h2>
         <div class="ledger" id="meters"></div>
@@ -931,10 +937,9 @@
     <div class="terrainlist" id="terrenosTab"></div>
     <button class="ghost" id="btnAddTerreno" style="margin-top:8px">+ terreno</button>
   </div>
-<div class="panel"><h2><span class="kan">換</span>Conversão de Recursos<span class="sub">trocar um atributo por outro, a uma taxa</span></h2>
-    <div class="tabwrap"><table class="ctab" id="conversoesTab"></table></div>
-    <button class="ghost" id="btnAddConversao" style="margin-top:8px">+ conversão</button>
-    <div class="hint">Taxa = quanto do atributo de origem custa para ganhar 1 do atributo de destino.</div>
+<div class="panel"><h2><span class="kan">換</span>Comprar com Riqueza<span class="sub">2 de Riqueza por 1 temporário em outro pool, por um ano; a renda repõe</span></h2>
+    <div id="compraBox"></div>
+    <div style="display:none"><table id="conversoesTab"></table><button id="btnAddConversao"></button></div>
   </div>
     </div>
   </details>
@@ -1071,14 +1076,29 @@ const IDADE_LABEL={nascente:"Nascente",recente:"Recente",jovem:"Jovem",estabelec
    eventos, com o custo cheio. Calibrado em sim/cria_v2.js: a Estabelecida mantém a soma
    mediana de antes (~250) e a Autoridade mediana ~49, então custo de tropa, Dojo e Equilíbrio
    continuam valendo. */
-const BASE_IDADE={ /* recalibrada em 2026-11-04 com a origem e os eventos novos (sim/cria_v3.js) */
+/* 2026-11: Pontos de Vazio da família. A cada estação, tantos quanto o Nível do Vazio; cada
+   um vale +1k1 num Teste da Família ou na tendência de um acontecimento. */
+function pvBonusPartes(){
+  const L=[];let sh=0;S.personagens.forEach(p=>{if(!personagemPresente(p))return;const pp=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(pp&&pp.efeito==="vazio")sh+=Math.ceil(pp.valor/2);});
+  if(sh)L.push(["shugenja e monges",sh]);
+  const ve=(S.vassalas||[]).filter(v=>v.funcao==="espiritual").length;if(ve)L.push(["vassala espiritual",ve]);
+  const tv=S.tropas.filter(t=>t.estado==="refem"||t.estado==="derrotado").length;if(tv)L.push(["tropas em vergonha (refém ou derrotada)",-tv]);
+  return L;
+}
+function pvFamiliaMax(){return Math.max(0,nivelAttr("vazio")+pvBonusPartes().reduce((s,[,v])=>s+v,0));}
+function pvFamiliaRestantes(){return Math.max(0,pvFamiliaMax()-(Number(S.pvFamiliaUsados)||0));}
+function gastarPVFamilia(){if(!pvFamiliaRestantes())return false;S.pvFamiliaUsados=(Number(S.pvFamiliaUsados)||0)+1;return true;}
+/* A origem pesa mais quanto mais nova a casa: ela ainda é quase só a história da fundação. */
+const PESO_ORIGEM={nascente:2,recente:1.5,jovem:1.25};
+const BASE_IDADE={ /* recalibrada em 2026-11-04 com a origem e os eventos novos (sim/cria_v3.js); Domínio
+   quase plano desde que a terra dada pela história passou a ser doada */
  nascente:    {dominio:33,riqueza:36,influencia:32,autoridade:38,vazio:33},
- recente:     {dominio:32,riqueza:36,influencia:32,autoridade:38,vazio:32},
- jovem:       {dominio:31,riqueza:36,influencia:34,autoridade:37,vazio:34},
- estabelecida:{dominio:28,riqueza:36,influencia:37,autoridade:36,vazio:37},
- antiga:      {dominio:25,riqueza:35,influencia:39,autoridade:36,vazio:39},
- "anciã":     {dominio:22,riqueza:35,influencia:40,autoridade:35,vazio:40},
- milenar:     {dominio:18,riqueza:34,influencia:41,autoridade:35,vazio:41}
+ recente:     {dominio:33,riqueza:36,influencia:32,autoridade:38,vazio:32},
+ jovem:       {dominio:33,riqueza:36,influencia:34,autoridade:37,vazio:34},
+ estabelecida:{dominio:32,riqueza:36,influencia:37,autoridade:36,vazio:37},
+ antiga:      {dominio:32,riqueza:35,influencia:39,autoridade:36,vazio:39},
+ "anciã":     {dominio:31,riqueza:35,influencia:40,autoridade:35,vazio:40},
+ milenar:     {dominio:31,riqueza:34,influencia:41,autoridade:35,vazio:41}
 };
 /* 2026-11 (Thiago): sem pontos livres na criação; a Riqueza e os investimentos fazem esse papel.
    As fichas antigas guardam o que tinham distribuído no ajuste (migrarPontosV6). */
@@ -1279,26 +1299,26 @@ const EVENTOS_MODS_V1={fundacao_decreto:{influencia:4,vazio:4},recompensa_milita
 const EVENTOS=[
  {id:"fundacao_decreto",nome:"Fundação por Decreto Imperial",tipo:"origem",tema:"corte",mods:{influencia:5,autoridade:-6,vazio:2}},
  {id:"recompensa_militar",nome:"Recompensa por Serviço Militar",tipo:"origem",tema:"guerra",mods:{dominio:-6,autoridade:5,vazio:2}},
- {id:"terras_conflito",nome:"Terras Concedidas após Conflito",tipo:"favoravel",tema:"guerra",mods:{dominio:7,riqueza:3,influencia:-6,autoridade:8},
+ {id:"terras_conflito",nome:"Terras Concedidas após Conflito",tipo:"favoravel",tema:"guerra",mods:{riqueza:3,influencia:-6,autoridade:8},
   concede:{tipo:"terreno",terreno:"planicies",c1:"campo_batalha",nomeSugerido:"Campos de Kessen-no-Hara"}},
  {id:"alianca_casamento",nome:"Aliança de Casamento Estratégico",tipo:"favoravel",tema:"corte",mods:{riqueza:2,influencia:9,vazio:-5}},
- {id:"ramo_elevado",nome:"Ramo Elevado de Grande Família",tipo:"origem",tema:"corte",mods:{dominio:13,influencia:8,autoridade:-6,vazio:3},
+ {id:"ramo_elevado",nome:"Ramo Elevado de Grande Família",tipo:"origem",tema:"corte",mods:{influencia:8,autoridade:-6,vazio:3},
   concede:{tipo:"terreno",terreno:"planicies",c1:"vila",nomeSugerido:"Vila-Dote da Grande Casa"}},
  {id:"ascensao_heroi",nome:"Ascensão de Herói Local",tipo:"origem",tema:"guerra",mods:{influencia:-6,autoridade:4,vazio:3}},
  {id:"fundacao_religiosa",nome:"Fundação Religiosa ou Profética",tipo:"origem",tema:"espirito",mods:{autoridade:-5,vazio:10}},
- {id:"funcao_administrativa",nome:"Criação para Função Administrativa",tipo:"origem",tema:"comercio",mods:{dominio:9,riqueza:4,autoridade:2,vazio:-5},
+ {id:"funcao_administrativa",nome:"Criação para Função Administrativa",tipo:"origem",tema:"comercio",mods:{riqueza:4,autoridade:2,vazio:-5},
   concede:{tipo:"terreno",terreno:"planicies",c1:"aldeia",nomeSugerido:"Aldeia de Yakuba-mura"}},
  {id:"adocao_familia",nome:"Adoção da Família",tipo:"origem",tema:"corte",mods:{influencia:4,autoridade:2,vazio:-5}},
- {id:"usurpacao_terras",nome:"Usurpação ou Apropriação de Terras",tipo:"origem",tema:"terra",mods:{dominio:19,autoridade:3,vazio:-8},
+ {id:"usurpacao_terras",nome:"Usurpação ou Apropriação de Terras",tipo:"origem",tema:"terra",mods:{dominio:10,autoridade:3,vazio:-8},
   concede:{tipo:"terreno",terreno:"planicies",c1:"terras_cultivaveis",nomeSugerido:"Campos de Ubai-no-Hara"}},
  {id:"vitoria_torneio",nome:"Vitória em Torneio",tipo:"favoravel",tema:"guerra",mods:{influencia:2,autoridade:-5,vazio:9}},
  {id:"refem_prestigio",nome:"Refém de Prestígio",tipo:"favoravel",tema:"corte",mods:{influencia:9,autoridade:-5,vazio:2}},
  {id:"rivalidade_juramentada",nome:"Rivalidade Juramentada",tipo:"ambiguo",tema:"corte",mods:{influencia:-6,autoridade:8,vazio:-4}},
- {id:"acordo_comercial",nome:"Acordo Comercial Duradouro",tipo:"favoravel",tema:"comercio",mods:{dominio:10,riqueza:10,influencia:2,vazio:-6},
+ {id:"acordo_comercial",nome:"Acordo Comercial Duradouro",tipo:"favoravel",tema:"comercio",mods:{riqueza:10,influencia:2,vazio:-6},
   concede:{tipo:"terreno",terreno:"costa",c1:"porto",nomeSugerido:"Porto de Shiro-Minato"}},
  {id:"artesao_renomado",nome:"Ascensão de um Artesão Renomado",tipo:"favoravel",tema:"comercio",mods:{riqueza:9,influencia:3,autoridade:-6}},
  {id:"escola_artistica",nome:"Escola Artística ou Estilo Famoso",tipo:"favoravel",tema:"corte",mods:{influencia:10,autoridade:-6,vazio:2}},
- {id:"construcao_fortaleza",nome:"Construção de Fortaleza",tipo:"favoravel",tema:"guerra",mods:{dominio:16,riqueza:-5,autoridade:10},
+ {id:"construcao_fortaleza",nome:"Construção de Fortaleza",tipo:"favoravel",tema:"guerra",mods:{riqueza:-5,autoridade:10},
   concede:{tipo:"terreno",terreno:"colinas",c1:"shiro",c2:"area_impura",nomeSugerido:"Shiro da Bruma Esquecida"}},
  {id:"desastre_natural",nome:"Desastre Natural",tipo:"adverso",tema:"terra",mods:{dominio:-10,autoridade:2,vazio:6}},
  {id:"fome_prolongada",nome:"Fome Prolongada",tipo:"adverso",tema:"terra",mods:{riqueza:-10,autoridade:2,vazio:6}},
@@ -1309,7 +1329,7 @@ const EVENTOS=[
  {id:"derrota_marcante",nome:"Derrota Marcante",tipo:"adverso",tema:"guerra",mods:{influencia:2,autoridade:-10,vazio:6}},
  {id:"contato_terras_sombrias",nome:"Contato com as Terras Sombrias",tipo:"adverso",tema:"espirito",mods:{dominio:2,autoridade:6,vazio:-10}},
  {id:"bencao_kami",nome:"Bênção dos Kami",tipo:"favoravel",tema:"espirito",mods:{influencia:-4,vazio:10}},
- {id:"templo_importante",nome:"Templo ou Santuário Importante",tipo:"favoravel",tema:"espirito",mods:{dominio:16,riqueza:-5,vazio:10},
+ {id:"templo_importante",nome:"Templo ou Santuário Importante",tipo:"favoravel",tema:"espirito",mods:{riqueza:-5,vazio:10},
   concede:{tipo:"terreno",terreno:"planicies",c1:"templo_santuario",c2:"peregrinacao",nomeSugerido:"Santuário do Véu Sereno"}},
  {id:"intervencao_senhor",nome:"Intervenção de um Grande Senhor",tipo:"adverso",tema:"corte",mods:{influencia:-10,autoridade:6,vazio:2}},
  {id:"guerra_prolongada",nome:"Guerra Prolongada",tipo:"adverso",tema:"guerra",mods:{riqueza:-10,autoridade:6,vazio:2}},
@@ -1317,39 +1337,39 @@ const EVENTOS=[
  {id:"reforma_interna",nome:"Reforma Interna Bem-Sucedida",tipo:"favoravel",tema:"comercio",mods:{riqueza:9,influencia:-5,autoridade:2}},
  {id:"revolta_camponesa",nome:"Revolta Camponesa",tipo:"adverso",tema:"terra",mods:{dominio:-10,influencia:2,autoridade:6}},
  {id:"migracao_massa",nome:"Migração em Massa para as Terras",tipo:"favoravel",tema:"terra",mods:{dominio:9,riqueza:2,autoridade:-6}},
- {id:"recurso_valioso",nome:"Descoberta de Recurso Valioso",tipo:"favoravel",tema:"comercio",mods:{dominio:21,riqueza:10,autoridade:-4,vazio:-2},
+ {id:"recurso_valioso",nome:"Descoberta de Recurso Valioso",tipo:"favoravel",tema:"comercio",mods:{riqueza:10,autoridade:-4,vazio:-2},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"minas",nomeSugerido:"Veio de Kaiu-zan"}},
  {id:"isolamento_deliberado",nome:"Isolamento Deliberado",tipo:"adverso",tema:"corte",mods:{dominio:2,influencia:-10,vazio:6}},
  {id:"tradicao_marcial",nome:"Tradição Marcial Distinta",tipo:"favoravel",tema:"guerra",mods:{influencia:-6,autoridade:8,vazio:4}},
  {id:"decadencia_administrativa",nome:"Decadência Administrativa",tipo:"adverso",tema:"comercio",mods:{riqueza:2,influencia:6,autoridade:-10}},
- {id:"figura_espiritual",nome:"Ascensão de Figura Espiritual",tipo:"favoravel",tema:"espirito",mods:{dominio:24,riqueza:-6,influencia:2,vazio:10},
+ {id:"figura_espiritual",nome:"Ascensão de Figura Espiritual",tipo:"favoravel",tema:"espirito",mods:{riqueza:-6,influencia:2,vazio:10},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"templo_santuario",c2:"peregrinacao",nomeSugerido:"Retiro do Iluminado"}},
  {id:"perda_territorio",nome:"Perda de Território",tipo:"adverso",tema:"terra",mods:{dominio:-10,autoridade:6,vazio:2}},
  {id:"reconstrucao_pos_guerra",nome:"Reconstrução Pós-Guerra",tipo:"adverso",tema:"terra",mods:{dominio:-8,autoridade:4,vazio:2}},
- {id:"heranca_castelo_amaldicoado",nome:"Herança de um Castelo Amaldiçoado",tipo:"favoravel",tema:"terra",mods:{dominio:20,influencia:2,autoridade:9,vazio:-6},
+ {id:"heranca_castelo_amaldicoado",nome:"Herança de um Castelo Amaldiçoado",tipo:"favoravel",tema:"terra",mods:{influencia:2,autoridade:9,vazio:-6},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"shiro",c2:"area_impura",nomeSugerido:"Kage no Shiro, o Castelo da Sombra"}},
- {id:"ruinas_ancestrais_descobertas",nome:"Descoberta de Ruínas Ancestrais",tipo:"favoravel",tema:"espirito",mods:{dominio:3,riqueza:-5,influencia:2,vazio:9},
+ {id:"ruinas_ancestrais_descobertas",nome:"Descoberta de Ruínas Ancestrais",tipo:"favoravel",tema:"espirito",mods:{riqueza:-5,influencia:2,vazio:9},
   concede:{tipo:"terreno",terreno:"floresta_densa",c1:"ruinas_antigas",nomeSugerido:"Ruínas de Tsuki-no-Mura"}},
- {id:"porto_herdado_afogados",nome:"Porto Herdado de Aliados Afogados",tipo:"favoravel",tema:"comercio",mods:{dominio:10,riqueza:9,vazio:-4},
+ {id:"porto_herdado_afogados",nome:"Porto Herdado de Aliados Afogados",tipo:"favoravel",tema:"comercio",mods:{riqueza:9,vazio:-4},
   concede:{tipo:"terreno",terreno:"costa",c1:"porto",nomeSugerido:"Porto de Nami-Nageki"}},
- {id:"fortaleza_cedida_cla",nome:"Fortaleza Cedida pelo Clã",tipo:"favoravel",tema:"guerra",mods:{dominio:34,influencia:-5,autoridade:8,vazio:2},
+ {id:"fortaleza_cedida_cla",nome:"Fortaleza Cedida pelo Clã",tipo:"favoravel",tema:"guerra",mods:{influencia:-5,autoridade:8,vazio:2},
   concede:{tipo:"terreno",terreno:"montanhas",c1:"kyuden",nomeSugerido:"Kyuden da Linhagem"}},
  /* 2026-11-04: origens novas e eventos novos (ver "Eventos de Origem - Proposta.md") */
  {id:"mercadores_nome",nome:"Mercadores que Compraram um Nome",tipo:"origem",tema:"comercio",mods:{riqueza:5,influencia:2,vazio:-6}},
  {id:"ronin_elevados",nome:"Ronin Elevados",tipo:"origem",tema:"guerra",mods:{dominio:2,influencia:-6,autoridade:4}},
- {id:"casa_caida",nome:"Sobreviventes de uma Casa Caída",tipo:"origem",tema:"espirito",mods:{dominio:5,riqueza:-6,influencia:2,vazio:9},
+ {id:"casa_caida",nome:"Sobreviventes de uma Casa Caída",tipo:"origem",tema:"espirito",mods:{riqueza:-6,influencia:2,vazio:9},
   concede:{tipo:"terreno",terreno:"alagadas",c1:"ruinas_antigas",nomeSugerido:"Ruínas de Kuzure-no-Yashiki"}},
  {id:"linhagem_primeiros",nome:"Linhagem dos Primeiros",tipo:"origem",tema:"espirito",idadeMin:"antiga",mods:{influencia:4,autoridade:-6,vazio:8}},
  {id:"exilados_cla",nome:"Exilados de Outro Clã",tipo:"origem",tema:"comercio",mods:{riqueza:8,influencia:-6,autoridade:3}},
- {id:"guardioes_fronteira",nome:"Guardiões da Fronteira",tipo:"origem",tema:"guerra",mods:{dominio:16,influencia:-5,autoridade:8,vazio:2},
+ {id:"guardioes_fronteira",nome:"Guardiões da Fronteira",tipo:"origem",tema:"guerra",mods:{influencia:-5,autoridade:8,vazio:2},
   concede:{tipo:"terreno",terreno:"colinas",c1:"torre_vigia",nomeSugerido:"Torre do Passo Esquecido"}},
  {id:"escolhidos_kami",nome:"Escolhidos pelos Kami",tipo:"origem",tema:"espirito",mods:{dominio:-6,influencia:3,vazio:9}},
  {id:"uniao_duas_casas",nome:"União de Duas Casas",tipo:"origem",tema:"corte",mods:{riqueza:3,influencia:4,vazio:-6}},
- {id:"rota_comercial_cedida",nome:"Rota Comercial Cedida",tipo:"favoravel",tema:"comercio",mods:{dominio:13,riqueza:9,influencia:2,vazio:-6},
+ {id:"rota_comercial_cedida",nome:"Rota Comercial Cedida",tipo:"favoravel",tema:"comercio",mods:{riqueza:9,influencia:2,vazio:-6},
   concede:{tipo:"terreno",terreno:"planicies",c1:"rota_comercial",nomeSugerido:"Estrada dos Mil Fardos"}},
  {id:"dojo_renomado",nome:"Dojo Renomado",tipo:"favoravel",tema:"guerra",mods:{riqueza:-6,autoridade:9,vazio:2}},
  {id:"arquivo_pergaminhos",nome:"Arquivo de Pergaminhos",tipo:"favoravel",tema:"espirito",mods:{influencia:3,autoridade:-6,vazio:8}},
- {id:"vila_pesqueira",nome:"Vila Pesqueira Próspera",tipo:"favoravel",tema:"terra",mods:{dominio:14,riqueza:9,influencia:-6,autoridade:2},
+ {id:"vila_pesqueira",nome:"Vila Pesqueira Próspera",tipo:"favoravel",tema:"terra",mods:{riqueza:9,influencia:-6,autoridade:2},
   concede:{tipo:"terreno",terreno:"planicies",c1:"costa",c2:"aldeia",nomeSugerido:"Aldeia de Shio-hama"}},
  {id:"corte_inverno",nome:"Convite à Corte de Inverno",tipo:"favoravel",tema:"corte",mods:{riqueza:-6,influencia:10,vazio:2}},
  {id:"defesa_gloriosa",nome:"Defesa Gloriosa",tipo:"favoravel",tema:"guerra",mods:{riqueza:-6,autoridade:9,vazio:3}},
@@ -1477,7 +1497,7 @@ const VAZIO_Y=[-65,-60,-55,-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,-3,-2,1,3,5,7,
 const EQUILIBRIO_NIVEL=[-2,-2,-2,-1,-1,0,1,1,2,3,3];
 /* Favor das Fortunas — mesmo raciocínio, agora a partir do valor atual de Fortunas
    (não mais um corte fixo em 50): fortunas ruins viram desfavor de verdade. */
-const FAVOR_FORTUNAS_X=[-99999,-5,5,12,20];
+const FAVOR_FORTUNAS_X=[-99999,-3,5,10,15]; /* 2026-11: a família mediana fica em 0, a bem cuidada em +1, a próspera em +2 */
 const FAVOR_FORTUNAS_Y=[-1,0,1,2,3];
 /* Autoridade (Ordem+Poder fundidos) — conferida por simulação em 2026-08-04 (30 mil famílias,
    clã+eventos aleatórios): mediana de totalAttr("autoridade") cai em ~49, bem dentro do degrau
@@ -1564,12 +1584,13 @@ const PERSONAGEM_PAPEL=[
  {nome:"Daimyō de cidade ou família vassala",custo:20,efeito:"fortuna",valor:2},
  {nome:"Governante regional",custo:30,efeito:"fortuna",valor:3},
  {nome:"Figura importante dentro do clã",custo:40,efeito:"fortuna",valor:5},
- {nome:"Bushi Jovem",custo:5,efeito:"dominio",valor:1},
- {nome:"Bushi Experiente",custo:10,efeito:"dominio",valor:3},
- {nome:"Bushi Veterano",custo:20,efeito:"dominio",valor:5},
- {nome:"Cortesão Jovem",custo:5,efeito:"autoridade",valor:1},
- {nome:"Cortesão Experiente",custo:10,efeito:"autoridade",valor:3},
- {nome:"Cortesão Veterano",custo:20,efeito:"autoridade",valor:5},
+ {nome:"Bushi Jovem",custo:5,efeito:"autoridade",valor:1}, /* 2026-11: o bushi comanda as tropas (era Domínio) */
+ {nome:"Bushi Experiente",custo:10,efeito:"autoridade",valor:3},
+ {nome:"Bushi Veterano",custo:20,efeito:"autoridade",valor:5},
+ {nome:"Cortesão Jovem",custo:5,efeito:"influencia",valor:1}, /* o cortesão traz Influência, pela metade para não se pagar sozinho (era Autoridade) */
+ {nome:"Cortesão Experiente",custo:10,efeito:"influencia",valor:2},
+ {nome:"Cortesão Veterano",custo:20,efeito:"influencia",valor:3},
+ /* Shugenja e Monge: o valor/2 (para cima) vira Pontos de Vazio da família por estação */
  {nome:"Shugenja Jovem",custo:15,efeito:"vazio",valor:1},
  {nome:"Shugenja Experiente",custo:25,efeito:"vazio",valor:3},
  {nome:"Shugenja Veterano",custo:40,efeito:"vazio",valor:5},
@@ -1652,7 +1673,7 @@ function escolasCustoTotal(attr){
   if(attr==="riqueza")s+=encantamentosCustoTotal();
   return s;
 }
-function alunosEscola(tipo){const e=S.escolas[tipo];if(!e||!e.ativa)return 0;return alunosPorNivel(nivelAttr(ESCOLA_TIPOS[tipo].attrAlunos));}
+function alunosEscola(tipo){const e=S.escolas[tipo];if(!e||!e.ativa)return 0;return alunosPorNivel(nivelAttr(ESCOLA_TIPOS[tipo].attrAlunos))+(gloriaCasa()>=5?1:0);}
 function fundarEscola(tipo,escolaId){
   if(bloqueadoLeitura())return;
   const e=S.escolas[tipo];if(!e||e.ativa)return;
@@ -1726,11 +1747,13 @@ const TROPA_EQUIP=[
  {id:"armaduras",nome:"Armaduras Aprimoradas",custo:10,efeito:"+5 no TN além da armadura."}
 ];
 const TROPA_ESTADO={
- patrulha:{nome:"Patrulha",autoridade:-1,dominio:0,vazio:1,fortuna:-1}, /* 2026-11: era +3; vezes tipo e tamanho, a tropa em patrulha se pagava sozinha */
- mobilizado:{nome:"Mobilizado",autoridade:-2,dominio:-2,vazio:2,fortuna:-2},
- refem:{nome:"Refém",autoridade:-2,dominio:-2,vazio:-3,fortuna:-2},
- ferido:{nome:"Ferido",autoridade:-2,dominio:-2,vazio:-2,fortuna:-3},
- derrotado:{nome:"Derrotado",autoridade:0,dominio:-2,vazio:-5,fortuna:0}
+ /* 2026-11: Autoridade e Domínio são o custo de manter os homens (vezes tipo e tamanho).
+    Vazio e Fortuna agora são fixos por tropa e só nos estados ruins. */
+ patrulha:{nome:"Patrulha",autoridade:-1,dominio:0,vazio:0,fortuna:0},
+ mobilizado:{nome:"Mobilizado",autoridade:-2,dominio:-2,vazio:0,fortuna:0},
+ refem:{nome:"Refém",autoridade:-2,dominio:-2,vazio:-2,fortuna:-1},
+ ferido:{nome:"Ferido",autoridade:-2,dominio:-2,vazio:0,fortuna:-1},
+ derrotado:{nome:"Derrotado",autoridade:0,dominio:-2,vazio:-3,fortuna:-2}
 };
 const MULT_TROPA={camponesa:1,ashigaru:2,arqueiros:2,samurai:3,cavalaria:4};
 
@@ -1903,7 +1926,7 @@ function esc(s){return(s||"").toString().replace(/&/g,"&amp;").replace(/"/g,"&qu
 function estadoInicial(){return{
   nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",familiaPrincipal:"",senhor:"",sede:"",lema:"",historia:"",vassalas:[],idade:"recente",versaoAtrib:2,
   base:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},
-  pontos:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},origem:null,versaoEventos:3,reservas:[],versaoReservas:2,investimentos:[],historicoAcontecimentos:[],acontAbertos:[],versaoPontos:1,versaoCasa:1,
+  pontos:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},origem:null,versaoEventos:3,reservas:[],versaoReservas:2,investimentos:[],historicoAcontecimentos:[],acontAbertos:[],versaoPontos:1,versaoCasa:1,versaoTerra:1,versaoConv:1,pvFamiliaUsados:0,versaoTesouro:1,riquezaGasta:0,honraAjuste:0,gloriaRegistro:[],infame:false,
   eventos:[],terrenos:[],personagens:[],tropas:[],conversoes:[],feed:[],
   conquistas:[],estacaoIdx:0,anoEstacao:1,sacrificios:[],
   batalhaAtual:null,batalhas:[],marcacoesMapa:[],
@@ -2025,7 +2048,8 @@ function migrarAtributosV2(st){
       const claNovo=cla?(cla.mods[k]||0):0;
       const claVelho=cla?(cla.id==="imperial"?(CLAS_MODS_V1_IMPERIAL[k]||0):(cla.mods[k]||0)):0;
       let evNovo=0,evVelho=0;
-      (st.eventos||[]).forEach(id=>{const e=EVENTOS.find(x=>x.id===id);if(e)evNovo+=e.mods[k]||0;const v=EVENTOS_MODS_V1[id];if(v)evVelho+=v[k]||0;});
+      const iOg=(st.eventos||[]).findIndex(id=>{const e=EVENTOS.find(x=>x.id===id);return e&&e.tipo==="origem";});
+      (st.eventos||[]).forEach((id,i)=>{const e=EVENTOS.find(x=>x.id===id);if(e)evNovo+=(e.mods[k]||0)*(i===iOg?(PESO_ORIGEM[st.idade]||1):1);const v=EVENTOS_MODS_V1[id];if(v)evVelho+=v[k]||0;});
       st.base[k]=(Number(st.base[k])||0)+claVelho+evVelho-(bIdade[k]||0)-claNovo-evNovo;
     });
   }
@@ -2098,11 +2122,7 @@ const ORIGEM_TERRA_V4={funcao_administrativa:9,usurpacao_terras:9,casa_caida:5};
 function migrarReservasV4(st,jaEraV2){
   if(!st||st.versaoReservas>=1)return false;
   st.reservas=st.reservas||[];
-  if(jaEraV2&&st.base){
-    const ids=(st.origem?[st.origem]:[]).concat(st.eventos||[]);
-    let d=0;ids.forEach(id=>{d+=ORIGEM_TERRA_V4[id]||0;});
-    if(d)st.base.dominio=(Number(st.base.dominio)||0)-d;
-  }
+  /* (a compensação de Domínio desta versão deixou de ser preciso na v8) */
   st.versaoReservas=1;return true;
 }
 /* Migração v5 (2026-11): metade do Anel principal de oito origens virou lote. A ficha antiga não
@@ -2135,7 +2155,40 @@ function migrarCasaV7(st){
   if(m&&!st.familiaPrincipal){st.familiaPrincipal=m[1];st.ramoFamiliar="";}
   st.vassalas=st.vassalas||[];st.versaoCasa=1;return true;
 }
-function migrarEstado(st){const jaV2=!!st&&st.versaoAtrib>=2;const a=migrarAtributosV2(st),b=migrarBatalhaV7(st),c=migrarOrigemV3(st,jaV2),d=migrarReservasV4(st,jaV2),e=migrarReservasV5(st,jaV2),f=migrarPontosV6(st),g=migrarCasaV7(st);return a||b||c||d||e||f||g;}
+/* Migração v8 (2026-11): a terra que veio de evento vira doada. O Domínio que pagava por ela saiu
+   do evento e ela deixou de ocupar Domínio: o disponível fica igual, o total e o Nível caem. */
+function migrarTerraV8(st,jaEraV4,jaEraV2){
+  if(!st||st.versaoTerra>=1)return false;
+  /* a v4 tinha tirado do ajuste o Domínio da terra que as fichas antigas não receberam; esse
+     Domínio saiu da origem agora, então ele volta */
+  if(jaEraV4&&st.base)(st.origem?[st.origem]:[]).concat(st.eventos||[]).forEach(id=>{
+    const d=ORIGEM_TERRA_V4[id];if(d&&!(st.terrenos||[]).some(t=>t.origemEvento===id))st.base.dominio=(Number(st.base.dominio)||0)+d;});
+  (st.terrenos||[]).forEach(t=>{if(t.origemEvento&&!t.doado){const x=terrenoLinhaCalc(t);t.doado=true;t.custoDoado=x.custoDefesa+x.custoTerras;}});
+  /* a origem passou a pesar mais nas casas novas; nas fichas que já existiam, o total não muda */
+  const og=st.origem&&EVENTOS.find(x=>x.id===st.origem),pe=PESO_ORIGEM[st.idade]||1;
+  if(jaEraV2&&og&&pe!==1&&st.base)ATRIBUTOS.forEach(([k])=>{const v=og.mods[k]||0;if(v)st.base[k]=(Number(st.base[k])||0)-v*(pe-1);});
+  st.versaoTerra=1;return true;
+}
+/* Migração v9 (2026-11): as conversões permanentes viram temporários de um ano, no mesmo valor. */
+function migrarConversoesV9(st){
+  if(!st||st.versaoConv>=1)return false;
+  st.reservas=st.reservas||[];
+  const abs=((st.anoEstacao||1)-1)*4+(st.estacaoIdx||0);
+  (st.conversoes||[]).forEach(c=>{const u=Number(c.usos)||0;if(!u||!c.origem||!c.destino)return;const r=CONVERSAO_REGRAS[c.origem],tx=r?r.taxa||1:1;
+    st.reservas.push({id:uid(),attr:c.destino,valor:u,motivo:"conversão antiga de "+c.origem,vence:abs+5});
+    if(POOL_ATTRS[c.origem])st.reservas.push({id:uid(),attr:c.origem,valor:-u*tx,motivo:"conversão antiga para "+c.destino,vence:abs+5});
+    else{st.base=st.base||{};st.base[c.origem]=(Number(st.base[c.origem])||0)-u*tx;}});
+  st.conversoes=[];st.versaoConv=1;return true;
+}
+/* Migração v10 (2026-11-05): os ganhos de Riqueza "até gastar" entram no tesouro. */
+function migrarTesouroV10(st){
+  if(!st||st.versaoTesouro>=1)return false;
+  st.riquezaGasta=Number(st.riquezaGasta)||0;
+  (st.reservas||[]).filter(l=>l.attr==="riqueza"&&l.vence==null&&l.valor>0).forEach(l=>{st.riquezaGasta-=l.valor;if(l.origemEvento){st.caixaOrigem=st.caixaOrigem||{};st.caixaOrigem[l.origemEvento]=(st.caixaOrigem[l.origemEvento]||0)+l.valor;}});
+  st.reservas=(st.reservas||[]).filter(l=>!(l.attr==="riqueza"&&l.vence==null&&l.valor>0));
+  st.versaoTesouro=1;return true;
+}
+function migrarEstado(st){const jaV2=!!st&&st.versaoAtrib>=2,jaV4=!!st&&st.versaoReservas>=1;migrarConversoesV9(st);migrarTesouroV10(st);const a=migrarAtributosV2(st),b=migrarBatalhaV7(st),c=migrarOrigemV3(st,jaV2),d=migrarReservasV4(st,jaV2),e=migrarReservasV5(st,jaV2),f=migrarPontosV6(st),g=migrarCasaV7(st),h=migrarTerraV8(st,jaV4,jaV2);return a||b||c||d||e||f||g||h;}
 migrarEstado(S);
 if(!S.batalhas)S.batalhas=[];
 if(S.batalhaAtual===undefined)S.batalhaAtual=null;
@@ -2161,20 +2214,32 @@ let verTodosEventos=S.eventos.length<vagasEventos();
 /* ============ MOTOR DE CÁLCULO ============ */
 function claAtual(){return CLAS.find(c=>c.id===S.cla);}
 function claMod(attr){const c=claAtual();return c?(c.mods[attr]||0):0;}
-function eventosMod(attr){let s=0;(S.origem?[S.origem]:[]).concat(S.eventos).forEach(id=>{const e=EVENTOS.find(x=>x.id===id);if(e)s+=(e.mods[attr]||0);});return s;}
+function eventosMod(attr){let s=0;
+  const og=S.origem&&EVENTOS.find(x=>x.id===S.origem);if(og)s+=(og.mods[attr]||0)*(PESO_ORIGEM[S.idade]||1);
+  (S.eventos||[]).forEach(id=>{const e=EVENTOS.find(x=>x.id===id);if(e)s+=(e.mods[attr]||0);});return s;}
 function conquistasMod(attr){let s=0;(S.conquistas||[]).forEach(c=>{(c.itens||[]).forEach(it=>{if(it.attr===attr)s+=(Number(it.delta)||0);});});return s;}
-function personagemMod(attr){let s=0;S.personagens.forEach(p=>{const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito===attr)s+=papel.valor;});return s;}
-function fortunaPersonagem(){let s=0;S.personagens.forEach(p=>{const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito==="fortuna")s+=papel.valor;});return s;}
+/* 2026-11: o estado conta. Vivo e Ferido: custa e dá o efeito. Refém e Ausente: a casa ainda
+   sustenta (custa), mas ele não está lá (sem efeito). Morto: nem custa nem dá efeito. */
+function personagemPresente(p){const e=p.estado||"Vivo";return e==="Vivo"||e==="Ferido";}
+function personagemMod(attr){let s=0;S.personagens.forEach(p=>{if(!personagemPresente(p))return;const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito===attr)s+=papel.valor;});return s;}
+function fortunaPersonagem(){let s=0;S.personagens.forEach(p=>{if(!personagemPresente(p))return;const papel=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);if(papel&&papel.efeito==="fortuna")s+=papel.valor;});return s;}
 function personagemCusto(cat){const p=PERSONAGEM_PAPEL.find(x=>x.nome===cat);return p?p.custo:0;}
 /* 2026-11: personagem dado pela origem (doado) não custa Influência. Se o Mestre subir o papel
    dele (Bushi Jovem → Experiente), paga só a diferença. */
-function personagemCustoP(p){const c=personagemCusto(p.categoria);return p&&p.doado?Math.max(0,c-personagemCusto(p.categoriaDoada)):c;}
+function personagemCustoP(p){if((p.estado||"Vivo")==="Morto")return 0;const c=personagemCusto(p.categoria);return p&&p.doado?Math.max(0,c-personagemCusto(p.categoriaDoada)):c;}
 function personagensCustoTotal(){return S.personagens.reduce((s,p)=>s+personagemCustoP(p),0);}
 /* O Honor Rank oficial da 4ª edição (0-10, na trilha de Honra/Glória/Status/Mancha)
    de cada personagem pesa no Vazio da família — vivos ainda representam a casa no
    dia a dia, mortos deixam a Honra deles como legado que não se apaga. Os dois
    contam, ninguém é esquecido. */
-function personagensHonraBonus(){let s=0;S.personagens.forEach(p=>{s+=Number(p.honorRank)||0;});return Math.round(s);}
+/* 2026-11: Honra da casa = (média da Honra dos personagens vivos com Honra marcada − 5) × 2.
+   Antes era a soma, e quatro personagens com Honra 5 davam +20 no Vazio. */
+function honraMediaCasa(){const v=S.personagens.filter(p=>(p.estado||"Vivo")!=="Morto"&&(Number(p.honorRank)||0)>0);if(!v.length)return null;return v.reduce((s,p)=>s+(Number(p.honorRank)||0),0)/v.length;}
+function personagensHonraBonus(){return 0;} /* 2026-11-05: a Honra não mexe mais no Vazio; virou a Honra da casa */
+/* Honra da casa: atributo derivado, na escala da Honra dos personagens (0 a 10). Média da Honra
+   dos personagens vivos (com Honra marcada), mais o ajuste do Mestre, menos a Honra queimada. */
+function honraCasa(){const m=honraMediaCasa();if(m==null&&!Number(S.honraAjuste)&&!honraSacrificadaTotal())return null;
+  return Math.max(0,Math.min(10,(m==null?5:m)+(Number(S.honraAjuste)||0)-honraSacrificadaTotal()));}
 
 function conversaoGanho(attr){let s=0;S.conversoes.forEach(c=>{if(c.destino===attr)s+=(Number(c.usos)||0);});return s;}
 function conversaoGasto(attr){let s=0;S.conversoes.forEach(c=>{if(c.origem===attr){const r=CONVERSAO_REGRAS[attr];const taxa=r?r.taxa||1:1;s+=(Number(c.usos)||0)*taxa;}});return s;}
@@ -2197,14 +2262,47 @@ function tropaLinhaCalc(row){
   const recrut=t.custo*z.mult*(tropaClaEstrangeiro(row)?1.5:1);
   const armadura=arm.custo*z.mult;
   let equip=0;(row.equipamento||[]).forEach(id=>{const eq=TROPA_EQUIP.find(x=>x.id===id);if(eq)equip+=eq.custo*z.mult;});
-  const treino=tropaCustoTreino(row);
-  return{recrut,armadura,equip,treino,custo:Math.round(recrut+armadura+equip+treino)};
+  const treino=tropaCustoTreino(row),aneis=custoAneisTropa(row);
+  return{recrut,armadura,equip,treino,aneis,custo:Math.round(recrut+armadura+equip+treino+aneis)};
 }
-function tropasCustoTotal(){return S.tropas.reduce((s,t)=>s+tropaLinhaCalc(t).custo,0);}
+function tropasCustoTotal(){return S.tropas.reduce((s,t)=>s+tropaLinhaCalc(tropaComObra(t)).custo,0);}
+/* ============ MELHORAR TROPAS ============
+   2026-11-05 (Thiago): a tropa evolui por investimento, sem precisar comprar outra. Três obras:
+   Treino +1 (1 estação), Tamanho seguinte (2 estações, a tropa recebe os homens novos) e
+   +1 num Anel (2 estações; até +1 por Anel e dois Anéis por tropa). O custo novo já ocupa a
+   Autoridade desde o começo; o efeito vale quando fica pronto. Uma obra por tropa. */
+const OBRA_TROPA_DUR={treino:1,tamanho:2,anel:2};
+function custoAneisTropa(u){const n=Object.values(u.aneisExtra||{}).reduce((s,v)=>s+(Number(v)||0),0);return Math.round(n*tropaTipo(u).custo*0.3*tropaTam(u).mult);}
+function tropaComObra(t){if(!t.obra)return t;const c=JSON.parse(JSON.stringify(t));aplicarObraTropa(c,t.obra);return c;}
+function aplicarObraTropa(t,o){
+  if(o.tipo==="treino")t.treino=Math.min(5,(Number(t.treino)||0)+1);
+  if(o.tipo==="tamanho"){const i=TAMANHO_ORDEM.indexOf(t.tamanho||"media");if(i<TAMANHO_ORDEM.length-1){t.tamanho=TAMANHO_ORDEM[i+1];t.homens=TROPA_TAMANHOS[t.tamanho].max;}}
+  if(o.tipo==="anel"){t.aneisExtra=t.aneisExtra||{};t.aneisExtra[o.anel]=1;}
+}
+function obraTropaPossivel(t,tipo,anel){
+  if(t.obra)return false;
+  if(tipo==="treino")return(Number(t.treino)||0)<5;
+  if(tipo==="tamanho")return TAMANHO_ORDEM.indexOf(t.tamanho||"media")<TAMANHO_ORDEM.length-1;
+  if(tipo==="anel"){const ex=t.aneisExtra||{};return !ex[anel]&&Object.keys(ex).filter(k=>ex[k]).length<2;}
+  return false;
+}
+function custoObraTropa(t,tipo,anel){const c=JSON.parse(JSON.stringify(t));delete c.obra;aplicarObraTropa(c,{tipo,anel});return tropaLinhaCalc(c).custo-tropaLinhaCalc(t).custo;}
+function iniciarObraTropa(id,tipo,anel){
+  if(bloqueadoLeitura())return;const t=S.tropas.find(x=>x.id===id);if(!t)return;
+  if(!obraTropaPossivel(t,tipo,anel)){feedPush("Essa melhoria não está disponível para esta tropa.");salvar();render();return;}
+  const custo=custoObraTropa(t,tipo,anel);
+  if(poolRestante("autoridade")<custo){feedPush("Autoridade disponível insuficiente: a melhoria ocupa "+custo+".");salvar();render();return;}
+  t.obra={tipo,anel:anel||null,inicio:estacaoAbs(),dur:OBRA_TROPA_DUR[tipo]};
+  feedPush("Tropa "+(t.local||tropaTipo(t).nome)+": "+txtObraTropa(t.obra,t)+" começou; ocupa mais "+custo+" de Autoridade e fica pronto em "+t.obra.dur+" estação"+(t.obra.dur===1?"":"s")+".");
+  salvar();render();
+}
+function cancelarObraTropa(id){if(bloqueadoLeitura())return;const t=S.tropas.find(x=>x.id===id);if(!t||!t.obra)return;delete t.obra;feedPush("Melhoria da tropa cancelada.");salvar();render();}
+function txtObraTropa(o,t){return o.tipo==="treino"?"Treino "+((Number(t.treino)||0)+1):o.tipo==="tamanho"?"Tamanho "+(TROPA_TAMANHOS[TAMANHO_ORDEM[TAMANHO_ORDEM.indexOf(t.tamanho||"media")+1]]||{nome:"?"}).nome:"+1 em "+ANEL_NOME[o.anel];}
+function concluirObrasTropa(){const feitas=[];S.tropas.forEach(t=>{if(t.obra&&estacaoAbs()-t.obra.inicio>=t.obra.dur){feitas.push((t.local||tropaTipo(t).nome)+", "+txtObraTropa(t.obra,t));aplicarObraTropa(t,t.obra);delete t.obra;}});return feitas;}
 /* Manutenção: TROPA_ESTADO × multiplicador do tipo; na Autoridade e no Domínio (o que a tropa
    come), também × o multiplicador de tamanho. Vazio e Fortuna não escalam com o tamanho: uma
    leva Massiva não é quatro vezes mais devota. */
-function tropaMultManut(t,attr){const m=MULT_TROPA[t.tipo]||1;return(attr==="autoridade"||attr==="dominio")?m*tropaTam(t).mult:m;}
+function tropaMultManut(t,attr){const m=MULT_TROPA[t.tipo]||1;return(attr==="autoridade"||attr==="dominio")?m*tropaTam(t).mult:1;}
 function tropaMod(attr){let s=0;S.tropas.forEach(t=>{const est=TROPA_ESTADO[t.estado];if(est)s+=(est[attr]||0)*tropaMultManut(t,attr);});return s;}
 function fortunaTropa(){let s=0;S.tropas.forEach(t=>{const est=TROPA_ESTADO[t.estado];if(est)s+=(est.fortuna||0)*tropaMultManut(t,"fortuna");});return s;}
 
@@ -2227,11 +2325,12 @@ function fichaUnidade(u,ctx){
   const cla=CLA_TROPA[u.clan]||null,anelCla=cla?cla.anel:null;
   const eq=u.equipamento||[];
   const r={tipo:t,tam:z,cla,anelCla};
-  r.terra=Math.max(1,t.terra+z.terra);
-  r.agua=Math.max(1,t.agua+z.agua+(arm.agua||0));
-  r.ar=Math.max(1,t.ar);
-  r.fogo=Math.max(1,t.fogo+z.fogo);
-  r.vazio=Math.max(1,t.vazio+z.vazio);
+  const ex=u.aneisExtra||{};
+  r.terra=Math.max(1,t.terra+z.terra+(ex.terra||0));
+  r.agua=Math.max(1,t.agua+z.agua+(arm.agua||0)+(ex.agua||0));
+  r.ar=Math.max(1,t.ar+(ex.ar||0));
+  r.fogo=Math.max(1,t.fogo+z.fogo+(ex.fogo||0));
+  r.vazio=Math.max(1,t.vazio+z.vazio+(ex.vazio||0));
   r.treino=Math.min(5,Math.max(0,Number(u.treino)||0)+(u.clan?0:1)); /* ronin/sem clã: +1 Treinamento */
   r.volume=z.volume;
   const ta=taisaInfo(u);r.taisa=ta;r.lider=nivelLideranca(ta.battle);
@@ -2295,7 +2394,10 @@ function terrenoLinhaCalc(row){
   });
   return{custoDefesa,custoTerras,fortuna};
 }
-function terrenosTotais(){let cd=0,ct=0,f=0;S.terrenos.forEach(r=>{const x=terrenoLinhaCalc(r);cd+=x.custoDefesa;ct+=x.custoTerras;f+=x.fortuna;});return{custoDefesa:cd,custoTerras:ct,fortuna:f};}
+/* 2026-11 (Thiago): terra dada pela história é doada. Não mexe no atributo e não ocupa
+   Domínio; o que o Mestre acrescentar depois nela paga a diferença. */
+function terrenoCustoPago(r){const x=terrenoLinhaCalc(r),c=x.custoDefesa+x.custoTerras;return r.doado?Math.max(0,c-(Number(r.custoDoado)||0)):c;}
+function terrenosTotais(){let cd=0,ct=0,f=0,pg=0;S.terrenos.forEach(r=>{const x=terrenoLinhaCalc(r);cd+=x.custoDefesa;ct+=x.custoTerras;f+=x.fortuna;pg+=terrenoCustoPago(r);});return{custoDefesa:cd,custoTerras:ct,fortuna:f,pago:pg};}
 function honraSacrificadaTotal(){return(S.sacrificios||[]).reduce((s,x)=>s+(Number(x.valor)||0),0);}
 function sacrificioProgressoMod(attr){let s=0;(S.sacrificios||[]).forEach(x=>{if(x.tipo==="progresso"&&x.attrGanho===attr)s+=(Number(x.attrValor)||0);});return s;}
 /* 2026-11 (Thiago: "tropas e etc gastam sempre o pool, nunca o atributo"): nos quatro pools,
@@ -2304,14 +2406,34 @@ function sacrificioProgressoMod(attr){let s=0;(S.sacrificios||[]).forEach(x=>{if
    pool, esses efeitos continuam no atributo. */
 function modificador(attr){
   if(POOL_ATTRS[attr])return 0;
-  let m=personagemMod(attr)+conversaoGanho(attr)+sacrificioProgressoMod(attr)-conversaoGasto(attr);
-  if(attr==="vazio")m+=tropaMod(attr)+personagensHonraBonus()-honraSacrificadaTotal()*5+vassalaBonus("vazio");
+  /* 2026-11-05: o Vazio é o Anel que dá bônus nas rolagens. Shugenja, monges, a vassala
+     espiritual e as tropas em vergonha mexem nos Pontos de Vazio da família, não no atributo. */
+  let m=conversaoGanho(attr)+sacrificioProgressoMod(attr)-conversaoGasto(attr);
   return m;
+}
+/* ============ TESOURO DE RIQUEZA E RENDA ============
+   2026-11-05 (Thiago: "riqueza gasta da pool que ela tem" e "tem que ter uma taxa de riqueza
+   por estação"). A Riqueza se gasta: compras, recursos no Teste, investimentos pagos com ela.
+   O que se gasta fica em S.riquezaGasta e sai do disponível; a renda de cada estação repõe,
+   até o disponível voltar ao normal. Ganho de Riqueza "até gastar" (dote, saque, negócio) entra
+   direto no tesouro e pode passar do normal.
+   Renda por estação = Nível da Riqueza + produção das terras + 2 × Favor das Fortunas (mínimo 0),
+   vezes a estação: Primavera 1, Verão 1, Outono 2 (colheita), Inverno ½. */
+const RENDA_ESTACAO=[1,1,2,0.5];
+function producaoTerras(){let s=0;(S.terrenos||[]).forEach(r=>[r.c1,r.c2,r.c3,r.c4].forEach(id=>{const c=CARACTERISTICAS.find(x=>x.id===id);if(c&&c.fortuna>0)s+=c.fortuna;}));return s;}
+function rendaPartes(){return[["Nível da Riqueza",nivelAttr("riqueza")],["produção das terras",producaoTerras()],["Favor das Fortunas × 2",2*favorDasFortunas()]];}
+function rendaBase(){return Math.max(0,rendaPartes().reduce((s,[,v])=>s+v,0));}
+function rendaEstacao(idx){return Math.round(rendaBase()*RENDA_ESTACAO[idx==null?(S.estacaoIdx||0):idx]);}
+function gastarRiqueza(q,motivo){S.riquezaGasta=(Number(S.riquezaGasta)||0)+q;}
+function receberRenda(idx){
+  const r=rendaEstacao(idx),g=Number(S.riquezaGasta)||0;
+  const usa=Math.max(0,Math.min(r,g));S.riquezaGasta=g-usa;
+  return{renda:r,repos:usa};
 }
 /* Conta do disponível, linha por linha, para mostrar no atributo e na faixa dos Anéis. */
 function contaDisponivel(attr){
   const L=[],add=(nome,v,l)=>{if(v)L.push([nome,v,l||null]);};
-  add("terras",-(attr==="dominio"?terrenosTotais().custoDefesa+terrenosTotais().custoTerras:0));
+  add("terras",-(attr==="dominio"?terrenosTotais().pago:0));
   add("personagens",-(attr==="influencia"?personagensCustoTotal():0));
   add("tropas",-(attr==="autoridade"?tropasCustoTotal():0));
   add("manutenção das tropas",(attr==="autoridade"||attr==="dominio")?tropaMod(attr):0);
@@ -2322,6 +2444,7 @@ function contaDisponivel(attr){
   add("conversões recebidas",conversaoGanho(attr));
   add("Honra queimada",sacrificioProgressoMod(attr));
   add("famílias vassalas",vassalaBonus(attr));
+  if(attr==="riqueza"){const g=Number(S.riquezaGasta)||0;add(g>=0?"gasto do tesouro (a renda repõe)":"sobra no tesouro",-g);}
   add("manter as vassalas",-(attr==="influencia"?vassalasCusto():0));
   reservasDe(attr).forEach(l=>add(l.motivo||"temporário",Number(l.valor)||0,l));
   return L;
@@ -2348,12 +2471,13 @@ function poolGasto(attr){
      sozinho) — o que de fato "gasta" é a disponibilidade: custo de terrenos/personagens/
      tropas mantidos, mais qualquer conversão que tenha usado o atributo como origem. */
   let g=POOL_ATTRS[attr]?conversaoGasto(attr):0;
-  if(attr==="dominio")g+=terrenosTotais().custoDefesa+terrenosTotais().custoTerras;
+  if(attr==="dominio")g+=terrenosTotais().pago;
   if(attr==="influencia")g+=personagensCustoTotal();
   if(attr==="autoridade")g+=tropasCustoTotal();
   if(attr==="autoridade"||attr==="dominio")g-=tropaMod(attr); /* manutenção das tropas (patrulha, mobilizada, ferida…) */
   if(POOL_ATTRS[attr])g+=investComprometido(attr);
   if(attr==="influencia")g+=vassalasCusto();
+  if(attr==="riqueza")g+=Number(S.riquezaGasta)||0;
   g+=escolasCustoTotal(attr); /* fundação/nível de Dojo/Salão/Shoin (dominio/influencia/autoridade) + Encantamentos Protegidos (riqueza) */
   return g;
 }
@@ -2398,8 +2522,12 @@ function explicacaoDerivado(k){
       ["curva do Vazio",curvaLookup(CURVA_X,VAZIO_Y,totalAttr("vazio"))],["terras",terrenosTotais().fortuna],["tropas",fortunaTropa()],["personagens com título",fortunaPersonagem()]];
     return "Mede o prestígio e a sorte da casa. Soma: "+p.map(([l,v])=>l+" "+(v>0?"+":"")+v).join(", ")+". O Domínio tem pico no Nível 5 e 6: terra de menos ou de mais pesa contra. Fortunas altas viram Favor.";
   }
-  if(k==="favor")return "Raises grátis que qualquer membro da família ganha em testes sociais no próprio território, em ações que ajudem a casa; no Teste da Família, valem no sucesso. Vem das Fortunas: abaixo de −5, −1 (desfavor, vira dificuldade); de −5 a 4, 0; de 5 a 11, +1; de 12 a 19, +2; 20 ou mais, +3.";
-  if(k==="dojo")return "Quantos samurai o dojo da família forma por estação, pelo Vazio: Nível do Vazio menos 3 (Nível "+n+" dá "+dojo()+"). Retidão e devoção atraem quem quer aprender. O Dojo Bushi e o Salão Cortesão, quando fundados, contam pela Autoridade e pela Influência.";
+  if(k==="favor")return "Raises grátis que qualquer membro da família ganha em testes sociais no próprio território, em ações que ajudem a casa; no Teste da Família, valem no sucesso. Vale também na tendência dos acontecimentos. Vem das Fortunas: abaixo de −3, −1 (desfavor, +5 de TN); de −3 a 4, 0; de 5 a 9, +1; de 10 a 14, +2; 15 ou mais, +3.";
+  if(k==="honra"){const m=honraMediaCasa();return "Honra da casa, na escala da Honra dos personagens (0 a 10): a média da Honra dos personagens vivos com Honra marcada"+(m!=null?" ("+m.toFixed(1)+")":" (ninguém marcado ainda; vale 5)")+(Number(S.honraAjuste)?", mais o ajuste do Mestre ("+(S.honraAjuste>0?"+":"")+S.honraAjuste+")":"")+(honraSacrificadaTotal()?", menos a Honra queimada ("+honraSacrificadaTotal()+")":"")+". É a reputação da casa em Rokugan: pesa em cortes, alianças e casamentos, a critério do Mestre. Não dá bônus automático.";}
+  if(k==="vazio")return "Pontos de Vazio da família por estação: o Nível do Vazio ("+nivelAttr("vazio")+")"+pvBonusPartes().map(([l,v])=>", "+(v>0?"+":"")+v+" "+l).join("")+". Cada ponto vale +1k1 num Teste da Família ou na tendência de um acontecimento. Voltam quando a estação vira.";
+  if(k==="gloria")return "Glória da casa, de 0 a 10: a fama do nome em Rokugan"+(S.infame?" (infame: pelo medo, não pelo respeito)":"")+". Começo "+gloriaInicial().toFixed(1)+" (idade, origem e eventos), Conquistas "+gloriaConquistas().toFixed(1)+", feitos registrados "+gloriaRegistroSoma().toFixed(1)+". Invocar o nome da casa num teste social: "+raisesNomeCasa()+" Raise"+(raisesNomeCasa()===1?"":"s")+" grátis, uma vez por sessão. Glória 5+: escolas formam +1 aluno. Glória 4+: a casa pode receber uma família vassala. Samurai com Glória 2 acima da casa puxam a casa +0,1 por estação; um ano sem feitos tira 0,1.";
+  if(k==="renda")return "Riqueza que entra a cada estação e repõe o tesouro: "+rendaPartes().map(([l,v])=>l+" "+(v>=0?"+":"")+v).join(", ")+" = "+rendaBase()+" por estação, vezes a estação (Primavera e Verão ×1, Outono ×2 pela colheita, Inverno ×½). Nesta estação: "+rendaEstacao()+". Só repõe o que foi gasto: o tesouro não passa do normal pela renda.";
+  if(k==="dojo")return "Quantos samurai as escolas da família formam por estação. Cada escola fundada conta pelo seu Anel, Nível menos 3 (de 0 a 6): Dojo Bushi pela Autoridade, Salão Cortesão pela Influência, Shoin Shugenja pelo Vazio. Agora: "+escolasResumoTxt()+".";
   if(k==="equilibrio")return "Raises que um shugenja da família ganha ao conjurar para ajudar a casa, dentro do território. Negativo vira dificuldade: os kami estão incomodados. Pelo Nível do Vazio: 0 a 2, −2; 3 e 4, −1; 5, 0; 6 e 7, +1; 8, +2; 9 e 10, +3. A família está no Nível "+n+"."+(gracaKami()?" A graça dos kami na Reserva soma "+(gracaKami()>0?"+":"")+gracaKami()+".":"");
   if(k==="augurio"){const a=augurioKami();return "Como os kami veem a família, pelo Nível do Vazio ("+n+"). "+AUGURIO_TEXTO[a]+" Escala: Nível 3 e 4 Sussurros; 5 e 6 Sensações; 7 Fragmentos; 8 Enigmas; 9 Visão; 10 Comunicação.";}
   if(k==="tecnica")return "O dojo ensina até onde vai o samurai vivo de maior Rank da família: é a técnica dele que os alunos aprendem. Sem ninguém formado, o dojo não tem o que ensinar.";
@@ -2407,7 +2535,9 @@ function explicacaoDerivado(k){
 }
 let derivadoAberto="";
 function toggleDerivado(k){derivadoAberto=derivadoAberto===k?"":k;renderResumo();renderMeters();}
-function dojo(){return alunosPorNivel(nivelAttr("vazio"));}
+/* 2026-11: um Dojo só. Os alunos vêm das escolas fundadas, cada uma pelo seu Anel. */
+function dojo(){return ESCOLA_ORDEM.reduce((s,t)=>s+alunosEscola(t),0);}
+function escolasResumoTxt(){const a=ESCOLA_ORDEM.filter(t=>S.escolas[t]&&S.escolas[t].ativa);return a.length?a.map(t=>ESCOLA_TIPOS[t].nome+" "+alunosEscola(t)).join(" · "):"sem escola";}
 /* Quem hoje "puxa" o ensino do dojo: o samurai vivo de maior Rank da família — é a técnica dele
    que define o teto do que o dojo consegue ensinar (Rank de personagem, não Insight bruto). */
 function personagemMaisGraduado(){
@@ -2619,14 +2749,15 @@ function rolarTesteFamilia(){
   const attr=testeFam.attr,n=nivelAttr(attr),l=(ATRIBUTOS.find(a=>a[0]===attr)||[attr,attr])[1];
   const rec=Math.min(testeFam.recursos,maxRecursosTeste(attr));
   const ap=testeFam.apoio;
-  const x=Math.max(1,n)+rec+(ap?1:0),y=Math.max(1,n)+(ap==="k1"?1:0);
+  const pv=testeFam.pv&&gastarPVFamilia()?1:0;testeFam.pv=false;
+  const x=Math.max(1,n)+rec+(ap?1:0)+pv,y=Math.max(1,n)+(ap==="k1"?1:0)+pv;
   const favor=favorDasFortunas();
   const graca=gracaKami();
   const tn=testeFam.tn+(favor<0?5*(-favor):0)+(graca<0?5*(-graca):0);
   const r=rolarAnelL5R(x,y,0);
   const margem=r.total-tn,ok=margem>=0;
   const raises=ok?Math.floor(margem/5)+Math.max(0,favor)+Math.max(0,graca):0;
-  if(rec>0){const falta=consumirReserva(attr,5*rec);if(falta>0)criarLote(attr,-falta,4,"recursos gastos num Teste da Família");}
+  if(rec>0){if(attr==="riqueza")gastarRiqueza(5*rec);else{const falta=consumirReserva(attr,5*rec);if(falta>0)criarLote(attr,-falta,4,"recursos gastos num Teste da Família");}}
   testeFam.ultimo={attr,n,x,y,tn,total:r.total,ok,margem,raises,rec,dados:r.dados};
   testeFam.recursos=0;
   feedPush("Teste da Família — "+l+" (Nível "+n+", "+x+"k"+y+(rec?", gastou "+(5*rec)+" de "+l:"")+") contra TN "+tn+": "+r.total+", "+
@@ -2653,6 +2784,9 @@ function prazoLoteTxt(l){if(l.vence==null)return"até gastar";const ult=l.vence-
 /* d estações a partir da próxima (o resto da estação atual vem de brinde). */
 function criarLote(attr,valor,d,motivo,extra){
   valor=Math.round(Number(valor)||0);if(!valor)return null;
+  if(attr==="riqueza"&&!d&&valor>0){S.riquezaGasta=(Number(S.riquezaGasta)||0)-valor;
+    if(extra&&extra.origemEvento){S.caixaOrigem=S.caixaOrigem||{};S.caixaOrigem[extra.origemEvento]=(S.caixaOrigem[extra.origemEvento]||0)+valor;}
+    return null;}
   S.reservas=S.reservas||[];
   const l=Object.assign({id:uid(),attr,valor,motivo:motivo||"",vence:d?estacaoAbs()+1+d:null},extra||{});
   S.reservas.push(l);return l;
@@ -2713,11 +2847,12 @@ function investir(attr,via){
   if(!podeInvestir(attr,via)){feedPush("Disponível insuficiente para investir em "+rotuloAttr(attr)+".");salvar();render();return;}
   const fonte=via?"riqueza":attr,custo=custoInvestir(attr,via),dur=duracaoInvestir(attr);
   /* paga primeiro com os ganhos temporários (gastos de vez); o resto fica preso na obra */
-  const falta=consumirReserva(fonte,custo);
+  let falta;
+  if(fonte==="riqueza"){gastarRiqueza(custo);falta=0;}else falta=consumirReserva(fonte,custo);
   S.investimentos=S.investimentos||[];
   S.investimentos.push({id:uid(),attr,fonte,custo,deTemporarios:custo-falta,comprometido:falta,inicio:estacaoAbs(),dur});
-  feedPush("Investimento começou: "+rotuloAttr(attr)+" +1, custa "+custo+" de "+rotuloAttr(fonte)+
-    (custo-falta?" ("+(custo-falta)+" gastos dos ganhos temporários"+(falta?", "+falta+" presos no disponível até a obra ficar pronta":"")+")":", presos no disponível até a obra ficar pronta")+"; fica pronto em "+dur+" estações.");
+  feedPush("Investimento começou: "+rotuloAttr(attr)+" +1, custa "+custo+" de "+rotuloAttr(fonte)+(fonte==="riqueza"?" (gastos do tesouro)":
+    (custo-falta?" ("+(custo-falta)+" gastos dos ganhos temporários"+(falta?", "+falta+" presos no disponível até a obra ficar pronta":"")+")":", presos no disponível até a obra ficar pronta"))+"; fica pronto em "+dur+" estações.");
   salvar();render();
 }
 function progressoInvestimento(i){return Math.max(0,Math.min(i.dur,estacaoAbs()-i.inicio));}
@@ -2725,8 +2860,8 @@ function cancelarInvestimento(id){
   if(bloqueadoLeitura())return;
   const i=(S.investimentos||[]).find(x=>x.id===id);if(!i)return;
   S.investimentos=S.investimentos.filter(x=>x.id!==id);
-  const volta=Math.floor((i.deTemporarios!=null?i.deTemporarios:i.custo)/2);
-  if(volta)criarLote(i.fonte,volta,0,"metade de um investimento cancelado");
+  const volta=Math.floor((i.fonte==="riqueza"?i.custo:(i.deTemporarios!=null?i.deTemporarios:i.custo))/2);
+  if(volta){if(i.fonte==="riqueza")S.riquezaGasta=(Number(S.riquezaGasta)||0)-volta;else criarLote(i.fonte,volta,0,"metade de um investimento cancelado");}
   feedPush("Investimento em "+rotuloAttr(i.attr)+" cancelado."+(i.comprometido?" O disponível preso volta.":"")+(volta?" Voltam "+volta+" de "+rotuloAttr(i.fonte)+" do que foi gasto.":""));
   salvar();render();
 }
@@ -2800,12 +2935,14 @@ function grauFinal(a){const g=a.grauMestre!=null?a.grauMestre:grauDoTeste(a.rol)
 function rotuloGrau(g){return(GRAUS_ACONT.find(x=>x[0]===g)||[g,String(g)])[1];}
 function tnManutencao(attr){return 5*nivelAttr(attr)+5+5*Math.ceil(sobrecarga(attr)/10);}
 /* Rola o Anel do acontecimento. Só mostra; não aplica nada. */
-function rolarAcontecimento(c){
-  const n=nivelAttr(c.anel),tn=tnManutencao(c.anel),graca=gracaKami();
-  const tnF=tn+(graca<0?5*(-graca):0);
-  const r=rolarAnelL5R(Math.max(1,n),Math.max(1,n),0),m=r.total-tnF;
-  const raises=m>=0?Math.floor(m/5)+Math.max(0,graca):0;
-  return{n,tn:tnF,total:r.total,margem:m,raises,dados:r.dados};
+function rolarAcontecimento(c,comPV){
+  const n=nivelAttr(c.anel),tn=tnManutencao(c.anel),graca=gracaKami(),favor=favorDasFortunas();
+  const tnF=tn+(graca<0?5*(-graca):0)+(favor<0?5*(-favor):0);
+  const pv=comPV&&gastarPVFamilia()?1:0;
+  const x=Math.max(1,n)+pv,y=Math.max(1,n)+pv;
+  const r=rolarAnelL5R(x,y,0),m=r.total-tnF;
+  const raises=m>=0?Math.floor(m/5)+Math.max(0,graca)+Math.max(0,favor):0;
+  return{n,x,y,pv,tn:tnF,total:r.total,margem:m,raises,dados:r.dados};
 }
 /* o que cada efeito vira num grau, sem aplicar */
 function efeitosNoGrau(c,g){
@@ -2825,6 +2962,8 @@ function aplicarAcontecimento(c,g,quando,rol,extra){
     criarLote(e.a,v,e.d||0,c.nome,{acontecimento:c.id});
   });
   if(g<0&&sobrecarga(c.anel)>0){S.liberar=S.liberar||{};S.liberar[c.anel]=true;partes.push("em sobrecarga, a família precisa liberar algo de "+rotuloAttr(c.anel));}
+  const gl=GLORIA_ACONT[c.id];
+  if(gl){const mult=gl>0?multBomG(g):multRuimG(g),v=Math.round(gl*mult*10)/10;if(v){registrarGloria(v,c.nome);partes.push("Glória da casa "+(v>0?"+":"")+v.toFixed(1));}}
   const tier=rotuloGrau(g)+(extra||"");
   S.ultimoAcontecimento={id:c.id,quando:quando||nomeEstacaoAbs(estacaoAbs()),rol:rol?{n:rol.n,tn:rol.tn,total:rol.total,margem:rol.margem,raises:rol.raises,dados:rol.dados}:null,partes,tier,grau:g};
   S.historicoAcontecimentos=S.historicoAcontecimentos||[];
@@ -2849,8 +2988,8 @@ function lancarAcontecimento(){
 }
 function rolarTendencia(id){
   if(bloqueadoLeitura())return;const a=acontAberto(id),c=a&&acontecimentoInfo(a.acId);if(!c)return;
-  a.rol=rolarAcontecimento(c);a.grauMestre=null;
-  feedPush("Teste da Família para "+c.nome+" ("+rotuloAttr(c.anel)+" "+a.rol.n+"k"+a.rol.n+" contra TN "+a.rol.tn+"): "+a.rol.total+", tendência: "+rotuloGrau(grauDoTeste(a.rol)).toLowerCase()+".");
+  a.rol=rolarAcontecimento(c,a.usarPV);a.usarPV=false;a.grauMestre=null;
+  feedPush("Teste da Família para "+c.nome+" ("+rotuloAttr(c.anel)+" "+a.rol.x+"k"+a.rol.y+(a.rol.pv?", com 1 Ponto de Vazio":"")+" contra TN "+a.rol.tn+"): "+a.rol.total+", tendência: "+rotuloGrau(grauDoTeste(a.rol)).toLowerCase()+".");
   salvar();render();
 }
 function ajusteAcont(id,d){if(bloqueadoLeitura())return;const a=acontAberto(id);if(!a)return;a.grauMestre=null;a.ajuste=Math.max(-6,Math.min(6,(Number(a.ajuste)||0)+d));salvar();render();}
@@ -2881,8 +3020,14 @@ function avancarEstacao(){
   if(S.estacaoIdx===0)S.anoEstacao=(S.anoEstacao||1)+1;
   const venc=expirarLotes();
   concluirInvestimentos();
+  const obrasT=concluirObrasTropa();
+  S.pvFamiliaUsados=0;
+  const rd=receberRenda(((S.estacaoIdx||0)+3)%4); /* a renda é da estação que terminou */
   /* a estação que começa traz o seu acontecimento, em aberto: é gancho de aventura */
   const c=sortearAcontecimento(S.estacaoIdx);abrirAcontecimento(c,"estacao");
+  feedPush("Renda de "+estacao.toLowerCase()+": "+rd.renda+" de Riqueza"+(rd.repos<rd.renda?(rd.repos?" ("+rd.repos+" repuseram o tesouro; o resto não cabe)":" (o tesouro já estava cheio)"):" (repuseram o tesouro)")+".");
+  if(obrasT.length)feedPush("Tropas prontas: "+obrasT.join("; ")+".");
+  gloriaNaEstacao().forEach(m=>feedPush(m+"."));
   feedPush("Fim de "+estacao.toLowerCase()+" do ano "+ano+"."+(abertos?" "+(abertos===1?"Um acontecimento continua":abertos+" acontecimentos continuam")+" em aberto.":"")+
     " Começa "+ESTACOES[S.estacaoIdx].toLowerCase()+" com um acontecimento: "+c.nome+".");
   if(venc.length){
@@ -2958,7 +3103,8 @@ function aplicarConcessaoEvento(eventId){
   if(!e)return;
   if(e.concede&&e.concede.tipo==="terreno"){
     const c=e.concede;
-    S.terrenos.push({id:uid(),nome:c.nomeSugerido||"",terreno:c.terreno,c1:c.c1||"",c2:c.c2||"",c3:c.c3||"",c4:c.c4||"",origemEvento:eventId});
+    const t={id:uid(),nome:c.nomeSugerido||"",terreno:c.terreno,c1:c.c1||"",c2:c.c2||"",c3:c.c3||"",c4:c.c4||"",origemEvento:eventId,doado:true};
+    const xc=terrenoLinhaCalc(t);t.custoDoado=xc.custoDefesa+xc.custoTerras;S.terrenos.push(t);
     feedPush("A história trouxe consigo "+(c.nomeSugerido||"uma nova posse")+".");
   }
   const d=e.tipo==="origem"&&doacaoOrigem(eventId);
@@ -2983,6 +3129,7 @@ function removerConcessaoEvento(eventId){
     if(ficam.length)feedPush(ficam.map(p=>p.nome).join(", ")+(ficam.length===1?" já tinha ficha e ficou":" já tinham ficha e ficaram")+", agora pagando Influência.");
   }
   if((S.reservas||[]).some(l=>l.origemEvento===eventId))S.reservas=S.reservas.filter(l=>l.origemEvento!==eventId);
+  if(S.caixaOrigem&&S.caixaOrigem[eventId]){S.riquezaGasta=(Number(S.riquezaGasta)||0)+S.caixaOrigem[eventId];delete S.caixaOrigem[eventId];}
 }
 
 function addPersonagem(){if(bloqueadoLeitura())return;if(bloqueadoSobrecarga("influencia","um personagem novo"))return;S.personagens.push(fichaBase({id:uid(),nome:"Novo personagem",categoria:"",estado:"Vivo",jogador:"",experiencia:"",honra:0,notas:"",cla4e:"",familia4e:"",escola4e:""}));salvar();render();}
@@ -3056,7 +3203,7 @@ function addUnidadeBatalha(lado,tropaId){
   const base=t?JSON.parse(JSON.stringify(t)):novaTropa(lado==="inimiga"?"ashigaru":"ashigaru");
   const u={id:uid(),lado:lado||"familia",tropaId:t?t.id:null,nome:t?(t.local||""):"",
     tipo:base.tipo,tamanho:base.tamanho||"media",clan:t?(base.clan||""):"",treino:Number(base.treino)||1,armadura:base.armadura,
-    equipamento:base.equipamento||[],veterana:!!base.veterana,taisaId:t?(base.taisaId||""):"",taisaNome:"",taisaBattle:2,taisaAnel:2,
+    equipamento:base.equipamento||[],aneisExtra:base.aneisExtra?JSON.parse(JSON.stringify(base.aneisExtra)):{},veterana:!!base.veterana,taisaId:t?(base.taisaId||""):"",taisaNome:"",taisaBattle:2,taisaAnel:2,
     homensMax:Number(base.homens)||tropaTam(base).max,golpes:0,moral:0,desertores:0,vp:0,postura:"ataque",ini:null,
     defTotalBonus:0,tnExtra:0,reacao:"",notas:""};
   u.vp=fichaUnidade(u,b).vpMax;
@@ -3477,7 +3624,8 @@ function encerrarBatalha(){if(bloqueadoLeitura())return;if(!S.batalhaAtual)retur
   });
   const base=RESULTADO_BATALHA_CONQUISTA[b.resultado]||RESULTADO_BATALHA_CONQUISTA.empate;
   S.conquistas=S.conquistas||[];
-  S.conquistas.push({id:uid(),titulo:base.titulo+(b.nome?(" — "+b.nome):""),itens:base.itens.map(it=>({id:uid(),attr:it.attr,delta:it.delta}))});
+  S.conquistas.push({id:uid(),titulo:base.titulo+(b.nome?(" — "+b.nome):""),itens:base.itens.map(it=>({id:uid(),attr:it.attr,delta:it.delta})),gloria:GLORIA_BATALHA[b.resultado]||0});
+  if((GLORIA_BATALHA[b.resultado]||0)>0)S.gloriaUltimoGanho=estacaoAbs();
   S.batalhas=S.batalhas||[];S.batalhas.unshift(b);
   feedPush("Batalha encerrada ("+base.titulo+"): "+(b.nome||"sem nome")+(b.desfecho?(" — "+b.desfecho):"")+"."+(voltas.length?" Tropas de volta: "+voltas.join("; ")+".":""));
   S.batalhaAtual=null;batUI={};salvar();render();}
@@ -3537,7 +3685,7 @@ function renderClas(){
 const METER_INFO={
   fortunas:"Soma das curvas de Autoridade, Domínio e Vazio, mais a Fortuna de manutenção dos terrenos e tropas e o bônus de personagens com título ou posição — mede o prestígio geral da família.",
   favor:"Regra de mesa: escala com o valor atual de Fortunas. Este número é o Raise bônus que qualquer membro da família ganha em testes sociais dentro do próprio território, em ações que beneficiem diretamente a família. Fortunas muito baixas viram desfavor de verdade (número negativo) — o mesmo valor entra como dificuldade extra nesses testes.",
-  dojo:"Quantos samurai o dojo da família forma de fato a cada estação, de acordo com o Vazio alcançado — retidão e devoção atraindo quem quer aprender. Não é mais um Rank abstrato, é gente formada.",
+  dojo:"Quantos samurai as escolas fundadas formam a cada estação, cada uma pelo seu Anel. Antes: quantos samurai o dojo da família forma de fato a cada estação, de acordo com o Vazio alcançado — retidão e devoção atraindo quem quer aprender. Não é mais um Rank abstrato, é gente formada.",
   tecnicaDojo:"O dojo ensina até onde vai o samurai mais graduado e vivo da família — é ele (ou ela) quem carrega a técnica de Rank mais alto e a repassa aos demais. Sem ninguém formado ainda, o dojo não tem o que ensinar.",
   equilibrio:"Regra de mesa: este número é o Raise bônus (pode passar de +1) que um shugenja da família ganha ao conjurar um encanto que ajude a família, desde que esteja dentro do próprio território — escala direto com o Vazio da família (retidão e devoção como uma só coisa). Se o valor for negativo, o mesmo número vira dificuldade extra: os kami estão incomodados.",
   augurio:"Um presságio sobre como os kami veem o Vazio atual da família, de maus agouros a sinais muito favoráveis.",
@@ -3561,7 +3709,7 @@ function renderMeters(){
   document.getElementById("meters").innerHTML=
     linha("Fortunas",f.toFixed(0),METER_INFO.fortunas)+
     linha("Favor das Fortunas",favorVal,METER_INFO.favor,favorCls)+
-    linha("Dojo — alunos por temporada",dojo(),METER_INFO.dojo)+
+    linha("Escolas — alunos por estação",escolasResumoTxt(),METER_INFO.dojo,"small")+
     linha("Técnica mais alta do Dojo",tecVal,METER_INFO.tecnicaDojo,"small")+
     linha("Equilíbrio Espiritual",eqVal,METER_INFO.equilibrio,eqCls)+
     linha("Augúrio dos Kami",augurioKami()||"silêncio",METER_INFO.augurio,"small")+
@@ -3624,9 +3772,13 @@ function renderResumo(){
   document.getElementById("resumoVals").innerHTML=
     bt("fortunas","Fortunas <b>"+f.toFixed(0)+"</b>")+
     bt("favor","Favor <b class=\""+cls(fav)+"\">"+(fav>0?"+":"")+fav+"</b>")+
-    bt("dojo","Dojo <b>"+dojo()+"</b> por estação")+
+    bt("dojo",ESCOLA_ORDEM.some(t=>S.escolas[t]&&S.escolas[t].ativa)?"Escolas <b>"+dojo()+"</b> alunos por estação":"Escolas <b>nenhuma</b>")+
     bt("equilibrio","Equilíbrio <b class=\""+cls(eq)+"\">"+(eq>0?"+":"")+eq+"</b>")+
     bt("augurio","Augúrio <b>"+(augurioKami()||"silêncio")+"</b>")+
+    bt("honra","Honra <b>"+(honraCasa()==null?"—":honraCasa().toFixed(1))+"</b>")+
+    bt("gloria","Glória <b"+(S.infame?" class=\"bad\"":"")+">"+gloriaCasa().toFixed(1)+"</b>")+
+    bt("vazio","Pontos de Vazio <b>"+pvFamiliaRestantes()+"</b>/"+pvFamiliaMax())+
+    bt("renda","Renda <b>"+rendaEstacao()+"</b> de Riqueza")+
     (derivadoAberto?"<div class=\"derivadoexp\">"+esc(explicacaoDerivado(derivadoAberto))+"</div>":"");
   const al=[];
   ATRIBUTOS.forEach(([k,l])=>{const sc=sobrecarga(k);if(sc>0)al.push(l+" em sobrecarga de "+sc.toFixed(0)+(S.liberar&&S.liberar[k]?": falhou no teste da estação e precisa liberar algo":": nada novo deste pool e teste da estação mais difícil"));});
@@ -3656,9 +3808,9 @@ function htmlAcontAberto(a){
     "<div class=\"ae\">Efeito cheio: "+esc(cheio)+". Anel ligado: "+rotuloAttr(c.anel)+".</div>";
   /* 1. tendência */
   h+="<div class=\"apasso\"><span class=\"cmdnum\">1</span><div class=\"cmdcorpo\"><div class=\"cmdrot\">Teste da Família <small>a tendência, se o Mestre quiser rolar</small></div>";
-  if(a.rol)h+="<div class=\"ar\">"+rotuloAttr(c.anel)+" "+a.rol.n+"k"+a.rol.n+": <b>"+a.rol.total+"</b> contra TN "+a.rol.tn+" · <b class=\""+(a.rol.margem>=0?"good":"bad")+"\">"+esc(rotuloGrau(gT))+"</b>"+
+  if(a.rol)h+="<div class=\"ar\">"+rotuloAttr(c.anel)+" "+(a.rol.x||a.rol.n)+"k"+(a.rol.y||a.rol.n)+": <b>"+a.rol.total+"</b> contra TN "+a.rol.tn+" · <b class=\""+(a.rol.margem>=0?"good":"bad")+"\">"+esc(rotuloGrau(gT))+"</b>"+
     "<div class=\"dados\">"+(a.rol.dados||[]).map(d=>"<span class=\""+(d.mantido?"k":"")+"\">"+d.chain.join("+")+"</span>").join("")+"</div></div>";
-  h+="<div class=\"uacoes so-mestre\"><button class=\"ghost\" onclick=\"rolarTendencia('"+a.id+"')\">"+(a.rol?"rolar de novo":"rolar "+rotuloAttr(c.anel)+" "+Math.max(1,nivelAttr(c.anel))+"k"+Math.max(1,nivelAttr(c.anel))+" contra TN "+tnManutencao(c.anel))+"</button></div></div></div>";
+  h+="<div class=\"uacoes so-mestre\">"+(pvFamiliaRestantes()?"<label class=\"tag\" data-dica=\"Ponto de Vazio da família: +1k1 nesta rolagem.\"><input type=\"checkbox\" "+(a.usarPV?"checked":"")+" onchange=\"acontAberto('"+a.id+"').usarPV=this.checked\"> +1k1 (Ponto de Vazio, "+pvFamiliaRestantes()+")</label>":"")+"<button class=\"ghost\" onclick=\"rolarTendencia('"+a.id+"')\">"+(a.rol?"rolar de novo":"rolar "+rotuloAttr(c.anel)+" "+Math.max(1,nivelAttr(c.anel))+"k"+Math.max(1,nivelAttr(c.anel))+" contra TN "+tnManutencao(c.anel))+"</button></div></div></div>";
   /* 2. jogadores */
   h+="<div class=\"apasso\"><span class=\"cmdnum\">2</span><div class=\"cmdcorpo\"><div class=\"cmdrot\">A aventura <small>o que os jogadores fizeram</small></div>"+
     "<div class=\"uacoes\"><span class=\"tag\" data-dica=\"Cada sucesso dos jogadores que mexe na situação sobe um passo; cada fracasso desce um. Dois passos acima de Falhou é Passou com 1 Raise.\">ações dos jogadores</span>"+
@@ -3704,8 +3856,10 @@ function renderEstacoes(){
       "<button class=\"ghost del so-mestre\" title=\"cancelar (volta metade)\" onclick=\"cancelarInvestimento('"+i.id+"')\">✕</button></div>";}).join("");
   const inv=ATRIBUTOS.map(([k,l])=>{
     const c=custoInvestir(k,false),cr=custoInvestir(k,true),tem=reservaPositiva(k),ocup=investimentoDe(k);
-    const b1=ocup?"<span class=\"tag\">em andamento</span>":(k==="vazio"?"<span class=\"tag\">paga só via Riqueza</span>":"<button class=\"ghost\" "+(podeInvestir(k,false)?"":"disabled")+" onclick=\"investir('"+k+"',false)\">+1 por "+c+" de "+l+"</button>");
-    const b2=ocup||k==="riqueza"?"":"<button class=\"ghost\" "+(podeInvestir(k,true)?"":"disabled")+" onclick=\"investir('"+k+"',true)\">+1 por "+cr+" de Riqueza</button>";
+    const prev=(fonte,custo)=>{if(fonte==="riqueza")return l+" +1: custa "+custo+" de Riqueza, gastos do tesouro (a renda das estações repõe). Pronto em "+nomeEstacaoAbs(estacaoAbs()+duracaoInvestir(k))+"."+(poolRestante("riqueza")<custo?" Falta Riqueza: "+poolRestante("riqueza").toFixed(0)+" de "+custo+".":"");
+      const t=Math.min(reservaPositiva(fonte),custo),pr=custo-t;return l+" +1: custa "+custo+" de "+rotuloAttr(fonte)+". "+(t?t+" saem dos ganhos temporários (gastos)"+(pr?" e ":""):"")+(pr?pr+" ficam presos no disponível por "+duracaoInvestir(k)+" estações e depois voltam":"")+". Pronto em "+nomeEstacaoAbs(estacaoAbs()+duracaoInvestir(k))+"."+(poolRestante(fonte)<custo?" Falta disponível: "+poolRestante(fonte).toFixed(0)+" de "+custo+".":"");};
+    const b1=ocup?"<span class=\"tag\">em andamento</span>":(k==="vazio"?"<span class=\"tag\">paga só via Riqueza</span>":"<button class=\"ghost\" "+(podeInvestir(k,false)?"":"disabled")+" data-dica=\""+esc(prev(k,c))+"\" onclick=\"investir('"+k+"',false)\">+1 por "+c+" de "+l+"</button>");
+    const b2=ocup||k==="riqueza"?"":"<button class=\"ghost\" "+(podeInvestir(k,true)?"":"disabled")+" data-dica=\""+esc(prev("riqueza",cr))+"\" onclick=\"investir('"+k+"',true)\">+1 por "+cr+" de Riqueza</button>";
     return "<div class=\"invrow\"><span class=\"il\">"+l+" <small>Nível "+nivelAttr(k)+" · "+duracaoInvestir(k)+" estações"+(k!=="vazio"?" · disponível "+poolRestante(k).toFixed(0):"")+(S.investido&&S.investido[k]?" · já investido +"+S.investido[k]:"")+"</small></span>"+b1+b2+"</div>";
   }).join("");
   document.getElementById("estInvest").innerHTML=(and?"<div class=\"obras\">"+and+"</div>":"<div class=\"linha-vazia\">Nenhum investimento em andamento.</div>")+
@@ -3731,6 +3885,62 @@ function renderEstacoes(){
   const n=(S.acontAbertos||[]).length;
   const tag=document.getElementById("tabEstacoesCount");if(tag)tag.textContent=n?"("+n+")":"";
 }
+/* ============ GLÓRIA DA CASA ============
+   2026-11-05 (Thiago). A fama da casa em Rokugan, de 0 a 10, na escala da Glória dos
+   personagens. Separada da Honra (conduta). Toda família samurai começa com pouca: 1 numa
+   Nascente, até 2,5 numa Milenar, mais o que a origem e os eventos históricos deram.
+   Depois, sobe e desce pelos feitos: Conquistas do Mestre, batalhas, acontecimentos de fama, e
+   devagar pelos samurai da casa que ficam famosos. Fama que não se renova se apaga: −0,1 por
+   ano sem nenhum ganho.
+   Na aventura: invocar o nome da casa dá Raises grátis num teste social (Glória ÷ 3, até 3);
+   com Glória 5+, as escolas formam +1 aluno; conceder uma família vassala pede Glória 4+. */
+const GLORIA_IDADE={nascente:1,recente:1.2,jovem:1.5,estabelecida:1.8,antiga:2,"anciã":2.2,milenar:2.5};
+const GLORIA_EVENTO={
+ fundacao_decreto:1,recompensa_militar:1,ramo_elevado:0.5,ascensao_heroi:1.5,fundacao_religiosa:0.5,funcao_administrativa:0,adocao_familia:0,
+ usurpacao_terras:-0.5,mercadores_nome:-0.5,ronin_elevados:0,casa_caida:0.5,linhagem_primeiros:1.5,exilados_cla:-0.5,guardioes_fronteira:0.5,escolhidos_kami:1,uniao_duas_casas:0.5,
+ terras_conflito:0.5,alianca_casamento:0.3,vitoria_torneio:1,refem_prestigio:0.5,rivalidade_juramentada:0.3,artesao_renomado:0.5,escola_artistica:0.5,construcao_fortaleza:0.3,
+ magistrado_renome:0.5,corrupcao_escandalo:-1,gloria_batalha:1,derrota_marcante:-0.5,intervencao_senhor:-0.3,guerra_prolongada:0.3,isolamento_deliberado:-0.5,tradicao_marcial:0.5,
+ figura_espiritual:0.5,perda_territorio:-0.3,fortaleza_cedida_cla:0.5,dojo_renomado:0.5,corte_inverno:0.5,defesa_gloriosa:1,herdeiro_desonrado:-0.5,traicao_vassalo:-0.3,
+ ofensa_corte:-0.5,pacto_ronin:-0.3,casamento_abaixo:-0.3,contrabando_gaijin:-0.3,duelo_morte:0.5,chantagem:-0.3
+};
+const GLORIA_BATALHA={vitoria:0.3,empate:0.1,derrota:-0.2};
+const GLORIA_ACONT={torneio_verao:0.2,favor_daimyo:0.1,intriga_corte:-0.2,saque_guerra:0.1,desercao:-0.1};
+function gloriaInicial(){
+  let g=GLORIA_IDADE[S.idade]||1;
+  (S.origem?[S.origem]:[]).concat(S.eventos||[]).forEach(id=>{g+=GLORIA_EVENTO[id]||0;});
+  return g;
+}
+function gloriaRegistroSoma(){return(S.gloriaRegistro||[]).reduce((s,x)=>s+(Number(x.valor)||0),0);}
+function gloriaConquistas(){return(S.conquistas||[]).reduce((s,c)=>s+(Number(c.gloria)||0),0);}
+function gloriaCasa(){return Math.max(0,Math.min(10,Math.round((gloriaInicial()+gloriaRegistroSoma()+gloriaConquistas())*10)/10));}
+function registrarGloria(valor,motivo){if(!valor)return;S.gloriaRegistro=S.gloriaRegistro||[];
+  S.gloriaRegistro.push({id:uid(),valor:Math.round(valor*10)/10,motivo,quando:nomeEstacaoAbs(estacaoAbs())});S.gloriaUltimoGanho=valor>0?estacaoAbs():S.gloriaUltimoGanho;}
+function raisesNomeCasa(){return Math.min(3,Math.floor(gloriaCasa()/3));}
+/* virada de estação: samurai famosos puxam a casa, devagar; e, no começo de cada ano, a fama
+   sem renovação cai */
+function gloriaNaEstacao(){
+  const g=gloriaCasa(),famosos=(S.personagens||[]).filter(p=>(p.estado||"Vivo")!=="Morto"&&(Number(p.gloriaRank)||0)>=g+2);
+  const msgs=[];
+  if(famosos.length){const v=Math.min(0.3,0.1*famosos.length);registrarGloria(v,"a fama de "+famosos.map(p=>p.nome||"um samurai").join(", "));msgs.push("Glória da casa +"+v.toFixed(1)+" pela fama de "+famosos.map(p=>p.nome||"um samurai").join(", "));}
+  if((S.estacaoIdx||0)===0&&g>0){const ult=S.gloriaUltimoGanho;if(ult==null||estacaoAbs()-ult>=4){registrarGloria(-0.1,"um ano sem novos feitos");msgs.push("Glória da casa −0,1: um ano sem novos feitos");}}
+  return msgs;
+}
+function addGloriaManual(){if(bloqueadoLeitura())return;const v=parseFloat(gloriaForm.valor)||0;if(!v)return;registrarGloria(v,gloriaForm.motivo||"decisão do Mestre");
+  feedPush("Glória da casa "+(v>0?"+":"")+v+": "+(gloriaForm.motivo||"decisão do Mestre")+".");gloriaForm={valor:0.2,motivo:""};salvar();render();}
+let gloriaForm={valor:0.2,motivo:""};
+function delGloria(id){if(bloqueadoLeitura())return;S.gloriaRegistro=(S.gloriaRegistro||[]).filter(x=>x.id!==id);salvar();render();}
+function setConquistaGloria(id,v){if(bloqueadoLeitura())return;const c=(S.conquistas||[]).find(x=>x.id===id);if(!c)return;c.gloria=Math.round((parseFloat(v)||0)*10)/10;if(c.gloria>0)S.gloriaUltimoGanho=estacaoAbs();salvar();render();}
+function gloriaHTML(){
+  const g=gloriaCasa(),reg=(S.gloriaRegistro||[]).slice(-8).reverse();
+  const partes=["começo ("+(IDADE_LABEL[S.idade]||"").toLowerCase()+", origem e eventos) "+gloriaInicial().toFixed(1)];
+  if(gloriaConquistas())partes.push("Conquistas "+(gloriaConquistas()>0?"+":"")+gloriaConquistas().toFixed(1));
+  if(gloriaRegistroSoma())partes.push("feitos registrados "+(gloriaRegistroSoma()>0?"+":"")+gloriaRegistroSoma().toFixed(1));
+  return "<div class=\"secao\">Glória da casa: <b>"+g.toFixed(1)+"</b>"+(S.infame?" <span class=\"tag bad\">infame</span>":"")+"</div>"+
+    "<div class=\"hint\" style=\"margin:0 0 6px\">"+esc(partes.join(" · "))+". Invocar o nome da casa num teste social vale "+raisesNomeCasa()+" Raise"+(raisesNomeCasa()===1?"":"s")+" grátis, uma vez por sessão"+(S.infame?" (pelo medo, não pelo respeito)":"")+"."+(g>=5?" As escolas formam +1 aluno.":"")+"</div>"+
+    (reg.length?"<div class=\"glorialista\">"+reg.map(x=>"<div class=\"gl\"><b class=\""+(x.valor>0?"good":"bad")+"\">"+(x.valor>0?"+":"")+x.valor.toFixed(1)+"</b> "+esc(x.motivo)+" <small>"+esc(x.quando||"")+"</small><button class=\"ghost btnicon so-mestre\" onclick=\"delGloria('"+x.id+"')\">✕</button></div>").join("")+"</div>":"")+
+    "<div class=\"tfl so-mestre\" style=\"display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px\"><input type=\"number\" step=\"0.1\" style=\"width:64px\" value=\""+gloriaForm.valor+"\" onchange=\"gloriaForm.valor=this.value\"><input placeholder=\"o feito (ou a vergonha)\" style=\"flex:1;min-width:160px\" value=\""+esc(gloriaForm.motivo)+"\" onchange=\"gloriaForm.motivo=this.value\"><button class=\"ghost\" onclick=\"addGloriaManual()\">registrar glória</button>"+
+    "<label class=\"tag\" data-dica=\"A fama da casa vem de feitos vergonhosos: o nome abre portas pelo medo, não pelo respeito.\"><input type=\"checkbox\" "+(S.infame?"checked":"")+" onchange=\"setCasa('infame',this.checked)\"> infame</label></div>";
+}
 /* ============ A CASA: RAMO, HISTÓRIA E FAMÍLIAS VASSALAS ============
    2026-11 (Thiago). Em Rokugan, a família grande (Kakita) é uma casa de vários ramos, e a família
    de vocês é um deles: uma família vassala com nome próprio. Dentro do clã, os membros usam o
@@ -3745,10 +3955,10 @@ const VASSALA_FUNCOES={
  corte:{nome:"Corte",attr:"influencia",txt:"cortesãos, correspondência e alianças"},
  terra:{nome:"Terra",attr:"dominio",txt:"administração das aldeias e dos campos"},
  comercio:{nome:"Comércio",attr:"riqueza",txt:"mercadores patronos, armazéns e contratos"},
- espiritual:{nome:"Espiritual",attr:"vazio",txt:"templos, ritos e shugenja da casa"}
+ espiritual:{nome:"Espiritual",attr:"vazio",txt:"templos, ritos e shugenja da casa (+1 Ponto de Vazio da família por estação)"}
 };
 const VASSALA_BONUS=8,VASSALA_VAZIO=3,VASSALA_CUSTO=5;
-function vassalaBonus(attr){return(S.vassalas||[]).filter(v=>(VASSALA_FUNCOES[v.funcao]||{}).attr===attr).length*(attr==="vazio"?VASSALA_VAZIO:VASSALA_BONUS);}
+function vassalaBonus(attr){if(attr==="vazio")return 0;return(S.vassalas||[]).filter(v=>(VASSALA_FUNCOES[v.funcao]||{}).attr===attr).length*(attr==="vazio"?VASSALA_VAZIO:VASSALA_BONUS);}
 function vassalasCusto(){return(S.vassalas||[]).length*VASSALA_CUSTO;}
 function familiaPrincipal(){
   if(S.familiaPrincipal)return S.familiaPrincipal;
@@ -3757,6 +3967,7 @@ function familiaPrincipal(){
 function setCasa(campo,v){if(bloqueadoLeitura())return;S[campo]=v;salvar();render();}
 function addVassala(){
   if(bloqueadoLeitura())return;
+  if(gloriaCasa()<4){feedPush("Para receber o direito de nomear uma família vassala, a casa precisa de Glória 4 ou mais (agora: "+gloriaCasa().toFixed(1)+").");salvar();render();return;}
   S.vassalas=S.vassalas||[];S.conquistas=S.conquistas||[];
   const id=uid(),cq={id:uid(),titulo:"Concessão de uma família vassala",itens:[],vassalaId:id};
   S.conquistas.push(cq);
@@ -3784,6 +3995,7 @@ function resumoCasa(){
   const vs=(S.vassalas||[]).filter(v=>v.nome);
   if(vs.length)partes.push("Famílias vassalas: "+vs.map(v=>v.nome+" ("+(VASSALA_FUNCOES[v.funcao]||{nome:""}).nome.toLowerCase()+")").join(", ")+".");
   if(S.lema)partes.push("Lema: “"+S.lema+"”.");
+  partes.push("Glória da casa: "+gloriaCasa().toFixed(1)+(S.infame?", infame":"")+".");
   return partes.join(" ");
 }
 function nomeFormalCasa(){
@@ -3802,13 +4014,16 @@ function renderCasa(){
       "<button class=\"ghost so-mestre\" onclick=\"delVassala('"+v.id+"')\" aria-label=\"remover\">✕</button></div>"+
       "<div class=\"vlinha\"><input value=\""+esc(v.daimyo||"")+"\" placeholder=\"daimyō da vassala\" onchange=\"setVassala('"+v.id+"','daimyo',this.value)\">"+
       "<input style=\"flex:2\" value=\""+esc(v.notas||"")+"\" placeholder=\"por que receberam o nome, onde vivem\" onchange=\"setVassala('"+v.id+"','notas',this.value)\"></div>"+
-      "<div class=\"vef\">"+esc(f.txt)+": "+(f.attr==="vazio"?"+"+VASSALA_VAZIO+" no Vazio":"+"+VASSALA_BONUS+" no disponível de "+rotuloAttr(f.attr))+", +1 de Fortuna, −"+VASSALA_CUSTO+" de Influência para manter a lealdade."+(v.quando?" Concedida em "+esc(v.quando)+".":"")+"</div></div>";}).join("");
-  box.innerHTML="<div class=\"casaresumo\">"+esc(resumoCasa())+(nomeFormalCasa()?"<div class=\"formal\">"+esc(nomeFormalCasa())+"</div>":"")+"</div>"+
+      "<div class=\"vef\">"+esc(f.txt)+": "+(f.attr==="vazio"?"+1 Ponto de Vazio":"+"+VASSALA_BONUS+" no disponível de "+rotuloAttr(f.attr))+", +1 de Fortuna, −"+VASSALA_CUSTO+" de Influência para manter a lealdade."+(v.quando?" Concedida em "+esc(v.quando)+".":"")+"</div></div>";}).join("");
+  const hc=honraCasa();
+  box.innerHTML="<div class=\"casaresumo\">"+esc(resumoCasa())+(hc!=null?" Honra da casa: "+hc.toFixed(1)+".":"")+(nomeFormalCasa()?"<div class=\"formal\">"+esc(nomeFormalCasa())+"</div>":"")+"</div>"+
     "<div class=\"tlinha\" style=\"flex-wrap:wrap;gap:10px\"><label class=\"pcampo\" style=\"min-width:180px\">Família principal <select onchange=\"setCasa('familiaPrincipal',this.value)\">"+optsF+"</select></label>"+
       campo("Ramo","ramoFamiliar","ex.: descendentes do segundo filho de Kakita Yoshi",240)+"</div>"+
-    "<div class=\"tlinha\" style=\"flex-wrap:wrap;gap:10px\">"+campo("Serve a","senhor","ex.: Kakita Ryoku, daimyō da família")+campo("Sede","sede","ex.: Shiro Iwasaki, nas colinas de Kintani")+campo("Lema da casa","lema","uma frase que a casa repete")+"</div>"+
+    "<div class=\"tlinha\" style=\"flex-wrap:wrap;gap:10px\">"+campo("Serve a","senhor","ex.: Kakita Ryoku, daimyō da família")+campo("Sede","sede","ex.: Shiro Iwasaki, nas colinas de Kintani")+campo("Lema da casa","lema","uma frase que a casa repete")+
+      "<label class=\"pcampo\" style=\"width:150px\" data-dica=\"Ajuste do Mestre na Honra da casa, além da média dos personagens e da Honra queimada.\">Ajuste da Honra <input type=\"number\" step=\"0.1\" value=\""+(Number(S.honraAjuste)||0)+"\" onchange=\"setCasa('honraAjuste',parseFloat(this.value)||0)\"></label></div>"+
     "<label class=\"pcampo\" style=\"margin-top:8px\">História da casa <textarea class=\"historia\" placeholder=\"o que a família conta sobre si mesma: o fundador, os mortos honrados, as rixas, os segredos...\" onchange=\"setCasa('historia',this.value)\">"+esc(S.historia||"")+"</textarea></label>"+
-    "<div class=\"secao\">Famílias vassalas</div><div class=\"hint\" style=\"margin:0 0 6px\">Não se compram: o daimyō da família principal ou o Campeão concede o nome, como Conquista do Mestre ou na aventura. Cada uma serve numa função.</div>"+
+    gloriaHTML()+
+    "<div class=\"secao\">Famílias vassalas</div><div class=\"hint\" style=\"margin:0 0 6px\">Não se compram (e pedem Glória da casa 4 ou mais): o daimyō da família principal ou o Campeão concede o nome, como Conquista do Mestre ou na aventura. Cada uma serve numa função.</div>"+
     (vs||"<div class=\"linha-vazia\">Nenhuma ainda.</div>")+
     "<button class=\"ghost so-mestre\" style=\"margin-top:8px\" onclick=\"addVassala()\">+ conceder família vassala (Conquista)</button>";
 }
@@ -3816,7 +4031,8 @@ function renderTesteFamilia(){
   const box=document.getElementById("testeFamilia");if(!box)return;
   const t=testeFam,attr=t.attr,n=nivelAttr(attr),maxRec=maxRecursosTeste(attr),favor=favorDasFortunas();
   if(t.recursos>maxRec)t.recursos=maxRec;
-  const x=Math.max(1,n)+t.recursos+(t.apoio?1:0),y=Math.max(1,n)+(t.apoio==="k1"?1:0);
+  if(t.pv&&!pvFamiliaRestantes())t.pv=false;
+  const x=Math.max(1,n)+t.recursos+(t.apoio?1:0)+(t.pv?1:0),y=Math.max(1,n)+(t.apoio==="k1"?1:0)+(t.pv?1:0);
   const optsAttr=ATRIBUTOS.map(([k,l])=>"<option value=\""+k+"\" "+(k===attr?"selected":"")+">"+l+" · Nível "+nivelAttr(k)+"</option>").join("");
   const optsTn=TN_FAMILIA.map(([v,l])=>"<option value=\""+v+"\" "+(v===t.tn?"selected":"")+">TN "+v+" · "+l+"</option>").join("");
   const rec=POOL_ATTRS[attr]?"<span class=\"tag\">gastar <input type=\"number\" min=\"0\" max=\""+maxRec+"\" value=\""+t.recursos+"\" style=\"width:44px\" onchange=\"setTesteFam('recursos',this.value)\"> × 5 (+1k0 cada, até "+maxRec+")</span>":"";
@@ -3838,6 +4054,7 @@ function renderTesteFamilia(){
   box.innerHTML="<div class=\"tag\" style=\"font-size:11px\">Teste da Família</div>"+
     "<div class=\"tfl\"><select onchange=\"setTesteFam('attr',this.value)\">"+optsAttr+"</select>"+
     "<select onchange=\"setTesteFam('tn',this.value)\">"+optsTn+"</select>"+ap+rec+
+    "<label class=\"tag\" data-dica=\"Pontos de Vazio da família: tantos quanto o Nível do Vazio, a cada estação. Cada um vale +1k1 num Teste da Família ou na tendência de um acontecimento.\"><input type=\"checkbox\" "+(t.pv?"checked":"")+" "+(pvFamiliaRestantes()?"":"disabled")+" onchange=\"setTesteFam('pv',this.checked)\"> +1k1 (Ponto de Vazio: "+pvFamiliaRestantes()+" de "+pvFamiliaMax()+")</label>"+
     "<button class=\"ghost\" onclick=\"rolarTesteFamilia()\">🎲 Rolar "+x+"k"+y+"</button></div>"+
     "<div class=\"tag\" style=\"margin-top:4px\">Nível k Nível, 10 explode"+favTxt+"</div>"+res;
 }
@@ -3852,7 +4069,7 @@ function eventoCardHTML(e,opts){
   const desc=EVENTO_DESC[e.id]||"Um capítulo da história da família, com marcas que ecoam até hoje.";
   let presente="";
   if(e.concede){const c=e.concede,x=terrenoLinhaCalc({terreno:c.terreno,c1:c.c1||"",c2:c.c2||"",c3:c.c3||"",c4:c.c4||""});
-    presente="<div class=\"gift\" title=\"o Domínio do evento já paga esse bem, que ocupa o Domínio\">🎁 concede "+esc(c.nomeSugerido||"uma posse")+" · já pago ("+(x.custoDefesa+x.custoTerras)+" de Domínio)</div>";}
+    presente="<div class=\"gift\" title=\"terra doada: não mexe no atributo nem ocupa o Domínio\">🎁 concede "+esc(c.nomeSugerido||"uma posse")+" · doada (valeria "+(x.custoDefesa+x.custoTerras)+" de Domínio)</div>";}
   const doa=e.tipo==="origem"&&doacaoOrigem(e.id);
   if(doa){
     const cont={};doa.personagens.forEach(c=>{const n=NOME_PAPEL_CURTO(c)+(/Experiente/.test(c)?" experiente":(c===DAIMYO_ORIGEM?" menor":" jovem"));cont[n]=(cont[n]||0)+1;});
@@ -3909,6 +4126,7 @@ function conquistaCardHTML(c){
     "<div style=\"display:flex;gap:8px;align-items:center;flex-wrap:wrap\">"+
       "<img class=\"carimbo\" src=\"img/carimbo.png\" alt=\"\">"+
       "<input class=\"campo-nome\" placeholder=\"o que aconteceu\" style=\"flex:2;min-width:180px\" value=\""+esc(c.titulo)+"\" onchange=\"setConquistaTitulo('"+c.id+"',this.value)\">"+
+      "<span class=\"grp\" data-dica=\"Glória da casa (0 a 10) que este feito dá ou tira. Uma vitória de batalha vale +0,3; um feito famoso, +0,5 a +1.\">Glória <input type=\"number\" step=\"0.1\" style=\"width:60px\" value=\""+(Number(c.gloria)||0)+"\" onchange=\"setConquistaGloria('"+c.id+"',this.value)\"></span>"+
       "<button class=\"ghost del\" onclick=\"delConquista('"+c.id+"')\">✕ remover</button>"+
     "</div>"+
     "<div style=\"display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;align-items:center\">"+itens+
@@ -3944,7 +4162,7 @@ function renderSacrificios(){
   const box=document.getElementById("sacrificios");
   if(!box)return;
   const total=honraSacrificadaTotal();
-  document.getElementById("sacrificiosTotal").textContent=total?("total sacrificado: "+total+" (−"+(total*5)+" na Honra)"):"nada sacrificado ainda";
+  document.getElementById("sacrificiosTotal").textContent=total?("total sacrificado: "+total+" (−"+total+" na Honra da casa)"):"nada sacrificado ainda";
   box.innerHTML=(S.sacrificios||[]).map(sacrificioLinhaHTML).join("")||"<div class=\"linha-vazia\">Nada registrado ainda.</div>";
 }
 function opcoesTerreno(sel){return TERRENOS_BASE.map(t=>"<option value=\""+t.id+"\" "+(sel===t.id?"selected":"")+">"+t.nome+"</option>").join("");}
@@ -3964,7 +4182,8 @@ function renderTerrenos(){
   const tot=terrenosTotais();
   const rows=S.terrenos.map(r=>{
     const c=terrenoLinhaCalc(r);
-    const origem=r.origemEvento?"<div class=\"fromevent\">🎁 "+esc((EVENTOS.find(e=>e.id===r.origemEvento)||{}).nome||"evento")+"</div>":"";
+    const pago=terrenoCustoPago(r);
+    const origem=r.origemEvento?"<div class=\"fromevent\">🎁 "+esc((EVENTOS.find(e=>e.id===r.origemEvento)||{}).nome||"evento")+(r.doado?" · doada: "+(pago?"ocupa só os "+pago+" acrescentados":"não ocupa Domínio"):"")+"</div>":"";
     return "<div class=\"terrainrow\">"+
       "<img class=\"tic\" src=\"img/terrenos/"+esc(r.terreno)+".png\" alt=\"\" onerror=\"this.style.visibility='hidden'\">"+
       "<div class=\"tbody\">"+
@@ -3984,7 +4203,7 @@ function renderTerrenos(){
   }).join("");
   document.getElementById("terrenosTab").innerHTML=(rows||"<div class=\"hint\">Nenhum terreno ainda.</div>")+
     "<div class=\"ledgerline\"><span class=\"lbl\"><b>Total</b></span><span class=\"fill\"></span>"+
-    "<span class=\"val small\">estrutura "+tot.custoDefesa.toFixed(0)+" + extensão "+tot.custoTerras.toFixed(0)+" = "+(tot.custoDefesa+tot.custoTerras).toFixed(0)+" de Domínio · fortuna "+tot.fortuna.toFixed(0)+"</span></div>";
+    "<span class=\"val small\">estrutura "+tot.custoDefesa.toFixed(0)+" + extensão "+tot.custoTerras.toFixed(0)+" = "+(tot.custoDefesa+tot.custoTerras).toFixed(0)+(tot.pago!==tot.custoDefesa+tot.custoTerras?" ("+tot.pago.toFixed(0)+" ocupam Domínio; o resto é doado)":"")+" de Domínio · fortuna "+tot.fortuna.toFixed(0)+"</span></div>";
 }
 function opcoesCategoria(sel){
   let out="<option value=\"\">—</option>";
@@ -4003,7 +4222,7 @@ function renderPersonagens(){
         "<input class=\"pnome\" aria-label=\"Nome\" value=\""+esc(p.nome)+"\" onchange=\"setPersonagem('"+p.id+"','nome',this.value)\">"+
         "<label class=\"pcampo\">Papel <select onchange=\"setPersonagem('"+p.id+"','categoria',this.value)\">"+opcoesCategoria(p.categoria)+"</select></label>"+
         "<div class=\"plinha\"><label class=\"pcampo\">Estado <select onchange=\"setPersonagem('"+p.id+"','estado',this.value)\">"+ESTADO_PERSONAGEM.map(e=>"<option "+(est===e?"selected":"")+">"+e+"</option>").join("")+"</select></label>"+
-          "<label class=\"pcampo curto\" title=\"Honor Rank oficial (0 a 10); soma no Vazio da família, vivo ou morto\">Honra <input type=\"number\" min=\"0\" max=\"10\" step=\"0.1\" value=\""+(Number(p.honorRank)||0).toFixed(1)+"\" onchange=\"setStatusInd('"+p.id+"','honorRank',this.value)\"></label></div>"+
+          "<label class=\"pcampo curto\" title=\"Honor Rank oficial (0 a 10). A média da Honra dos personagens vivos é a base da Honra da casa.\">Honra <input type=\"number\" min=\"0\" max=\"10\" step=\"0.1\" value=\""+(Number(p.honorRank)||0).toFixed(1)+"\" onchange=\"setStatusInd('"+p.id+"','honorRank',this.value)\"></label></div>"+
         "<div class=\"plinha\"><label class=\"pcampo\">Jogador <input value=\""+esc(p.jogador||"")+"\" placeholder=\"quem joga\" onchange=\"setPersonagem('"+p.id+"','jogador',this.value)\"></label>"+
           "<label class=\"pcampo\">Retrato <select onchange=\"setPersonagem('"+p.id+"','retrato',this.value)\">"+RETRATOS.map(r=>"<option value=\""+r[0]+"\" "+((p.retrato||"auto_h")===r[0]?"selected":"")+">"+r[1]+"</option>").join("")+"</select></label></div>"+
         "<label class=\"pcampo\">Link de imagem própria <input value=\""+esc(p.retratoUrl||"")+"\" placeholder=\"https://… (opcional)\" onchange=\"setPersonagem('"+p.id+"','retratoUrl',this.value.trim())\"></label>"+
@@ -4882,7 +5101,7 @@ function renderFichaCompleta(p){
 
   out+="<div class=\"fichapanel\">";
   out+="<h2>Honra, Glória, Status e Mancha</h2>";
-  out+="<div class=\"hint\" style=\"margin-bottom:8px\">A Honra daqui é a mesma que soma no Vazio da família — vivo ou morto, todo personagem que já vestiu o nome da casa conta.</div>";
+  out+="<div class=\"hint\" style=\"margin-bottom:8px\">A Honra daqui entra na Honra da casa: a média da Honra dos personagens vivos, mais o ajuste do Mestre, menos a Honra queimada.</div>";
   out+="<div style=\"display:flex;gap:16px;flex-wrap:wrap\">"+
     ["honorRank","gloriaRank","statusRank","taintRank"].map((k,i)=>{
       const labels=["Honra","Glória","Status","Mancha das Sombras"];
@@ -5080,7 +5299,36 @@ function opcoesDestinoConversao(origem,sel){
     return "<option value=\""+k+"\" "+(sel===k?"selected":"")+">"+l+"</option>";
   }).join("");
 }
-function renderConversoes(){
+/* ============ COMPRAR COM RIQUEZA ============
+   2026-11 (aprovado pelo Thiago): a Riqueza é a moeda. 2 de Riqueza compram 1 temporário em
+   Domínio, Influência ou Autoridade, que vale por um ano. O custo sai do disponível de Riqueza:
+   gastos do tesouro, que a renda das estações repõe. O atributo só sobe com investimento. Substitui as conversões permanentes. */
+const COMPRA_TAXA=2,COMPRA_PRAZO=4;
+const COMPRA_DESTINOS=[["autoridade","Autoridade","mercenários, armas e cavalos"],["influencia","Influência","presentes, banquetes e favores na corte"],["dominio","Domínio","mão de obra, obras e arrendamentos"]];
+let compraForm={destino:"autoridade",qtd:5};
+function setCompra(campo,v){compraForm[campo]=campo==="qtd"?Math.max(1,parseInt(v)||1):v;renderCompra();}
+function comprarComRiqueza(){
+  if(bloqueadoLeitura())return;
+  const q=Math.max(1,parseInt(compraForm.qtd)||1),custo=q*COMPRA_TAXA,dest=compraForm.destino;
+  if(poolRestante("riqueza")<custo){feedPush("Riqueza disponível insuficiente: a compra custa "+custo+".");salvar();render();return;}
+  gastarRiqueza(custo);
+  const d=(COMPRA_DESTINOS.find(x=>x[0]===dest)||["","",""])[2];
+  criarLote(dest,q,COMPRA_PRAZO,"comprado com Riqueza ("+d+")");
+  feedPush("Compra: "+custo+" de Riqueza por "+rotuloAttr(dest)+" +"+q+" por um ano.");
+  salvar();render();
+}
+function renderCompra(){
+  const box=document.getElementById("compraBox");if(!box)return;
+  const q=Math.max(1,parseInt(compraForm.qtd)||1),custo=q*COMPRA_TAXA,disp=poolRestante("riqueza");
+  box.innerHTML="<div class=\"saldos\">"+saldoChip("riqueza")+"</div>"+
+    "<div class=\"tfl\" style=\"display:flex;gap:8px;flex-wrap:wrap;align-items:center\">Comprar <input type=\"number\" min=\"1\" value=\""+q+"\" style=\"width:60px\" onchange=\"setCompra('qtd',this.value)\"> de "+
+    "<select onchange=\"setCompra('destino',this.value)\">"+COMPRA_DESTINOS.map(([k,l,d])=>"<option value=\""+k+"\" "+(compraForm.destino===k?"selected":"")+">"+l+" ("+d+")</option>").join("")+"</select>"+
+    "<button class=\"ghost\" "+(disp>=custo?"":"disabled")+" onclick=\"comprarComRiqueza()\">comprar por "+custo+" de Riqueza</button></div>"+
+    "<div class=\"hint\" style=\"margin:6px 0 0\">"+(disp>=custo?"Gasta "+custo+" de Riqueza do tesouro; "+rotuloAttr(compraForm.destino)+" +"+q+" por um ano, como temporário. A renda das estações repõe a Riqueza ("+rendaEstacao()+" nesta estação).":"A Riqueza disponível ("+disp.toFixed(0)+") não cobre "+custo+".")+
+    " O atributo não muda: para subir um atributo, use o investimento (aba Estações).</div>";
+}
+function renderConversoes(){renderCompra();}
+function renderConversoesAntigo(){
   const rows=S.conversoes.map(c=>{
     const r=CONVERSAO_REGRAS[c.origem];const taxa=r?r.taxa:"—";
     const custoTotal=c.destino?((Number(c.usos)||0)*(r?r.taxa:1)):0;
@@ -5105,6 +5353,20 @@ function resumoFicha(f){
     " · TN "+f.tn+" · Ataque "+fmtPool(f.atk)+(f.arcos?" · Disparo "+fmtPool(f.disparo):"")+" · Moral "+fmtPool(f.moralPool)+
     " · "+f.golpesNivel+" golpes/nível · Move "+f.move;
 }
+function tropaMelhorarHTML(t){
+  if(t.obra){const pg=Math.max(0,Math.min(t.obra.dur,estacaoAbs()-t.obra.inicio));
+    return "<div class=\"obra\"><div class=\"ol\"><b>"+esc(txtObraTropa(t.obra,t))+"</b> <small>em treinamento, a Autoridade já está ocupada</small></div>"+
+      "<div class=\"medidor\"><i style=\"width:"+Math.round(pg/t.obra.dur*100)+"%\"></i></div><div class=\"op\">"+pg+" de "+t.obra.dur+" estações · pronto em "+esc(nomeEstacaoAbs(t.obra.inicio+t.obra.dur))+"</div>"+
+      "<button class=\"ghost del so-mestre\" onclick=\"cancelarObraTropa('"+t.id+"')\" title=\"cancelar\">✕</button></div>";}
+  const disp=poolRestante("autoridade");
+  const bt=(tipo,anel,rot)=>{if(!obraTropaPossivel(t,tipo,anel))return"";const c=custoObraTropa(t,tipo,anel);
+    return "<button class=\"ghost\" "+(disp>=c?"":"disabled")+" data-dica=\""+esc(rot+": ocupa mais "+c+" de Autoridade a partir de agora e fica pronto em "+OBRA_TROPA_DUR[tipo]+" estação"+(OBRA_TROPA_DUR[tipo]===1?"":"s")+".")+"\" onclick=\"iniciarObraTropa('"+t.id+"','"+tipo+"'"+(anel?",'"+anel+"'":"")+")\">"+rot+" (+"+c+")</button>";};
+  const ex=t.aneisExtra||{};const an=ANEL_ORDEM.filter(k=>obraTropaPossivel(t,"anel",k));
+  return "<div class=\"tmelhora\"><span class=\"tag\">Melhorar</span>"+bt("treino",null,"Treino "+((Number(t.treino)||0)+1))+
+    (obraTropaPossivel(t,"tamanho")?bt("tamanho",null,"Tamanho "+TROPA_TAMANHOS[TAMANHO_ORDEM[TAMANHO_ORDEM.indexOf(t.tamanho||"media")+1]].nome):"")+
+    an.map(k=>bt("anel",k,"+1 "+ANEL_NOME[k])).join("")+
+    (Object.keys(ex).filter(k=>ex[k]).length?"<span class=\"tag\">já treinada em "+Object.keys(ex).filter(k=>ex[k]).map(k=>ANEL_NOME[k]).join(" e ")+"</span>":"")+"</div>";
+}
 function renderTropas(){
   document.getElementById("tropasSaldo").innerHTML=saldoChip("autoridade");
   const cards=S.tropas.map(t=>{
@@ -5128,7 +5390,8 @@ function renderTropas(){
           "<label class=\"pcampo\">Taisa <select onchange=\"setTropa('"+t.id+"','taisaId',this.value)\">"+optsPersonagens(t.taisaId,"Gunsō")+"</select></label></div>"+
         "<div class=\"tficha\">"+esc(resumoFicha(f))+(t.veterana?" · veterana":"")+"</div>"+
         "<div class=\"inv\">"+eqHtml+"</div>"+
-        "<div class=\"tcusto\" title=\""+esc(custoTip)+"\">Compromete <b>"+c.custo+"</b> de Autoridade"+(manut?"; manutenção "+(manut>0?"+":"")+manut+" no total":"")+"</div>"+
+        tropaMelhorarHTML(t)+
+        "<div class=\"tcusto\" title=\""+esc(custoTip)+"\">Compromete <b>"+tropaLinhaCalc(tropaComObra(t)).custo+"</b> de Autoridade"+(manut?"; manutenção "+(manut>0?"+":"")+manut+" no total":"")+"</div>"+
       "</div></div>";
   }).join("");
   document.getElementById("tropasTab").innerHTML=(cards||"<div class=\"hint\">Nenhuma tropa ainda. Recrutar compromete Autoridade.</div>")+

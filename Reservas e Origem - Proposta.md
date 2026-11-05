@@ -126,7 +126,7 @@ Trocar a origem tira os que ninguém mexeu. Os que já têm nome ou jogador fica
 | Escolhidos pelos Kami | 2 Shugenja | |
 | União de Duas Casas | Cortesão, Bushi, Shugenja | Influência +8 temporário por 2 anos (atributo +4) |
 
-As três adversas dão algo bom (terra ou samurais) e cobram um lote negativo. As terras novas são pagas pelo Domínio da própria origem, como as concessões que já existiam: a origem sobe o Domínio no custo da terra, e a terra ocupa esse Domínio.
+As três adversas dão algo bom (terra ou samurais) e cobram um lote negativo. As terras são **doadas**: não mexem no atributo nem ocupam Domínio (ver seção 6).
 
 ## 5. Fichas que já existem
 
@@ -144,3 +144,22 @@ Numa família nova, sorteada, o Nível médio ficou igual (4,0 na Nascente, 4,8 
 ## Retratos por tipo de samurai
 
 Os prompts para gerar no Copilot estão em `Prompts de retratos.md`, com o nome de arquivo de cada um.
+
+---
+
+## 6. Terra doada e peso da origem (2026-11-04)
+
+O Thiago sorteou uma família Antiga com Domínio 100: a Fortaleza Cedida pelo Clã somava +34 de Domínio só para pagar o Kyuden que ela dava. Corrigido assim:
+
+- **A terra dada pela história é doada.** Os eventos e origens que concedem terra perderam o Domínio que pagava por ela (a Fortaleza Cedida ficou com Inf −5, Aut +8, Vaz +2), e a terra não ocupa Domínio. Se o Mestre acrescentar algo nela depois, só o acréscimo ocupa.
+- **O Domínio da idade ficou quase plano** (33 na Nascente, 31 na Milenar), porque ele caía com a idade só para compensar a terra paga.
+- **A origem pesa mais nas casas novas:** ×2 na Nascente, ×1,5 na Recente, ×1,25 na Jovem. Uma casa nova ainda é quase só a história da fundação, e os Anéis dela se separam mais.
+
+| Idade | Domínio p50 / p90, antes | depois | Algum atributo ≥ 80, antes | depois | Algum = 100, antes | depois |
+|---|---|---|---|---|---|---|
+| Nascente | 43 / 57 | 38 / 53 | 0% | 0% | 0% | 0% |
+| Estabelecida | 58 / 88 | 38 / 52 | 20% | 5% | 4% | 0% |
+| Antiga | 59 / 90 | 37 / 52 | 27% | 8% | 5% | 0% |
+| Milenar | 68 / 105 | 36 / 51 | 53% | 25% | 16% | 2% |
+
+Nas fichas que já existiam: a terra de evento vira doada (o disponível fica igual; o total de Domínio cai o que a terra custava), e o peso da origem não muda nada nelas (a diferença vai para o ajuste).

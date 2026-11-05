@@ -25,7 +25,7 @@ Todas valem o mesmo (+5 ou +6 no líquido), como um evento favorável. A diferen
 |---|---|---|---|
 | Fundação por Decreto Imperial | Corte | Inf +10, Aut −6, Vaz +2 | o Trono criou a casa por decreto, e ela deve tudo à corte |
 | Recompensa por Serviço Militar | Guerra | Dom −6, Aut +10, Vaz +2 | um soldado comum ganhou nome e terras no campo de batalha |
-| Ramo Elevado de Grande Família | Corte | Inf +8, Aut −6, Vaz +3, terra paga (13 de Dom) | ramo menor de uma grande casa, elevado com uma vila de dote |
+| Ramo Elevado de Grande Família | Corte | Inf +8, Aut −6, Vaz +3, terra doada (valeria 13 de Dom) | ramo menor de uma grande casa, elevado com uma vila de dote |
 | Fundação Religiosa ou Profética | Espírito | Aut −5, Vaz +10 | um oráculo ou monge fundou a casa por visão |
 | Criação para Função Administrativa | Comércio | Riq +9, Aut +2, Vaz −5 | criada para governar um posto, um porto ou um armazém |
 | Adoção da Família | Corte | Inf +9, Aut +2, Vaz −5 | uma família de fora foi adotada pelo clã e jurou lealdade |
@@ -36,7 +36,7 @@ Todas valem o mesmo (+5 ou +6 no líquido), como um evento favorável. A diferen
 | Sobreviventes de uma Casa Caída | Espírito | Riq −6, Inf +2, Vaz +9 | o último ramo de uma família destruída refundou o nome |
 | Linhagem dos Primeiros | Espírito | Inf +4, Aut −6, Vaz +8 | descende de um companheiro dos Kami; só Antiga ou mais velha |
 | Exilados de Outro Clã | Comércio | Riq +8, Inf −6, Aut +3 | deixaram o clã de origem e foram acolhidos por este |
-| Guardiões da Fronteira | Guerra | Inf −5, Aut +8, Vaz +2, terra paga (16 de Dom) | encarregados de vigiar um passo, com uma torre nas colinas |
+| Guardiões da Fronteira | Guerra | Inf −5, Aut +8, Vaz +2, terra doada (valeria 16 de Dom) | encarregados de vigiar um passo, com uma torre nas colinas |
 | Escolhidos pelos Kami | Espírito | Dom −6, Inf +3, Vaz +9 | um shugenja de grande poder fundou a casa |
 | União de Duas Casas | Corte | Riq +3, Inf +8, Vaz −6 | duas famílias menores se fundiram por casamento |
 
@@ -46,10 +46,10 @@ A lista comum fica com 57: 29 favoráveis, 6 ambíguos, 22 adversos. Entram 21 n
 
 | Evento | Tema | Tipo | Modificadores | Ideia |
 |---|---|---|---|---|
-| Rota Comercial Cedida | Comércio | favorável | Riq +9, Inf +2, Vaz −6, terra paga (13 de Dom) | uma estrada de comércio passa a ser da família |
+| Rota Comercial Cedida | Comércio | favorável | Riq +9, Inf +2, Vaz −6, terra doada (valeria 13 de Dom) | uma estrada de comércio passa a ser da família |
 | Dojo Renomado | Guerra | favorável | Riq −6, Aut +9, Vaz +2 | um sensei famoso escolheu a casa para ensinar |
 | Arquivo de Pergaminhos | Espírito | favorável | Inf +3, Aut −6, Vaz +8 | a família guarda uma biblioteca de textos antigos |
-| Vila Pesqueira Próspera | Terra | favorável | Riq +9, Inf −6, Aut +2, terra paga (14 de Dom) | uma aldeia de pescadores na costa entra para a família |
+| Vila Pesqueira Próspera | Terra | favorável | Riq +9, Inf −6, Aut +2, terra doada (valeria 14 de Dom) | uma aldeia de pescadores na costa entra para a família |
 | Convite à Corte de Inverno | Corte | favorável | Riq −6, Inf +10, Vaz +2 | a casa foi chamada à corte de inverno e brilhou lá |
 | Defesa Gloriosa | Guerra | favorável | Riq −6, Aut +9, Vaz +3 | a família segurou uma posição que ninguém esperava segurar |
 | Epidemia | Terra | adverso | Dom −10, Inf +2, Vaz +6 | uma peste esvaziou as aldeias |
