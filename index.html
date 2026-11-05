@@ -435,6 +435,9 @@
   .cbestado{margin-left:auto;color:var(--ink)}
   .cbfer{display:flex;gap:2px;margin:2px 0 4px} .cbfer i{flex:1;height:6px;border-radius:2px;background:var(--line)} .cbfer i.pas{background:var(--seal);opacity:.55} .cbfer i.at{background:var(--seal)}
   .cbacoes{display:flex;gap:4px;flex-wrap:wrap;align-items:center} .cbacoes button{padding:3px 8px;font-size:12px} .cbacoes input{width:64px}
+  .cbfase{background:var(--panel);border:1px solid var(--accent);border-radius:8px;padding:6px 10px;font-size:13px;margin-bottom:8px}
+  .cbrow.pedepost select{border-color:var(--accent);box-shadow:0 0 0 2px rgba(201,151,42,.25)}
+  .cbtroca{font-size:11px;color:var(--accent);font-weight:600}
   .cbdet>summary{cursor:pointer;font-size:11.5px;color:var(--muted-tx);margin-top:3px}
   .cbcurta{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;font-size:11.5px;color:var(--muted-tx)} .cbcurta label{display:flex;flex-direction:column} .cbcurta input{width:58px;padding:2px 4px}
   .shogi{display:grid;grid-template-columns:repeat(9,1fr);aspect-ratio:1;background:#e3c08a;border:3px solid #6b4a24;border-radius:4px;box-shadow:inset 0 0 30px rgba(107,74,36,.35);max-width:440px}
@@ -6380,7 +6383,10 @@ const COMBATE_PERFIS=[
  {id:"goblin",nome:"Goblin",tn:15,red:1,terra:1,ini:"3k2",ataque:"3k2",dano:"3k2"},
  {id:"oni",nome:"Oni menor",tn:20,red:8,terra:4,ini:"4k3",ataque:"6k3",dano:"6k3"}];
 let combateSel=null;
-function combate(){if(!S.combate)S.combate={rodada:1,vez:null,lista:[],log:[]};return S.combate;}
+function combate(){if(!S.combate)S.combate={rodada:1,vez:null,lista:[],log:[],fase:"posturas"};if(!S.combate.fase)S.combate.fase=S.combate.vez?"combate":"posturas";return S.combate;}
+/* 4ª ed., Livro Básico pp. 81–84: a postura é escolhida antes de rolar a Iniciativa (uma vez, no
+   começo da escaramuça); depois cada um só troca no começo do próprio turno. */
+function cbSemPostura(){return combate().lista.filter(c=>!c.fora&&!cbStats(c).postura);}
 function cbItem(id){return combate().lista.find(x=>x.id===id);}
 function cbPersonagem(c){return c.pid?S.personagens.find(p=>p.id===c.pid):null;}
 function cbLog(t){const C=combate();C.log.unshift("R"+C.rodada+" · "+t);if(C.log.length>40)C.log.pop();}
@@ -6411,6 +6417,7 @@ function cbStats(c){const p=cbPersonagem(c);
 function cbFerida(st){let i=st.feridas.findIndex(f=>st.danoAtual<=f.total);if(i<0)i=st.feridas.length-1;return{i,f:st.feridas[i]};}
 function rolarTexto(txt,extra){const m=/^(\d+)k(\d+)$/.exec(txt||"");if(!m)return null;return rolarAnelL5R(Number(m[1]),Number(m[2]),extra||0);}
 function cbRolarIni(id){if(bloqueadoLeitura())return;const C=combate();
+  if(!id&&C.fase==="posturas"){const f=cbSemPostura();if(f.length&&!confirm("Ainda sem postura: "+f.map(c=>c.nome).join(", ")+". Rolar a Iniciativa mesmo assim?"))return;C.fase="combate";cbLog("Posturas declaradas; rola-se a Iniciativa.");}
   (id?[cbItem(id)]:C.lista).forEach(c=>{if(!c)return;const st=cbStats(c);const r=rolarTexto(st.ini,st.iniExtra);if(r){c.ini=r.total;cbLog(c.nome+" rola Iniciativa "+st.ini+": "+r.total+".");}});
   if(!id){const o=cbOrdem();C.vez=o.length?o[0].id:null;}salvar();render();}
 function cbAtacar(id){const c=cbItem(id);if(!c)return;const st=cbStats(c);const r=rolarTexto(st.ataque);
@@ -6422,7 +6429,7 @@ function cbOrdem(){return combate().lista.slice().sort((a,b)=>(b.ini==null?-1:b.
 function cbProximo(){if(bloqueadoLeitura())return;const C=combate(),o=cbOrdem().filter(c=>!c.fora);if(!o.length)return;
   const i=o.findIndex(c=>c.id===C.vez);if(i<0||i===o.length-1){if(i===o.length-1){C.rodada++;cbLog("Começa a rodada "+C.rodada+".");}C.vez=o[0].id;}else C.vez=o[i+1].id;salvar();render();}
 function cbNovo(){if(bloqueadoLeitura())return;if(combate().lista.length&&!confirm("Encerrar este combate e começar outro?"))return;
-  S.combate={rodada:1,vez:null,lista:[],log:[]};combateSel=null;salvar();render();}
+  S.combate={rodada:1,vez:null,lista:[],log:[],fase:"posturas"};combateSel=null;salvar();render();}
 /* tabuleiro: toca numa peça e depois numa casa */
 function cbSelecionar(id){combateSel=combateSel===id?null:id;renderCombate();}
 function cbCasa(x,y){if(!combateSel){const c=combate().lista.find(k=>k.x===x&&k.y===y);if(c){combateSel=c.id;renderCombate();}return;}
@@ -6444,11 +6451,12 @@ function renderCombate(){
       "<label>Inic. <input value=\""+esc(c.iniDados||"")+"\" onchange=\"cbSet('"+c.id+"','iniDados',this.value)\"></label>"+
       "<label>Ataque <input value=\""+esc(c.ataque||"")+"\" onchange=\"cbSet('"+c.id+"','ataque',this.value)\"></label>"+
       "<label>Dano <input value=\""+esc(c.dano||"")+"\" onchange=\"cbSet('"+c.id+"','dano',this.value)\"></label></div></details>";
-    return "<div class=\"cbrow"+(vez?" vez":"")+(fe.f.penalidade===null?" fora":"")+(combateSel===c.id?" sel":"")+"\" style=\"--lado:"+L.cor+"\">"+
+    const pedePostura=(C.fase==="posturas"&&!st.postura)||vez;
+    return "<div class=\"cbrow"+(vez?" vez":"")+(pedePostura?" pedepost":"")+(fe.f.penalidade===null?" fora":"")+(combateSel===c.id?" sel":"")+"\" style=\"--lado:"+L.cor+"\">"+
       "<div class=\"cbtop\"><span class=\"cbtok\" onclick=\"cbSelecionar('"+c.id+"')\" title=\"tocar e depois tocar no tabuleiro\">"+esc(sigla(c.nome))+"</span>"+
         "<input class=\"cbini\" type=\"number\" title=\"Iniciativa\" value=\""+(c.ini==null?"":c.ini)+"\" onchange=\"cbSet('"+c.id+"','ini',this.value)\">"+
         (p?"<b class=\"cbnome\">"+esc(c.nome)+"</b>":"<input class=\"cbnome\" value=\""+esc(c.nome)+"\" onchange=\"cbSet('"+c.id+"','nome',this.value)\">")+
-        "<span class=\"tag\">"+L.nome+"</span>"+pos+
+        "<span class=\"tag\">"+L.nome+"</span>"+(vez?"<span class=\"cbtroca\">começo do turno: trocar a postura?</span>":"")+pos+
         "<button class=\"ghost del\" onclick=\"cbDel('"+c.id+"')\">✕</button></div>"+
       "<div class=\"cbmeio\"><span>TN <b>"+st.tn+"</b></span><span>Red. <b>"+st.red+"</b></span><span>Inic. <b>"+esc(st.ini)+(st.iniExtra?" +"+st.iniExtra:"")+"</b></span>"+
         "<span>Ataque <b>"+esc(st.ataque)+"</b></span><span>Dano <b>"+esc(st.dano)+"</b></span>"+(st.arma?"<small>"+esc(st.arma)+"</small>":"")+
@@ -6464,6 +6472,7 @@ function renderCombate(){
   tab+="</div>";
   const fora=C.lista.filter(c=>c.x==null);
   box.innerHTML=
+    (C.fase==="posturas"&&C.lista.length?"<div class=\"cbfase\"><b>1. Posturas.</b> Antes da Iniciativa, cada um escolhe a postura (faltam "+cbSemPostura().length+"). Depois, <b>2.</b> rolar a Iniciativa, que vale para toda a escaramuça; e a cada vez, <b>3.</b> quem age pode trocar de postura no começo do turno.</div>":"")+
     "<div class=\"cbbarra\"><span>Rodada <b>"+C.rodada+"</b></span>"+(C.vez&&cbItem(C.vez)?"<span>vez de <b>"+esc(cbItem(C.vez).nome)+"</b></span>":"")+
       "<button onclick=\"cbRolarIni()\">🎲 rolar Iniciativa de todos</button><button class=\"primary\" onclick=\"cbProximo()\">próximo ▶</button><button class=\"ghost\" onclick=\"cbNovo()\">novo combate</button></div>"+
     "<div class=\"cbgrid\"><div>"+
