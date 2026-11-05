@@ -423,6 +423,9 @@
   .feridasgrid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px}
   .fer{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 5px;display:flex;flex-direction:column;align-items:center;font-size:10.5px;color:var(--muted-tx);text-align:center}
   .fer b{color:var(--ink);font-size:13px} .fer.atual{background:var(--seal);border-color:var(--seal);color:#faf3e6} .fer.atual b{color:#fff}
+  .efeitosbox{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--good);border-radius:8px;padding:6px 10px;font-size:12.5px;margin:4px 0 8px}
+  .efeitosbox .lemb{color:var(--muted-tx)} .efeitosbox small{display:block;color:var(--muted-tx);font-size:11px;margin-top:4px}
+  .ref{font-size:11px;color:var(--muted-tx);font-style:italic;margin-top:3px}
   .armacard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:2px 0 4px} .armacard .linha{border:0;background:none;margin:0}
   .rolarma{font-size:12px;color:var(--muted-tx);white-space:nowrap} .rolarma b{font-family:var(--font-display);color:var(--ink);font-size:14px} .rolarma i.bad{color:var(--bad);font-style:normal;font-size:11px}
   .armainfo{font-size:11.5px;color:var(--muted-tx);padding:0 10px;line-height:1.4}
@@ -5419,12 +5422,81 @@ function rankPersonagem(p){const i=insightPersonagem(p);return i<150?1:2+Math.fl
 /* Corrigido em 2026-08-04: RAW é "role Insight Rank + Reflexos, mantendo Reflexos" — usava
    o Anel de Ar (mínimo entre Reflexos e Consciência) tanto pra somar quanto pra manter, o que
    subestimava a Iniciativa de qualquer personagem com Percepção menor que Reflexos. */
-function iniciativaPersonagem(p){const rank=rankPersonagem(p);const reflexos=Number(p.traits.reflexes)||0;return(rank+reflexos)+"k"+reflexos;}
+/* ============ MODIFICADORES AUTOMÁTICOS E POSTURA (4ª ed.) ============
+   2026-11-05. Os efeitos de técnicas, kata, kiho, vantagens e Ancestrais que mexem em número da
+   ficha, tirados do catálogo de modificadores do pacote core do L5RCM (modifiers.xml) e das
+   regras de postura do Livro Básico. Sempre ativos entram sozinhos; os de postura entram quando
+   o personagem está naquela postura; os ativados e condicionais aparecem só como lembrete. */
+const POSTURAS=[["","sem postura"],["ataque","Ataque"],["ataque_total","Ataque Total"],["defesa","Defesa"],["defesa_total","Defesa Total"],["centro","Centro"]];
+const POSTURA_BASE={
+  ataque_total:{txt:"+2k1 nos ataques e −10 no TN de Armadura",ataque:[2,1],tn:-10},
+  defesa:{txt:"soma o Anel do Ar e o rank de Defesa ao TN; não ataca",tnF:(p,a)=>a.ar+rankPericiaPersonagem(p,"defense")},
+  defesa_total:{txt:"rola Defesa/Reflexos e soma metade ao TN; não ataca nem se move muito"},
+  centro:{txt:"não age neste turno; no próximo soma o Anel do Vazio em dados rolados e mantidos a um ataque (ou à Iniciativa)"},
+  ataque:{txt:"postura padrão de ataque, sem modificador"}};
+function temTecnica(p,id){if((p.tecnicasAprendidas||[]).includes(id)||(p.tecnicasExtras||[]).includes(id)||Object.values(p.substituicoesTecnica||{}).includes(id))return true;
+  const e=l5r4ePronto()&&L5R4E.escolas.find(x=>x.id===p.escola4e);const t=e&&e.tecnicas.find(x=>x.id===id);return!!(t&&t.rank<=rankPersonagem(p));}
+function temVantagemNome(p,nome){return(p.vantagens||[]).some(v=>(v.nome||"").toLowerCase()===nome.toLowerCase());}
+const MODS_4E=[
+ {id:"dragon_kitsukis_method",fonte:"tec",nome:"Kitsuki's Method",tn:(p,a,T)=>T.perception||0},
+ {id:"crab_the_mountain_does_not_move",fonte:"tec",nome:"The Mountain Does Not Move",red:(p,a)=>a.terra},
+ {id:"crab_hidas_strength",fonte:"tec",nome:"Hida's Strength",redMin:()=>8},
+ {id:"honor_is_my_shield",fonte:"tec",nome:"Honor Is My Shield",red:p=>Math.ceil((Number(p.honorRank)||0)/2)},
+ {id:"dragon_way_of_the_dragon",fonte:"tec",nome:"Way of the Dragon",tn:p=>rankPersonagem(p),nota:"com o daishō na mão"},
+ {id:"crane_the_way_of_the_crane",fonte:"tec",nome:"The Way of the Crane",ini:p=>2*rankPericiaPersonagem(p,"iaijutsu"),lembrete:"na postura Centro: +1k1 + rank da escola no ataque"},
+ {id:"mantis_the_way_of_the_mantis",fonte:"tec",nome:"The Way of the Mantis",ataque:[1,0]},
+ {id:"lion_the_way_of_the_lion",fonte:"tec",nome:"The Way of the Lion",ataque:[1,0],lembrete:"também ignora o TN de armadura do alvo"},
+ {id:"scorpion_the_way_of_the_scorpion",fonte:"tec",nome:"The Way of the Scorpion",iniDados:[1,1],lembrete:"+5 no TN contra quem tem Iniciativa menor"},
+ {id:"quick",fonte:"vant",nomeV:"Quick",nome:"Quick (vantagem)",ini:(p,a,T)=>T.reflexes||0},
+ {id:"ancestor_crab_hida",fonte:"vant",nomeV:"Ancestor, Hida",nome:"Ancestral Hida",dano:[1,0],lembrete:"ignora 4 de Redução do alvo"},
+ {id:"indomitable_warrior_style",fonte:"kata",nome:"Indomitable Warrior Style",ferida:(p,a)=>a.terra},
+ {id:"striking_as_air",fonte:"kata",nome:"Striking as Air",postura:"defesa",tn:(p,a)=>a.ar},
+ {id:"striking_as_earth",fonte:"kata",nome:"Striking as Earth",postura:"defesa_total",red:(p,a)=>a.terra},
+ {id:"striking_as_void",fonte:"kata",nome:"Striking as Void",postura:"centro",tn:(p,a)=>a.vazio},
+ {id:"reckless_abandon_style",fonte:"kata",nome:"Reckless Abandon Style",postura:"ataque_total",tn:(p,a)=>a.fogo},
+ {id:"striking_as_fire",fonte:"kata",nome:"Striking as Fire",postura:"ataque_total",lembrete:"+Anel do Fogo em dados num ataque por turno"},
+ {id:"crane_drawing_the_void",fonte:"tec",nome:"Drawing the Void",postura:"centro",tn:()=>10},
+ {id:"lion_the_fury_of_matsu",fonte:"tec",nome:"The Fury of Matsu",postura:"ataque_total",tn:()=>10},
+ {id:"crab_torchs_flame_flickers",fonte:"tec",nome:"Torch's Flame Flickers",postura:"ataque",ataque:[1,0]},
+ {id:"soul_of_the_four_winds",fonte:"kiho",nome:"Soul of the Four Winds",lembrete:"ativado: +Insight Rank + Anel do Ar no TN"},
+ {id:"embrace_the_stone",fonte:"kiho",nome:"Embrace the Stone",lembrete:"ativado: +2× Anel da Terra na Redução"},
+ {id:"partaking_the_waves",fonte:"kiho",nome:"Partaking the Waves",lembrete:"ativado: +Anel da Água na Redução"},
+ {id:"crab_hummingbird_wings",fonte:"tec",nome:"Hummingbird Wings",lembrete:"ativado ao ser alvo: +2× rank da escola no TN contra um ataque"},
+ {id:"crane_speed_of_lightning",fonte:"tec",nome:"Speed of Lightning",lembrete:"+2k0 no ataque contra quem tem Iniciativa menor"},
+ {id:"balance_the_elements_style",fonte:"kata",nome:"Balance the Elements Style",lembrete:"usa o Vazio no lugar dos Reflexos na Iniciativa"},
+ {id:"dragon_heart_of_the_mountain",fonte:"tec",nome:"Heart of the Mountain",lembrete:"soma metade do Atletismo aos ataques à distância"}];
+function modTem(p,m){if(m.fonte==="tec")return temTecnica(p,m.id);if(m.fonte==="kata")return(p.katasConhecidos||[]).includes(m.id);
+  if(m.fonte==="kiho")return(p.kihosConhecidos||[]).includes(m.id);if(m.fonte==="vant")return temVantagemNome(p,m.nomeV);return false;}
+function efeitosPersonagem(p){fichaBase(p);const a=aneisPersonagem(p),T=p.traits,pos=p.postura||"";
+  const r={tn:0,red:0,redMin:0,ini:0,iniDados:[0,0],ataque:[0,0],dano:[0,0],ferida:0,linhas:[],lembretes:[]};
+  const soma2=(x,y)=>{x[0]+=y[0];x[1]+=y[1];};
+  MODS_4E.forEach(m=>{if(!modTem(p,m))return;
+    if(m.lembrete)r.lembretes.push(m.nome+": "+m.lembrete);
+    if(m.postura&&m.postura!==pos)return;
+    const partes=[];
+    if(m.tn){const v=m.tn(p,a,T);if(v){r.tn+=v;partes.push("TN +"+v);}}
+    if(m.red){const v=m.red(p,a,T);if(v){r.red+=v;partes.push("Redução +"+v);}}
+    if(m.redMin){r.redMin=Math.max(r.redMin,m.redMin());partes.push("Redução mínima "+m.redMin());}
+    if(m.ini){const v=m.ini(p,a,T);if(v){r.ini+=v;partes.push("Iniciativa +"+v);}}
+    if(m.iniDados){soma2(r.iniDados,m.iniDados);partes.push("Iniciativa +"+m.iniDados[0]+"k"+m.iniDados[1]);}
+    if(m.ataque){soma2(r.ataque,m.ataque);partes.push("ataque +"+m.ataque[0]+"k"+m.ataque[1]);}
+    if(m.dano){soma2(r.dano,m.dano);partes.push("dano +"+m.dano[0]+"k"+m.dano[1]);}
+    if(m.ferida){r.ferida+=m.ferida(p,a,T);partes.push("−"+m.ferida(p,a,T)+" nas penalidades de ferimento");}
+    if(partes.length)r.linhas.push(m.nome+(m.postura?" (postura "+POSTURAS.find(x=>x[0]===m.postura)[1]+")":"")+": "+partes.join(", ")+(m.nota?" "+m.nota:""));});
+  const pb=POSTURA_BASE[pos];
+  if(pb){if(pb.tn){r.tn+=pb.tn;}if(pb.tnF){const v=pb.tnF(p,a);r.tn+=v;}if(pb.ataque)soma2(r.ataque,pb.ataque);
+    r.linhas.unshift("Postura "+POSTURAS.find(x=>x[0]===pos)[1]+": "+pb.txt+(pb.tnF?" (TN +"+pb.tnF(p,a)+")":""));}
+  return r;}
+function setPostura(id,v){const p=S.personagens.find(x=>x.id===id);if(!p)return;p.postura=v;salvar();render();}
+function somaDado(base,extra){const m=/^(\d+)k(\d+)$/.exec(base||"");if(!m||(!extra[0]&&!extra[1]))return base;return(Number(m[1])+extra[0])+"k"+(Number(m[2])+extra[1]);}
+function refLivro(id){const pg=l5r4ePronto()&&L5R4E.paginas?L5R4E.paginas[id]:null;return(L5R4E&&L5R4E.livro||"Livro Básico (4ª ed.)")+(pg?", p. "+pg:"");}
+function iniciativaPersonagem(p){const rank=rankPersonagem(p);const reflexos=Number(p.traits.reflexes)||0;const e=efeitosPersonagem(p);return(rank+reflexos+e.iniDados[0])+"k"+(reflexos+e.iniDados[1])+(e.ini?" +"+e.ini:"");}
 /* Corrigido em 2026-08-04: faltava o +5 fixo — TN de Armadura oficial é 5+(Reflexos×5), não só
    Reflexos×5 (um personagem com Reflexos 4 tem TN 25, não 20). Fonte: philgamer.wordpress.com,
    "Let's Study: L5R 4e — Sample Combat". */
 function tnBasePersonagem(p){return 5+5*(Number(p.traits.reflexes)||0);}
-function tnAtualPersonagem(p){return tnBasePersonagem(p)+armaduraTN(p)+(Number(p.tnAjuste)||0);}
+function tnAtualPersonagem(p){return tnBasePersonagem(p)+armaduraTN(p)+efeitosPersonagem(p).tn+(Number(p.tnAjuste)||0);}
+function reducaoPersonagem(p){const e=efeitosPersonagem(p);return Math.max(e.redMin,(Number(p.armadura&&p.armadura.reducao)||0)+e.red);}
 const FERIDAS_DEF=[["Sadio",0],["Machucado",3],["Arranhado",5],["Ferido",10],["Contundido",15],["Mutilado",20],["Caído",40],["Fora de Combate",null]];
 function feridasNiveis(p){const earth=aneisPersonagem(p).terra;
   return FERIDAS_DEF.map(([nome,pen],i)=>({nome,penalidade:pen,total:earth*5+i*earth*2}));}
@@ -5579,7 +5651,12 @@ function renderFichaCompleta(p){
     sInput("gloriaRank","Glória","Glória pessoal, de 0 a 10. Um samurai famoso puxa a Glória da casa aos poucos.")+
     sInput("statusRank","Status","Status pessoal, de 0 a 10.")+
     sInput("taintRank","Mancha","Mancha das Sombras, de 0 a 10.")+
+    "<div class=\"saldo\" title=\"armadura + técnicas\">Redução <b>"+reducaoPersonagem(p)+"</b></div>"+
     "</div>";
+  {const ef=efeitosPersonagem(p);
+   out+="<div class=\"armlinha\"><label class=\"grp\">Postura <select onchange=\"setPostura('"+p.id+"',this.value)\">"+POSTURAS.map(([v,l])=>"<option value=\""+v+"\" "+((p.postura||"")===v?"selected":"")+">"+l+"</option>").join("")+"</select></label></div>"+
+     (ef.linhas.length||ef.lembretes.length?"<div class=\"efeitosbox\">"+ef.linhas.map(t=>"<div>✓ "+esc(t)+"</div>").join("")+ef.lembretes.map(t=>"<div class=\"lemb\">◇ "+esc(t)+"</div>").join("")+
+       "<small>Efeitos de técnicas, kata, kiho e vantagens que o personagem tem, e da postura (Livro Básico, 4ª ed.). ✓ já está nas contas; ◇ é lembrete para a mesa.</small></div>":"");}
   out+="<div class=\"armlinha\">"+
     (()=>{const ac=armaduraInfo(p.armadura.catalogo);
       return "<label class=\"grp\" title=\""+esc(ac?efeitoEquipTxt(ac.efeitos):"")+"\">Armadura <select onchange=\"setArmaduraLivro('"+p.id+"',this.value)\"><option value=\"\">"+(ac?"— outra (livre) —":"nenhuma / livre")+"</option>"+
@@ -5670,7 +5747,7 @@ function renderFichaCompleta(p){
           "<input class=\"campo-curto\" placeholder=\"bônus\" value=\""+esc(a.bonus)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','bonus',this.value)\">"+
           (a.origem==="kit"?"<span class=\"tag escola\">kit</span>":"")+
           "<button class=\"ghost del\" onclick=\"delArma('"+p.id+"','"+a.id+"')\">✕</button></div>"+
-          "<div class=\"armainfo\">"+esc((w.tags||[]).map(t=>TAG_ARMA_PT[t]||t).join(", ")+(w.alcance?" · alcance "+w.alcance:"")+(w.custo?" · preço "+w.custo.replace(/k$/," koku").replace(/b$/," bu").replace(/z$/," zeni"):""))+(fx?" · "+esc(fx):"")+"</div></div>";}
+          "<div class=\"armainfo\">"+esc((w.tags||[]).map(t=>TAG_ARMA_PT[t]||t).join(", ")+(w.alcance?" · alcance "+w.alcance:"")+(w.custo?" · preço "+w.custo.replace(/k$/," koku").replace(/b$/," bu").replace(/z$/," zeni"):""))+(fx?" · "+esc(fx):"")+" · <i>Livro Básico (4ª ed.)</i></div></div>";}
       return "<div class=\"linha\"><input class=\"campo-nome\" placeholder=\"arma\" value=\""+esc(a.tipo)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','tipo',this.value)\">"+
       "<span class=\"tag\">ataque</span><input class=\"campo-curto\" value=\""+esc(a.ataque)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','ataque',this.value)\">"+
       "<span class=\"tag\">dano</span><input class=\"campo-curto\" value=\""+esc(a.dano)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','dano',this.value)\">"+
@@ -5714,7 +5791,8 @@ function rolagemArma(p,w){
   else if((w.tags||[]).includes("arrow")){const arco=(p.armas||[]).map(a=>armaInfo(a.catalogo)).find(x=>x&&x.forca);
     dano=arco?dadoSoma(w.dr,Number(arco.forca))+" (com "+arco.nome+")":w.dr+" + força do arco";}
   else dano=dadoSoma(w.dr,forca);
-  return{ataque:(tv+rk)+"k"+tv,semPericia:!rk,traco:tk,dano};
+  const ef=efeitosPersonagem(p);
+  return{ataque:somaDado((tv+rk)+"k"+tv,ef.ataque),semPericia:!rk,traco:tk,dano:/^\d+k\d+$/.test(dano)?somaDado(dano,ef.dano):dano};
 }
 function optsCatalogoArmas(){
   if(!l5r4ePronto()||!L5R4E.armas)return"";
@@ -5739,9 +5817,9 @@ function aplicarKitEscola(p){fichaBase(p);
 function refazerKitEscola(id){if(bloqueadoLeitura())return;const p=S.personagens.find(x=>x.id===id);if(!p)return;aplicarKitEscola(p);
   feedPush("Equipamento da escola refeito para "+(p.nome||"o personagem")+".");salvar();render();}
 /* Vantagens e desvantagens: escolhe do livro (com a descrição) ou escreve uma livre. */
-function catalogoVD(lista){return l5r4ePronto()?(lista==="vantagens"?L5R4E.vantagens:L5R4E.desvantagens):[];}
+function catalogoVD(lista){return l5r4ePronto()?(lista==="vantagens"?L5R4E.vantagens.concat(L5R4E.ancestrais||[]):L5R4E.desvantagens):[];}
 function itemVD(lista,nome){const n=(nome||"").trim().toLowerCase();return n?catalogoVD(lista).find(c=>c.nome.toLowerCase()===n)||null:null;}
-const TIPO_VD_PT={material:"material",mental:"mental",physical:"física",social:"social",spiritual:"espiritual",varies:"varia"};
+const TIPO_VD_PT={ancestral:"ancestral",material:"material",mental:"mental",physical:"física",social:"social",spiritual:"espiritual",varies:"varia"};
 function renderVantDesv(p){
   const col=(lista,titulo,sing)=>{const itens=p[lista];const soma=itens.reduce((s,v)=>s+(Number(v.custo)||0),0);
     const cat=catalogoVD(lista).slice().sort((a,b)=>a.nome.localeCompare(b.nome));
@@ -5752,7 +5830,8 @@ function renderVantDesv(p){
           (m?"<span class=\"tag\">"+esc(TIPO_VD_PT[m.tipo]||m.tipo)+"</span>":"")+
           "<input class=\"campo-curto\" type=\"number\" title=\"custo em XP\" value=\""+(Number(v.custo)||0)+"\" onchange=\"setVantagemCampo('"+lista+"','"+p.id+"','"+v.id+"','custo',this.value)\">"+
           "<button class=\"ghost del\" onclick=\"delVantagemCampo('"+lista+"','"+p.id+"','"+v.id+"')\">✕</button></div>"+
-          (m&&m.descricao?"<details class=\"vdesc\"><summary>"+esc(m.descricao.slice(0,110))+(m.descricao.length>110?"…":"")+"</summary><div>"+esc(m.descricao)+"</div></details>":"")+
+          (m&&m.tipo==="ancestral"&&m.cla4e&&p.cla4e&&m.cla4e!==p.cla4e?"<div class=\"vlore bad\" style=\"color:var(--bad)\">Ancestral de outro clã: no livro, só quem é do clã dele o tem.</div>":"")+
+          (m&&m.descricao?"<details class=\"vdesc\"><summary>"+esc(m.descricao.slice(0,110))+(m.descricao.length>110?"…":"")+"</summary><div>"+esc(m.descricao)+"<div class=\"ref\">"+esc(refLivro(m.id))+"</div></div></details>":"")+
           "</div>";}).join("")||"<div class=\"linha-vazia\">Nenhuma ainda.</div>")+
       "<div class=\"armlinha\"><select onchange=\"addVDLivro('"+lista+"','"+p.id+"',this.value)\"><option value=\"\">+ do livro…</option>"+
         tipos.map(t=>"<optgroup label=\""+esc(TIPO_VD_PT[t]||t)+"\">"+cat.filter(c=>c.tipo===t).map(c=>"<option value=\""+esc(c.nome)+"\" title=\""+esc(c.descricao.slice(0,300))+"\">"+esc(c.nome)+" ("+c.custo+")</option>").join("")+"</optgroup>").join("")+
@@ -5760,7 +5839,7 @@ function renderVantDesv(p){
   return "<h2>Vantagens e Desvantagens</h2><div class=\"vdgrid\">"+col("vantagens","Vantagens","vantagem")+col("desvantagens","Desvantagens","desvantagem")+"</div>"+
     "<datalist id=\"vantagensSugestoes\">"+catalogoVD("vantagens").map(v=>"<option value=\""+esc(v.nome)+"\">").join("")+"</datalist>"+
     "<datalist id=\"desvantagensSugestoes\">"+catalogoVD("desvantagens").map(v=>"<option value=\""+esc(v.nome)+"\">").join("")+"</datalist>"+
-    "<div class=\"hint\">As descrições são do livro básico, em inglês. O custo é o do livro; ajuste à mão se o clã tiver desconto.</div>";
+    "<div class=\"hint\">As descrições são do Livro Básico (4ª ed.), em inglês, com a página. O custo é o do livro; ajuste à mão se o clã tiver desconto. Os Ancestrais (p. 242–245) estão entre as vantagens, no grupo ancestral.</div>";
 }
 function setNivelXp(id,v){if(bloqueadoLeitura())return;const p=S.personagens.find(x=>x.id===id);if(!p||!XP_NIVEIS[v])return;
   p.nivelXp=v;p.xpInicial=XP_NIVEIS[v].xp;salvar();render();}
@@ -5774,7 +5853,7 @@ function renderKataKihoMagia(p){
     s+=conhecidos.map(k=>"<div style=\"margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)\">"+
       "<b>"+esc(k.nome)+"</b> <span class=\"tag\">mastery "+esc(k.mastery)+" · "+esc(k.elemento||"")+"</span>"+(extraCols?extraCols(k):"")+
       " <button class=\"ghost\" onclick=\"delConhecido('"+campo+"','"+p.id+"','"+k.id+"')\">✕</button>"+
-      "<div class=\"hint\" style=\"margin-top:3px\">"+esc(k.descricao)+"</div></div>").join("")||"<div class=\"linha-vazia\" style=\"margin-bottom:8px\">Nenhum(a) "+titulo.toLowerCase()+" conhecido(a) ainda.</div>";
+      "<div class=\"hint\" style=\"margin-top:3px\">"+esc(k.descricao)+" <span class=\"ref\">"+esc(refLivro(k.id))+"</span></div></div>").join("")||"<div class=\"linha-vazia\" style=\"margin-bottom:8px\">Nenhum(a) "+titulo.toLowerCase()+" conhecido(a) ainda.</div>";
     s+="<select id=\"sel_"+campo+"_"+p.id+"\" style=\"width:100%;margin-bottom:8px\"><option value=\"\">— escolher —</option>"+
       (l5r4ePronto()?catalogo.map(k=>"<option value=\""+k.id+"\">"+esc(k.nome)+" (mastery "+esc(k.mastery)+")</option>").join(""):"")+
       "</select><button class=\"ghost\" onclick=\"addConhecido('"+campo+"','"+p.id+"',document.getElementById('sel_"+campo+"_"+p.id+"').value)\">+ adicionar</button>";
