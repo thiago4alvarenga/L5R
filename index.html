@@ -649,6 +649,9 @@
   .senhabox label{display:flex;flex-direction:column;gap:4px;font-size:13px}
   .senhabox input{padding:8px;font-size:15px} .senhabox .bad{color:var(--bad);font-size:12.5px}
   .senhabox button{padding:9px;font-size:14px}
+  .lorecard{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:8px 12px;margin:4px 0 8px;font-size:13px}
+  .lorecard p{margin:4px 0;line-height:1.45} .lorecard small{color:var(--muted-tx);font-size:11px} .tag.bad{border-color:var(--bad);color:var(--bad)}
+  .vlore{font-size:12px;color:var(--muted-tx);margin-top:4px;line-height:1.4}
   .famavancado>summary{cursor:pointer;font-size:11.5px;color:var(--muted-tx)}
   button.perigo{color:var(--seal);border-color:rgba(181,53,43,.45)}
   .selo-leitura{font-family:var(--font-display);font-size:12.5px;color:#f6e3d8;background:var(--seal);padding:2px 10px;border-radius:3px;transform:rotate(-2deg)}
@@ -2018,7 +2021,7 @@ const CONVERSAO_REGRAS={
 function uid(){return Math.random().toString(36).slice(2,8);}
 function esc(s){return(s||"").toString().replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
 function estadoInicial(){return{
-  nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",familiaPrincipal:"",senhor:"",sede:"",lema:"",historia:"",vassalas:[],idade:null,versaoAtrib:2,
+  nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",familiaPrincipal:"",vassalaLore:"",senhor:"",sede:"",lema:"",historia:"",vassalas:[],idade:null,versaoAtrib:2,
   base:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},
   pontos:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},origem:null,versaoEventos:3,reservas:[],versaoReservas:2,investimentos:[],historicoAcontecimentos:[],acontAbertos:[],versaoPontos:1,versaoCasa:1,versaoTerra:1,versaoConv:1,pvFamiliaUsados:0,versaoTesouro:1,riquezaGasta:0,honraAjuste:0,gloriaRegistro:[],infame:false,
   eventos:[],terrenos:[],personagens:[],tropas:[],conversoes:[],feed:[],
@@ -2796,7 +2799,7 @@ function renderSync(){
 }
 
 /* ============ AÇÕES ============ */
-function selecionarCla(id){if(bloqueadoLeitura())return;S.cla=id;verTodosClas=false;feedPush("Clã definido: "+(claAtual()?claAtual().nome:id)+".");salvar();render();}
+function selecionarCla(id){if(bloqueadoLeitura())return;if(S.cla!==id&&S.vassalaLore){S.vassalaLore="";S.familiaPrincipal="";}S.cla=id;verTodosClas=false;feedPush("Clã definido: "+(claAtual()?claAtual().nome:id)+".");salvar();render();}
 function trocarCla(){if(bloqueadoLeitura())return;verTodosClas=true;render();}
 function setBase(attr,val){if(bloqueadoLeitura())return;S.base[attr]=parseFloat(val)||0;salvar();render();} /* o "ajuste" do atributo */
 function setIdade(v){if(bloqueadoLeitura())return;S.idade=v||null;
@@ -3233,7 +3236,7 @@ function randomizarFamilia(){
   const c=pickRandom(CLAS);
   selecionarCla(c.id);
   if(!S.idade)S.idade=pickRandom(["recente","jovem","estabelecida","antiga"]);
-  S.familiaPrincipal=c.familias&&c.familias.length?pickRandom(c.familias):"";S.ramoFamiliar="";
+  S.familiaPrincipal=c.familias&&c.familias.length?pickRandom(c.familias):"";S.ramoFamiliar="";S.vassalaLore="";
   S.base={dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0};
   sortearPontos();
   limparEventos();
@@ -3835,7 +3838,7 @@ function render(){
   {const c=claAtual(),meta=[];
    meta.push(c?"<span>Clã <b>"+esc(c.nome)+"</b></span>":"<span>Sem clã escolhido</span>");
    if(S.daimyo)meta.push("<span>Daimyō <b>"+esc(S.daimyo)+"</b></span>");
-   {const fp=familiaPrincipal();if(fp&&fp!==S.nome)meta.push("<span>ramo da família <b>"+esc(fp)+"</b></span>");}
+   {const fp=familiaPrincipal(),vl=vassalaDaCasa();if(vl)meta.push("<span>vassala dos <b>"+esc(vl.de)+"</b></span>");else if(fp&&fp!==S.nome)meta.push("<span>ramo da família <b>"+esc(fp)+"</b></span>");}
    meta.push(S.idade?"<span>Família "+esc((IDADE_LABEL[S.idade]||"").toLowerCase())+"</span>":"<span>Idade não escolhida</span>");
    const og=S.origem&&eventoInfo(S.origem);if(og)meta.push("<span>Origem <b>"+esc(og.nome)+"</b></span>");
    document.getElementById("claLab").innerHTML=meta.join("");
@@ -4126,7 +4129,7 @@ function delGloria(id){if(bloqueadoLeitura())return;S.gloriaRegistro=(S.gloriaRe
 function setConquistaGloria(id,v){if(bloqueadoLeitura())return;const c=(S.conquistas||[]).find(x=>x.id===id);if(!c)return;c.gloria=Math.round((parseFloat(v)||0)*10)/10;if(c.gloria>0)S.gloriaUltimoGanho=estacaoAbs();salvar();render();}
 function gloriaHTML(){
   const g=gloriaCasa(),reg=(S.gloriaRegistro||[]).slice(-8).reverse();
-  const partes=["começo ("+(IDADE_LABEL[S.idade]||"").toLowerCase()+", origem e eventos) "+gloriaInicial().toFixed(1)];
+  const partes=["começo ("+(S.idade?(IDADE_LABEL[S.idade]||"").toLowerCase()+", ":"")+"origem e eventos) "+gloriaInicial().toFixed(1)];
   if(gloriaConquistas())partes.push("Conquistas "+(gloriaConquistas()>0?"+":"")+gloriaConquistas().toFixed(1));
   if(gloriaRegistroSoma())partes.push("feitos registrados "+(gloriaRegistroSoma()>0?"+":"")+gloriaRegistroSoma().toFixed(1));
   return "<div class=\"secao\">Glória da casa: <b>"+g.toFixed(1)+"</b>"+(S.infame?" <span class=\"tag bad\">infame</span>":"")+"</div>"+
@@ -4154,6 +4157,121 @@ const VASSALA_FUNCOES={
 const VASSALA_BONUS=8,VASSALA_VAZIO=3,VASSALA_CUSTO=5;
 function vassalaBonus(attr){if(attr==="vazio")return 0;return(S.vassalas||[]).filter(v=>(VASSALA_FUNCOES[v.funcao]||{}).attr===attr).length*(attr==="vazio"?VASSALA_VAZIO:VASSALA_BONUS);}
 function vassalasCusto(){return(S.vassalas||[]).length*VASSALA_CUSTO;}
+/* ============ FAMÍLIAS VASSALAS DO LORE ============
+   2026-11-05. Lista das famílias vassalas da linha do tempo da AEG, por clã e família suserana,
+   com um resumo em português escrito a partir do L5R Wiki (l5r.fandom.com, categoria Vassal
+   family). "desde" e "fim" ajudam a ver se a família existe na época da campanha. Serve para a
+   casa dos jogadores ser uma delas e para nomear vassalas concedidas. */
+const VASSALAS_LORE={
+ caranguejo:[
+  {n:"Endo",de:"Hiruma",t:"Fundada por Kaiu Endo e engenheiros Kaiu que reergueram o Castelo Hiruma em dois anos, depois de retomado das Terras Sombrias. Vivem no próprio castelo, onde mantêm o Dojo Endo."},
+  {n:"Fundai",de:"Kaiu",t:"Treinam os marinheiros e construtores de navios que patrulham o Mar das Sombras. Nasceram dos seguidores de Kaiu Shimatsu, que no século VII desenhou navios melhores que os dos piratas, e ficam com uma parte do que seus navios transportam."},
+  {n:"Ishi",de:"Kaiu",t:"Uma das vassalas mais antigas do Império: Kaiu Ishi forjou a armadura que salvou o Campeão Hida Kenzan. São ferreiros do clã e criaram a tetsu-dou, a pesada armadura de ferro feita para aguentar um oni."},
+  {n:"Kakeguchi",de:"Hida",t:"Descendem de seguidores originais de Hida: Kakeguchi ficou de guarda protegendo o clã enquanto os fundadores partiam em missão, e a família herdou essa vigília silenciosa."},
+  {n:"Kano",de:"Yasuki",t:"Guardiões das artes da própria Yasuki, que no leito de morte nomeou o aluno Kano herdeiro de seu ofício. Seguiram os Yasuki quando deixaram a Garça pelo Caranguejo e seguem como artesãos que produzem o que a família vende."},
+  {n:"Kenru",de:"Kaiu",t:"Linhagem do lendário armeiro Kaiu Kenru, do século XII, que guarda seus segredos com ciúme. Um ō-yoroi Kenru leva o dobro do tempo para ficar pronto e dura cinco vezes mais."},
+  {n:"Koebi",de:"Hida",t:"Serviram os Hida com lealdade por séculos, a ponto de Kaiu Kenru propor que virassem Clã Menor. Em 1123 uma monção destruiu suas terras; restaram o jitte ancestral e o filho mais velho do daimyō.",fim:"quase extinta em 1123"},
+  {n:"Meishozo",de:"Kuni",t:"Oficialmente preparam a maquiagem branca dos Kuni; na verdade são espiões que se infiltram nas Terras Sombrias. O método veio de um ator Shosuro que se disfarçava de criatura maculada no kabuki."},
+  {n:"Moshibaru",de:"Hida",t:"Mistura de rōnin que conquistaram lugar no Caranguejo (os 'novos') e dos samurais que os treinaram (os 'velhos'). Nasceram da guerra contra o oni Usu, em 375."},
+  {n:"Nobuto",de:"Yasuki",t:"Fundada pelo primogênito do daimyō que levou os Yasuki da Garça para o Caranguejo. Seu irmão, gunsō treinado na escola Hida, firmou a posse das terras Yasuki contra a Garça."},
+  {n:"Raikuto",de:"Hiruma",t:"Herdeiros da velha cortesã Hiruma Saitsune, embaixadora do clã em Otosan Uchi. Mantêm uma casa dentro da Cidade Imperial e a rede de agentes e espiões que ela montou; quando os Hiruma perderam suas terras, passaram a servir aos Yasuki."},
+  {n:"Ugawari",de:"Kuni",t:"Caçadores de monstros elevados a vassalos no século IV, com o dever de capturar criaturas das Terras Sombrias para os experimentos dos Kuni. Cheios de cicatrizes, lutam de armadura de ferro, elmo em gaiola e armas de impacto."},
+  {n:"Takumi",de:"Hida",t:"Vassalos dos Hida; o wiki quase não registra detalhes, então o Mestre tem espaço para inventar."}],
+ garca:[
+  {n:"Ashidaka",de:"Kakita",t:"Kakita Ashidaka forjou a primeira Lâmina Kakita, quase cinco séculos depois de Doji Yasurugi, e recebeu terras junto às montanhas Seikitsu. O Dojo Ashidaka ensina a outras famílias da Garça a busca obsessiva pela excelência."},
+  {n:"Fujihiro",de:"Daidoji",t:"Antiga família de ferreiros da Garça, mais conhecida pelas armas de haste e por armaduras finas e justas, que deixam o corpo livre para se mover."},
+  {n:"Hiramichi",de:"Daidoji",t:"Nascidos depois da Guerra da Raposa de Fogo, quando o ex-contrabandista Michihira foi perdoado e recebeu nome próprio. Vivem nas colinas acima de Sabishii Toshi e são os especialistas da Garça em guerra econômica: contrabando, bloqueio e suborno."},
+  {n:"Hiramori",de:"Daidoji",t:"Formados com as tropas que venceram os rebeldes de Hira nos pântanos de Uebe, na Guerra da Raposa de Fogo. Guerrilheiros reclusos, mestres em armadilhas e emboscadas, que lutam sem armadura e com lanças improvisadas."},
+  {n:"Iwasaki",de:"Kakita",t:"Criada em reconhecimento a uma disputa de fronteira com a Fênix vencida pela Garça. Iwasaki recusou a honra, e ela foi para Kakita Sayuri, que tinha usado sua rede de gueixas para descobrir os planos da Fênix."},
+  {n:"Junichi",de:"Daidoji",t:"Guardam a manada de cavalos que o Unicórnio deu ao Campeão Doji Ryobu em 815. Enfeitam as crinas com fitas azuis e levam o estandarte do lado esquerdo; no século XII os Daidoji já viam esse dever com desdém."},
+  {n:"Katogama",de:"Doji",t:"Oficialmente mantêm a paz e vigiam as terras a nordeste de Kyuden Doji; de fato são uma rede de espiões que responde só ao seu daimyō e ao Campeão da Garça, criada para achar traidores depois da Batalha dos Túmulos Roubados."},
+  {n:"Morehei",de:"Doji",t:"Devotos de Suitengu, a Fortuna vingativa do Mar. No século VIII um terremoto afundou a Ilha Morehei com a cidade e seus tesouros, e a família quase desapareceu.",fim:"quase extinta desde o século VIII"},
+  {n:"Tsume",de:"Doji",t:"'A Garra': criada como recompensa por desmascarar um complô Bayushi, com fortaleza no Vale Kintani, entre Leão e Fênix. Usam o lápis-lazúli no obi; em 1118 o agressivo Tsume Retsu tomou o Castelo Kyotei e exterminou os Damasu."},
+  {n:"Hanamofu",de:"Daidoji",t:"Vassalos dos Daidoji; o wiki quase não registra detalhes."}],
+ dragao:[
+  {n:"Chiyu",de:"Tamori",t:"Shugenja rōnin desprezados pela Fênix por praticar 'magia de camponês', reunidos depois da Guerra dos Clãs por um ex-Libélula chamado Chiyu numa aldeia de montanha na fronteira. Curandeiros com ervas e magia da água, muito procurados.",desde:"depois da Guerra dos Clãs"},
+  {n:"Hiasobi",de:"Tamori",t:"Descendem de Asahina Maryoku, mestre de fogos de artifício e kagaku que, buscando a iluminação nas chamas, acabou incendiando a própria casa. Herdaram o gosto perigoso pela pólvora."},
+  {n:"Izaku",de:"Tamori",t:"Família jovem, guardiã da Biblioteca Izaku em Heibeisu, entre Dragão e Fênix. Feita para guardar textos de agricultura, virou o maior acervo de conhecimento mágico do Império depois que Yogo Junzo destruiu as bibliotecas da Fênix.",desde:"depois da Guerra dos Clãs"},
+  {n:"Kouken",de:"Mirumoto",t:"Monges que são os olhos e ouvidos do Dragão no Império. Andam sem mon, como monges errantes, e mantêm casas de enfermos que servem de ponto de encontro da rede de informação."},
+  {n:"Remiki",de:"Tamori",t:"Ferreiros do Dragão, antes vassalos dos Agasha. Tratam o ofício de armeiro como meditação e sussurram mantras que despertariam espíritos dentro das armaduras."},
+  {n:"Sakura",de:"Kitsuki",t:"O avesso dos Kitsuki: dificultam a verdade, negam documentos e abafam investigações, por acreditar que a curiosidade precisa ser contida para manter a ordem. A fundadora combateu a Escuridão Mentirosa por anos.",desde:"depois da Escuridão Mentirosa (c. 1132)"},
+  {n:"Zurui",de:"Mirumoto",t:"Vêm de Shiba Sasugo, noiva de um yojimbo Mirumoto no tempo do Gozoku, que treinou bushi para caçar ameaças escondidas antes que chegassem aos shugenja. Estão entre os melhores yojimbo de Rokugan."}],
+ leao:[
+  {n:"Damasu",de:"Akodo",t:"Tinham o Castelo Kyotei, no Vale Kintani, como lar ancestral. Em 1118 o daimyō Tsume Retsu, da Garça, venceu Damasu Kojima e exterminou a família.",fim:"extinta em 1118"},
+  {n:"Goseki",de:"Matsu",t:"Fundada por Matsu Goseki, cujo daishō se perdeu depois de sua morte. Ligada a Toshi Ranbo, foi destruída em 1118 na tomada da cidade por Doji Retsu; sobraram uma mulher e o filho, que virou rōnin.",fim:"destruída em 1118"},
+  {n:"Hayameru",de:"Matsu",t:"Acabou quando o daimyō, cercado pelo Escorpião perto do Passo Beiden, aceitou entregar o castelo em troca dos filhos e foi despedaçado pelos próprios homens. Os sobreviventes morreram na carga que deu a vitória ao Leão.",fim:"extinta"},
+  {n:"Hosokawa",de:"Ikoma",t:"Uma das famílias mais obscuras do Império: cavaleiros que levam os relatos dos escribas do Leão às Bibliotecas Ikoma. Receberam o nome logo depois do Retorno do Ki-Rin, em 815, e têm Shiro Kyube como lar."},
+  {n:"Ichime",de:"Akodo",t:"Vassalos dos Akodo com sede no Castelo Ichime; o wiki registra pouco além disso."},
+  {n:"Ikeda",de:"Matsu",t:"Cavaleiros que estudam a cavalaria inimiga. O fundador foi emissário junto ao Unicórnio depois do Retorno do Ki-Rin e pediu ao Imperador um nome para guardar o que aprendeu; vivem no Castelo do Trovão."},
+  {n:"Ise",de:"Kitsu",t:"O braço armado dos Kitsu, quase tão antigo quanto eles. Kitsu Ise reuniu ashigaru para caçar fantasmas e demônios que seguiam os shugenja de volta de outros reinos, e o próprio Akodo lhe deu o nome."},
+  {n:"Itagawa",de:"Akodo",t:"Ferreiros do Leão, discretos, mas famosos entre colecionadores por seus mempō belíssimos."},
+  {n:"Kaeru",de:"Ikoma",t:"Rōnin que mandavam na Cidade do Sapo Rico e passaram a administrá-la para o Leão quando o clã tomou a cidade. Alugam assassinos e cobram proteção de comerciantes; quem não paga fica sem."},
+  {n:"Katai",de:"Akodo",t:"Descendem dos rōnin que seguiram Matsu Mochihime no tempo do Gozoku. Vivem no Forte de Tijolos de Rengai Mura e cuidam da floresta Kokoro Nezuban Mori e da madeira que sai dela."},
+  {n:"Koritome",de:"Matsu",t:"Criada em 443 em honra a Matsu Koritome, que morreu salvando o Imperador Hantei Muhaki de uma emboscada gaijin. Os duzentos arqueiros que resistiram dois dias no torneio em sua memória foram os primeiros membros."},
+  {n:"Murame",de:"Ikoma",t:"Ikoma raros, que preferem a guerra à corte. Cuidaram da Escola de Guerra Akodo enquanto os Akodo estavam dissolvidos e receberam o nome quando a devolveram; táticos práticos, de yari e naginata.",desde:"1133"},
+  {n:"Noroko",de:"Kitsu",t:"Shugenja que deixaram o Leão em protesto contra a corrupção do daimyō Kitsu Okura, que abrigava criaturas das Terras Sombrias. Toturi I lhes deu o nome depois da Batalha do Portão do Esquecimento.",desde:"1133"},
+  {n:"Seizuka",de:"Akodo",t:"O cartógrafo Akodo Seizuka ajudou o Leão a retomar Toshi Ranbo e ganhou família própria. Fazem os mapas dos exércitos do Leão e têm castelo entre Ninkatoshi e Toshi Ranbo.",desde:"1153"}],
+ fenix:[
+  {n:"Atsumaru",de:"Agasha",t:"Família minúscula, vinda dos primeiros Agasha que estudaram o kagaku, a mistura de magia e ciência. Herdaram a busca sem fim do recluso Agasha Nakune pela combinação certa de ingredientes."},
+  {n:"Chukan",de:"Asako",t:"Herdeiros de Asako Chukan, que no século II organizou os arquivos de todos os templos e bibliotecas da Fênix. Cuidam do sistema que permite trocar feitiços e pesquisas entre os templos."},
+  {n:"Iga",de:"Shiba",t:"Pequena família de ji-samurai a serviço dos Shiba, mais lembrada pelo infame Iga Suru, o 'Jama Suru'."},
+  {n:"Koganshi",de:"Shiba",t:"Ferreiros da Fênix, famosos pela beleza de suas armaduras, verdadeiras obras de arte que não abrem mão de nenhuma defesa."},
+  {n:"Nani",de:"Asako",t:"Em público são historiadores que percorrem o Império colhendo histórias para as Bibliotecas Imperiais. De fato, conduzem de volta ao caminho certo os henshin que seguem um Falso Caminho, como aconteceu com o próprio fundador."},
+  {n:"Nasu",de:"Shiba",t:"Criados pelo Gozoku em 393 como família imperial de burocratas que dobravam todos às suas vontades. Quando o Gozoku caiu, os Shiba os esconderam; vivem em Kankei Seiden, na Cidade do Tratado Honrado, e se casam entre si."},
+  {n:"Sesai",de:"Shiba",t:"Família secreta de yojimbo que protege os Isawa a qualquer custo, inclusive o da honra dos Shiba. Eliminam ameaças ao poder dos Isawa antes que elas apareçam."},
+  {n:"Shingon",de:"Isawa",t:"Criada pelo filho de Asako Shingon, que deu a vida forjando os Nemuranai Elementais. Rastreiam e catalogam nemuranai, e depois da ascensão de Tsi Xing Guo passaram a cultuar a Fortuna do Aço."},
+  {n:"Sodona",de:"Shiba",t:"Fundada em 821, depois que uma emboscada do Leão matou o Campeão da Fênix e sua família. O yojimbo Shiba Sodona recebeu o nome e o dever de defender os Shiba; a Torre de Vigia é seu lar."}],
+ escorpiao:[
+  {n:"Aotora",de:"Bayushi",t:"Fundada por um herbalista camponês de Kyuden Bayushi que estudou venenos e antídotos por anos esperando a volta dos mestres. Bayushi Yojiro o elevou quando o Escorpião voltou do exílio nas Areias Ardentes.",desde:"1132"},
+  {n:"Jitsuyoteki",de:"Shosuro",t:"Vassalos dos Shosuro ligados a Ryoko Owari Toshi; o wiki registra pouco, só um koshiki na cidade."},
+  {n:"Kentsu",de:"Bayushi",t:"Vassalos dos Bayushi; o wiki quase não registra detalhes."},
+  {n:"Kochako",de:"Soshi",t:"Ninja criados pelos Shosuro para vigiar o próprio Escorpião caso o clã ameaçasse o Império, como fez no Gozoku; respondem só ao seu senhor, nem os Bayushi sabem quem são. Passaram aos Soshi depois da conspiração da Torre Sombria."},
+  {n:"Naganori",de:"Yogo",t:"Casamento estranho de Kuni e Yogo: Kuni Naganori cuidou das terras Yogo depois do Golpe, recusou-se a voltar ao Caranguejo e, casado com os Yogo, recebeu família quando o Escorpião foi restaurado.",desde:"depois da restauração do Escorpião"},
+  {n:"Nanbu",de:"Soshi",t:"Família pequena de origem camponesa: o budoka Nanbu e seus homens salvaram um magistrado Soshi numa emboscada e viraram sua guarda pessoal. Pouca influência, uma aldeia que vive do comércio."},
+  {n:"Rokugo",de:"Bayushi",t:"A 'mão de baixo' dos Bayushi: cuidam dos negócios ilícitos, casas de jogo e mercado negro, para os Bayushi manterem a fachada respeitável.",desde:"depois do Segundo Dia do Trovão"},
+  {n:"Tansaku",de:"Yogo",t:"Estudiosos que buscam sem descanso um jeito de quebrar a Maldição Yogo, herdeiros de um monge que previu com exatidão como a maldição atingiria a daimyō."},
+  {n:"Tokagure",de:"Shosuro",t:"Camponeses elevados em segredo para cuidar dos Jardins Shosuro. Sem terras nem escola, passam o saber de pais para filhos; Escorpiões atípicos, de humor seco e pouco dados à mentira."},
+  {n:"Ugawa",de:"Bayushi",t:"Ferreiros do Escorpião desde o século IV, fundados por uma Kaiu casada no clã como castigo, que achou as forjas fracas e as ensinou."}],
+ unicornio:[
+  {n:"Battue",de:"Iuchi",t:"Três shugenja Iuchi descobriram que sua ordem estava corrompida pelo maho e mataram os traidores um a um, por último o mestre. Ganharam o nome e o dever de caçar a magia de sangue."},
+  {n:"Hateru",de:"Ide",t:"Ficaram para trás quando o Ki-Rin partiu e foram para a borda das terras do Dragão, passando por samurais do Dragão. Perderam a fé na honra e viraram espiões e assassinos de aluguel."},
+  {n:"Hyuga",de:"Utaku",t:"Os melhores criadores de cavalos de Rokugan, desde que Otaku Hyuga domou os cavalos selvagens trazidos da Cidade dos Feiticeiros. Guardam os Estábulos Utaku e ensinam a lida com cavalos no dojo do Equilíbrio do Mundo."},
+  {n:"Kenshin",de:"Iuchi",t:"Linhagem curiosa: os homens nascem sem dom para os kami e as mulheres são shugenja poderosas. Viraram família depois que um deles salvou um viajante de bandidos.",desde:"1145"},
+  {n:"Marta",de:"Shinjo",t:"Contadores de histórias que guardaram de memória a história do Ki-Rin no exílio, quando papel era raro. A própria Shinjo os criou em honra à sua contadora preferida, Martazera."},
+  {n:"Naoko",de:"Utaku",t:"Guardam vivos entre os Unicórnio os costumes dos Ujik-hai, com orgulho da herança 'bárbara', sem deixar de lado o bushidō."},
+  {n:"Onshigawa",de:"Moto",t:"Fundada no século VII por Moto Khatalan em memória de um pretendente que morreu apostando corrida com ela. Mestres de estábulo, batedores e escaramuçadores; sempre há um Onshigawa no estado-maior dos generais Moto."},
+  {n:"Shiko",de:"Ide",t:"Herdeiros da última sobrevivente dos Horiuchi, mortos pela praga do século XII, mestra em bardas de cavalo. Ferreiros do Unicórnio."},
+  {n:"Suio",de:"Ide",t:"Criados para aprender línguas gaijin. Depois do retorno a Rokugan ganharam novo papel: ensinar o Unicórnio a falar e entender os costumes do Império."},
+  {n:"Zeshi",de:"Iuchi",t:"Fundada no século X pelo filho do daimyō Iuchi, sem dom para os kami. Fazem a maior parte das armaduras de montaria do clã e são mestres do couro, pouco conhecidos fora dele pelo tabu de trabalhar carne morta."}],
+ louva:[
+  {n:"Byako",de:"Kitsune",t:"Descendem de uma kitsune que tomou forma humana para substituir o sobrinho morto do Campeão da Raposa. A cada geração, um filho segue o caminho do samurai."},
+  {n:"Chirichi",de:"Yoritomo",t:"Família minúscula de ferreiros do Louva-a-deus, conhecida por uma armadura pesada que se tira depressa, útil para quem luta no mar."},
+  {n:"Goraiku",de:"Moshi",t:"Criada para honrar, e conter a ambição de, Moshi Goraiku, o melhor samurai a serviço de Moshi Jukio. Devotos do Senhor Sol, próximos dos Yoritomo e dos Hida."},
+  {n:"Hogosha",de:"Yoritomo",t:"Diplomatas: o fundador ajudou a manter as Cortes Imperiais de pé na Guerra contra a Escuridão. A maioria dos embaixadores do clã e os sensei da escola de cortesãos Yoritomo vem deles.",desde:"1137"},
+  {n:"Hoji",de:"Yoritomo",t:"Vassalos do Louva-a-deus; o wiki quase não registra detalhes."},
+  {n:"Kagehisa",de:"Tsuruchi",t:"Nascidos da Lâmina da Vespa, rōnin e mercenários que guardavam Kyuden Ashinagabachi, liderados por Kagehisa, que achou Tsuruchi recolhido como monge depois da Guerra contra a Sombra."},
+  {n:"Shudo",de:"Kitsune",t:"Fundada por Kitsune Shudo, Raposa sem dom para os kami que aprendeu a guerra com os Matsu e foi oficial da Aliança de Yoritomo na Guerra dos Clãs."},
+  {n:"Suguru",de:"Tsuruchi",t:"Família secreta e sem terras que caça a corrupção entre os magistrados do Império. A fundadora, shugenja rōnin, desmascarou um complô de bloodspeakers contra o daimyō Tsuruchi."},
+  {n:"Watanabe",de:"Yoritomo",t:"Oficialmente os melhores construtores de kobune do clã, no Porto da Bela Aurora. Na verdade abrigam a linhagem de Gusai, o primeiro Campeão do Louva-a-deus, cujo nome foi riscado da história."}],
+ imperial:[
+  {n:"Anou",de:"Miya",t:"Construtores vindos dos Kaiu, adotados pelos Miya por ordem imperial depois de erguerem um templo em Otosan Uchi. Suas terras são a região de madeira e pedreiras dos Miya."},
+  {n:"Hanako",de:"Seppun",t:"Herdeiros de Seppun Hanako, chanceler de Hantei XVII, cujos Artigos do Céu viraram base da lei de Rokugan. Magistrados e representantes dos Seppun."},
+  {n:"Reju",de:"Otomo",t:"Separados dos Otomo para guardar o bem que Otomo Reju fez sem manchar a família com sua participação no Gozoku. Cuidam da educação das Famílias Imperiais."},
+  {n:"Satoshi",de:"Miya",t:"O filho do odiado daimyō Miya Satoshi tomou o nome do pai e, herói da Guerra contra a Sombra, ganhou família para que o nome fosse honrado. Defendem as terras dos Miya."},
+  {n:"Tsi",de:"Hantei",t:"Ferreiros imperiais desde que Hantei Genji aceitou o gaijin Tsi Wenfu; estudam kenjutsu para entender as espadas que forjam. Em 1168 viraram o Clã do Oriolo.",fim:"vira o Clã do Oriolo em 1168"},
+  {n:"Yotsu",de:"Seppun",t:"Rōnin da montanha que salvaram o filho do Imperador de um culto de sangue em 1111 e receberam nome e dever de Hantei XXXVIII.",desde:"1111"}]
+};
+function vassalaLoreInfo(cla,nome){return(VASSALAS_LORE[cla]||[]).find(v=>v.n===nome)||null;}
+function vassalaLoreRotulo(v){return v.n+" (vassala dos "+v.de+(v.fim?", "+v.fim:v.desde?", desde "+v.desde:"")+")";}
+/* linhagem da casa: ramo de uma família principal, uma vassala do lore, ou independente */
+function setLinhagem(v){if(bloqueadoLeitura())return;
+  if(!v){S.familiaPrincipal="";S.vassalaLore="";}
+  else if(v.startsWith("p:")){S.familiaPrincipal=v.slice(2);S.vassalaLore="";}
+  else if(v.startsWith("v:")){const info=vassalaLoreInfo(S.cla,v.slice(2));if(!info)return;
+    S.vassalaLore=info.n;S.familiaPrincipal=info.de;if(!S.nome||S.nome==="Família")S.nome=info.n;
+    feedPush("A casa é a família vassala "+info.n+", a serviço dos "+info.de+".");}
+  salvar();render();}
+function vassalaDaCasa(){return S.vassalaLore?vassalaLoreInfo(S.cla,S.vassalaLore):null;}
 function familiaPrincipal(){
   if(S.familiaPrincipal)return S.familiaPrincipal;
   const m=/fam[ií]lia\s+([A-ZÀ-Ú][\wÀ-ú]+)/.exec(S.ramoFamiliar||"");return m?m[1]:"";
@@ -4177,8 +4295,9 @@ function delVassala(id){if(bloqueadoLeitura())return;const x=(S.vassalas||[]).fi
 function resumoCasa(){
   const c=claAtual(),fp=familiaPrincipal(),nome=S.nome||"Família",partes=[];
   const og=S.origem&&eventoInfo(S.origem);
-  partes.push("A casa "+nome+(fp?" é um ramo da família "+fp:"")+(c?", do Clã "+c.nome:"")+(fp||c?".":" ainda não tem clã."));
-  if(og)partes.push("Família "+(IDADE_LABEL[S.idade]||"").toLowerCase()+". Origem: "+og.nome+".");
+  const vl=vassalaDaCasa();
+  partes.push("A casa "+nome+(vl?" é uma família vassala dos "+vl.de:fp?" é um ramo da família "+fp:"")+(c?", do Clã "+c.nome:"")+(fp||c?".":" ainda não tem clã."));
+  if(og)partes.push((S.idade?"Família "+(IDADE_LABEL[S.idade]||"").toLowerCase()+". ":"")+"Origem: "+og.nome+".");
   if(S.senhor)partes.push("Serve a "+S.senhor+".");
   if(S.daimyo)partes.push("O daimyō da casa é "+S.daimyo+".");
   if(S.sede)partes.push("A sede fica em "+S.sede+".");
@@ -4194,32 +4313,43 @@ function resumoCasa(){
   return partes.join(" ");
 }
 function nomeFormalCasa(){
-  const fp=familiaPrincipal(),nome=S.nome||"Família";
+  const fp=familiaPrincipal(),nome=S.nome||"Família",vl=vassalaDaCasa();
+  if(vl)return "Família vassala: os membros usam o próprio nome ("+vl.n+" Taro) e servem aos "+vl.de+"; no formal, “"+vl.n+" Taro, vassalo da família "+vl.de+"”.";
   if(!fp||fp===nome)return"";
   return "Dentro do clã, os membros se apresentam como "+nome+" Taro; fora dele, como "+fp+" Taro; no formal, “"+fp+" Taro, da casa "+nome+"”.";
 }
 function renderCasa(){
   const box=document.getElementById("casaBox");if(!box)return;
   const c=claAtual(),fams=c&&c.familias?c.familias:[],fp=familiaPrincipal();
-  const optsF="<option value=\"\">— independente ou outra —</option>"+fams.map(f=>"<option "+(fp===f?"selected":"")+">"+esc(f)+"</option>").join("")+(fp&&!fams.includes(fp)?"<option selected>"+esc(fp)+"</option>":"");
+  const vls=(VASSALAS_LORE[S.cla]||[]).slice().sort((a,b)=>a.de.localeCompare(b.de)||a.n.localeCompare(b.n)),vsel=S.vassalaLore||"";
+  const optsF="<option value=\"\">— independente ou outra (use o Nome lá em cima) —</option>"+
+    (fams.length?"<optgroup label=\"Ramo de uma família principal\">"+fams.map(f=>"<option value=\"p:"+esc(f)+"\" "+(!vsel&&fp===f?"selected":"")+">"+esc(f)+"</option>").join("")+"</optgroup>":"")+
+    (vls.length?"<optgroup label=\"Família vassala (do lore)\">"+vls.map(v=>"<option value=\"v:"+esc(v.n)+"\" "+(vsel===v.n?"selected":"")+">"+esc(vassalaLoreRotulo(v))+"</option>").join("")+"</optgroup>":"")+
+    (fp&&!vsel&&!fams.includes(fp)?"<option value=\"p:"+esc(fp)+"\" selected>"+esc(fp)+"</option>":"");
+  const vl=vassalaDaCasa();
+  const loreCasa=vl?"<div class=\"lorecard\"><b>"+esc(vl.n)+"</b> <span class=\"tag\">vassala dos "+esc(vl.de)+"</span>"+(vl.desde?" <span class=\"tag\">desde "+esc(vl.desde)+"</span>":"")+(vl.fim?" <span class=\"tag bad\">"+esc(vl.fim)+"</span>":"")+
+    "<p>"+esc(vl.t)+"</p><small>Resumo do L5R Wiki. Se a campanha for antes da fundação ou depois do fim, combine com o Mestre.</small></div>":
+    (S.cla&&vls.length?"<div class=\"hint\" style=\"margin:2px 0 4px\">A casa pode ser um ramo de uma família principal, uma das "+vls.length+" famílias vassalas que o lore registra para o clã (cada uma vem com um resumo), ou uma família independente com o nome que vocês escolherem.</div>":"");
   const campo=(rot,k,ph,w)=>"<label class=\"pcampo\" style=\"flex:1;min-width:"+(w||180)+"px\">"+rot+" <input value=\""+esc(S[k]||"")+"\" placeholder=\""+esc(ph)+"\" onchange=\"setCasa('"+k+"',this.value)\"></label>";
   const vs=(S.vassalas||[]).map(v=>{const f=VASSALA_FUNCOES[v.funcao]||VASSALA_FUNCOES.militar;
-    return "<div class=\"vassala\"><div class=\"vlinha\"><input class=\"vnome\" value=\""+esc(v.nome||"")+"\" placeholder=\"nome da família vassala\" onchange=\"setVassala('"+v.id+"','nome',this.value)\">"+
+    const vlr=vassalaLoreInfo(S.cla,(v.nome||"").trim());
+    return "<div class=\"vassala\"><div class=\"vlinha\"><input class=\"vnome\" list=\"vassalasLoreLista\" value=\""+esc(v.nome||"")+"\" placeholder=\"nome da família vassala (do lore ou nova)\" onchange=\"setVassala('"+v.id+"','nome',this.value)\">"+
       "<select onchange=\"setVassala('"+v.id+"','funcao',this.value)\">"+Object.keys(VASSALA_FUNCOES).map(k=>"<option value=\""+k+"\" "+(v.funcao===k?"selected":"")+">"+VASSALA_FUNCOES[k].nome+"</option>").join("")+"</select>"+
       "<button class=\"ghost so-mestre\" onclick=\"delVassala('"+v.id+"')\" aria-label=\"remover\">✕</button></div>"+
       "<div class=\"vlinha\"><input value=\""+esc(v.daimyo||"")+"\" placeholder=\"daimyō da vassala\" onchange=\"setVassala('"+v.id+"','daimyo',this.value)\">"+
       "<input style=\"flex:2\" value=\""+esc(v.notas||"")+"\" placeholder=\"por que receberam o nome, onde vivem\" onchange=\"setVassala('"+v.id+"','notas',this.value)\"></div>"+
-      "<div class=\"vef\">"+esc(f.txt)+": "+(f.attr==="vazio"?"+1 Ponto de Vazio":"+"+VASSALA_BONUS+" no disponível de "+rotuloAttr(f.attr))+", +1 de Fortuna, −"+VASSALA_CUSTO+" de Influência para manter a lealdade."+(v.quando?" Concedida em "+esc(v.quando)+".":"")+"</div></div>";}).join("");
+      "<div class=\"vef\">"+esc(f.txt)+": "+(f.attr==="vazio"?"+1 Ponto de Vazio":"+"+VASSALA_BONUS+" no disponível de "+rotuloAttr(f.attr))+", +1 de Fortuna, −"+VASSALA_CUSTO+" de Influência para manter a lealdade."+(v.quando?" Concedida em "+esc(v.quando)+".":"")+"</div>"+(vlr?"<div class=\"vlore\">"+esc(vlr.t)+"</div>":"")+"</div>";}).join("");
   const hc=honraCasa();
   box.innerHTML="<div class=\"casaresumo\">"+esc(resumoCasa())+(hc!=null?" Honra da casa: "+hc.toFixed(1)+".":"")+(nomeFormalCasa()?"<div class=\"formal\">"+esc(nomeFormalCasa())+"</div>":"")+"</div>"+
-    "<div class=\"tlinha\" style=\"flex-wrap:wrap;gap:10px\"><label class=\"pcampo\" style=\"min-width:180px\">Família principal <select onchange=\"setCasa('familiaPrincipal',this.value)\">"+optsF+"</select></label>"+
-      campo("Ramo","ramoFamiliar","ex.: descendentes do segundo filho de Kakita Yoshi",240)+"</div>"+
+    "<div class=\"tlinha\" style=\"flex-wrap:wrap;gap:10px\"><label class=\"pcampo\" style=\"min-width:220px\">Linhagem da casa <select onchange=\"setLinhagem(this.value)\">"+optsF+"</select></label>"+
+      campo("Ramo","ramoFamiliar","ex.: descendentes do segundo filho de Kakita Yoshi",240)+"</div>"+loreCasa+
     "<div class=\"tlinha\" style=\"flex-wrap:wrap;gap:10px\">"+campo("Serve a","senhor","ex.: Kakita Ryoku, daimyō da família")+campo("Sede","sede","ex.: Shiro Iwasaki, nas colinas de Kintani")+campo("Lema da casa","lema","uma frase que a casa repete")+
       "<label class=\"pcampo\" style=\"width:150px\" data-dica=\"Ajuste do Mestre na Honra da casa, além da média dos personagens e da Honra queimada.\">Ajuste da Honra <input type=\"number\" step=\"0.1\" value=\""+(Number(S.honraAjuste)||0)+"\" onchange=\"setCasa('honraAjuste',parseFloat(this.value)||0)\"></label></div>"+
     "<label class=\"pcampo\" style=\"margin-top:8px\">História da casa <textarea class=\"historia\" placeholder=\"o que a família conta sobre si mesma: o fundador, os mortos honrados, as rixas, os segredos...\" onchange=\"setCasa('historia',this.value)\">"+esc(S.historia||"")+"</textarea></label>"+
     gloriaHTML()+
     "<div class=\"secao\">Famílias vassalas</div><div class=\"hint\" style=\"margin:0 0 6px\">Não se compram (e pedem Glória da casa 4 ou mais): o daimyō da família principal ou o Campeão concede o nome, como Conquista do Mestre ou na aventura. Cada uma serve numa função.</div>"+
     (vs||"<div class=\"linha-vazia\">Nenhuma ainda.</div>")+
+    "<datalist id=\"vassalasLoreLista\">"+(VASSALAS_LORE[S.cla]||[]).filter(x=>x.n!==S.vassalaLore).map(x=>"<option value=\""+esc(x.n)+"\">"+esc(vassalaLoreRotulo(x))+"</option>").join("")+"</datalist>"+
     "<button class=\"ghost so-mestre\" style=\"margin-top:8px\" onclick=\"addVassala()\">+ conceder família vassala (Conquista)</button>";
 }
 function renderTesteFamilia(){
