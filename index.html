@@ -5396,7 +5396,7 @@ function renderFicha4e(p){
     const tec1=escola.tecnicas.find(t=>t.rank===1);
     const pericias=escola.pericias.map(s=>pericia4eNome(s.id)+(s.enfase?" ("+s.enfase+")":"")).join(", ");
     card="<details class=\"fichapanel dobra escolacard\"><summary>"+
-      "<b>"+esc(escola.nome)+"</b>"+(escola.traco?" · traço bonificado: "+esc(TRACO_PT[escola.traco]||escola.traco):"")+(escola.honra?" · honra inicial: "+esc(escola.honra):"")+" <span class=\"hint\">ver perícias e técnica</span></summary>"+
+      "<b>"+esc(escola.nome)+"</b>"+" <span class=\"tag\">"+esc(escola.livro||"Livro Básico")+"</span>"+(escola.traco?" · traço bonificado: "+esc(TRACO_PT[escola.traco]||escola.traco):"")+(escola.honra?" · honra inicial: "+esc(escola.honra):"")+" <span class=\"hint\">ver perícias e técnica</span></summary>"+
       (pericias?"<div class=\"hint\" style=\"margin-top:4px\">Perícias iniciais: "+esc(pericias)+"</div>":"")+
       (tec1?"<div style=\"margin-top:6px\"><b>"+esc(tec1.nome)+"</b> (rank 1)<div class=\"hint\">"+esc(tec1.descricao)+"</div></div>":"")+
       "</details>";
@@ -5413,7 +5413,7 @@ function renderFicha4e(p){
     "<div class=\"grp\">Família <select onchange=\"escolhaFamilia4e('"+p.id+"',this.value)\" "+(!p.cla4e?"disabled":"")+"><option value=\"\">—</option>"+
       familias.map(f=>"<option value=\""+f.id+"\" "+(p.familia4e===f.id?"selected":"")+">"+esc(f.nome)+" (+1 "+esc(f.traco==="void"?"Vazio":(TRACO_PT[f.traco]||f.traco))+")</option>").join("")+"</select></div>"+
     "<div class=\"grp\">Escola <select onchange=\"escolhaEscola4e('"+p.id+"',this.value)\" "+(!p.cla4e?"disabled":!p.familia4e&&familias.length?"disabled title=\"escolha a família primeiro\"":"")+"><option value=\"\">—</option>"+
-      escolasCla.map(e=>"<option value=\""+e.id+"\" "+(p.escola4e===e.id?"selected":"")+">"+esc(e.nome)+"</option>").join("")+"</select></div>"+
+      escolasCla.map(e=>"<option value=\""+e.id+"\" "+(p.escola4e===e.id?"selected":"")+">"+esc(e.nome)+(e.livro?" — "+esc(livroCurto(e)):"")+"</option>").join("")+"</select></div>"+
     "</div>"+aviso+card;
 }
 /* ============ FICHA COMPLETA DO PERSONAGEM (4ª edição) ============
@@ -5527,7 +5527,8 @@ function efeitosPersonagem(p){fichaBase(p);const a=aneisPersonagem(p),T=p.traits
   return r;}
 function setPostura(id,v){const p=S.personagens.find(x=>x.id===id);if(!p)return;p.postura=v;salvar();render();}
 function somaDado(base,extra){const m=/^(\d+)k(\d+)$/.exec(base||"");if(!m||(!extra[0]&&!extra[1]))return base;return(Number(m[1])+extra[0])+"k"+(Number(m[2])+extra[1]);}
-function refLivro(id){const pg=l5r4ePronto()&&L5R4E.paginas?L5R4E.paginas[id]:null;return(L5R4E&&L5R4E.livro||"Livro Básico (4ª ed.)")+(pg?", p. "+pg:"");}
+function livroCurto(x){return x&&x.livro?x.livro.replace(/ \(.*\)$/,""):"";}
+function refLivro(id,item){if(item&&item.livro)return item.livro+(item.pagina?", p. "+item.pagina:"");const pg=l5r4ePronto()&&L5R4E.paginas?L5R4E.paginas[id]:null;return(L5R4E&&L5R4E.livro||"Livro Básico (4ª ed.)")+(pg?", p. "+pg:"");}
 function iniciativaPersonagem(p){const rank=rankPersonagem(p);const reflexos=Number(p.traits.reflexes)||0;const e=efeitosPersonagem(p);return(rank+reflexos+e.iniDados[0])+"k"+(reflexos+e.iniDados[1])+(e.ini?" +"+e.ini:"");}
 /* Corrigido em 2026-08-04: faltava o +5 fixo — TN de Armadura oficial é 5+(Reflexos×5), não só
    Reflexos×5 (um personagem com Reflexos 4 tem TN 25, não 20). Fonte: philgamer.wordpress.com,
@@ -5596,8 +5597,8 @@ function setSubstituicaoTecnica(id,rank,caminhoTechId){
 function todasTecnicasComOrigem(){
   if(!l5r4ePronto())return[];
   const out=[];
-  L5R4E.escolas.forEach(e=>e.tecnicas.forEach(t=>out.push({id:t.id,nome:t.nome,rank:t.rank,descricao:t.descricao,origem:e.nome})));
-  L5R4E.caminhos.forEach(c=>c.tecnicas.forEach(t=>out.push({id:t.id,nome:t.nome,rank:t.rank,descricao:t.descricao,origem:c.nome+" (caminho)"})));
+  L5R4E.escolas.forEach(e=>e.tecnicas.forEach(t=>out.push({id:t.id,nome:t.nome,rank:t.rank,descricao:t.descricao,origem:e.nome+(e.livro?", "+livroCurto(e):"")})));
+  L5R4E.caminhos.forEach(c=>c.tecnicas.forEach(t=>out.push({id:t.id,nome:t.nome,rank:t.rank,descricao:t.descricao,origem:c.nome+" (caminho"+(c.livro?", "+livroCurto(c):"")+")"})));
   return out;
 }
 function addTecnicaExtra(id,techId){
@@ -5750,7 +5751,7 @@ function renderFichaCompleta(p){
         "<div class=\"hint\">"+esc(ativo.descricao)+"</div>"+
         (opcoes.length?"<div style=\"margin-top:6px\"><select onchange=\"setSubstituicaoTecnica('"+p.id+"','"+t.rank+"',this.value)\">"+
           "<option value=\"\">— manter técnica original de rank "+t.rank+"</option>"+
-          opcoes.map(c=>c.tecnicas.filter(ct=>ct.rank===t.rank).map(ct=>"<option value=\""+ct.id+"\" "+(subId===ct.id?"selected":"")+">"+esc(c.nome)+" — "+esc(ct.nome)+"</option>").join("")).join("")+
+          opcoes.map(c=>c.tecnicas.filter(ct=>ct.rank===t.rank).map(ct=>"<option value=\""+ct.id+"\" "+(subId===ct.id?"selected":"")+">"+esc(c.nome)+" — "+esc(ct.nome)+(c.livro?" ("+esc(livroCurto(c))+")":"")+"</option>").join("")).join("")+
           "</select> <span class=\"hint\">caminho alternativo</span></div>":"")+
         "</details>";
     }).join("");
@@ -5869,7 +5870,7 @@ function renderVantDesv(p){
           "<input class=\"campo-curto\" type=\"number\" title=\"custo em XP\" value=\""+(Number(v.custo)||0)+"\" onchange=\"setVantagemCampo('"+lista+"','"+p.id+"','"+v.id+"','custo',this.value)\">"+
           "<button class=\"ghost del\" onclick=\"delVantagemCampo('"+lista+"','"+p.id+"','"+v.id+"')\">✕</button></div>"+
           (m&&m.tipo==="ancestral"&&m.cla4e&&p.cla4e&&m.cla4e!==p.cla4e?"<div class=\"vlore bad\" style=\"color:var(--bad)\">Ancestral de outro clã: no livro, só quem é do clã dele o tem.</div>":"")+
-          (m&&m.descricao?"<details class=\"vdesc\"><summary>"+esc(m.descricao.slice(0,110))+(m.descricao.length>110?"…":"")+"</summary><div>"+esc(m.descricao)+"<div class=\"ref\">"+esc(refLivro(m.id))+"</div></div></details>":"")+
+          (m&&m.descricao?"<details class=\"vdesc\"><summary>"+esc(m.descricao.slice(0,110))+(m.descricao.length>110?"…":"")+"</summary><div>"+esc(m.descricao)+"<div class=\"ref\">"+esc(refLivro(m.id,m))+"</div></div></details>":"")+
           "</div>";}).join("")||"<div class=\"linha-vazia\">Nenhuma ainda.</div>")+
       "<div class=\"armlinha\"><select onchange=\"addVDLivro('"+lista+"','"+p.id+"',this.value)\"><option value=\"\">+ do livro…</option>"+
         tipos.map(t=>"<optgroup label=\""+esc(TIPO_VD_PT[t]||t)+"\">"+cat.filter(c=>c.tipo===t).map(c=>"<option value=\""+esc(c.nome)+"\" title=\""+esc(c.descricao.slice(0,300))+"\">"+esc(c.nome)+" ("+c.custo+")</option>").join("")+"</optgroup>").join("")+
@@ -5891,9 +5892,9 @@ function renderKataKihoMagia(p){
     s+=conhecidos.map(k=>"<div style=\"margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)\">"+
       "<b>"+esc(k.nome)+"</b> <span class=\"tag\">mastery "+esc(k.mastery)+" · "+esc(k.elemento||"")+"</span>"+(extraCols?extraCols(k):"")+
       " <button class=\"ghost\" onclick=\"delConhecido('"+campo+"','"+p.id+"','"+k.id+"')\">✕</button>"+
-      "<div class=\"hint\" style=\"margin-top:3px\">"+esc(k.descricao)+" <span class=\"ref\">"+esc(refLivro(k.id))+"</span></div></div>").join("")||"<div class=\"linha-vazia\" style=\"margin-bottom:8px\">Nenhum(a) "+titulo.toLowerCase()+" conhecido(a) ainda.</div>";
+      "<div class=\"hint\" style=\"margin-top:3px\">"+esc(k.descricao)+" <span class=\"ref\">"+esc(refLivro(k.id,k))+"</span></div></div>").join("")||"<div class=\"linha-vazia\" style=\"margin-bottom:8px\">Nenhum(a) "+titulo.toLowerCase()+" conhecido(a) ainda.</div>";
     s+="<select id=\"sel_"+campo+"_"+p.id+"\" style=\"width:100%;margin-bottom:8px\"><option value=\"\">— escolher —</option>"+
-      (l5r4ePronto()?catalogo.map(k=>"<option value=\""+k.id+"\">"+esc(k.nome)+" (mastery "+esc(k.mastery)+")</option>").join(""):"")+
+      (l5r4ePronto()?catalogo.map(k=>"<option value=\""+k.id+"\">"+esc(k.nome)+" (mastery "+esc(k.mastery)+(k.livro?", "+esc(livroCurto(k)):"")+")</option>").join(""):"")+
       "</select><button class=\"ghost\" onclick=\"addConhecido('"+campo+"','"+p.id+"',document.getElementById('sel_"+campo+"_"+p.id+"').value)\">+ adicionar</button>";
     s+="</div>";
     return s;
