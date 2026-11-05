@@ -991,7 +991,8 @@
   /* cada parágrafo nasce em japonês; os ideogramas se soltam como almas que sobem e pétalas que caem, e o português se materializa */
   #abertura p .w{display:inline;opacity:0;filter:blur(7px);transition:opacity 1.1s ease,filter 1.3s ease;transition-delay:var(--d,0s)}
   #abertura p.pt .w,#abertura p.feito .w{opacity:1;filter:none}
-  #abertura p .jp{position:absolute;left:0;top:0;width:100%;font-family:var(--font-display);font-style:normal;font-size:1.12em;letter-spacing:.06em;line-height:1.7;color:#f4e9d2;pointer-events:none}
+  #abertura p .jp{position:absolute;left:50%;top:-.2em;transform:translateX(-50%);writing-mode:vertical-rl;text-orientation:mixed;height:11.5em;max-width:100%;font-family:var(--font-display);font-style:normal;font-size:1.3em;letter-spacing:.12em;line-height:1.9;color:#f4e9d2;pointer-events:none;text-shadow:0 0 14px rgba(0,0,0,.6)}
+  @media (max-width:640px){#abertura p .jp{font-size:1.2em;height:12.5em}}
   #abertura p .jp .c{display:inline-block;opacity:0;filter:blur(6px);transform:translateY(5px) scale(1.15);transition:opacity .55s ease,filter .7s ease,transform .7s ease;transition-delay:var(--d,0s)}
   #abertura p.jpf .jp .c{opacity:1;filter:none;transform:none}
   #abertura p.diss .jp .c{animation:abAlma 1.9s cubic-bezier(.4,0,.7,1) var(--e,0s) forwards}
@@ -6797,13 +6798,14 @@ function abMontar(p){
   if(p.dataset.montado)return;p.dataset.montado="1";
   const pt=p.textContent,jp=p.dataset.jp||"";
   p.innerHTML=pt.split(/(\s+)/).map((w,i)=>/^\s+$/.test(w)?w:"<span class=\"w\" style=\"--d:"+(i*0.035).toFixed(2)+"s\">"+esc(w)+"</span>").join("")+
-    "<span class=\"jp\" aria-hidden=\"true\">"+[...jp].map((c,i)=>{const sobe=i%3!==1;
+    "<span class=\"jp\" aria-hidden=\"true\">"+[...jp].reduce((g,c)=>{if(/[、。，．」』）ーァィゥェォッャュョ]/.test(c)&&g.length)g[g.length-1]+=c;else g.push(c);return g;},[]).map((c,i)=>{const sobe=i%3!==1;
       return "<span class=\"c"+(sobe?"":" pe")+"\" style=\"--d:"+(i*0.045).toFixed(2)+"s;--e:"+(Math.random()*0.7).toFixed(2)+"s;--dx:"+((Math.random()-0.5)*(sobe?60:140)).toFixed(0)+"px;--dy:"+(sobe?-(60+Math.random()*90):(50+Math.random()*80)).toFixed(0)+"px;--r:"+((Math.random()-0.5)*540).toFixed(0)+"deg\">"+esc(c)+"</span>";}).join("")+"</span>";
 }
 function abTerminar(p){if(!p)return;p.classList.add("vis","jpf","diss","pt","feito");}
 function abVerso(p,depois){
   abAtual=p;abMontar(p);p.classList.add("vis");
-  if(p.getBoundingClientRect().bottom>innerHeight-40)p.scrollIntoView({behavior:"smooth",block:"end"});
+  const jpEl=p.querySelector(".jp"),fundo=Math.max(p.getBoundingClientRect().bottom,jpEl?jpEl.getBoundingClientRect().bottom:0);
+  if(fundo>innerHeight-40)document.getElementById("abertura").scrollBy({top:fundo-innerHeight+60,behavior:"smooth"});
   const n=[...(p.dataset.jp||"")].length,tInk=n*45+600;
   abTimers.push(setTimeout(()=>p.classList.add("jpf"),30));
   abTimers.push(setTimeout(()=>{p.classList.add("diss");abTimers.push(setTimeout(()=>p.classList.add("pt"),500));},tInk+1500));
