@@ -946,6 +946,7 @@
   .torncard .tipo{display:flex;gap:8px;flex-wrap:wrap;align-items:baseline;min-height:0}
   .torncard .tipo.t-favoravel{color:var(--good)} .torncard .tipo.t-origem{color:var(--kin)}
   .torncard .tipo .tema{font-weight:500;color:var(--muted-tx)}
+  .torncard .tipo .tema.ano{color:var(--accent,#9b2d20);font-variant-numeric:tabular-nums}
   .filtrotema{display:flex;gap:4px;flex-wrap:wrap;margin:0 0 8px}
   .filtrotema button{font-size:12.5px;padding:3px 10px}
   .filtrotema button.on{background:var(--panel);border-color:var(--cla);color:var(--ink);font-weight:700}
@@ -1555,13 +1556,56 @@ const EVENTOS=[
  {id:"casamento_abaixo",nome:"Casamento Abaixo da Posição",tipo:"ambiguo",tema:"corte",mods:{riqueza:8,influencia:-6,vazio:-4}},
  {id:"contrabando_gaijin",nome:"Contrabando com Gaijin",tipo:"ambiguo",tema:"comercio",mods:{riqueza:10,influencia:-4,vazio:-8}},
  {id:"duelo_morte",nome:"Duelo de Morte Vencido",tipo:"ambiguo",tema:"guerra",mods:{influencia:-6,autoridade:-4,vazio:8}},
- {id:"chantagem",nome:"Chantagem",tipo:"ambiguo",tema:"corte",mods:{riqueza:-4,influencia:8,vazio:-6}}
+ {id:"chantagem",nome:"Chantagem",tipo:"ambiguo",tema:"corte",mods:{riqueza:-4,influencia:8,vazio:-6}},
+ /* 2026-11-05: eventos com a história de Rokugan até 1137 (datas do calendário Isawa, l5r.fandom.com) */
+ {id:"fieis_hantei",nome:"Fiéis do Imperador Morto",tipo:"origem",tema:"corte",ano:"1123",mods:{influencia:5,autoridade:3,riqueza:-4,vazio:-3}},
+ {id:"exercito_toturi",nome:"Veteranos do Exército de Toturi",tipo:"origem",tema:"guerra",ano:"1128",mods:{autoridade:6,influencia:-4,riqueza:-2,vazio:1}},
+ {id:"espirito_retornado",nome:"Fundada por um Espírito Retornado",tipo:"origem",tema:"espirito",ano:"1133",mods:{influencia:4,autoridade:2,riqueza:-6,vazio:6}},
+ {id:"casa_restaurada",nome:"Casa Restaurada pelo Imperador",tipo:"origem",tema:"corte",ano:"1133",mods:{influencia:6,autoridade:-4,dominio:-3,vazio:2}},
+ {id:"sobreviventes_otosan",nome:"Sobreviventes da Capital",tipo:"origem",tema:"corte",ano:"1128",mods:{influencia:5,dominio:-5,riqueza:-2,vazio:3}},
+ {id:"guardioes_historias",nome:"Guardiões das Histórias",tipo:"origem",tema:"espirito",ano:"1132",mods:{influencia:4,vazio:4,autoridade:-5,riqueza:-2}},
+ {id:"cacadores_sangue",nome:"Caçadores dos Falantes de Sangue",tipo:"origem",tema:"espirito",ano:"1132",mods:{autoridade:5,influencia:2,riqueza:-4,vazio:-2}},
+ {id:"linhagem_cervo_branco",nome:"Linhagem do Cervo Branco",tipo:"origem",tema:"guerra",ano:"815",idadeMin:"antiga",mods:{autoridade:6,influencia:2,riqueza:-4,dominio:-3}},
+ {id:"remanescentes_gozoku",nome:"Remanescentes do Gozoku",tipo:"origem",tema:"corte",ano:"séc. VI",idadeMin:"antiga",mods:{influencia:7,riqueza:2,vazio:-6,autoridade:-2}},
+ {id:"luz_escuridao",nome:"Luz nos Vinte e Sete Dias",tipo:"favoravel",tema:"espirito",ano:"1132",mods:{influencia:5,autoridade:5,riqueza:-5,vazio:1}},
+ {id:"portao_esquecimento",nome:"Lutaram no Portão do Esquecimento",tipo:"favoravel",tema:"guerra",ano:"1133",mods:{autoridade:6,influencia:4,riqueza:-5,vazio:1}},
+ {id:"ancestral_em_casa",nome:"Um Ancestral Voltou para Casa",tipo:"favoravel",tema:"espirito",ano:"1134",mods:{autoridade:4,vazio:6,riqueza:-4}},
+ {id:"magistratura_editos",nome:"Cargo dos Três Éditos",tipo:"favoravel",tema:"corte",ano:"1132",mods:{influencia:6,autoridade:3,riqueza:-3}},
+ {id:"audiencia_toturi",nome:"Audiência com o Imperador Toturi",tipo:"favoravel",tema:"corte",ano:"1134",mods:{influencia:9,riqueza:-4,autoridade:2,vazio:-1}},
+ {id:"presente_naga",nome:"Presente dos Naga",tipo:"favoravel",tema:"espirito",ano:"1135",mods:{riqueza:8,vazio:3,influencia:-5},concede:{tipo:"terreno",terreno:"floresta_densa",c1:"lagos",nomeSugerido:"Lago da Pérola Adormecida"}},
+ {id:"contratos_reconstrucao",nome:"Contratos da Reconstrução",tipo:"favoravel",tema:"comercio",ano:"1134",mods:{riqueza:9,dominio:2,autoridade:-5}},
+ {id:"retomada_hiruma",nome:"Na Retomada do Shiro Hiruma",tipo:"favoravel",tema:"guerra",ano:"1130",mods:{autoridade:8,riqueza:-4,vazio:2}},
+ {id:"dia_trovao",nome:"Presentes no Dia do Trovão",tipo:"favoravel",tema:"guerra",ano:"1128",mods:{autoridade:5,influencia:5,dominio:-5,vazio:1}},
+ {id:"celeiros_fome",nome:"Celeiros Cheios na Grande Fome",tipo:"favoravel",tema:"comercio",ano:"1132",mods:{riqueza:6,influencia:4,autoridade:-4}},
+ {id:"ronin_paz",nome:"Ronin Atraídos pela Paz",tipo:"favoravel",tema:"guerra",ano:"1134",mods:{autoridade:7,riqueza:-3,influencia:2}},
+ {id:"bencao_hitomi",nome:"Bênção da Nova Lua",tipo:"favoravel",tema:"espirito",ano:"1132",mods:{vazio:8,influencia:2,dominio:-4}},
+ {id:"santuario_novo_sol",nome:"Santuário do Novo Sol",tipo:"favoravel",tema:"espirito",ano:"1132",mods:{vazio:6,riqueza:-4,influencia:4},concede:{tipo:"terreno",terreno:"colinas",c1:"templo_santuario",nomeSugerido:"Santuário do Sol Renascido"}},
+ {id:"nome_contra_escuridao",nome:"O Nome que Venceu a Escuridão",tipo:"favoravel",tema:"espirito",ano:"1133",mods:{autoridade:4,influencia:4,vazio:6,riqueza:-8}},
+ {id:"grande_fome_1132",nome:"A Grande Fome de 1132",tipo:"adverso",tema:"terra",ano:"1132",mods:{riqueza:-8,dominio:-3,autoridade:6,influencia:3}},
+ {id:"infiltracao_kolat",nome:"Infiltração Kolat",tipo:"adverso",tema:"corte",ano:"1132",mods:{vazio:-10,influencia:6,autoridade:2}},
+ {id:"expurgo_corte",nome:"Expurgo da Corte Imperial",tipo:"adverso",tema:"corte",ano:"1132",mods:{influencia:-10,autoridade:4,vazio:4}},
+ {id:"tocados_escuridao",nome:"Tocados pela Escuridão Mentirosa",tipo:"adverso",tema:"espirito",ano:"1133",mods:{autoridade:-8,influencia:-4,vazio:6,riqueza:4}},
+ {id:"saque_mantis",nome:"Saqueados pela Invasão Louva-a-Deus",tipo:"adverso",tema:"terra",ano:"1132",mods:{dominio:-8,riqueza:-4,autoridade:6,vazio:4}},
+ {id:"dividida_guerra_civil",nome:"Dividida pela Guerra Civil",tipo:"adverso",tema:"corte",ano:"1132",mods:{influencia:-8,autoridade:-4,vazio:6,riqueza:4}},
+ {id:"ancestrais_calados",nome:"Os Ancestrais Calaram",tipo:"adverso",tema:"espirito",ano:"1133",mods:{vazio:-10,autoridade:6,influencia:2}},
+ {id:"macula_vassalos",nome:"Mácula entre os Vassalos",tipo:"adverso",tema:"espirito",ano:"1132",mods:{autoridade:-10,dominio:4,vazio:4}},
+ {id:"aranha_mar",nome:"A Grande Aranha do Mar",tipo:"adverso",tema:"terra",ano:"1132",mods:{dominio:-10,riqueza:-2,autoridade:6,vazio:4}},
+ {id:"seita_sangue",nome:"Seita na Aldeia",tipo:"adverso",tema:"espirito",mods:{vazio:-10,autoridade:4,dominio:4}},
+ {id:"terras_escorpiao",nome:"Terras do Exílio Escorpião",tipo:"ambiguo",tema:"terra",ano:"1130",mods:{dominio:9,influencia:-7,vazio:-4},concede:{tipo:"terreno",terreno:"planicies",c1:"terras_cultivaveis",nomeSugerido:"Campos do Escorpião Ausente"}},
+ {id:"criancas_escorpiao",nome:"Criaram Crianças Escorpião",tipo:"ambiguo",tema:"corte",ano:"1130",mods:{influencia:6,vazio:-4,autoridade:-4}},
+ {id:"segredo_gozoku",nome:"Cartas do Gozoku",tipo:"ambiguo",tema:"corte",ano:"séc. VI",idadeMin:"estabelecida",mods:{influencia:8,vazio:-8,riqueza:-2}},
+ {id:"pergaminho_iuchiban",nome:"Pergaminho Selado de Iuchiban",tipo:"ambiguo",tema:"espirito",idadeMin:"estabelecida",mods:{vazio:-9,influencia:5,autoridade:4,riqueza:-2}},
+ {id:"crisantemo_aco",nome:"Serviço ao Crisântemo de Aço",tipo:"ambiguo",tema:"guerra",idadeMin:"antiga",mods:{autoridade:9,influencia:-7,vazio:-4}},
+ {id:"troca_cla_yasuki",nome:"Mudaram de Clã como os Yasuki",tipo:"ambiguo",tema:"comercio",mods:{riqueza:8,influencia:-6,autoridade:2,vazio:-6}},
+ {id:"fragmento_ambicao",nome:"Fragmento da Espada Ambição",tipo:"ambiguo",tema:"espirito",ano:"1133",mods:{autoridade:6,vazio:-8}},
+ {id:"alianca_yoritomo",nome:"Na Aliança de Yoritomo",tipo:"ambiguo",tema:"corte",ano:"1137",mods:{riqueza:6,influencia:2,autoridade:-6,vazio:-4}},
+ {id:"disputa_retornado",nome:"Disputa com um Espírito Retornado",tipo:"ambiguo",tema:"terra",ano:"1134",mods:{dominio:-8,vazio:6,influencia:-4,autoridade:4}}
 ];
 /* 2026-11-05: raridade dos eventos (Thiago: eventos raros e lendários podem quebrar o
    equilíbrio). Pesa no sorteio (comum 6, incomum 3, raro 1, lendário 0,3) e multiplica os
    modificadores do evento histórico (raro ×1,5, lendário ×2). O que não está na lista é comum.
    Os eventos são do próprio app (planilha "Familias L5R"), não de um livro. */
-const RARIDADE_EVENTO={exilados_cla:"incomum",casa_caida:"incomum",usurpacao_terras:"incomum",ramo_elevado:"incomum",mercadores_nome:"incomum",vitoria_torneio:"incomum",refem_prestigio:"incomum",artesao_renomado:"incomum",escola_artistica:"incomum",magistrado_renome:"incomum",gloria_batalha:"incomum",segredo_guardado:"incomum",recurso_valioso:"incomum",rota_comercial_cedida:"incomum",dojo_renomado:"incomum",arquivo_pergaminhos:"incomum",corte_inverno:"incomum",defesa_gloriosa:"incomum",fortaleza_cedida_cla:"incomum",porto_herdado_afogados:"incomum",corrupcao_escandalo:"incomum",derrota_marcante:"incomum",intervencao_senhor:"incomum",guerra_prolongada:"incomum",isolamento_deliberado:"incomum",perda_territorio:"incomum",reconstrucao_pos_guerra:"incomum",herdeiro_desonrado:"incomum",traicao_vassalo:"incomum",ofensa_corte:"incomum",pacto_ronin:"incomum",casamento_abaixo:"incomum",chantagem:"incomum",rivalidade_juramentada:"incomum",torneio_verao:"incomum",favor_daimyo:"incomum",colheita_extraordinaria:"incomum",saque_guerra:"incomum",tributo_vassalo:"incomum",dote_casamento:"incomum",fundacao_decreto:"raro",fundacao_religiosa:"raro",escolhidos_kami:"raro",bencao_kami:"raro",templo_importante:"raro",figura_espiritual:"raro",ruinas_ancestrais_descobertas:"raro",heranca_castelo_amaldicoado:"raro",contato_terras_sombrias:"raro",incursao_macula:"raro",maldicao_linhagem:"raro",contrabando_gaijin:"raro",duelo_morte:"raro",graca_kami:"raro",pressagio_sombrio:"raro",linhagem_primeiros:"lendario"};
+const RARIDADE_EVENTO={exilados_cla:"incomum",casa_caida:"incomum",usurpacao_terras:"incomum",ramo_elevado:"incomum",mercadores_nome:"incomum",vitoria_torneio:"incomum",refem_prestigio:"incomum",artesao_renomado:"incomum",escola_artistica:"incomum",magistrado_renome:"incomum",gloria_batalha:"incomum",segredo_guardado:"incomum",recurso_valioso:"incomum",rota_comercial_cedida:"incomum",dojo_renomado:"incomum",arquivo_pergaminhos:"incomum",corte_inverno:"incomum",defesa_gloriosa:"incomum",fortaleza_cedida_cla:"incomum",porto_herdado_afogados:"incomum",corrupcao_escandalo:"incomum",derrota_marcante:"incomum",intervencao_senhor:"incomum",guerra_prolongada:"incomum",isolamento_deliberado:"incomum",perda_territorio:"incomum",reconstrucao_pos_guerra:"incomum",herdeiro_desonrado:"incomum",traicao_vassalo:"incomum",ofensa_corte:"incomum",pacto_ronin:"incomum",casamento_abaixo:"incomum",chantagem:"incomum",rivalidade_juramentada:"incomum",torneio_verao:"incomum",favor_daimyo:"incomum",colheita_extraordinaria:"incomum",saque_guerra:"incomum",tributo_vassalo:"incomum",dote_casamento:"incomum",fundacao_decreto:"raro",fundacao_religiosa:"raro",escolhidos_kami:"raro",bencao_kami:"raro",templo_importante:"raro",figura_espiritual:"raro",ruinas_ancestrais_descobertas:"raro",heranca_castelo_amaldicoado:"raro",contato_terras_sombrias:"raro",incursao_macula:"raro",maldicao_linhagem:"raro",contrabando_gaijin:"raro",duelo_morte:"raro",graca_kami:"raro",pressagio_sombrio:"raro",linhagem_primeiros:"lendario",fieis_hantei:"incomum",exercito_toturi:"incomum",espirito_retornado:"raro",casa_restaurada:"raro",guardioes_historias:"incomum",cacadores_sangue:"incomum",linhagem_cervo_branco:"raro",remanescentes_gozoku:"raro",portao_esquecimento:"raro",ancestral_em_casa:"incomum",audiencia_toturi:"incomum",presente_naga:"raro",retomada_hiruma:"incomum",dia_trovao:"raro",bencao_hitomi:"raro",nome_contra_escuridao:"lendario",infiltracao_kolat:"incomum",expurgo_corte:"raro",tocados_escuridao:"raro",saque_mantis:"incomum",dividida_guerra_civil:"incomum",ancestrais_calados:"raro",macula_vassalos:"incomum",aranha_mar:"raro",seita_sangue:"incomum",terras_escorpiao:"incomum",segredo_gozoku:"raro",pergaminho_iuchiban:"raro",crisantemo_aco:"raro",troca_cla_yasuki:"incomum",fragmento_ambicao:"raro",alianca_yoritomo:"incomum",disputa_retornado:"incomum"};
 const RAR_INFO={comum:{nome:"comum",peso:6,mult:1},incomum:{nome:"incomum",peso:3,mult:1.2},raro:{nome:"raro",peso:1,mult:1.5},lendario:{nome:"lendário",peso:0.3,mult:2}};
 function raridade(e){return RARIDADE_EVENTO[e&&e.id]||"comum";}
 function modEvento(e,attr){const v=(e.mods||{})[attr]||0;const r=Math.round(v*RAR_INFO[raridade(e)].mult);return attr==="vazio"&&r>0?Math.round(r*0.5):r;}
@@ -1643,7 +1687,49 @@ const EVENTO_DESC={
  heranca_castelo_amaldicoado:"Um ramo distante da família desapareceu sem deixar rastro, e seu castelo passou à linhagem principal por direito de sangue. Ninguém mais quis reivindicar aquelas terras — os camponeses evitam a região, e servos juram ouvir passos nos corredores vazios à noite. Ainda assim, é um Shiro de verdade, com muralhas que já resistiram a cercos, e poucos rivais arriscariam atacar um lugar com fama tão sinistra. Concede: um Shiro sobre terreno amaldiçoado (Colinas/Montanhas, com Área Impura).",
  ruinas_ancestrais_descobertas:"Nas profundezas de uma floresta pertencente à família, exploradores encontraram ruínas de uma era anterior à fundação da própria casa — talvez de uma civilização esquecida, talvez de uma linhagem ancestral perdida no tempo. O local desperta orgulho e fascínio espiritual, mas escavá-lo custa recursos, e ninguém sabe ao certo o que mais pode estar enterrado ali embaixo, esperando para ser descoberto por aventureiros audazes. Concede: Ruínas Antigas (sobre Floresta Densa).",
  porto_herdado_afogados:"Uma família aliada foi tragada pelo mar numa tempestade que ninguém esqueceu, e por um antigo pacto de casamento, seu porto passou às mãos desta família. O comércio ali é próspero e constante, mas marinheiros locais insistem que às vezes, na neblina da madrugada, avistam velas fantasmas voltando para casa. Concede: um Porto (sobre Costa).",
- fortaleza_cedida_cla:"Em reconhecimento por serviços prestados, o próprio clã cedeu à família uma grande fortaleza ancestral, um Kyuden erguido para durar séculos. É um símbolo imenso de confiança e prestígio — mas também uma coleira: o clã espera que a família responda a qualquer chamado às armas, sem hesitação e sem exceção, custe o que custar. Concede: um Kyuden (sobre Montanhas)."
+ fortaleza_cedida_cla:"Em reconhecimento por serviços prestados, o próprio clã cedeu à família uma grande fortaleza ancestral, um Kyuden erguido para durar séculos. É um símbolo imenso de confiança e prestígio — mas também uma coleira: o clã espera que a família responda a qualquer chamado às armas, sem hesitação e sem exceção, custe o que custar. Concede: um Kyuden (sobre Montanhas).",
+ fieis_hantei:"Na noite do Golpe Escorpião, quando Bayushi Shoju matou o Hantei XXXVIII, o fundador da casa estava no palácio e lutou pelo Imperador até não restar ninguém para proteger. Não salvou o Filho do Céu, mas salvou o selo e a honra. O nome veio depois, como recompensa e como peso.",
+ exercito_toturi:"Os fundadores eram ronin no exército de Toturi durante a Guerra dos Clãs e estavam nas ruas de Otosan Uchi no Dia do Trovão. Quando Toturi subiu ao trono em 1129, lembrou de quem marchou com ele sem nome nem mestre. A corte ainda os chama de \"os homens de onda\" quando acha que ninguém ouve.",
+ espirito_retornado:"Na Batalha do Portão do Esquecimento, um exército de mortos atravessou de Meido para lutar ao lado dos vivos. Um deles não voltou: um samurai de séculos atrás, que reivindicou o nome que tinha em vida e fundou de novo a sua casa. Ele não envelhece, não come e não entende por que o mundo mudou tanto.",
+ casa_restaurada:"O nome da família tinha sido apagado por vergonha, como o dos Akodo depois da queda de Toturi. Em 1133, o mesmo édito que devolveu os Akodo à vida devolveu também este nome, com um descendente distante e quase nada de terras. Os vizinhos ainda não sabem se devem tratá-los como velhos senhores ou recém-chegados.",
+ sobreviventes_otosan:"A família servia a corte em Otosan Uchi, entre escribas, mestres de cerimônia e guardas de portão. Quando a cidade caiu no fim da Guerra dos Clãs, fugiram com o que coube nas mangas. Ganharam terras modestas longe da capital e guardam, em segredo, os nomes de quem ainda deve favores a eles.",
+ guardioes_historias:"Em 1132 a Escuridão Mentirosa queimou as Histórias Ikoma e apagou metade do Tao de Shinsei, tentando cortar o Império do próprio passado. Os fundadores desta casa eram contadores de histórias que sabiam de cor o que se perdeu. Foram feitos samurai para lembrar, e lembrar é o que fazem.",
+ cacadores_sangue:"Os Falantes de Sangue, o culto de Iuchiban, nunca morreram de verdade. Em 1132 uma célula deles matava magistrados em Otosan Uchi, e quem a destruiu ganhou um nome, como os Ujina. Esta casa nasceu de uma caçada parecida, e a seita tem boa memória para quem a feriu.",
+ linhagem_cervo_branco:"Em 815 o Clã Ki-Rin voltou de oito séculos de viagem e foi recebido a golpes de espada na Batalha do Cervo Branco. Um ancestral da casa estava naquele campo e foi o primeiro a baixar a lâmina quando entendeu quem eram os estrangeiros. Do mal-entendido nasceu um nome, e da coragem de reconhecer o erro, uma reputação.",
+ remanescentes_gozoku:"Por quase um século o Gozoku, uma aliança de Garça, Fênix e Escorpião, governou o Império com imperadores de fachada. Quando o Hantei retomou o poder, os conspiradores foram caçados, mas um ramo menor trocou de nome e sobreviveu. A casa ainda guarda os métodos, as cartas e a vergonha.",
+ luz_escuridao:"Quando Amaterasu deixou o céu e Rokugan passou vinte e sete dias sem sol, a casa manteve as fogueiras acesas, abriu os celeiros e guardou as estradas. Os camponeses da região contam que só ali a noite não venceu. A lenha custou caro, a gratidão vale mais.",
+ portao_esquecimento:"A casa mandou samurai a Volturnum, na batalha em que os vivos e os mortos lutaram lado a lado contra a Escuridão Mentirosa. Poucos voltaram, mas os que voltaram viram Hitomi pronunciar o nome da Escuridão e destruí-la. Ninguém na corte ousa contradizer um veterano do Portão.",
+ ancestral_em_casa:"Desde 1134 os espíritos que atravessaram o Portão andam pelo Império, e um deles bateu à porta desta casa: um antepassado famoso, com o mon certo no kimono e lembranças que só a família conhecia. Ele dá conselhos, treina os jovens e às vezes esquece que já não é ele quem manda.",
+ magistratura_editos:"Os Três Éditos de Toturi tiraram magistrados de metade do Império e deixaram cargos vazios por toda parte. A casa ocupou um deles e ficou com ele quando a ordem voltou. Um magistrado da família tem a palavra da lei, e quem tem a lei raramente precisa pedir duas vezes.",
+ audiencia_toturi:"Quando Toturi retomou o trono, recebeu em audiência gente que a velha corte jamais deixaria entrar. Um membro da casa esteve diante do Imperador e saiu de lá com uma frase de elogio que circula nas cortes até hoje. Os presentes da viagem esvaziaram o cofre.",
+ presente_naga:"Antes de voltar ao Grande Sono, em 1135, os Naga deixaram presentes aos humanos que lutaram ao lado deles. A casa recebeu uma pérola e o direito a um lago no limite da floresta Shinomen. Os vizinhos olham a amizade com os homens-serpente com desconfiança.",
+ contratos_reconstrucao:"Depois de duas guerras seguidas, o Império inteiro precisou de madeira, pedra, telha e arroz. A casa vendeu tudo isso e fez uma pequena fortuna com a reconstrução. Os guerreiros do clã murmuram que é dinheiro de mercador, e mesmo assim pedem emprestado.",
+ retomada_hiruma:"Em 1130 o Caranguejo e os Naga retomaram o Shiro Hiruma das Terras Sombrias, e em 1134 as muralhas foram reerguidas. A casa mandou gente para as duas coisas, para lutar e para carregar pedra. Quem voltou da fronteira não tem medo de mais nada, e os soldados da casa sabem disso.",
+ dia_trovao:"Um ancestral recente estava em Otosan Uchi quando os Sete Trovões enfrentaram Fu Leng no corpo do último Hantei. Ele não era um dos Trovões, mas segurou um portão enquanto eles subiam. O nome dele está nos registros da batalha, e a casa nunca deixa ninguém esquecer.",
+ celeiros_fome:"Em 1132, com as guerras devorando as colheitas, a fome tomou o Império. A casa tinha guardado arroz em anos bons e vendeu, emprestou e doou na medida certa. Senhores maiores ficaram devendo, e a casa sabe cobrar com educação.",
+ ronin_paz:"Com a paz de Toturi, milhares de ronin das guerras ficaram sem senhor nem propósito. A casa recebeu alguns dos melhores e lhes deu um juramento. São leais porque lembram como é ter fome, e perigosos pela mesma razão.",
+ bencao_hitomi:"Quando Hitomi matou o Senhor Lua e tomou o lugar dele no céu, alguns templos receberam visões da nova deusa. Um shugenja da casa foi um desses videntes, e desde então as noites de lua cheia trazem presságios corretos à família. A casa doou terras a um templo em agradecimento.",
+ santuario_novo_sol:"Hida Yakamo tomou o lugar de Amaterasu como Senhor Sol, e o povo precisou de templos para o novo deus. A casa construiu um dos primeiros, numa colina que pega a luz da manhã. Peregrinos do Caranguejo passam por ali e deixam oferendas que a casa não precisa pedir.",
+ nome_contra_escuridao:"Um ancestral da casa estava ao lado de Hitomi em Volturnum quando ela descobriu que a Escuridão Mentirosa era Akodo, o Kami esquecido, e a destruiu chamando-a pelo nome. Ele foi um dos poucos que ouviram a palavra e sobreviveram. Monges e cortesãos vêm de longe para perguntar o que ele viu, e ele nunca conta tudo.",
+ grande_fome_1132:"As guerras queimaram os campos e a fome chegou junto com o inverno. A casa vendeu heranças para comprar arroz e mesmo assim enterrou camponeses demais. Os que ficaram são leais, mas as terras ainda estão vazias.",
+ infiltracao_kolat:"Quando Toturi começou a caçar os Kolat em 1132, descobriu-se que o karo da casa trabalhava para eles havia vinte anos. Ele cometeu seppuku antes de dizer quem mais. A casa manteve os contatos que ele deixou, e a pergunta de quem ainda é Kolat nunca foi respondida.",
+ expurgo_corte:"Em 1132, enlouquecido pela Escuridão, Toturi mandou o Campeão Esmeralda executar a corte imperial. Os enviados da casa estavam lá. A casa perdeu de uma vez seus melhores cortesãos e todos os aliados que eles tinham, e os sobreviventes juraram nunca mais confiar em ninguém da capital.",
+ tocados_escuridao:"A Escuridão Mentirosa trocava pessoas por cópias perfeitas, e uma delas viveu anos dentro da casa. Ninguém sabe ao certo quem era, nem quando foi substituído. Os servos ainda se olham com desconfiança, e o daimyō exige juramentos que antes não exigia.",
+ saque_mantis:"Quando os exércitos de Yoritomo invadiram as terras da Fênix, os navios do Louva-a-Deus saquearam a costa inteira, de aliados e de inimigos. A casa perdeu aldeias, barcos e colheitas. Os samurai que sobreviveram aprenderam a lutar na praia, e não esquecem quem os ensinou.",
+ dividida_guerra_civil:"A Escuridão Mentirosa falsificou mensagens entre o Campeão da Garça e o daimyō Daidoji, e o clã se partiu. Na casa aconteceu o mesmo: irmãos tomaram lados opostos e se enfrentaram. A guerra acabou em 1133, e os dois ramos ainda não se falam.",
+ ancestrais_calados:"Em 1133 as criaturas da Escuridão massacraram ancestrais em Yomi e nos outros reinos dos mortos. Desde então o santuário da casa está em silêncio, e nenhum shugenja consegue falar com os antepassados. A família reza para ninguém, e sente o vazio.",
+ macula_vassalos:"Como no Leão, onde o próprio Campeão de Jade escondeu a Mácula em 1132, a casa descobriu tarde que vassalos de confiança estavam corrompidos. A limpeza exigiu sangue e jade. Os soldados ficaram, mas não confiam mais nos oficiais.",
+ aranha_mar:"O ódio da guerra civil da Garça acordou a Grande Aranha do Mar, que cobriu a costa de teias e escuridão. As vilas de pescadores da casa nunca mais foram as mesmas. Algumas ainda estão lá, vazias, e ninguém aceita morar nelas.",
+ seita_sangue:"Uma célula dos Falantes de Sangue, os seguidores de Iuchiban, cresceu escondida numa aldeia da casa. Quando foi descoberta, já tinha um sacerdote da família entre os membros. Os inquisidores Asako ainda visitam as terras, e cada visita é uma humilhação.",
+ terras_escorpiao:"Quando o Escorpião foi exilado para as Areias Ardentes em 1130, suas terras ficaram vazias, e a casa ocupou uma parte como o Louva-a-Deus ocupou o resto. Em 1132 o Escorpião voltou, mesmo sem o exílio revogado, e quer tudo de volta. A casa tem a posse e o Escorpião tem a memória.",
+ criancas_escorpiao:"No exílio de 1130, as crianças Escorpião com menos de doze anos foram entregues à Garça para criar. Algumas acabaram nesta casa. Cresceram aqui, e em 1132 os pais voltaram para buscá-las. Agora há gente nas duas cortes que chama a casa de família, e ninguém sabe a quem esses jovens são leais.",
+ segredo_gozoku:"A casa guarda cartas que provam que um ancestral serviu ao Gozoku, a conspiração que governou atrás dos imperadores por quase um século. As cartas também comprometem três outras famílias ainda poderosas. A casa nunca usou o segredo, e o simples fato de tê-lo já é uma arma.",
+ pergaminho_iuchiban:"No tempo em que Iuchiban espalhava o culto de sangue, um ancestral da casa tomou um dos pergaminhos dele e, em vez de queimá-lo, o selou. O selo vem sendo renovado a cada geração. Os shugenja dizem que o pergaminho sussurra, e a família tem medo do dia em que alguém responder.",
+ crisantemo_aco:"Um ancestral foi carrasco do Hantei XVI, o Crisântemo de Aço, o imperador que expurgou a corte com uma crueldade que ainda dá nome a pesadelos. A casa herdou a fama de quem não hesita e a desconfiança de quem lembra. Ninguém desafia a família, e ninguém a convida.",
+ troca_cla_yasuki:"Há séculos os Yasuki deixaram a Garça pelo Caranguejo e levaram consigo o talento para o comércio. Esta casa fez o mesmo em escala menor: trocou de clã numa disputa e trouxe rotas, contatos e cofres. O clã novo aceitou o ouro, o antigo nunca perdoou.",
+ fragmento_ambicao:"Ambição era uma das Espadas de Sangue de Iuchiban. Reforjada, levou o ronin Sanzo a ferir Toturi de morte em 1133. Depois que a lâmina foi destruída, um fragmento ficou com a casa. Quem o segura sente coragem e fome de poder ao mesmo tempo, e a família não consegue nem destruí-lo nem esquecê-lo.",
+ alianca_yoritomo:"A casa se aproximou da Aliança de Yoritomo, o pacto dos clãs menores sob o Louva-a-Deus, e lucrou com as rotas e a proteção dos navios dele. Em 1137 a Aliança se desfaz, e cada antigo aliado busca um culpado. A casa tem dinheiro e nenhum amigo seguro.",
+ disputa_retornado:"Um samurai morto há três séculos voltou pelo Portão do Esquecimento e apresentou documentos dizendo que as melhores terras da casa eram dele. Pela lei dos vivos ele não tem direito a nada, pela honra talvez tenha. A casa cedeu parte das terras, e o espírito ensina aos jovens uma esgrima que ninguém mais conhece."
 };
 
 /* Subtítulo poético + descrição de cada atributo — agora um por Anel, cada um explicando
@@ -2908,6 +2994,7 @@ function setIdade(v){if(bloqueadoLeitura())return;S.idade=v||null;
     S.eventos.slice(vagasEventos()).forEach(id=>removerConcessaoEvento(id));
     S.eventos=S.eventos.slice(0,vagasEventos());
   }
+  S.eventos.filter(id=>{const x=eventoInfo(id);return x&&!origemPermitida(x);}).forEach(id=>{const x=eventoInfo(id);removerConcessaoEvento(id);S.eventos.splice(S.eventos.indexOf(id),1);feedPush(x.nome+" só cabe em famílias "+IDADE_LABEL[x.idadeMin]+" ou mais velhas: saiu da crônica.");});
   const o=S.origem&&eventoInfo(S.origem);
   if(o&&!origemPermitida(o)){removerConcessaoEvento(o.id);S.origem=null;feedPush(o.nome+" só existe para famílias "+IDADE_LABEL[o.idadeMin]+" ou mais velhas: escolha outra origem.");}
   verTodosEventos=S.eventos.length<vagasEventos();
@@ -2936,6 +3023,7 @@ function toggleEvento(id){
   const i=S.eventos.indexOf(id);
   if(i>=0){S.eventos.splice(i,1);verTodosEventos=true;removerConcessaoEvento(id);}
   else{
+    if(!origemPermitida(e)){feedPush(e.nome+" só cabe em famílias "+IDADE_LABEL[e.idadeMin]+" ou mais velhas.");salvar();render();return;}
     if(S.eventos.length>=vagasEventos()){feedPush("Sem vagas de evento: aumente a idade da família ou remova outro.");salvar();render();return;}
     const vagasLivres=vagasEventos()-S.eventos.length,faltaAdv=Math.max(0,minAdversos()-adversosEscolhidos());
     if(!eventoEhAdverso(id)&&vagasLivres<=faltaAdv){feedPush("As vagas que sobram são de eventos adversos ou ambíguos: a cada 3 eventos depois da origem, 1 precisa ser.");salvar();render();return;}
@@ -2968,7 +3056,7 @@ const CHANCE_ADVERSO_EXTRA=0.15;
 function sortearEventosFaltantes(){
   if(bloqueadoLeitura())return;
   if(!S.origem)sortearOrigem();
-  const restantes=EVENTOS.filter(e=>e.tipo!=="origem"&&!S.eventos.includes(e.id));
+  const restantes=EVENTOS.filter(e=>e.tipo!=="origem"&&!S.eventos.includes(e.id)&&origemPermitida(e));
   let vagas=vagasEventos()-S.eventos.length;
   while(vagas>0&&restantes.length){
     const querAdv=adversosEscolhidos()<minAdversos()||Math.random()<CHANCE_ADVERSO_EXTRA;
@@ -3396,7 +3484,16 @@ const ORIGEM_DOA={
  exilados_cla:{p:["Cortesão Jovem","Bushi Jovem"],lotes:[{attr:"influencia",valor:-6,d:8,motivo:"desconfiança com quem trocou de clã"}]},
  guardioes_fronteira:{p:["Bushi Jovem","Bushi Jovem"]},
  escolhidos_kami:{p:["Shugenja Jovem","Shugenja Jovem"]},
- uniao_duas_casas:{p:["Cortesão Jovem","Bushi Jovem","Shugenja Jovem"],lotes:[{attr:"influencia",valor:8,d:8,motivo:"as duas casas ainda falam como uma"}]}
+ uniao_duas_casas:{p:["Cortesão Jovem","Bushi Jovem","Shugenja Jovem"],lotes:[{attr:"influencia",valor:8,d:8,motivo:"as duas casas ainda falam como uma"}]},
+ fieis_hantei:{p:["Bushi Jovem","Cortesão Jovem"],lotes:[{attr:"influencia",valor:8,d:8,motivo:"a corte lembra quem defendeu o Hantei"}]},
+ exercito_toturi:{p:["Bushi Experiente","Bushi Jovem"],lotes:[{attr:"autoridade",valor:8,d:8,motivo:"camaradas do exército ronin"}]},
+ espirito_retornado:{p:["Bushi Experiente","Shugenja Jovem"]},
+ casa_restaurada:{p:["Cortesão Jovem","Bushi Jovem"],lotes:[{attr:"influencia",valor:10,d:8,motivo:"o decreto de restauração ainda é recente"}]},
+ sobreviventes_otosan:{p:["Cortesão Jovem","Cortesão Jovem"],lotes:[{attr:"influencia",valor:8,d:8,motivo:"velhas amizades de Otosan Uchi"}]},
+ guardioes_historias:{p:["Cortesão Jovem","Monge Jovem"]},
+ cacadores_sangue:{p:["Bushi Jovem","Shugenja Jovem"],lotes:[{attr:"autoridade",valor:8,d:8,motivo:"o respeito de quem viu a seita cair"}]},
+ linhagem_cervo_branco:{p:["Bushi Jovem","Bushi Jovem"]},
+ remanescentes_gozoku:{p:["Cortesão Jovem","Cortesão Jovem"],lotes:[{attr:"riqueza",valor:8,d:0,motivo:"o ouro que o Gozoku escondeu"}]}
 };
 const NOME_PAPEL_CURTO=cat=>cat===DAIMYO_ORIGEM?"Daimyō":cat.replace(/ (Jovem|Experiente|Veterano)$/,"");
 function doacaoOrigem(id){const d=ORIGEM_DOA[id];if(!d)return null;return{personagens:[DAIMYO_ORIGEM].concat(d.p||[]),lotes:d.lotes||[]};}
@@ -4498,8 +4595,8 @@ function renderTesteFamilia(){
 function eventoCardHTML(e,opts){
   opts=opts||{};
   const sel=e.tipo==="origem"?S.origem===e.id:S.eventos.includes(e.id);
-  const bloqueada=e.tipo==="origem"&&!origemPermitida(e);
-  const cheio=e.tipo==="origem"?bloqueada:(!sel&&S.eventos.length>=vagasEventos());
+  const bloqueada=!origemPermitida(e);
+  const cheio=e.tipo==="origem"?bloqueada:(!sel&&(bloqueada||S.eventos.length>=vagasEventos()));
   const chips=ATRIBUTOS.filter(([k])=>e.mods[k]).map(([k,l])=>{
     const v=modEvento(e,k);return "<span class=\""+(v>0?"pos":"neg")+"\">"+l.slice(0,3)+" "+(v>0?"+":"")+v+"</span>";
   }).join("");
@@ -4515,7 +4612,7 @@ function eventoCardHTML(e,opts){
   }
   const rr=raridade(e);
   if(opts.soPresentes)return presente;
-  const tipo="<div class=\"tipo t-"+(e.tipo||"favoravel")+"\">"+(rr!=="comum"?"<span class=\"rar rar-"+rr+"\" title=\"aparece "+(rr==="incomum"?"metade das vezes":rr==="raro"?"uma vez a cada seis":"muito raramente")+" no sorteio"+(RAR_INFO[rr].mult>1?"; modificadores ×"+String(RAR_INFO[rr].mult).replace(".",","):"")+"\">"+RAR_INFO[rr].nome+"</span>":"")+(e.tipo&&e.tipo!=="favoravel"?TIPO_EVENTO_LABEL[e.tipo]:"")+(e.tema?"<span class=\"tema\">"+TEMA_EVENTO[e.tema]+"</span>":"")+
+  const tipo="<div class=\"tipo t-"+(e.tipo||"favoravel")+"\">"+(rr!=="comum"?"<span class=\"rar rar-"+rr+"\" title=\"aparece "+(rr==="incomum"?"metade das vezes":rr==="raro"?"uma vez a cada seis":"muito raramente")+" no sorteio"+(RAR_INFO[rr].mult>1?"; modificadores ×"+String(RAR_INFO[rr].mult).replace(".",","):"")+"\">"+RAR_INFO[rr].nome+"</span>":"")+(e.tipo&&e.tipo!=="favoravel"?TIPO_EVENTO_LABEL[e.tipo]:"")+(e.tema?"<span class=\"tema\">"+TEMA_EVENTO[e.tema]+"</span>":"")+(e.ano?"<span class=\"tema ano\" title=\"ano no calendário Isawa\">"+esc(e.ano)+"</span>":"")+
     (e.idadeMin?"<span class=\"tema\">só "+IDADE_LABEL[e.idadeMin]+" ou mais velha</span>":"")+"</div>";
   const remover=opts.comRemover?"<button class=\"ghost\" style=\"margin-top:6px\" onclick=\"event.stopPropagation();toggleEvento('"+e.id+"')\">✕ remover</button>":"";
   const onclick=opts.comRemover?"":(cheio?"":"toggleEvento('"+e.id+"')");
@@ -4527,14 +4624,14 @@ function setFiltroTema(t){filtroTema=(filtroTema===t?"":t);renderEventos();}
 /* 2026-11-05: a Crônica em duas partes. Em cima, a história da casa como uma linha do tempo
    (origem e eventos, um por linha, que abre para ler). Embaixo, o catálogo para escolher, em
    grade larga, com filtros de tipo, tema e raridade e busca por nome. */
-let filtroTipoEv="",filtroRarEv="",filtroBuscaEv="";
-function setFiltroEv(campo,v){if(campo==="tipo")filtroTipoEv=v;else if(campo==="rar")filtroRarEv=v;else filtroBuscaEv=v;renderEventos();}
+let filtroTipoEv="",filtroRarEv="",filtroBuscaEv="",filtroAnoEv="";
+function setFiltroEv(campo,v){if(campo==="ano")filtroAnoEv=(filtroAnoEv?"":"1");else if(campo==="tipo")filtroTipoEv=v;else if(campo==="rar")filtroRarEv=v;else filtroBuscaEv=v;renderEventos();}
 function chipsEvento(e){return ATRIBUTOS.filter(([k])=>e.mods[k]).map(([k,l])=>{const v=modEvento(e,k);return "<span class=\""+(v>0?"pos":"neg")+"\">"+l.slice(0,3)+" "+(v>0?"+":"")+v+"</span>";}).join("");}
 function eventoLinhaHTML(e,ehOrigem,n){
   const rr=raridade(e),desc=EVENTO_DESC[e.id]||"";
   return "<details class=\"evlinha t-"+(e.tipo||"favoravel")+"\"><summary>"+
     "<span class=\"evn\">"+(ehOrigem?"源":n)+"</span>"+
-    "<span class=\"evt\"><b>"+esc(e.nome)+"</b><small>"+(ehOrigem?"origem":TIPO_EVENTO_LABEL[e.tipo]||"favorável")+(e.tema?" · "+TEMA_EVENTO[e.tema]:"")+"</small></span>"+
+    "<span class=\"evt\"><b>"+esc(e.nome)+"</b><small>"+(ehOrigem?"origem":TIPO_EVENTO_LABEL[e.tipo]||"favorável")+(e.tema?" · "+TEMA_EVENTO[e.tema]:"")+(e.ano?" · "+esc(e.ano):"")+"</small></span>"+
     (rr!=="comum"?"<span class=\"rar rar-"+rr+"\">"+RAR_INFO[rr].nome+"</span>":"")+
     "<span class=\"em\">"+chipsEvento(e)+"</span>"+(e.concede?"<span title=\"concede uma terra\">🎁</span>":"")+
     (ehOrigem?"<button class=\"ghost\" onclick=\"event.preventDefault();trocarOrigem()\">trocar</button>":"<button class=\"ghost\" onclick=\"event.preventDefault();toggleEvento('"+e.id+"')\" aria-label=\"tirar\">✕</button>")+
@@ -4561,10 +4658,10 @@ function renderEventos(){
   const filtros="<div class=\"evfiltros\">"+
     (precisaOrigem?"":"<div class=\"filtrotema\">"+bt("tipo","","Todos",filtroTipoEv)+bt("tipo","favoravel","Favoráveis",filtroTipoEv)+bt("tipo","adverso","Adversos",filtroTipoEv)+bt("tipo","ambiguo","Ambíguos",filtroTipoEv)+"</div>")+
     "<div class=\"filtrotema\">"+["",...Object.keys(TEMA_EVENTO)].map(t=>"<button class=\"ghost"+(filtroTema===t?" on":"")+"\" onclick=\"setFiltroTema('"+t+"')\">"+(t?TEMA_EVENTO[t]:"Todos os temas")+"</button>").join("")+"</div>"+
-    "<div class=\"filtrotema\">"+bt("rar","","Qualquer raridade",filtroRarEv)+Object.keys(RAR_INFO).map(r=>bt("rar",r,RAR_INFO[r].nome,filtroRarEv)).join("")+"</div>"+
+    "<div class=\"filtrotema\">"+bt("rar","","Qualquer raridade",filtroRarEv)+Object.keys(RAR_INFO).map(r=>bt("rar",r,RAR_INFO[r].nome,filtroRarEv)).join("")+"<button class=\"ghost"+(filtroAnoEv?" on":"")+"\" title=\"só eventos ligados a fatos da história do Império, com ano\" onclick=\"setFiltroEv('ano')\">⛩ história do Império</button></div>"+
     "<input class=\"evbusca\" placeholder=\"buscar pelo nome\" value=\""+esc(filtroBuscaEv)+"\" oninput=\"filtroBuscaEv=this.value;clearTimeout(window._evb);window._evb=setTimeout(renderEventos,250)\"></div>";
   const busca=filtroBuscaEv.trim().toLowerCase();
-  const lista=EVENTOS.filter(e=>(precisaOrigem?e.tipo==="origem":e.tipo!=="origem")&&(!filtroTema||e.tema===filtroTema)&&(!filtroTipoEv||precisaOrigem||e.tipo===filtroTipoEv)&&(!filtroRarEv||raridade(e)===filtroRarEv)&&(!busca||e.nome.toLowerCase().includes(busca)));
+  const lista=EVENTOS.filter(e=>(precisaOrigem?e.tipo==="origem":e.tipo!=="origem")&&(!filtroTema||e.tema===filtroTema)&&(!filtroTipoEv||precisaOrigem||e.tipo===filtroTipoEv)&&(!filtroRarEv||raridade(e)===filtroRarEv)&&(!filtroAnoEv||e.ano)&&(!busca||e.nome.toLowerCase().includes(busca)));
   box.innerHTML="<div class=\"secao\">"+titulo+"</div>"+filtros+
     "<div class=\"evcatalogo\">"+(lista.map(e=>eventoCardHTML(e,precisaOrigem?{origem:true}:{})).join("")||"<div class=\"hint\">Nada com esses filtros.</div>")+"</div>"+
     (precisaOrigem&&o?"<button class=\"ghost\" style=\"margin-top:8px\" onclick=\"verTodasOrigens=false;render()\">manter "+esc(o.nome)+"</button>":"")+
