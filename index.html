@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Família L5R — Ficha</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -388,6 +389,47 @@
   .anelRow .tracos .grp{padding:3px 6px}
   .anelRow .tracos input{width:42px;padding:3px 4px;text-align:center}
 
+  .criacao{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+  .passos{display:flex;gap:4px;list-style:none;margin:0 0 8px;padding:0;flex-wrap:wrap;counter-reset:ps}
+  .passos li{counter-increment:ps;font-size:11.5px;padding:3px 9px;border:1px solid var(--line);border-radius:20px;color:var(--muted-tx);background:var(--panel)}
+  .passos li::before{content:counter(ps)". "}
+  .passos li.feito{color:var(--ink);border-color:var(--good)} .passos li.agora{border-color:var(--accent);color:var(--accent);font-weight:600}
+  .fichapanel.travada{font-size:13px;color:var(--muted-tx);text-align:center;padding:22px}
+  details.dobra>summary{cursor:pointer;list-style:none} details.dobra>summary h2{display:inline;border:0;margin:0}
+  details.dobra>summary::-webkit-details-marker{display:none}
+  .escolacard{margin-top:4px!important;padding:8px 12px!important;font-size:13px}
+  .aneis5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+  .aneltile{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px;display:grid;grid-template-columns:30px 1fr;gap:4px 8px;align-items:center}
+  .aneltile .anelIcon{width:30px;height:30px}
+  .anelcab{display:flex;justify-content:space-between;font-family:var(--font-display);font-size:13px} .anelcab .val{color:var(--seal);font-size:18px;font-weight:700}
+  .trcs{grid-column:1/-1;display:flex;gap:6px}
+  .trc{flex:1;display:flex;flex-direction:column;align-items:center;font-size:11px;color:var(--muted-tx);min-width:0}
+  .trc span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .trc input{width:46px;text-align:center;padding:3px;font-size:14px;font-weight:600}
+  .trc small{font-size:10px} .trc.comprado input{border-color:var(--accent)} .trc.abaixo input{border-color:var(--bad);color:var(--bad)}
+  .xpbar{display:flex;gap:6px 14px;flex-wrap:wrap;align-items:center;margin-top:10px;font-size:12.5px;color:var(--muted-tx);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+  .xpbar b{color:var(--ink);font-family:var(--font-display);font-size:15px}
+  .xpbar input{width:52px;padding:2px 4px;text-align:center}
+  .xpbar select{padding:2px 4px}
+  .xpbar .sobra b{color:var(--good)} .xpbar.neg .sobra b{color:var(--bad)}
+  .xpconta{flex-basis:100%} .xpconta summary{cursor:pointer;font-size:11.5px}
+  .xpconta>div>div{display:flex;justify-content:space-between;border-bottom:1px dotted var(--line);padding:2px 0;max-width:420px}
+  .xpconta>div>div b{font-size:12.5px}
+  .saldos.compacto .saldo{padding:4px 8px} .saldos.compacto input{width:46px;padding:1px 3px;border:none;background:transparent;font-weight:600}
+  .armlinha{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+  .feridasgrid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px}
+  .fer{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 5px;display:flex;flex-direction:column;align-items:center;font-size:10.5px;color:var(--muted-tx);text-align:center}
+  .fer b{color:var(--ink);font-size:13px} .fer.atual{background:var(--seal);border-color:var(--seal);color:#faf3e6} .fer.atual b{color:#fff}
+  .linha.pericia .rol{font-family:var(--font-display);font-weight:600;min-width:38px;text-align:center}
+  .tag.escola{border-color:var(--accent);color:var(--accent)}
+  .vdgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px} .vdcab{margin-bottom:6px}
+  .vditem{margin-bottom:6px} .vditem .linha{margin:0}
+  .vdesc{font-size:11.5px;color:var(--muted-tx);padding:2px 8px} .vdesc summary{cursor:pointer;list-style:none}
+  .vdesc[open] summary{display:none} .vdesc>div{line-height:1.4}
+  .armlinha select{max-width:220px}
+  details.tecnica{border-bottom:1px solid var(--line);padding:6px 0} details.tecnica>summary{cursor:pointer}
+  details.tecnica .hint{margin:4px 0 2px 22px}
+  @media (max-width:720px){.criacao,.armlinha{display:grid;grid-template-columns:1fr 1fr;gap:6px}.criacao .monimg{display:none!important}.armlinha select{max-width:none;grid-column:1/-1}.saldos.compacto .saldo{padding:3px 6px;font-size:11.5px}.saldos.compacto input{width:40px!important;min-width:0!important;padding:0!important;height:auto!important}.aneis5{grid-template-columns:repeat(2,minmax(0,1fr))}.feridasgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.vdgrid{grid-template-columns:1fr}}
   .feridastab{width:100%;border-collapse:separate;border-spacing:0 4px;font-size:12.5px}
   .feridastab td{padding:6px 10px;background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .feridastab td:first-child{border-left:1px solid var(--line);border-radius:8px 0 0 8px}
@@ -597,6 +639,13 @@
   .famitem.on{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
   .famitem img,.famsemmon{width:30px;height:30px;object-fit:contain;flex:none;font-size:20px;text-align:center}
   .famitem .famtx{display:flex;flex-direction:column;min-width:0} .famitem .famtx small{font-size:11px;color:var(--muted-tx)}
+  .senhaov{position:fixed;inset:0;z-index:9999;background:rgba(20,12,10,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px}
+  .senhaov[hidden]{display:none}
+  .senhabox{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;width:min(320px,100%);display:flex;flex-direction:column;gap:12px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+  .senhatit{font-family:var(--font-display);font-size:20px;text-align:center}
+  .senhabox label{display:flex;flex-direction:column;gap:4px;font-size:13px}
+  .senhabox input{padding:8px;font-size:15px} .senhabox .bad{color:var(--bad);font-size:12.5px}
+  .senhabox button{padding:9px;font-size:14px}
   .famavancado>summary{cursor:pointer;font-size:11.5px;color:var(--muted-tx)}
   button.perigo{color:var(--seal);border-color:rgba(181,53,43,.45)}
   .selo-leitura{font-family:var(--font-display);font-size:12.5px;color:#f6e3d8;background:var(--seal);padding:2px 10px;border-radius:3px;transform:rotate(-2deg)}
@@ -840,7 +889,7 @@
           <div class="menuacoes"><button class="ghost" onclick="novaFamiliaNuvem()">+ nova família</button><button class="ghost" onclick="carregarListaFamilias()">atualizar</button></div>
           <details class="famavancado"><summary>código manual</summary>
             <label>Código <input type="text" id="salaInput" placeholder="código da família"></label>
-            <div class="menuacoes"><button class="ghost" id="btnConectar">abrir</button><button class="ghost" id="btnDesconectar">trabalhar offline</button></div>
+            <div class="menuacoes"><button class="ghost" id="btnConectar">abrir</button><button class="ghost" id="btnDesconectar">trabalhar offline</button><button class="ghost" onclick="try{localStorage.removeItem('l5r_senha')}catch(e){};location.reload()">sair (esquecer a senha)</button></div>
           </details>
         </div>
       </details>
@@ -886,6 +935,7 @@
       <div class="grp">Daimyo <input type="text" id="daimyoInput" placeholder="Nome do Daimyo" style="width:150px"></div>
       <div class="grp">Idade da Família
         <select id="idadeSel">
+          <option value="">— escolha —</option>
           <option value="nascente">Nascente (só a origem)</option>
           <option value="recente">Recente (origem + 1 evento)</option>
           <option value="jovem">Jovem (origem + 3)</option>
@@ -1060,17 +1110,8 @@
   <div class="foot">Família L5R — ficha de família e território · protótipo · inspirado na planilha "Familias L5R" · salvo no navegador.</div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="l5r_4e_data.js"></script>
 <script>
-/* ======================================================================
-   CONFIG SUPABASE — isolada e trocável (mesmo padrão do app Kingdom).
-   Reaproveita o mesmo projeto do Kingdom, mas numa tabela própria
-   (l5r_familias) para não colidir com os reinos.
-   ====================================================================== */
-const SUPA_URL="https://kgsjicurnunadwivoxnb.supabase.co";
-const SUPA_KEY="sb_publishable_iNSaREevcuph_RCBCWYGXg_vpO-rsKp"; /* Publishable key (pública) */
-const SUPA_TABELA="l5r_familias";
 
 /* ============ DADOS (extraídos da planilha Familias L5R.xlsx) ============ */
 const ATRIBUTOS=[["dominio","Domínio"],["riqueza","Riqueza"],["influencia","Influência"],["autoridade","Autoridade"],["vazio","Vazio"]];
@@ -1936,7 +1977,7 @@ const CONVERSAO_REGRAS={
 function uid(){return Math.random().toString(36).slice(2,8);}
 function esc(s){return(s||"").toString().replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
 function estadoInicial(){return{
-  nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",familiaPrincipal:"",senhor:"",sede:"",lema:"",historia:"",vassalas:[],idade:"recente",versaoAtrib:2,
+  nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",familiaPrincipal:"",senhor:"",sede:"",lema:"",historia:"",vassalas:[],idade:null,versaoAtrib:2,
   base:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},
   pontos:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},origem:null,versaoEventos:3,reservas:[],versaoReservas:2,investimentos:[],historicoAcontecimentos:[],acontAbertos:[],versaoPontos:1,versaoCasa:1,versaoTerra:1,versaoConv:1,pvFamiliaUsados:0,versaoTesouro:1,riquezaGasta:0,honraAjuste:0,gloriaRegistro:[],infame:false,
   eventos:[],terrenos:[],personagens:[],tropas:[],conversoes:[],feed:[],
@@ -2472,7 +2513,8 @@ function poolBonus(attr){return POOL_ATTRS[attr]?personagemMod(attr)+conversaoGa
    Partes do valor: base da idade + pontos distribuídos + ajuste (S.base: estações, testes,
    o Mestre, e a diferença guardada na migração das fichas antigas) + clã + eventos +
    conquistas + o resto (personagens, tropas, Honra, conversões). */
-function baseIdade(attr){const b=BASE_IDADE[S.idade]||BASE_IDADE.recente;return b[attr]||0;}
+/* 2026-11-05: família nova começa sem idade escolhida, e sem idade a base é zero */
+function baseIdade(attr){if(!S.idade)return 0;const b=BASE_IDADE[S.idade]||BASE_IDADE.recente;return b[attr]||0;}
 function pontosAttr(attr){return Number(S.pontos&&S.pontos[attr])||0;}
 function pontosUsados(){return ATRIBUTOS.reduce((s,[k])=>s+pontosAttr(k),0);}
 function totalBruto(attr){return baseIdade(attr)+pontosAttr(attr)+(Number(S.base[attr])||0)+claMod(attr)+eventosMod(attr)+conquistasMod(attr)+modificador(attr);}
@@ -2585,101 +2627,138 @@ function feedPush(txt){S.feed=S.feed||[];S.feed.unshift(txt);if(S.feed.length>40
 let hintTimer;
 function flashHint(m){console.log(m);} /* placeholder simples: avisos aparecem no registro também */
 
-/* ============ SUPABASE (mesmo padrão do Kingdom) ============ */
-let sb=null,sbCanal=null,sala=null,sbStatus="off",presentes=[],pushTimer=null;
-function sbPronto(){return!!(window.supabase&&SUPA_URL&&SUPA_KEY&&SUPA_URL.startsWith("http"));}
-function sbInit(){if(!sb&&sbPronto())sb=window.supabase.createClient(SUPA_URL,SUPA_KEY);}
+/* ============ SERVIDOR DA MESA ============
+   2026-11-05: as famílias moram no servidor próprio (servidor/servidor_l5r.py, no container l5r da VPS), não
+   mais no Supabase. Toda chamada leva a senha da mesa; o servidor confere. Cada aparelho pede a
+   senha uma vez e lembra. Mudanças dos outros chegam por consulta a cada poucos segundos.
+   Aberto sem esse servidor (direto do disco ou no GitHub Pages), a ficha fica só neste navegador. */
+const API_URL="api",INTERVALO_SYNC=4000;
+let sala=null,sbStatus="off",presentes=[],pushTimer=null,servidorOk=false,versaoSala=null,pollTimer=null,gravando=false;
+const clienteId=(()=>{let c=null;try{c=localStorage.getItem("l5r_cliente");}catch(e){}if(!c){c=uid().replace(/[^a-z0-9]/gi,"").toLowerCase().slice(0,16)||String(Date.now());try{localStorage.setItem("l5r_cliente",c);}catch(e){}}return c;})();
+function senhaMesa(){try{return localStorage.getItem("l5r_senha")||"";}catch(e){return"";}}
 function bloqueadoLeitura(){if(papel==="jogador"){flashHint("Você está em modo Jogador (só leitura).");return true;}return false;}
+async function api(acao,op){op=op||{};
+  const q="?acao="+acao+(op.codigo?"&codigo="+encodeURIComponent(op.codigo):"")+(op.extra||"");
+  const h={"X-Senha":senhaMesa()};if(op.corpo!==undefined)h["Content-Type"]="application/json";
+  const r=await fetch(API_URL+q,{method:op.corpo!==undefined?"POST":"GET",headers:h,body:op.corpo!==undefined?JSON.stringify(op.corpo):undefined,cache:"no-store"});
+  if(r.status===401){pedirSenha();throw new Error("senha");}
+  if(!r.ok)throw new Error("servidor "+r.status);
+  return r.json();
+}
+/* tela da senha */
+function pedirSenha(erro){
+  let ov=document.getElementById("senhaMesa");
+  if(!ov){ov=document.createElement("div");ov.id="senhaMesa";ov.className="senhaov";document.body.appendChild(ov);}
+  ov.innerHTML="<form class=\"senhabox\" onsubmit=\"event.preventDefault();entrarComSenha(this.s.value)\"><div class=\"senhatit\">家 Família L5R</div>"+
+    "<label>Senha da mesa<input name=\"s\" type=\"password\" autocomplete=\"current-password\" autofocus></label>"+
+    (senhaMesa()?"<div class=\"bad\">Senha errada.</div>":"")+"<button>Entrar</button></form>";
+  ov.hidden=false;setTimeout(()=>{const i=ov.querySelector("input");if(i)i.focus();},50);
+}
+async function entrarComSenha(v){try{localStorage.setItem("l5r_senha",v||"");}catch(e){}
+  try{await api("ping");}catch(e){return;}
+  const ov=document.getElementById("senhaMesa");if(ov)ov.hidden=true;servidorOk=true;abrirMaisRecente().catch(()=>{});}
 async function conectarSala(codigo){
-  if(!codigo||!codigo.trim())return;sbInit();if(!sb){sbStatus="sem config";renderSync();return;}
-  sala=codigo.trim().toLowerCase();sbStatus="conectando…";renderSync();
-  const{data,error}=await sb.from(SUPA_TABELA).select("data").eq("codigo",sala).maybeSingle();
-  if(!error&&data&&data.data){S=data.data;const mig=migrarEstado(S);salvarLocal();render();if(mig)pushCloud();}
-  else{await sb.from(SUPA_TABELA).upsert({codigo:sala,data:S,updated_at:new Date().toISOString()});}
-  assinarSala();sbStatus="conectado";renderSync();
+  if(!codigo||!codigo.trim()||!servidorOk)return;
+  pararSync();sala=codigo.trim().toLowerCase();sbStatus="conectando…";renderSync();
+  try{const r=await api("pegar",{codigo:sala});
+    if(r&&r.data){S=r.data;versaoSala=r.updated_at||null;const mig=migrarEstado(S);salvarLocal();render();if(mig)pushCloud();}
+    else await pushCloud();
+    sbStatus="conectado";}catch(e){sbStatus="sem conexão";}
+  renderSync();iniciarSync();
 }
-function assinarSala(){
-  if(!sb||!sala)return;
-  sbCanal=sb.channel("sala_"+sala,{config:{presence:{key:uid()}}});
-  sbCanal.on("postgres_changes",{event:"UPDATE",schema:"public",table:SUPA_TABELA,filter:"codigo=eq."+sala},payload=>{
-    if(payload.new&&payload.new.data){S=payload.new.data;migrarEstado(S);salvarLocal();render();}
-  });
-  sbCanal.on("presence",{event:"sync"},()=>{
-    const st=sbCanal.presenceState();presentes=Object.values(st).flat();renderSync();
-  });
-  sbCanal.subscribe(status=>{if(status==="SUBSCRIBED")sbCanal.track({papel,em:Date.now()});});
+async function pushCloud(){if(!servidorOk||!sala)return;gravando=true;
+  try{const r=await api("salvar",{codigo:sala,corpo:S});versaoSala=r.updated_at;sbStatus="conectado";}catch(e){sbStatus="sem conexão: guardado neste aparelho";}
+  finally{gravando=false;renderSync();}}
+function pararSync(){clearInterval(pollTimer);pollTimer=null;}
+function iniciarSync(){pararSync();pollTimer=setInterval(checarMudancas,INTERVALO_SYNC);checarMudancas();}
+async function checarMudancas(){
+  if(!sala||!servidorOk||(typeof document!=="undefined"&&document.hidden))return;
+  try{const r=await api("versao",{codigo:sala,extra:"&cliente="+clienteId+"&papel="+papel});
+    presentes=r.online||[];
+    /* alguém mudou a família: traz a versão nova, a menos que eu tenha mudança para enviar */
+    if(r.updated_at&&r.updated_at!==versaoSala&&!pushTimer&&!gravando){
+      const d=await api("pegar",{codigo:sala});
+      if(d&&d.data&&!pushTimer&&!gravando){S=d.data;versaoSala=d.updated_at;migrarEstado(S);salvarLocal();render();}}
+    if(sbStatus!=="conectado"){sbStatus="conectado";}
+  }catch(e){if(e.message!=="senha")sbStatus="sem conexão";}
+  renderSync();
 }
-function pushCloud(){if(!sb||!sala)return;sb.from(SUPA_TABELA).upsert({codigo:sala,data:S,updated_at:new Date().toISOString()}).then(()=>{});}
 /* ============ FAMÍLIAS DA MESA ============
-   2026-11-05 (Thiago: uma mesa por vez, jogadores confiáveis). Toda família fica na nuvem, sem
-   precisar salvar nada. Ao abrir o site, entra sozinho na família mudada mais recentemente; o
-   menu Famílias lista todas e troca de uma para outra. Cada família é uma linha da tabela
-   (o código é a "sala" de antes). Uma ficha que só existia neste navegador sobe para a nuvem
+   2026-11-05 (Thiago: uma mesa por vez, jogadores confiáveis). Sem precisar salvar nada. Ao
+   abrir o site, entra sozinho na família mudada mais recentemente; o menu Famílias lista todas
+   e troca de uma para outra. Uma ficha que só existia neste navegador sobe para o servidor
    antes de ser trocada, para não se perder. */
 let listaFamilias=[];
-function slugFamilia(n){return((n||"familia").normalize("NFD").replace(/[^a-zA-Z0-9]+/g,"-").replace(/^-|-$/g,"").toLowerCase()||"familia")+"-"+uid().slice(0,4);}
+function slugFamilia(n){return((n||"familia").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9]+/g,"-").replace(/^-|-$/g,"").toLowerCase()||"familia")+"-"+uid().replace(/[^a-z0-9]/gi,"").toLowerCase().slice(0,4);}
 function quandoTxt(iso){if(!iso)return"";const d=(Date.now()-new Date(iso).getTime())/60000;
   if(d<2)return"agora";if(d<60)return"há "+Math.round(d)+" min";if(d<1440)return"há "+Math.round(d/60)+" h";return"há "+Math.round(d/1440)+" dia"+(Math.round(d/1440)===1?"":"s");}
 async function carregarListaFamilias(){
-  sbInit();const box=document.getElementById("listaFamilias");
-  if(!sb){if(box)box.innerHTML="<div class=\"hint\">Sem nuvem neste navegador: a ficha fica só aqui.</div>";return[];}
-  const{data,error}=await sb.from(SUPA_TABELA).select("codigo,updated_at,nome:data->>nome,cla:data->>cla,idade:data->>idade").order("updated_at",{ascending:false}).limit(40);
-  listaFamilias=error?[]:(data||[]);renderListaFamilias();return listaFamilias;
+  const box=document.getElementById("listaFamilias");
+  if(!servidorOk){if(box)box.innerHTML="<div class=\"hint\">Sem servidor neste endereço: a ficha fica só neste navegador.</div>";return[];}
+  try{listaFamilias=await api("lista");}catch(e){listaFamilias=[];}
+  renderListaFamilias();return listaFamilias;
 }
 function renderListaFamilias(){
   const box=document.getElementById("listaFamilias");if(!box)return;
   box.innerHTML=listaFamilias.length?listaFamilias.map(f=>{const c=CLAS.find(x=>x.id===f.cla);
     return "<button class=\"famitem"+(f.codigo===sala?" on":"")+"\" onclick=\"abrirFamilia('"+esc(f.codigo)+"')\">"+(c?"<img src=\""+monSrc(c.id)+"\" alt=\"\">":"<span class=\"famsemmon\">家</span>")+
       "<span class=\"famtx\"><b>"+esc(f.nome||"Família")+"</b><small>"+esc((c?c.nome:"sem clã")+(f.idade?" · "+(IDADE_LABEL[f.idade]||f.idade):"")+" · "+quandoTxt(f.updated_at))+"</small></span></button>";}).join("")
-    :"<div class=\"hint\">Nenhuma família na nuvem ainda.</div>";
+    :"<div class=\"hint\">Nenhuma família no servidor ainda.</div>";
 }
 async function abrirFamilia(codigo){
   if(!codigo)return;if(codigo===sala){const m=document.getElementById("familiasMenu");if(m)m.open=false;return;}
-  if(sbCanal&&sb)sb.removeChannel(sbCanal);sbCanal=null;
   await conectarSala(codigo);
   try{localStorage.setItem("l5r_sala_atual",codigo);}catch(e){}
   const m=document.getElementById("familiasMenu");if(m)m.open=false;
   feedPush("Família aberta: "+(S.nome||"Família")+".");render();carregarListaFamilias();
 }
 async function novaFamiliaNuvem(){
-  if(bloqueadoLeitura())return;sbInit();
+  if(bloqueadoLeitura())return;
   const nome=prompt("Nome da família nova:","Família");if(nome===null)return;
-  if(sbCanal&&sb)sb.removeChannel(sbCanal);sbCanal=null;
   S=estadoInicial();S.nome=(nome||"Família").trim()||"Família";salvarLocal();
-  if(sb){const cod=slugFamilia(S.nome);await sb.from(SUPA_TABELA).upsert({codigo:cod,data:S,updated_at:new Date().toISOString()});await abrirFamilia(cod);}
+  if(servidorOk){const cod=slugFamilia(S.nome);await api("salvar",{codigo:cod,corpo:S});sala=null;await abrirFamilia(cod);}
   else render();
 }
 async function abrirMaisRecente(){
-  sbInit();if(!sb)return;
+  if(!servidorOk)return;
   let atual=null;try{atual=localStorage.getItem("l5r_sala_atual");}catch(e){}
-  /* ficha que só existia neste navegador: sobe antes de trocar */
   let l=await carregarListaFamilias();
+  /* ficha que só existia neste navegador: sobe antes de trocar */
   if(!atual&&S&&(S.cla||(S.personagens||[]).length||(S.eventos||[]).length)&&!l.some(f=>(f.nome||"")===(S.nome||"")&&(f.cla||"")===(S.cla||""))){
-    const cod=slugFamilia(S.nome);await sb.from(SUPA_TABELA).upsert({codigo:cod,data:S,updated_at:new Date().toISOString()});
-    l=await carregarListaFamilias();
+    await api("salvar",{codigo:slugFamilia(S.nome),corpo:S});l=await carregarListaFamilias();
   }
-  if(l.length){await conectarSala(l[0].codigo);try{localStorage.setItem("l5r_sala_atual",l[0].codigo);}catch(e){}renderListaFamilias();}
-  else{const cod=slugFamilia(S.nome);await sb.from(SUPA_TABELA).upsert({codigo:cod,data:S,updated_at:new Date().toISOString()});await conectarSala(cod);try{localStorage.setItem("l5r_sala_atual",cod);}catch(e){}carregarListaFamilias();}
+  const cod=l.length?l[0].codigo:slugFamilia(S.nome);
+  await conectarSala(cod);try{localStorage.setItem("l5r_sala_atual",cod);}catch(e){}carregarListaFamilias();
 }
-function agendarPush(){if(!sala)return;clearTimeout(pushTimer);pushTimer=setTimeout(pushCloud,600);}
-function desconectar(){if(sbCanal&&sb)sb.removeChannel(sbCanal);sbCanal=null;sala=null;presentes=[];sbStatus="off";renderSync();}
-function mudarPapel(p){papel=p;if(sbCanal)sbCanal.track({papel,em:Date.now()});render();}
+/* ao abrir: procura o servidor; se ele pedir senha, mostra a tela da senha */
+async function iniciarServidor(){
+  if(typeof location==="undefined"||!/^https?:$/.test(location.protocol))return;
+  try{const r=await fetch(API_URL+"?acao=ping",{headers:{"X-Senha":senhaMesa()},cache:"no-store"});
+    if(r.status===401){pedirSenha();return;}
+    if(!r.ok)return;const j=await r.json().catch(()=>null);if(!j||!j.ok)return;
+    servidorOk=true;await abrirMaisRecente();
+  }catch(e){}
+}
+function agendarPush(){if(!sala)return;clearTimeout(pushTimer);pushTimer=setTimeout(()=>{pushTimer=null;pushCloud();},600);}
+function desconectar(){pararSync();sala=null;presentes=[];sbStatus="off";renderSync();}
+function mudarPapel(p){papel=p;render();checarMudancas();}
 function renderSync(){
   const s=document.getElementById("syncStatus");if(!s)return;
-  const base=!SUPA_KEY?"cole a chave no topo do index.html":(sala?("conectado · família “"+sala+"”"):(sbStatus==="off"?"pronta":sbStatus));
+  const base=!servidorOk?"sem servidor: ficha só neste navegador":(sala?(sbStatus==="conectado"?"conectado":sbStatus):"pronto");
   let quem="";
   if(sala&&presentes.length){const nm=presentes.filter(p=>p.papel==="mestre").length,nj=presentes.filter(p=>p.papel==="jogador").length;
     quem=" · online: "+presentes.length+" ("+nm+" mestre, "+nj+" jogador"+(nj===1?"":"es")+")";}
-  s.textContent=sala?("● "+(S.nome||"Família")+(presentes.length>1?" · "+presentes.length+" online":"")+" ▾"):"Famílias ▾ (offline)";
-  const fs=document.getElementById("famStatus");if(fs)fs.textContent=sala?(presentes.length?presentes.length+" online agora":"conectado"):"offline";
-  s.title="nuvem: "+base+quem;
+  const ok=sbStatus==="conectado";
+  s.textContent=sala?((ok?"● ":"○ ")+(S.nome||"Família")+(presentes.length>1?" · "+presentes.length+" online":"")+" ▾"):(servidorOk?"Famílias ▾":"Famílias ▾ (só aqui)");
+  const fs=document.getElementById("famStatus");if(fs)fs.textContent=sala?(ok?(presentes.length?presentes.length+" online agora":"conectado"):sbStatus):(servidorOk?"":"só neste navegador");
+  s.title=base+quem;
 }
 
 /* ============ AÇÕES ============ */
 function selecionarCla(id){if(bloqueadoLeitura())return;S.cla=id;verTodosClas=false;feedPush("Clã definido: "+(claAtual()?claAtual().nome:id)+".");salvar();render();}
 function trocarCla(){if(bloqueadoLeitura())return;verTodosClas=true;render();}
 function setBase(attr,val){if(bloqueadoLeitura())return;S.base[attr]=parseFloat(val)||0;salvar();render();} /* o "ajuste" do atributo */
-function setIdade(v){if(bloqueadoLeitura())return;S.idade=v;
+function setIdade(v){if(bloqueadoLeitura())return;S.idade=v||null;
   if(S.eventos.length>vagasEventos()){
     S.eventos.slice(vagasEventos()).forEach(id=>removerConcessaoEvento(id));
     S.eventos=S.eventos.slice(0,vagasEventos());
@@ -3112,6 +3191,7 @@ function randomizarFamilia(){
   if(bloqueadoLeitura())return;
   const c=pickRandom(CLAS);
   selecionarCla(c.id);
+  if(!S.idade)S.idade=pickRandom(["recente","jovem","estabelecida","antiga"]);
   S.familiaPrincipal=c.familias&&c.familias.length?pickRandom(c.familias):"";S.ramoFamiliar="";
   S.base={dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0};
   sortearPontos();
@@ -3703,13 +3783,13 @@ function render(){
   document.getElementById("nomeInput").value=S.nome||"";
   document.getElementById("daimyoInput").value=S.daimyo||"";
   const c0=claAtual();
-    document.getElementById("idadeSel").value=S.idade||"recente";
+    document.getElementById("idadeSel").value=S.idade||"";
   limparPendenciasLiberar();
   {const c=claAtual(),meta=[];
    meta.push(c?"<span>Clã <b>"+esc(c.nome)+"</b></span>":"<span>Sem clã escolhido</span>");
    if(S.daimyo)meta.push("<span>Daimyō <b>"+esc(S.daimyo)+"</b></span>");
    {const fp=familiaPrincipal();if(fp&&fp!==S.nome)meta.push("<span>ramo da família <b>"+esc(fp)+"</b></span>");}
-   meta.push("<span>Família "+esc((IDADE_LABEL[S.idade]||"").toLowerCase())+"</span>");
+   meta.push(S.idade?"<span>Família "+esc((IDADE_LABEL[S.idade]||"").toLowerCase())+"</span>":"<span>Idade não escolhida</span>");
    const og=S.origem&&eventoInfo(S.origem);if(og)meta.push("<span>Origem <b>"+esc(og.nome)+"</b></span>");
    document.getElementById("claLab").innerHTML=meta.join("");
    document.body.classList.toggle("modo-jogador",papel==="jogador");
@@ -3832,6 +3912,8 @@ function renderResumo(){
   }).join("");
   const f=fortunas(),fav=favorDasFortunas(),eq=equilibrioEspiritual();
   const cls=v=>v>0?"good":(v<0?"bad":"");
+  /* família ainda sem clã ou idade: os derivados não querem dizer nada, então não mostra conta negativa */
+  if(!S.cla||!S.idade){document.getElementById("resumoVals").innerHTML="<div class=\"hint\">Escolha o clã e a idade da família para ver Fortunas, Favor, Honra, Glória e o resto.</div>";return;}
   const bt=(k,html)=>"<button type=\"button\" class=\"derivado"+(derivadoAberto===k?" on":"")+"\" aria-expanded=\""+(derivadoAberto===k)+"\" title=\""+esc(explicacaoDerivado(k))+"\" onclick=\"toggleDerivado('"+k+"')\">"+html+"</button>";
   document.getElementById("resumoVals").innerHTML=
     bt("fortunas","Fortunas <b>"+f.toFixed(0)+"</b>")+
@@ -3850,6 +3932,7 @@ function renderResumo(){
   {const na=(S.acontAbertos||[]).length;if(na)al.push((na===1?"Um acontecimento em aberto":na+" acontecimentos em aberto")+" esperando a aventura (Estações).");}
   if(S.eventos.length<vagasEventos())al.push("Faltam "+(vagasEventos()-S.eventos.length)+" eventos históricos (Crônica).");
   if(!S.cla)al.push("Escolha o clã da família (Identidade).");
+  if(!S.idade)al.push("Escolha a idade da família (Identidade).");
   document.getElementById("resumoAlertas").innerHTML=al.map(t=>"<div>"+esc(t)+"</div>").join("");
 }
 /* Aba Estações (2026-11): acontecimentos, reserva e investimentos ficam aqui, fora da Família. */
@@ -3970,7 +4053,7 @@ const GLORIA_EVENTO={
 const GLORIA_BATALHA={vitoria:0.3,empate:0.1,derrota:-0.2};
 const GLORIA_ACONT={torneio_verao:0.2,favor_daimyo:0.1,intriga_corte:-0.2,saque_guerra:0.1,desercao:-0.1};
 function gloriaInicial(){
-  let g=GLORIA_IDADE[S.idade]||1;
+  let g=S.idade?(GLORIA_IDADE[S.idade]||1):0;
   (S.origem?[S.origem]:[]).concat(S.eventos||[]).forEach(id=>{g+=GLORIA_EVENTO[id]||0;});
   return g;
 }
@@ -4151,7 +4234,7 @@ let filtroTema="";
 function setFiltroTema(t){filtroTema=(filtroTema===t?"":t);renderEventos();}
 function renderEventos(){
   const vagas=vagasEventos(),madv=minAdversos();
-  document.getElementById("eventosSub").textContent="origem e "+S.eventos.length+"/"+vagas+" eventos ("+IDADE_LABEL[S.idade]+")"+(madv?", adversos "+adversosEscolhidos()+" (mínimo "+madv+")":"");
+  document.getElementById("eventosSub").textContent="origem e "+S.eventos.length+"/"+vagas+" eventos ("+(IDADE_LABEL[S.idade]||"idade não escolhida")+")"+(madv?", adversos "+adversosEscolhidos()+" (mínimo "+madv+")":"");
   const ob=document.getElementById("origemBox");
   const o=S.origem&&eventoInfo(S.origem);
   if(ob){
@@ -4844,7 +4927,9 @@ function escolasDoCla4e(claId){return l5r4ePronto()?L5R4E.escolas.filter(e=>e.cl
 function pericia4eNome(id){if(!l5r4ePronto())return id;const s=L5R4E.skills.find(x=>x.id===id);return s?s.nome:id;}
 function escolhaCla4e(id,claId){
   const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  const antes=bonusTracos4e(p.familia4e,p.escola4e);
   p.cla4e=claId;p.familia4e="";p.escola4e="";
+  ajustarBonusTracos(p,antes);aplicarPericiasEscola(p);
   salvar();render();
 }
 /* Honra/Glória/Status iniciais: a Honra vem direto da escola na base de dados
@@ -4872,16 +4957,18 @@ function aplicarValoresIniciais4e(p){
 }
 function escolhaFamilia4e(id,familiaId){
   const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  const antes=bonusTracos4e(p.familia4e,p.escola4e);
   p.familia4e=familiaId;
   const esc=l5r4ePronto()?L5R4E.escolas.find(e=>e.clanId===p.cla4e&&e.id.indexOf(familiaId+"_")===0):null;
-  p.escola4e=esc?esc.id:"";
-  fichaBase(p);aplicarValoresIniciais4e(p);
+  if(esc||!p.escola4e)p.escola4e=esc?esc.id:"";
+  fichaBase(p);ajustarBonusTracos(p,antes);aplicarPericiasEscola(p);aplicarValoresIniciais4e(p);
   salvar();render();
 }
 function escolhaEscola4e(id,escolaId){
   const p=S.personagens.find(x=>x.id===id);if(!p)return;
+  const antes=bonusTracos4e(p.familia4e,p.escola4e);
   p.escola4e=escolaId;
-  fichaBase(p);aplicarValoresIniciais4e(p);
+  fichaBase(p);ajustarBonusTracos(p,antes);aplicarPericiasEscola(p);aplicarValoresIniciais4e(p);
   salvar();render();
 }
 /* Sorteia UM personagem, um de cada vez (nunca todos juntos): clã/família/escola 4e
@@ -4898,29 +4985,23 @@ function randomizarPersonagem(id){
   if(!l5r4ePronto()){flashHint("Base de dados da 4ª edição ainda não carregou.");return;}
   const clansValidos=L5R4E.clans.filter(c=>escolasDoCla4e(c.id).length>0);
   if(!clansValidos.length)return;
-  const cla=pickRandom(clansValidos);
-  const escolas=escolasDoCla4e(cla.id);
-  const escola=pickRandom(escolas);
+  /* puxa do clã da família quando ele tem escolas; senão, qualquer um */
+  const daCasa=claFamiliaId4e();
+  const cla=(daCasa&&clansValidos.find(c=>c.id===daCasa))||pickRandom(clansValidos);
+  const escolas=escolasDoCla4e(cla.id).filter(e=>(e.pericias||[]).length);/* só escolas de entrada, que dão perícias */
+  const escola=pickRandom(escolas.length?escolas:escolasDoCla4e(cla.id));
   const familias=familiasDoCla4e(cla.id);
   let familia=familias.find(f=>escola.id.indexOf(f.id+"_")===0);
   if(!familia&&familias.length)familia=pickRandom(familias);
   p.cla4e=cla.id;p.familia4e=familia?familia.id:"";p.escola4e=escola.id;
   aplicarValoresIniciais4e(p);
 
-  const traits={reflexes:2,awareness:2,stamina:2,willpower:2,agility:2,intelligence:2,strength:2,perception:2};
-  if(escola.traco&&traits[escola.traco]!==undefined)traits[escola.traco]=3;
-  const chaves=Object.keys(traits);
-  let extras=2+Math.floor(Math.random()*2);
-  let tentativas=0;
-  while(extras>0&&tentativas<50){
-    const k=pickRandom(chaves);
-    if(traits[k]<4){traits[k]++;extras--;}
-    tentativas++;
-  }
-  traits.vazio=Math.random()<0.3?3:2;
-  p.traits=traits;
-
-  p.pericias=(escola.pericias||[]).map(s=>({id:uid(),skill:s.id,rank:(Number(s.rank)||1)+(Math.random()<0.4?1:0),enfase:s.enfase||""}));
+  /* traços na base (2, mais família e escola) e perícias da escola; o resto sai do XP mais abaixo */
+  const bon=bonusTracos4e(p.familia4e,p.escola4e);
+  const traits={reflexes:2,awareness:2,stamina:2,willpower:2,agility:2,intelligence:2,strength:2,perception:2,vazio:2};
+  Object.keys(bon).forEach(k=>{if(traits[k]!==undefined)traits[k]+=bon[k];});
+  p.traits=traits;p.pericias=[];aplicarPericiasEscola(p);
+  p.xpInicial=XP_INICIAL;p.xp=0;
 
   const descPool=(L5R4E.desvantagens||[]).slice();
   const orcamentoAlvo=6+Math.floor(Math.random()*5);
@@ -4940,6 +5021,16 @@ function randomizarPersonagem(id){
   }
   p.desvantagens=desvantagens;
   p.vantagens=vantagens;
+  /* gasta o XP que sobrou, em compras plausíveis. Sobe o traço menor de um anel (é o que sobe o
+     anel e o Insight), às vezes o Vazio, às vezes uma perícia; o teto cresce com a experiência. */
+  const nv=XP_NIVEIS[p.nivelXp]||XP_NIVEIS.iniciante;p.xpInicial=nv.xp;
+  for(let n=0;n<200;n++){const sobra=xpPersonagem(p).sobra;const op=[];
+    Object.values(TRACOS_PARES).forEach(([x,y])=>{const k=p.traits[x]<=p.traits[y]?x:y,c=p.traits[k];
+      if(c<nv.teto&&4*(c+1)<=sobra){op.push(()=>{p.traits[k]++;});op.push(()=>{p.traits[k]++;});}
+      const o=k===x?y:x;if(p.traits[o]<nv.teto&&4*(p.traits[o]+1)<=sobra&&Math.random()<0.15)op.push(()=>{p.traits[o]++;});});
+    if(p.traits.vazio<nv.teto-1&&6*(p.traits.vazio+1)<=sobra&&Math.random()<0.35)op.push(()=>{p.traits.vazio++;});
+    p.pericias.forEach(sk=>{const r=Number(sk.rank)||0;if(r<nv.tetoPericia&&r+1<=sobra)op.push(()=>{sk.rank=r+1;});});
+    if(!op.length)break;pickRandom(op)();}
 
   feedPush("Personagem sorteado: "+(p.nome||"sem nome")+" — "+escola.nome+".");
   salvar();render();
@@ -4951,6 +5042,62 @@ function randomizarPersonagem(id){
    ou esquecimento — sem impedir nada. */
 function claFamiliaId4e(){const c=claAtual();return c?(CLA_TO_CLANID4E[c.id]||null):null;}
 function personagemClaDivergeDaFamilia(p){const fam=claFamiliaId4e();return!!(fam&&p.cla4e&&p.cla4e!==fam);}
+/* ============ CRIAÇÃO E XP (4ª edição) ============
+   2026-11-05. A ficha segue a ordem do livro: clã → família (+1 num traço) → escola
+   (+1 num traço, perícias, Honra). Todo traço começa em 2 e o Vazio em 2; o que estiver
+   acima da base (traço da família/escola incluído) é comprado com XP:
+   traço 4 × nível novo, Vazio 6 × nível novo, perícia o nível novo (as da escola vêm de
+   graça no nível dela), ênfase fora da escola 2, vantagem pelo custo, desvantagem devolve
+   até 10. O personagem começa com 40 XP e soma o que ganha em jogo. */
+const XP_INICIAL=40;
+/* 2026-11-05: nível de experiência na criação (parâmetro nosso; o livro só fixa os 40 do iniciante).
+   Calibrado sorteando 300 personagens por nível: com 125 XP, 80% chegam ao Rank 2; com 210, 79%
+   chegam ao Rank 3 (o resto fica um rank abaixo, conforme gasta em perícia ou vantagem). */
+const XP_NIVEIS={iniciante:{nome:"Iniciante",xp:40,rank:1,teto:4,tetoPericia:3},
+  experiente:{nome:"Experiente",xp:125,rank:2,teto:4,tetoPericia:4},
+  veterano:{nome:"Veterano",xp:210,rank:3,teto:5,tetoPericia:5}};
+function skill4e(ref){if(!ref||!l5r4ePronto())return null;const r=String(ref).trim().toLowerCase();
+  return L5R4E.skills.find(s=>s.id===r||s.nome.toLowerCase()===r)||null;}
+function chaveTraco4e(t){return t==="void"?"vazio":t;}
+function bonusTracos4e(familiaId,escolaId){const b={};if(!l5r4ePronto())return b;
+  const f=familiaId&&L5R4E.familias.find(x=>x.id===familiaId);if(f&&f.traco){const k=chaveTraco4e(f.traco);b[k]=(b[k]||0)+1;}
+  const e=escolaId&&L5R4E.escolas.find(x=>x.id===escolaId);if(e&&e.traco){const k=chaveTraco4e(e.traco);b[k]=(b[k]||0)+1;}
+  return b;}
+function baseTraco4e(p,k){return 2+(bonusTracos4e(p.familia4e,p.escola4e)[k]||0);}
+function custoTracoXp(k,de,ate){let c=0;const m=k==="vazio"?6:4;for(let r=de+1;r<=ate;r++)c+=m*r;return c;}
+function rankEscolaPericia(p,ref){if(!l5r4ePronto())return 0;const e=L5R4E.escolas.find(x=>x.id===p.escola4e);const info=skill4e(ref);
+  if(!e||!info)return 0;const sp=e.pericias.find(x=>x.id===info.id);return sp?(Number(sp.rank)||1):0;}
+function enfaseEscola(p,ref){const e=l5r4ePronto()&&L5R4E.escolas.find(x=>x.id===p.escola4e);const info=skill4e(ref);
+  if(!e||!info)return[];const sp=e.pericias.find(x=>x.id===info.id);return sp&&sp.enfase?sp.enfase.split(",").map(x=>x.trim().toLowerCase()).filter(Boolean):[];}
+function custoPericiaXp(base,cur){let c=0;for(let r=base+1;r<=cur;r++)c+=r;return c;}
+function custoEnfasesXp(p,s){const gratis=enfaseEscola(p,s.skill);
+  return String(s.enfase||"").split(",").map(x=>x.trim().toLowerCase()).filter(x=>x&&!gratis.includes(x)).length*2;}
+function xpPersonagem(p){fichaBase(p);const linhas=[];let tr=0,vz=0,pe=0,en=0;
+  Object.keys(TRACO_PT).concat(["vazio"]).forEach(k=>{const b=baseTraco4e(p,k),c=Number(p.traits[k])||0,x=custoTracoXp(k,b,c);
+    if(k==="vazio")vz+=x;else tr+=x;if(x)linhas.push([(k==="vazio"?"Vazio":TRACO_PT[k])+" "+b+"→"+c,x]);});
+  (p.pericias||[]).forEach(s=>{const b=rankEscolaPericia(p,s.skill),x=custoPericiaXp(b,Number(s.rank)||0),y=custoEnfasesXp(p,s);pe+=x;en+=y;
+    if(x||y){const i=skill4e(s.skill);linhas.push([(i?i.nome:s.skill||"perícia")+" "+b+"→"+(Number(s.rank)||0)+(y?" e ênfases":""),x+y]);}});
+  const va=(p.vantagens||[]).reduce((s,v)=>s+(Number(v.custo)||0),0);if(va)linhas.push(["Vantagens",va]);
+  const dsRaw=(p.desvantagens||[]).reduce((s,v)=>s+(Number(v.custo)||0),0),ds=Math.min(10,dsRaw);if(ds)linhas.push(["Desvantagens (devolvem até 10)",-ds]);
+  const inicial=p.xpInicial===undefined?(XP_NIVEIS[p.nivelXp]||XP_NIVEIS.iniciante).xp:(Number(p.xpInicial)||0);
+  const gasto=tr+vz+pe+en+va-ds,total=inicial+(Number(p.xp)||0);
+  if(!linhas.length)linhas.push(["Nada comprado ainda",0]);
+  return{inicial,total,gasto,sobra:total-gasto,linhas};}
+/* troca de família ou escola: tira o bônus de traço antigo e põe o novo; perícias da escola antiga saem */
+function ajustarBonusTracos(p,antes){fichaBase(p);const depois=bonusTracos4e(p.familia4e,p.escola4e);
+  Object.keys(TRACO_PT).concat(["vazio"]).forEach(k=>{const d=(depois[k]||0)-(antes[k]||0);if(d)p.traits[k]=Math.max(1,Math.min(10,(Number(p.traits[k])||2)+d));});}
+function aplicarPericiasEscola(p){fichaBase(p);
+  p.pericias=p.pericias.filter(s=>!(s.origem==="escola"&&(Number(s.rank)||0)<=(Number(s.rankEscola)||1)&&!s.enfaseExtra));
+  p.pericias.forEach(s=>{if(s.origem==="escola"){delete s.origem;delete s.rankEscola;}});
+  const e=l5r4ePronto()&&L5R4E.escolas.find(x=>x.id===p.escola4e);if(!e)return;
+  e.pericias.forEach(sp=>{const ja=p.pericias.find(s=>{const i=skill4e(s.skill);return i&&i.id===sp.id;});
+    if(ja){if((Number(ja.rank)||0)<(Number(sp.rank)||1))ja.rank=Number(sp.rank)||1;}
+    else p.pericias.push({id:uid(),skill:sp.id,rank:Number(sp.rank)||1,enfase:sp.enfase||"",origem:"escola",rankEscola:Number(sp.rank)||1});});}
+/* etapas da criação, na ordem do livro */
+function passosCriacao(p){const ok=[!!p.cla4e,!!p.familia4e||(!!p.cla4e&&!familiasDoCla4e(p.cla4e).length),!!p.escola4e];
+  const nomes=["Clã","Família","Escola","Traços e perícias","Vantagens"];
+  const atual=ok.indexOf(false)<0?3:ok.indexOf(false);
+  return "<ol class=\"passos\">"+nomes.map((n,i)=>"<li class=\""+(i<atual||(i>=3&&atual===3)?"feito":"")+(i===atual?" agora":"")+"\">"+n+"</li>").join("")+"</ol>";}
 function renderFicha4e(p){
   if(!l5r4ePronto())return "<div class=\"hint\" style=\"margin-bottom:10px\">Base de dados da 4ª edição não carregada (l5r_4e_data.js).</div>";
   const clas=L5R4E.clans.slice().sort((a,b)=>a.nome.localeCompare(b.nome));
@@ -4961,23 +5108,24 @@ function renderFicha4e(p){
   if(escola){
     const tec1=escola.tecnicas.find(t=>t.rank===1);
     const pericias=escola.pericias.map(s=>pericia4eNome(s.id)+(s.enfase?" ("+s.enfase+")":"")).join(", ");
-    card="<div class=\"fichapanel\" style=\"margin-top:8px;margin-bottom:0\">"+
-      "<div><b>"+esc(escola.nome)+"</b>"+(escola.traco?" · traço bonificado: "+esc(TRACO_PT[escola.traco]||escola.traco):"")+(escola.honra?" · honra inicial: "+esc(escola.honra):"")+"</div>"+
+    card="<details class=\"fichapanel dobra escolacard\"><summary>"+
+      "<b>"+esc(escola.nome)+"</b>"+(escola.traco?" · traço bonificado: "+esc(TRACO_PT[escola.traco]||escola.traco):"")+(escola.honra?" · honra inicial: "+esc(escola.honra):"")+" <span class=\"hint\">ver perícias e técnica</span></summary>"+
       (pericias?"<div class=\"hint\" style=\"margin-top:4px\">Perícias iniciais: "+esc(pericias)+"</div>":"")+
       (tec1?"<div style=\"margin-top:6px\"><b>"+esc(tec1.nome)+"</b> (rank 1)<div class=\"hint\">"+esc(tec1.descricao)+"</div></div>":"")+
-      "</div>";
+      "</details>";
   }
   const monImg=p.cla4e?"<img class=\"monimg\" style=\"width:44px;height:44px;margin:0 8px 0 0;vertical-align:middle;display:inline-block\" src=\""+monSrc(claIdParaMon(p.cla4e))+"\" alt=\"\" onerror=\"this.style.display='none'\">":"";
   const claFamNome=claAtual()?claAtual().nome:"—";
   const aviso=personagemClaDivergeDaFamilia(p)?
     "<div class=\"hint\" style=\"color:var(--bad,#c0392b);margin:4px 0\">⚠ Clã deste personagem diferente do clã da família ("+esc(claFamNome)+"). Pode ser casamento político, refém ou aliado emprestado — se não for de propósito, ajuste o Clã acima.</div>":"";
-  return "<div style=\"display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px;align-items:center\">"+
+  const famTr=p.familia4e&&L5R4E.familias.find(f=>f.id===p.familia4e);
+  return passosCriacao(p)+"<div class=\"criacao\">"+
     monImg+
     "<div class=\"grp\">Clã (4ª ed.) <select onchange=\"escolhaCla4e('"+p.id+"',this.value)\"><option value=\"\">—</option>"+
       clas.map(c=>"<option value=\""+c.id+"\" "+(p.cla4e===c.id?"selected":"")+">"+esc(c.nome)+"</option>").join("")+"</select></div>"+
     "<div class=\"grp\">Família <select onchange=\"escolhaFamilia4e('"+p.id+"',this.value)\" "+(!p.cla4e?"disabled":"")+"><option value=\"\">—</option>"+
-      familias.map(f=>"<option value=\""+f.id+"\" "+(p.familia4e===f.id?"selected":"")+">"+esc(f.nome)+"</option>").join("")+"</select></div>"+
-    "<div class=\"grp\">Escola <select onchange=\"escolhaEscola4e('"+p.id+"',this.value)\" "+(!p.cla4e?"disabled":"")+"><option value=\"\">—</option>"+
+      familias.map(f=>"<option value=\""+f.id+"\" "+(p.familia4e===f.id?"selected":"")+">"+esc(f.nome)+" (+1 "+esc(f.traco==="void"?"Vazio":(TRACO_PT[f.traco]||f.traco))+")</option>").join("")+"</select></div>"+
+    "<div class=\"grp\">Escola <select onchange=\"escolhaEscola4e('"+p.id+"',this.value)\" "+(!p.cla4e?"disabled":!p.familia4e&&familias.length?"disabled title=\"escolha a família primeiro\"":"")+"><option value=\"\">—</option>"+
       escolasCla.map(e=>"<option value=\""+e.id+"\" "+(p.escola4e===e.id?"selected":"")+">"+esc(e.nome)+"</option>").join("")+"</select></div>"+
     "</div>"+aviso+card;
 }
@@ -5058,7 +5206,8 @@ function delEquip(id,itemId){const p=S.personagens.find(x=>x.id===id);if(!p)retu
 function addPericia(id){const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
   p.pericias.push({id:uid(),skill:"",rank:0,enfase:""});salvar();render();}
 function setPericia(id,periciaId,campo,val){const p=S.personagens.find(x=>x.id===id);if(!p)return;
-  const s=p.pericias.find(x=>x.id===periciaId);if(!s)return;s[campo]=(campo==="rank")?(parseInt(val)||0):val;salvar();render();}
+  const s=p.pericias.find(x=>x.id===periciaId);if(!s)return;
+  if(campo==="skill"){const i=skill4e(val);s.skill=i?i.id:val;}else s[campo]=(campo==="rank")?Math.max(0,parseInt(val)||0):val;salvar();render();}
 function delPericia(id,periciaId){const p=S.personagens.find(x=>x.id===id);if(!p)return;
   p.pericias=p.pericias.filter(x=>x.id!==periciaId);salvar();render();}
 function toggleTecnicaAprendida(id,techId){const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
@@ -5147,90 +5296,76 @@ const ANEL_ICONE={terra:"img/aneis/terra.png",ar:"img/aneis/ar.png",agua:"img/an
 function renderFichaCompleta(p){
   fichaBase(p);
   const a=aneisPersonagem(p),insight=insightPersonagem(p),rank=rankPersonagem(p),feridas=feridasNiveis(p);
-  const T=p.traits;
+  const T=p.traits,xp=xpPersonagem(p),bon=bonusTracos4e(p.familia4e,p.escola4e);
   const anelIcon=k=>"<img class=\"anelIcon\" src=\""+ANEL_ICONE[k]+"\" alt=\"\" onerror=\"this.style.visibility='hidden'\">";
-  const tracoInput=(campo,label)=>"<span class=\"grp\">"+label+" <input type=\"number\" min=\"1\" max=\"10\" value=\""+(Number(T[campo])||0)+"\" onchange=\"setTraco('"+p.id+"','"+campo+"',this.value)\"></span>";
+  const tracoInput=(campo,label)=>{const base=baseTraco4e(p,campo),cur=Number(T[campo])||0,mult=campo==="vazio"?6:4;
+    const tip="base "+base+(bon[campo]?" (família/escola +"+bon[campo]+")":"")+" · subir para "+(cur+1)+" custa "+(mult*(cur+1))+" XP";
+    return "<label class=\"trc"+(cur<base?" abaixo":cur>base?" comprado":"")+"\" title=\""+esc(tip)+"\"><span>"+label+"</span><input type=\"number\" min=\"1\" max=\"10\" value=\""+cur+"\" onchange=\"setTraco('"+p.id+"','"+campo+"',this.value)\"><small>base "+base+"</small></label>";};
+  const tile=(k,nome,val,tr)=>"<div class=\"aneltile\">"+anelIcon(k)+"<div class=\"anelcab\"><b>"+nome+"</b><span class=\"val\">"+val+"</span></div><div class=\"trcs\">"+tr+"</div></div>";
   let out="<div class=\"fichapanel\">";
-  out+="<h2>Traços e Anéis</h2>";
-  out+="<div style=\"display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:10px\">"+
-    "<div class=\"anelRow\">"+anelIcon("terra")+"<div style=\"flex:1\"><div class=\"nome\">Terra <span class=\"val\">"+a.terra+"</span></div><div class=\"tracos\">"+tracoInput("stamina","Vigor")+tracoInput("willpower","F.Vontade")+"</div></div></div>"+
-    "<div class=\"anelRow\">"+anelIcon("ar")+"<div style=\"flex:1\"><div class=\"nome\">Ar <span class=\"val\">"+a.ar+"</span></div><div class=\"tracos\">"+tracoInput("reflexes","Reflexos")+tracoInput("awareness","Consciência")+"</div></div></div>"+
-    "<div class=\"anelRow\">"+anelIcon("agua")+"<div style=\"flex:1\"><div class=\"nome\">Água <span class=\"val\">"+a.agua+"</span></div><div class=\"tracos\">"+tracoInput("strength","Força")+tracoInput("perception","Percepção")+"</div></div></div>"+
-    "<div class=\"anelRow\">"+anelIcon("fogo")+"<div style=\"flex:1\"><div class=\"nome\">Fogo <span class=\"val\">"+a.fogo+"</span></div><div class=\"tracos\">"+tracoInput("agility","Agilidade")+tracoInput("intelligence","Inteligência")+"</div></div></div>"+
-    "<div class=\"anelRow\">"+anelIcon("vazio")+"<div style=\"flex:1\"><div class=\"nome\">Vazio</div><div class=\"tracos\">"+tracoInput("vazio","Vazio")+"</div></div></div>"+
+  out+="<h2>Anéis e Traços</h2>";
+  out+="<div class=\"aneis5\">"+
+    tile("terra","Terra",a.terra,tracoInput("stamina","Vigor")+tracoInput("willpower","F. Vontade"))+
+    tile("ar","Ar",a.ar,tracoInput("reflexes","Reflexos")+tracoInput("awareness","Consciência"))+
+    tile("agua","Água",a.agua,tracoInput("strength","Força")+tracoInput("perception","Percepção"))+
+    tile("fogo","Fogo",a.fogo,tracoInput("agility","Agilidade")+tracoInput("intelligence","Inteligência"))+
+    tile("vazio","Vazio",a.vazio,tracoInput("vazio","Vazio"))+"</div>";
+  /* XP: 40 da criação + o que ganhou em jogo; o gasto sai do que está na ficha acima da base */
+  out+="<div class=\"xpbar"+(xp.sobra<0?" neg":"")+"\">"+
+    "<span>Experiência <select onchange=\"setNivelXp('"+p.id+"',this.value)\">"+Object.entries(XP_NIVEIS).map(([k,v])=>"<option value=\""+k+"\" "+((p.nivelXp||"iniciante")===k?"selected":"")+">"+v.nome+" ("+v.xp+")</option>").join("")+"</select></span>"+
+    "<span title=\"XP da criação; muda sozinho com a experiência, mas dá para ajustar\">XP inicial <input type=\"number\" min=\"0\" value=\""+xp.inicial+"\" onchange=\"setPersonagem('"+p.id+"','xpInicial',this.value)\"></span>"+
+    "<span>+ ganho em jogo <input type=\"number\" min=\"0\" value=\""+(Number(p.xp)||0)+"\" onchange=\"setPersonagem('"+p.id+"','xp',this.value)\"></span>"+
+    "<span>gasto <b>"+xp.gasto+"</b></span><span class=\"sobra\">sobra <b>"+xp.sobra+"</b></span>"+
+    "<details class=\"xpconta\"><summary>de onde vem</summary><div>"+xp.linhas.map(l=>"<div><span>"+esc(l[0])+"</span><b>"+(l[1]>0?"":"")+l[1]+"</b></div>").join("")+
+      "<div class=\"hint\">Iniciante 40 XP (o do livro), Experiente 125 (costuma dar Rank 2), Veterano 210 (costuma dar Rank 3). Traço: 4 × o nível novo. Vazio: 6 × o nível novo. Perícia: o nível novo. Ênfase fora da escola: 2. Desvantagens devolvem até 10.</div></div></details>"+
     "</div>";
-  out+="<div class=\"saldos\"><div class=\"saldo\">Insight <b>"+insight.toFixed(0)+"</b></div><div class=\"saldo\">Rank <b>"+rank+"</b></div>"+
-    "<div class=\"saldo\">XP <input type=\"number\" style=\"width:50px;border:none;background:transparent\" value=\""+(Number(p.xp)||0)+"\" onchange=\"setPersonagem('"+p.id+"','xp',this.value)\"></div></div>";
   out+="</div>";
 
   out+="<div class=\"fichapanel\">";
-  out+="<h2>Honra, Glória, Status e Mancha</h2>";
-  out+="<div class=\"hint\" style=\"margin-bottom:8px\">A Honra daqui entra na Honra da casa: a média da Honra dos personagens vivos, mais o ajuste do Mestre, menos a Honra queimada.</div>";
-  out+="<div style=\"display:flex;gap:16px;flex-wrap:wrap\">"+
-    ["honorRank","gloriaRank","statusRank","taintRank"].map((k,i)=>{
-      const labels=["Honra","Glória","Status","Mancha das Sombras"];
-      return "<div class=\"grp\">"+labels[i]+" <input type=\"number\" min=\"0\" max=\"10\" step=\"0.1\" style=\"width:60px\" value=\""+(Number(p[k])||0).toFixed(1)+"\" onchange=\"setStatusInd('"+p.id+"','"+k+"',this.value)\"></div>";
-    }).join("")+"</div><div class=\"hint\">Escala individual de 0.0 a 10.0 — a marca pessoal deste samurai, separada da Honra que a família carrega como um todo.</div>";
-  out+="</div>";
-
-  out+="<div class=\"fichapanel\">";
-  out+="<h2>Combate</h2>";
-  out+="<div class=\"saldos\">"+
+  out+="<h2>Status e Combate</h2>";
+  const sInput=(k,l,tip)=>"<label class=\"saldo\" title=\""+esc(tip)+"\">"+l+" <input type=\"number\" min=\"0\" max=\"10\" step=\"0.1\" value=\""+(Number(p[k])||0).toFixed(1)+"\" onchange=\"setStatusInd('"+p.id+"','"+k+"',this.value)\"></label>";
+  out+="<div class=\"saldos compacto\">"+
+    "<div class=\"saldo\">Insight <b>"+insight.toFixed(0)+"</b></div><div class=\"saldo\">Rank <b>"+rank+"</b></div>"+
     "<div class=\"saldo\">Iniciativa <b>"+iniciativaPersonagem(p)+"</b></div>"+
-    "<div class=\"saldo\">TN base <b>"+tnBasePersonagem(p)+"</b></div>"+
-    "<div class=\"saldo\">Ajuste de TN <input type=\"number\" style=\"width:50px;border:none;background:transparent\" value=\""+(Number(p.tnAjuste)||0)+"\" onchange=\"setPersonagem('"+p.id+"','tnAjuste',this.value)\"></div>"+
-    "<div class=\"saldo\">TN atual <b>"+tnAtualPersonagem(p)+"</b></div>"+
-    "<div class=\"saldo\">Taxa de cura <b>"+taxaCuraPersonagem(p)+"</b>/dia</div>"+
+    "<div class=\"saldo\" title=\"TN base "+tnBasePersonagem(p)+" mais o ajuste (armadura, técnicas)\">TN <b>"+tnAtualPersonagem(p)+"</b> <input type=\"number\" title=\"ajuste de TN\" value=\""+(Number(p.tnAjuste)||0)+"\" onchange=\"setPersonagem('"+p.id+"','tnAjuste',this.value)\"></div>"+
+    "<div class=\"saldo\">Cura <b>"+taxaCuraPersonagem(p)+"</b>/dia</div>"+
+    sInput("honorRank","Honra","Entra na Honra da casa: a média da Honra dos personagens vivos, mais o ajuste do Mestre, menos a Honra queimada.")+
+    sInput("gloriaRank","Glória","Glória pessoal, de 0 a 10. Um samurai famoso puxa a Glória da casa aos poucos.")+
+    sInput("statusRank","Status","Status pessoal, de 0 a 10.")+
+    sInput("taintRank","Mancha","Mancha das Sombras, de 0 a 10.")+
     "</div>";
-  out+="<div style=\"display:flex;gap:10px;flex-wrap:wrap;margin:10px 0\">"+
-    "<div class=\"grp\">Armadura <input type=\"text\" placeholder=\"tipo\" style=\"width:120px\" value=\""+esc(p.armadura.tipo)+"\" onchange=\"setArmadura('"+p.id+"','tipo',this.value)\"></div>"+
-    "<div class=\"grp\">Redução <input type=\"number\" style=\"width:60px\" value=\""+(Number(p.armadura.reducao)||0)+"\" onchange=\"setArmadura('"+p.id+"','reducao',this.value)\"></div>"+
-    "<div class=\"grp\">Notas <input type=\"text\" style=\"width:160px\" value=\""+esc(p.armadura.notas)+"\" onchange=\"setArmadura('"+p.id+"','notas',this.value)\"></div>"+
+  out+="<div class=\"armlinha\">"+
+    "<label class=\"grp\">Armadura <input type=\"text\" placeholder=\"tipo\" value=\""+esc(p.armadura.tipo)+"\" onchange=\"setArmadura('"+p.id+"','tipo',this.value)\"></label>"+
+    "<label class=\"grp\">Redução <input type=\"number\" style=\"width:52px\" value=\""+(Number(p.armadura.reducao)||0)+"\" onchange=\"setArmadura('"+p.id+"','reducao',this.value)\"></label>"+
+    "<label class=\"grp\">Notas <input type=\"text\" value=\""+esc(p.armadura.notas)+"\" onchange=\"setArmadura('"+p.id+"','notas',this.value)\"></label>"+
+    "<label class=\"grp\">Dano atual <input type=\"number\" style=\"width:60px\" value=\""+(Number(p.danoAtual)||0)+"\" onchange=\"setPersonagem('"+p.id+"','danoAtual',this.value)\"></label>"+
     "</div>";
-  out+="<table class=\"feridastab\"><tbody>"+
-    feridas.map(f=>{const atual=(Number(p.danoAtual)||0)>=f.total&&f.penalidade!==null;
-      return "<tr"+(atual?" class=\"atual\"":"")+"><td>"+f.nome+"</td><td>"+(f.penalidade===null?"não pode agir":"+"+f.penalidade)+"</td><td style=\"text-align:right\">"+f.total+"</td></tr>";
-    }).join("")+"</tbody></table>"+
-    "<div class=\"grp\" style=\"margin-top:8px\">Dano atual <input type=\"number\" style=\"width:70px\" value=\""+(Number(p.danoAtual)||0)+"\" onchange=\"setPersonagem('"+p.id+"','danoAtual',this.value)\"></div>";
+  {const dano=Number(p.danoAtual)||0;let idx=feridas.findIndex(f=>dano<=f.total);if(idx<0)idx=feridas.length-1;
+   out+="<div class=\"feridasgrid\">"+feridas.map((f,i)=>"<div class=\"fer"+(i===idx?" atual":"")+"\"><span>"+f.nome+"</span><b>"+(f.penalidade===null?"—":"+"+f.penalidade)+"</b><small>até "+f.total+"</small></div>").join("")+"</div>";}
   out+="</div>";
 
   out+="<div class=\"fichapanel\">";
   out+="<h2>Perícias</h2>";
   out+="<div class=\"linhas\">"+
-    (p.pericias.map(s=>"<div class=\"linha\"><input class=\"campo-nome\" list=\"periciaSugestoes\" placeholder=\"perícia\" value=\""+esc(s.skill)+"\" onchange=\"setPericia('"+p.id+"','"+s.id+"','skill',this.value)\"></input>"+
-      "<span class=\"tag\">rank</span><input class=\"campo-curto\" type=\"number\" value=\""+(Number(s.rank)||0)+"\" onchange=\"setPericia('"+p.id+"','"+s.id+"','rank',this.value)\">"+
-      "<input class=\"campo-medio\" placeholder=\"ênfase\" value=\""+esc(s.enfase)+"\" onchange=\"setPericia('"+p.id+"','"+s.id+"','enfase',this.value)\">"+
-      "<button class=\"ghost del\" onclick=\"delPericia('"+p.id+"','"+s.id+"')\">✕</button></div>").join("")||"<div class=\"linha-vazia\">Nenhuma perícia anotada ainda.</div>")+
+    (p.pericias.map(s=>{const info=skill4e(s.skill),base=rankEscolaPericia(p,s.skill),r=Number(s.rank)||0;
+      const tk=info?(info.traco==="void"?"vazio":info.traco):null,tv=tk&&T[tk]!==undefined?Number(T[tk])||0:null;
+      const rol=tv!==null?(tv+r)+"k"+tv:"—",custo=custoPericiaXp(base,r)+custoEnfasesXp(p,s);
+      const nome=info?info.nome:(s.skill||"");
+      return "<div class=\"linha pericia\"><input class=\"campo-nome\" list=\"periciaSugestoes\" placeholder=\"perícia\" value=\""+esc(nome)+"\" onchange=\"setPericia('"+p.id+"','"+s.id+"','skill',this.value)\">"+
+      "<span class=\"tag\" title=\"traço da perícia\">"+esc(tk?(tk==="vazio"?"Vazio":TRACO_PT[tk]||tk):"varia")+"</span>"+
+      "<input class=\"campo-curto\" type=\"number\" min=\"0\" title=\"nível\" value=\""+r+"\" onchange=\"setPericia('"+p.id+"','"+s.id+"','rank',this.value)\">"+
+      "<span class=\"rol\" title=\"rolagem: traço + perícia, mantém o traço\">"+rol+"</span>"+
+      "<input class=\"campo-medio\" placeholder=\"ênfases\" title=\"separe com vírgula\" value=\""+esc(s.enfase)+"\" onchange=\"setPericia('"+p.id+"','"+s.id+"','enfase',this.value)\">"+
+      (base?"<span class=\"tag escola\" title=\"perícia da escola, nível "+base+" de graça\">escola</span>":"")+
+      "<span class=\"tag\">"+custo+" XP</span>"+
+      "<button class=\"ghost del\" onclick=\"delPericia('"+p.id+"','"+s.id+"')\">✕</button></div>";}).join("")||"<div class=\"linha-vazia\">Nenhuma perícia anotada ainda.</div>")+
     "</div>"+
     "<datalist id=\"periciaSugestoes\">"+(l5r4ePronto()?L5R4E.skills.map(s=>"<option value=\""+esc(s.nome)+"\">"):[]).join("")+"</datalist>"+
     "<button class=\"ghost\" style=\"margin-top:8px\" onclick=\"addPericia('"+p.id+"')\">+ perícia</button>";
   out+="</div>";
 
   out+="<div class=\"fichapanel\">";
-  out+="<h2>Armas</h2>";
-  out+="<div class=\"linhas\">"+
-    (p.armas.map(a=>"<div class=\"linha\"><input class=\"campo-nome\" placeholder=\"arma\" value=\""+esc(a.tipo)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','tipo',this.value)\">"+
-      "<span class=\"tag\">ataque</span><input class=\"campo-medio\" value=\""+esc(a.ataque)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','ataque',this.value)\">"+
-      "<span class=\"tag\">dano</span><input class=\"campo-medio\" value=\""+esc(a.dano)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','dano',this.value)\">"+
-      "<span class=\"tag\">bônus</span><input class=\"campo-curto\" value=\""+esc(a.bonus)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','bonus',this.value)\">"+
-      "<input class=\"campo-nome\" placeholder=\"notas\" value=\""+esc(a.notas)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','notas',this.value)\">"+
-      "<button class=\"ghost del\" onclick=\"delArma('"+p.id+"','"+a.id+"')\">✕</button></div>").join("")||"<div class=\"linha-vazia\">Nenhuma arma ainda.</div>")+
-    "</div><button class=\"ghost\" style=\"margin-top:8px\" onclick=\"addArma('"+p.id+"')\">+ arma</button>";
-  out+="</div>";
-
-  out+="<div class=\"fichapanel\">";
-  out+="<h2>Equipamento e Dinheiro</h2>";
-  out+="<div class=\"linhas\">"+
-    (p.equipamento.map(it=>"<div class=\"linha\"><input class=\"campo-nome\" placeholder=\"item\" value=\""+esc(it.nome)+"\" onchange=\"setEquip('"+p.id+"','"+it.id+"','nome',this.value)\">"+
-      "<label class=\"tag\"><input type=\"checkbox\" "+(it.consigo?"checked":"")+" onchange=\"setEquip('"+p.id+"','"+it.id+"','consigo',this.checked)\"> comigo</label>"+
-      "<label class=\"tag\"><input type=\"checkbox\" "+(it.casa?"checked":"")+" onchange=\"setEquip('"+p.id+"','"+it.id+"','casa',this.checked)\"> em casa</label>"+
-      "<button class=\"ghost del\" onclick=\"delEquip('"+p.id+"','"+it.id+"')\">✕</button></div>").join("")||"<div class=\"linha-vazia\">Nenhum item ainda.</div>")+
-    "</div><button class=\"ghost\" style=\"margin:8px 0 12px\" onclick=\"addEquip('"+p.id+"')\">+ item</button>";
-  out+="<div style=\"display:flex;gap:10px;flex-wrap:wrap\">"+
-    "<div class=\"grp\">Koku <input type=\"number\" style=\"width:60px\" value=\""+(Number(p.dinheiro.koku)||0)+"\" onchange=\"setDinheiro('"+p.id+"','koku',this.value)\"></div>"+
-    "<div class=\"grp\">Bu <input type=\"number\" style=\"width:60px\" value=\""+(Number(p.dinheiro.bu)||0)+"\" onchange=\"setDinheiro('"+p.id+"','bu',this.value)\"></div>"+
-    "<div class=\"grp\">Zeni <input type=\"number\" style=\"width:60px\" value=\""+(Number(p.dinheiro.zeni)||0)+"\" onchange=\"setDinheiro('"+p.id+"','zeni',this.value)\"></div>"+
-    "<div class=\"hint\">1 Koku = 5 Bu = 50 Zeni · 1 Bu = 10 Zeni</div></div>";
+  out+=renderVantDesv(p);
   out+="</div>";
 
   const escola=l5r4ePronto()?L5R4E.escolas.find(e=>e.id===p.escola4e):null;
@@ -5244,26 +5379,25 @@ function renderFichaCompleta(p){
       const sub=subId?todasTecnicasComOrigem().find(x=>x.id===subId):null;
       const opcoes=caminhos.filter(c=>c.tecnicas.some(ct=>ct.rank===t.rank));
       const ativo=sub||t;
-      return "<div style=\"margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)\">"+
-        "<label style=\"cursor:pointer\"><input type=\"checkbox\" "+(aprendida?"checked":"")+" onchange=\"toggleTecnicaAprendida('"+p.id+"','"+t.id+"')\"> "+
-        "<b>"+esc(ativo.nome)+"</b> <span class=\"tag\">rank "+t.rank+"</span>"+(sub?" <span class=\"tag\">substitui a original</span>":"")+"</label>"+
-        "<div class=\"hint\" style=\"margin-top:3px\">"+esc(ativo.descricao)+"</div>"+
+      return "<details class=\"tecnica\""+(t.rank<=rank?" open":"")+"><summary>"+
+        "<input type=\"checkbox\" "+(aprendida?"checked":"")+" onclick=\"event.stopPropagation()\" onchange=\"toggleTecnicaAprendida('"+p.id+"','"+t.id+"')\"> "+
+        "<b>"+esc(ativo.nome)+"</b> <span class=\"tag\">rank "+t.rank+"</span>"+(sub?" <span class=\"tag\">substitui a original</span>":"")+"</summary>"+
+        "<div class=\"hint\">"+esc(ativo.descricao)+"</div>"+
         (opcoes.length?"<div style=\"margin-top:6px\"><select onchange=\"setSubstituicaoTecnica('"+p.id+"','"+t.rank+"',this.value)\">"+
           "<option value=\"\">— manter técnica original de rank "+t.rank+"</option>"+
           opcoes.map(c=>c.tecnicas.filter(ct=>ct.rank===t.rank).map(ct=>"<option value=\""+ct.id+"\" "+(subId===ct.id?"selected":"")+">"+esc(c.nome)+" — "+esc(ct.nome)+"</option>").join("")).join("")+
           "</select> <span class=\"hint\">caminho alternativo</span></div>":"")+
-        "</div>";
+        "</details>";
     }).join("");
     if(caminhos.length){
-      out+="<div class=\"hint\">Requisitos dos caminhos elegíveis (confira com o Mestre): "+
-        caminhos.map(c=>esc(c.nome)+" — "+c.requisitos.map(r=>esc(r.texto)).join("; ")).join(" · ")+"</div>";
+      out+="<details class=\"tecnica\"><summary class=\"hint\">Requisitos dos caminhos alternativos (confira com o Mestre)</summary><div class=\"hint\">"+
+        caminhos.map(c=>esc(c.nome)+" — "+c.requisitos.map(r=>esc(r.texto)).join("; ")).join(" · ")+"</div></details>";
     }
     out+="</div>";
   }
 
-  out+="<div class=\"fichapanel\">";
-  out+="<h2>Técnicas de outras escolas</h2>";
-  out+="<div class=\"hint\" style=\"margin-bottom:8px\">Aprendidas fora da progressão normal da própria escola — gaijin, ensinamentos de aliados, recompensas de aventura.</div>";
+  out+="<details class=\"fichapanel dobra\"><summary><h2>Técnicas de outras escolas"+(p.tecnicasExtras.length?" ("+p.tecnicasExtras.length+")":"")+"</h2></summary>";
+  out+="<div class=\"hint\" style=\"margin-bottom:8px\">Aprendidas fora da progressão normal da própria escola: gaijin, ensinamentos de aliados, recompensas de aventura.</div>";
   const extras=p.tecnicasExtras.map(id=>todasTecnicasComOrigem().find(t=>t.id===id)).filter(Boolean);
   out+=extras.map(t=>"<div style=\"margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)\">"+
     "<b>"+esc(t.nome)+"</b> <span class=\"tag\">"+esc(t.origem)+" · rank "+t.rank+"</span>"+
@@ -5272,31 +5406,58 @@ function renderFichaCompleta(p){
   out+="<select id=\"extraTecSel_"+p.id+"\" style=\"width:100%;margin-bottom:8px\"><option value=\"\">— escolha uma técnica de qualquer escola —</option>"+
     (l5r4ePronto()?todasTecnicasComOrigem().map(t=>"<option value=\""+t.id+"\">"+esc(t.origem)+" — "+esc(t.nome)+" (rank "+t.rank+")</option>").join(""):"")+
     "</select><button class=\"ghost\" onclick=\"addTecnicaExtra('"+p.id+"',document.getElementById('extraTecSel_"+p.id+"').value)\">+ adicionar técnica</button>";
-  out+="</div>";
+  out+="</details>";
 
   out+="<div class=\"fichapanel\">";
-  const custoVant=p.vantagens.reduce((s,v)=>s+(Number(v.custo)||0),0);
-  const custoDesv=p.desvantagens.reduce((s,v)=>s+(Number(v.custo)||0),0);
-  out+="<h2>Vantagens e Desvantagens</h2>";
-  out+="<div style=\"display:flex;gap:20px;flex-wrap:wrap\">";
-  out+="<div style=\"flex:1;min-width:260px\"><b>Vantagens</b> <span class=\"tag\">"+custoVant+" pontos</span>"+
-    "<div class=\"linhas\" style=\"margin-top:6px\">"+
-    (p.vantagens.map(v=>"<div class=\"linha\"><input class=\"campo-nome\" list=\"vantagensSugestoes\" placeholder=\"vantagem\" value=\""+esc(v.nome)+"\" onchange=\"setVantagemCampo('vantagens','"+p.id+"','"+v.id+"','nome',this.value)\">"+
-      "<input class=\"campo-curto\" type=\"number\" value=\""+(Number(v.custo)||0)+"\" onchange=\"setVantagemCampo('vantagens','"+p.id+"','"+v.id+"','custo',this.value)\">"+
-      "<button class=\"ghost del\" onclick=\"delVantagemCampo('vantagens','"+p.id+"','"+v.id+"')\">✕</button></div>").join("")||"<div class=\"linha-vazia\">Nenhuma vantagem ainda.</div>")+
-    "</div><button class=\"ghost\" style=\"margin-top:8px\" onclick=\"addVantagem('"+p.id+"')\">+ vantagem</button></div>";
-  out+="<div style=\"flex:1;min-width:260px\"><b>Desvantagens</b> <span class=\"tag\">"+custoDesv+" pontos</span>"+
-    "<div class=\"linhas\" style=\"margin-top:6px\">"+
-    (p.desvantagens.map(v=>"<div class=\"linha\"><input class=\"campo-nome\" list=\"desvantagensSugestoes\" placeholder=\"desvantagem\" value=\""+esc(v.nome)+"\" onchange=\"setVantagemCampo('desvantagens','"+p.id+"','"+v.id+"','nome',this.value)\">"+
-      "<input class=\"campo-curto\" type=\"number\" value=\""+(Number(v.custo)||0)+"\" onchange=\"setVantagemCampo('desvantagens','"+p.id+"','"+v.id+"','custo',this.value)\">"+
-      "<button class=\"ghost del\" onclick=\"delVantagemCampo('desvantagens','"+p.id+"','"+v.id+"')\">✕</button></div>").join("")||"<div class=\"linha-vazia\">Nenhuma desvantagem ainda.</div>")+
-    "</div><button class=\"ghost\" style=\"margin-top:8px\" onclick=\"addDesvantagem('"+p.id+"')\">+ desvantagem</button></div>";
-  out+="</div>";
-  out+="<datalist id=\"vantagensSugestoes\">"+(l5r4ePronto()?L5R4E.vantagens.map(v=>"<option value=\""+esc(v.nome)+"\">"):[]).join("")+"</datalist>";
-  out+="<datalist id=\"desvantagensSugestoes\">"+(l5r4ePronto()?L5R4E.desvantagens.map(v=>"<option value=\""+esc(v.nome)+"\">"):[]).join("")+"</datalist>";
+  out+="<h2>Armas, equipamento e dinheiro</h2>";
+  out+="<div class=\"linhas\">"+
+    (p.armas.map(a=>"<div class=\"linha\"><input class=\"campo-nome\" placeholder=\"arma\" value=\""+esc(a.tipo)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','tipo',this.value)\">"+
+      "<span class=\"tag\">ataque</span><input class=\"campo-curto\" value=\""+esc(a.ataque)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','ataque',this.value)\">"+
+      "<span class=\"tag\">dano</span><input class=\"campo-curto\" value=\""+esc(a.dano)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','dano',this.value)\">"+
+      "<span class=\"tag\">bônus</span><input class=\"campo-curto\" value=\""+esc(a.bonus)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','bonus',this.value)\">"+
+      "<input class=\"campo-medio\" placeholder=\"notas\" value=\""+esc(a.notas)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','notas',this.value)\">"+
+      "<button class=\"ghost del\" onclick=\"delArma('"+p.id+"','"+a.id+"')\">✕</button></div>").join(""))+
+    (p.equipamento.map(it=>"<div class=\"linha\"><input class=\"campo-nome\" placeholder=\"item\" value=\""+esc(it.nome)+"\" onchange=\"setEquip('"+p.id+"','"+it.id+"','nome',this.value)\">"+
+      "<label class=\"tag\"><input type=\"checkbox\" "+(it.consigo?"checked":"")+" onchange=\"setEquip('"+p.id+"','"+it.id+"','consigo',this.checked)\"> comigo</label>"+
+      "<label class=\"tag\"><input type=\"checkbox\" "+(it.casa?"checked":"")+" onchange=\"setEquip('"+p.id+"','"+it.id+"','casa',this.checked)\"> em casa</label>"+
+      "<button class=\"ghost del\" onclick=\"delEquip('"+p.id+"','"+it.id+"')\">✕</button></div>").join(""))+
+    (!p.armas.length&&!p.equipamento.length?"<div class=\"linha-vazia\">Nenhuma arma ou item ainda.</div>":"")+
+    "</div>";
+  out+="<div class=\"armlinha\"><button class=\"ghost\" onclick=\"addArma('"+p.id+"')\">+ arma</button><button class=\"ghost\" onclick=\"addEquip('"+p.id+"')\">+ item</button>"+
+    "<label class=\"grp\" title=\"1 koku = 5 bu = 50 zeni\">Koku <input type=\"number\" style=\"width:56px\" value=\""+(Number(p.dinheiro.koku)||0)+"\" onchange=\"setDinheiro('"+p.id+"','koku',this.value)\"></label>"+
+    "<label class=\"grp\" title=\"1 bu = 10 zeni\">Bu <input type=\"number\" style=\"width:56px\" value=\""+(Number(p.dinheiro.bu)||0)+"\" onchange=\"setDinheiro('"+p.id+"','bu',this.value)\"></label>"+
+    "<label class=\"grp\">Zeni <input type=\"number\" style=\"width:56px\" value=\""+(Number(p.dinheiro.zeni)||0)+"\" onchange=\"setDinheiro('"+p.id+"','zeni',this.value)\"></label></div>";
   out+="</div>";
   return out;
 }
+/* Vantagens e desvantagens: escolhe do livro (com a descrição) ou escreve uma livre. */
+function catalogoVD(lista){return l5r4ePronto()?(lista==="vantagens"?L5R4E.vantagens:L5R4E.desvantagens):[];}
+function itemVD(lista,nome){const n=(nome||"").trim().toLowerCase();return n?catalogoVD(lista).find(c=>c.nome.toLowerCase()===n)||null:null;}
+const TIPO_VD_PT={material:"material",mental:"mental",physical:"física",social:"social",spiritual:"espiritual",varies:"varia"};
+function renderVantDesv(p){
+  const col=(lista,titulo,sing)=>{const itens=p[lista];const soma=itens.reduce((s,v)=>s+(Number(v.custo)||0),0);
+    const cat=catalogoVD(lista).slice().sort((a,b)=>a.nome.localeCompare(b.nome));
+    const tipos=[...new Set(cat.map(c=>c.tipo))];
+    return "<div class=\"vdcol\"><div class=\"vdcab\"><b>"+titulo+"</b> <span class=\"tag\">"+soma+" XP"+(lista==="desvantagens"&&soma>10?" (devolve 10)":"")+"</span></div>"+
+      (itens.map(v=>{const m=itemVD(lista,v.nome);
+        return "<div class=\"vditem\"><div class=\"linha\"><input class=\"campo-nome\" list=\""+lista+"Sugestoes\" placeholder=\""+sing+"\" value=\""+esc(v.nome)+"\" onchange=\"setVantagemCampo('"+lista+"','"+p.id+"','"+v.id+"','nome',this.value)\">"+
+          (m?"<span class=\"tag\">"+esc(TIPO_VD_PT[m.tipo]||m.tipo)+"</span>":"")+
+          "<input class=\"campo-curto\" type=\"number\" title=\"custo em XP\" value=\""+(Number(v.custo)||0)+"\" onchange=\"setVantagemCampo('"+lista+"','"+p.id+"','"+v.id+"','custo',this.value)\">"+
+          "<button class=\"ghost del\" onclick=\"delVantagemCampo('"+lista+"','"+p.id+"','"+v.id+"')\">✕</button></div>"+
+          (m&&m.descricao?"<details class=\"vdesc\"><summary>"+esc(m.descricao.slice(0,110))+(m.descricao.length>110?"…":"")+"</summary><div>"+esc(m.descricao)+"</div></details>":"")+
+          "</div>";}).join("")||"<div class=\"linha-vazia\">Nenhuma ainda.</div>")+
+      "<div class=\"armlinha\"><select onchange=\"addVDLivro('"+lista+"','"+p.id+"',this.value)\"><option value=\"\">+ do livro…</option>"+
+        tipos.map(t=>"<optgroup label=\""+esc(TIPO_VD_PT[t]||t)+"\">"+cat.filter(c=>c.tipo===t).map(c=>"<option value=\""+esc(c.nome)+"\" title=\""+esc(c.descricao.slice(0,300))+"\">"+esc(c.nome)+" ("+c.custo+")</option>").join("")+"</optgroup>").join("")+
+      "</select><button class=\"ghost\" onclick=\""+(lista==="vantagens"?"addVantagem":"addDesvantagem")+"('"+p.id+"')\">+ livre</button></div></div>";};
+  return "<h2>Vantagens e Desvantagens</h2><div class=\"vdgrid\">"+col("vantagens","Vantagens","vantagem")+col("desvantagens","Desvantagens","desvantagem")+"</div>"+
+    "<datalist id=\"vantagensSugestoes\">"+catalogoVD("vantagens").map(v=>"<option value=\""+esc(v.nome)+"\">").join("")+"</datalist>"+
+    "<datalist id=\"desvantagensSugestoes\">"+catalogoVD("desvantagens").map(v=>"<option value=\""+esc(v.nome)+"\">").join("")+"</datalist>"+
+    "<div class=\"hint\">As descrições são do livro básico, em inglês. O custo é o do livro; ajuste à mão se o clã tiver desconto.</div>";
+}
+function setNivelXp(id,v){if(bloqueadoLeitura())return;const p=S.personagens.find(x=>x.id===id);if(!p||!XP_NIVEIS[v])return;
+  p.nivelXp=v;p.xpInicial=XP_NIVEIS[v].xp;salvar();render();}
+function addVDLivro(lista,id,nome){if(!nome)return;const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  const m=itemVD(lista,nome);p[lista].push({id:uid(),nome:m?m.nome:nome,custo:m?m.custo:0});salvar();render();}
 function renderKataKihoMagia(p){
   fichaBase(p);
   function secao(titulo,campo,catalogo,extraCols){
@@ -5333,20 +5494,21 @@ function renderCharSheet(){
   const papelInfo=PERSONAGEM_PAPEL.find(x=>x.nome===p.categoria);
   const efeitoLabel=papelInfo?(ATRIBUTOS.find(a=>a[0]===papelInfo.efeito)||[papelInfo.efeito,papelInfo.efeito])[1]:"";
   box.innerHTML=
-    "<div style=\"display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px\">"+
+    "<div class=\"criacao\">"+
       "<div class=\"grp\">Nome <input type=\"text\" value=\""+esc(p.nome)+"\" style=\"width:180px\" onchange=\"setPersonagem('"+p.id+"','nome',this.value)\"></div>"+
       "<div class=\"grp\">Papel <select onchange=\"setPersonagem('"+p.id+"','categoria',this.value)\" title=\"muda o custo em Influência — só o Mestre altera\">"+opcoesCategoria(p.categoria)+"</select></div>"+
       "<div class=\"grp\">Estado <select onchange=\"setPersonagem('"+p.id+"','estado',this.value)\">"+ESTADO_PERSONAGEM.map(e=>"<option "+(p.estado===e?"selected":"")+">"+e+"</option>").join("")+"</select></div>"+
       "<div class=\"grp\">Jogador <input type=\"text\" value=\""+esc(p.jogador)+"\" placeholder=\"quem joga\" style=\"width:140px\" onchange=\"setPersonagem('"+p.id+"','jogador',this.value)\"></div>"+
+    "<button class=\"ghost\" onclick=\"randomizarPersonagem('"+p.id+"')\" title=\"Sorteia clã/família/escola, traços, perícias e vantagens/desvantagens deste personagem (só ele, não mexe nos outros)\">🎲 Sortear</button>"+
     "</div>"+
-    "<div class=\"hint\" style=\"margin-bottom:10px\">Custo pago em Influência: <b>"+custo+"</b>"+(efeitoLabel?" · dá +"+(papelInfo?papelInfo.valor:0)+" em "+efeitoLabel:"")+"</div>"+
-    "<button class=\"ghost\" style=\"margin-bottom:10px\" onclick=\"randomizarPersonagem('"+p.id+"')\" title=\"Sorteia clã/família/escola, traços, perícias e vantagens/desvantagens deste personagem (só ele, não mexe nos outros)\">🎲 Sortear este personagem</button>"+
+    "<div class=\"hint\" style=\"margin-bottom:8px\">Custo pago em Influência: <b>"+custo+"</b>"+(efeitoLabel?" · dá +"+(papelInfo?papelInfo.valor:0)+" em "+efeitoLabel:"")+"</div>"+
     renderFicha4e(p)+
+    (!p.escola4e&&!(p.pericias||[]).length?"<div class=\"fichapanel travada\">Escolha o clã, a família e a escola. Eles dão os traços iniciais, as perícias da escola e a Honra; a ficha abre em seguida.</div>":
     "<div class=\"tabbar\" style=\"margin-top:12px\">"+
       "<button class=\"tabbtn "+(fichaSubAba==="geral"?"on":"")+"\" onclick=\"setFichaSubAba('geral')\">Ficha</button>"+
       "<button class=\"tabbtn "+(fichaSubAba==="magia"?"on":"")+"\" onclick=\"setFichaSubAba('magia')\">Kata, Kiho e Magia</button>"+
     "</div>"+
-    (fichaSubAba==="magia"?renderKataKihoMagia(p):renderFichaCompleta(p))+
+    (fichaSubAba==="magia"?renderKataKihoMagia(p):renderFichaCompleta(p)))+
     "<div class=\"grp\" style=\"display:block;margin-bottom:8px;margin-top:10px\">Marcas de experiência (texto livre)<br><input type=\"text\" style=\"width:100%\" value=\""+esc(p.experiencia)+"\" onchange=\"setPersonagem('"+p.id+"','experiencia',this.value)\"></div>"+
     "<div class=\"grp\" style=\"display:block\">História e notas<br><textarea rows=\"6\" style=\"width:100%;font-family:var(--font-body);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px;color:var(--ink)\" onchange=\"setPersonagem('"+p.id+"','notas',this.value)\">"+esc(p.notas||"")+"</textarea></div>"+
     "<button class=\"ghost\" style=\"margin-top:10px\" onclick=\"delPersonagemAtivo()\">✕ remover este personagem</button>";
@@ -5848,7 +6010,7 @@ if(typeof window!=="undefined"&&window.addEventListener)window.addEventListener(
 
 render();
 /* entra sozinho na família mudada mais recentemente */
-if(typeof window!=="undefined"&&window.supabase)abrirMaisRecente().catch(()=>{});
+iniciarServidor();
 </script>
 </body>
 </html>
