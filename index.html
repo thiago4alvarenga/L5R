@@ -960,9 +960,80 @@
   .ledgerline.derivado-l{cursor:help;flex-wrap:wrap}
   .ledgerline.derivado-l .derivadoexp{margin-bottom:4px}
   @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+  /* 2026-11-05: abertura animada sobre o ano de 1137 (aparece na primeira visita; o botão ⛩ 1137 repete) */
+  #abertura{position:fixed;inset:0;z-index:9999;display:flex;align-items:safe center;justify-content:center;overflow-x:hidden;overflow-y:auto;padding:36px 0;box-sizing:border-box;
+    background:radial-gradient(ellipse at 50% 40%,#2a1d16 0%,#140e0b 55%,#070504 100%);color:#efe4cf;cursor:pointer;
+    font-family:var(--font-display);animation:abFade .9s ease both}
+  #abertura[hidden]{display:none}
+  #abertura.saindo{animation:abSai .8s ease forwards}
+  @keyframes abFade{from{opacity:0}to{opacity:1}}
+  @keyframes abSai{to{opacity:0;transform:scale(1.03)}}
+  #abertura .bruma{position:fixed;inset:-20%;pointer-events:none;opacity:.5;filter:blur(30px);
+    background:radial-gradient(circle at 20% 70%,rgba(160,128,47,.18),transparent 40%),radial-gradient(circle at 80% 30%,rgba(181,53,43,.14),transparent 45%);
+    animation:abBruma 26s ease-in-out infinite alternate}
+  @keyframes abBruma{to{transform:translate(6%,-4%) rotate(4deg)}}
+  #abertura .sol{position:fixed;top:9%;right:9%;width:min(34vw,300px);aspect-ratio:1;border-radius:50%;
+    background:radial-gradient(circle at 42% 40%,#d4493b,#9e2a20 70%);box-shadow:0 0 80px rgba(181,53,43,.35);
+    animation:abSol 3.2s cubic-bezier(.2,.7,.2,1) both;opacity:.9}
+  @keyframes abSol{from{transform:scale(.2);filter:blur(24px);opacity:0}to{transform:scale(1);filter:blur(0);opacity:.9}}
+  #abertura .ano{position:fixed;left:5%;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-size:clamp(34px,6vh,64px);
+    letter-spacing:.25em;color:#c9a54e;text-shadow:0 0 18px rgba(201,165,78,.25)}
+  #abertura .ano span{display:inline-block;opacity:0;animation:abKan 1s ease forwards}
+  @keyframes abKan{from{opacity:0;filter:blur(8px);transform:translateY(-10px)}to{opacity:1;filter:blur(0);transform:none}}
+  #abertura .texto{position:relative;max-width:620px;width:calc(100% - 140px);margin-left:60px}
+  #abertura .sobre{font-family:var(--font-body);font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:#a99a7c;opacity:0;animation:abLinha 1.2s .8s ease forwards}
+  #abertura h2{font-size:clamp(30px,5vw,50px);font-weight:600;margin:.15em 0 .1em;color:#f5ead3;opacity:0;animation:abLinha 1.4s 1.4s ease forwards}
+  #abertura .traco{height:5px;width:0;margin:6px 0 22px;border-radius:3px;background:linear-gradient(90deg,#b5352b,#b5352b 70%,transparent);animation:abTraco 1.4s 2.2s ease forwards}
+  @keyframes abTraco{to{width:min(260px,60%)}}
+  #abertura p{font-family:var(--font-voice);font-size:clamp(15.5px,1.9vw,18px);line-height:1.58;margin:0 0 .7em;color:#e6d9bf;opacity:0;transform:translateY(12px);transition:opacity 1.3s ease,transform 1.3s ease}
+  #abertura p.vis{opacity:1;transform:none}
+  #abertura p.fecho{color:#c9a54e;font-style:italic}
+  @keyframes abLinha{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  #abertura .abacoes{display:flex;gap:10px;align-items:center;margin-top:18px;opacity:0;transition:opacity 1s ease}
+  #abertura .abacoes.vis{opacity:1}
+  #abertura.fim .dica{opacity:0}
+  #abertura .dica{transition:opacity .6s}
+  #abertura .abacoes button.primary{font-size:15px;padding:10px 22px;letter-spacing:.06em}
+  #abertura .pular{position:fixed;right:18px;bottom:16px;background:transparent;border:1px solid rgba(239,228,207,.25);color:#a99a7c;font-family:var(--font-body);font-size:12px;padding:6px 12px;border-radius:4px}
+  #abertura .dica{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);font-family:var(--font-body);font-size:11.5px;color:#7d715c;letter-spacing:.1em}
+  #abertura .petala{position:fixed;top:-30px;width:11px;height:8px;border-radius:70% 0 70% 0;background:#e9b4ae;opacity:.55;pointer-events:none;animation:abCai linear infinite}
+  @keyframes abCai{to{transform:translate(-18vw,110vh) rotate(540deg)}}
+  @media (max-width:640px){
+    #abertura{align-items:flex-start;overflow-y:auto}
+    #abertura .ano{position:absolute;left:auto;right:12px;top:16px;transform:none;font-size:26px;opacity:.75}
+    #abertura .sol{top:4%;right:-12%;width:52vw;opacity:.55}
+    #abertura .texto{width:calc(100% - 32px);margin:0;padding:40px 16px 70px}
+    #abertura{padding:0}
+    #abertura .dica{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    #abertura,#abertura *{animation-duration:.01s!important;animation-delay:0s!important;transition:none!important}
+    #abertura .petala,#abertura .bruma{display:none}
+  }
 </style>
 </head>
 <body>
+
+<div id="abertura" hidden onclick="avancarAbertura()" role="dialog" aria-label="Rokugan em 1137">
+  <div class="bruma"></div><div class="sol"></div>
+  <div class="ano" aria-hidden="true"><span>千</span><span>百</span><span>三</span><span>十</span><span>七</span><span>年</span></div>
+  <div class="texto">
+    <div class="sobre">Calendário Isawa · Reinado de Toturi I</div>
+    <h2>Rokugan, ano 1137</h2>
+    <div class="traco"></div>
+    <p>Há catorze anos, Bayushi Shoju matou o último Hantei, e os clãs se lançaram uns contra os outros na Guerra dos Clãs.</p>
+    <p>No Dia do Trovão, sete heróis venceram Fu Leng sobre as ruínas de Otosan Uchi. Um ronin, Akodo Toturi, subiu ao Trono de Crisântemo.</p>
+    <p>Vieram então o sequestro do Imperador, o exílio do Escorpião, a fome e vinte e sete dias sem sol. A Escuridão Mentirosa quase apagou o passado do Império.</p>
+    <p>Em Volturnum, vivos e mortos lutaram lado a lado. Hitomi chamou a Escuridão pelo seu verdadeiro nome, e ela se desfez.</p>
+    <p>Hoje Toturi governa de novo e as cidades se reerguem. Mas o Portão do Esquecimento deixou passar os mortos, e eles andam entre os vivos com nomes antigos e lealdades mais antigas ainda.</p>
+    <p>A Aliança de Yoritomo se desfaz. Nas províncias, espíritos sussurram que um Hantei ainda reclama o trono.</p>
+    <p class="fecho">É neste ano que a sua casa escreve a próxima página.</p>
+    <div class="abacoes"><button class="primary" onclick="event.stopPropagation();fecharAbertura()">Entrar na história</button></div>
+  </div>
+  <button class="pular" onclick="event.stopPropagation();fecharAbertura()">pular</button>
+  <div class="dica">toque para avançar</div>
+</div>
 <canvas id="particulas" aria-hidden="true"></canvas>
 <div class="avisoestacao" id="avisoEstacao" role="status" aria-live="polite"></div>
 <div class="wrap">
@@ -975,6 +1046,7 @@
     </div>
     <div class="casaacoes">
       <span class="selo-leitura" id="seloLeitura" hidden>só leitura</span>
+      <button class="ghost abrever" onclick="abrirAbertura()" title="rever a abertura sobre o ano de 1137">⛩ 1137</button>
       <label class="casapapel">Papel <select id="papelSel"><option value="mestre">Mestre</option><option value="jogador">Jogador (só leitura)</option></select></label>
       <details class="casamenu salabox" id="familiasMenu">
         <summary id="syncStatus">Famílias</summary>
@@ -6705,6 +6777,36 @@ if(typeof window!=="undefined"&&window.addEventListener)window.addEventListener(
 
 render();
 /* entra sozinho na família mudada mais recentemente */
+/* Abertura: o ano de 1137. Mostra uma vez por navegador; o botão ⛩ 1137 no topo repete. */
+let abTimer=null;
+function abrirAbertura(){
+  const el=document.getElementById("abertura");if(!el)return;
+  el.hidden=false;el.classList.remove("saindo","fim");el.scrollTop=0;
+  el.querySelectorAll("p").forEach(p=>p.classList.remove("vis"));el.querySelector(".abacoes").classList.remove("vis");
+  el.querySelectorAll(".ano span").forEach((s,i)=>s.style.animationDelay=(0.5+i*0.35)+"s");
+  if(!el.querySelector(".petala"))for(let i=0;i<12;i++){const d=document.createElement("i");d.className="petala";
+    d.style.left=(10+Math.random()*95)+"%";d.style.animationDuration=(11+Math.random()*10)+"s";d.style.animationDelay=(-Math.random()*18)+"s";el.appendChild(d);}
+  const reduz=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  clearTimeout(abTimer);
+  if(reduz){el.querySelectorAll("p").forEach(p=>p.classList.add("vis"));(el.classList.add("fim"),el.querySelector(".abacoes").classList.add("vis"));return;}
+  abTimer=setTimeout(avancarAbertura,3000);
+}
+function avancarAbertura(){
+  const el=document.getElementById("abertura");if(!el||el.hidden)return;
+  clearTimeout(abTimer);
+  const prox=el.querySelector("p:not(.vis)");
+  if(prox){prox.classList.add("vis");if(prox.getBoundingClientRect().bottom>innerHeight-40)prox.scrollIntoView({behavior:"smooth",block:"end"});if(!el.querySelector("p:not(.vis)"))setTimeout(()=>(el.classList.add("fim"),el.querySelector(".abacoes").classList.add("vis")),900);
+    else abTimer=setTimeout(avancarAbertura,prox.textContent.length*45+1400);}
+  else (el.classList.add("fim"),el.querySelector(".abacoes").classList.add("vis"));
+}
+function fecharAbertura(){
+  const el=document.getElementById("abertura");if(!el)return;clearTimeout(abTimer);
+  try{localStorage.setItem("l5r_abertura_vista","1");}catch(e){}
+  el.classList.add("saindo");setTimeout(()=>{el.hidden=true;el.classList.remove("saindo");},800);
+}
+document.addEventListener("keydown",ev=>{const el=document.getElementById("abertura");if(!el||el.hidden)return;
+  if(ev.key==="Escape")fecharAbertura();else if(ev.key===" "||ev.key==="Enter"||ev.key==="ArrowRight"){ev.preventDefault();avancarAbertura();}});
+(function(){let vista=false;try{vista=localStorage.getItem("l5r_abertura_vista")==="1";}catch(e){}if(!vista)abrirAbertura();})();
 iniciarServidor();
 </script>
 </body>
