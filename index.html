@@ -1108,6 +1108,59 @@
   body.criando #viewFamilia details.grupo{border:0;background:none;padding:0;margin:0;box-shadow:none}
   body.criando #tabBtnEstacoes,body.criando #tabBtnBatalha,body.criando #tabBtnCombate{display:none}
   @media (max-width:640px){.assist .ap{min-width:56px;font-size:10.5px}.assist .ap .apk{width:30px;height:30px;font-size:15px}.assist .atit{font-size:19px}}
+
+  /* 2026-11-05: cenas da fundação (clã, origem, história, conclusão); um toque pula */
+  #cena{position:fixed;inset:0;z-index:8500;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden}
+  #cena[hidden]{display:none}
+  #cena .cfundo{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,#f1e6cd 0%,#e2d2ae 60%,#c9b388 100%);animation:cFade .45s ease both}
+  #cena.escuro .cfundo{background:radial-gradient(ellipse at 50% 45%,#2a1d16,#0d0906)}
+  #cena.saindo{animation:cSai .5s ease forwards}
+  @keyframes cFade{from{opacity:0}} @keyframes cSai{to{opacity:0}}
+  #cena .cpalco{position:relative;text-align:center;padding:20px;max-width:min(900px,100%)}
+  #cena .cpular{position:absolute;right:16px;bottom:14px;font-family:var(--font-body);font-size:12px;color:#8a7350;background:none;border:1px solid rgba(138,115,80,.4);border-radius:4px;padding:5px 10px}
+  #cena.escuro .cpular{color:#a99a7c;border-color:rgba(239,228,207,.25)}
+  /* 1. clã: o mon é carimbado */
+  #cena .cmon{width:min(42vw,220px);aspect-ratio:1;margin:0 auto;border-radius:50%;animation:cCarimbo .7s cubic-bezier(.3,1.6,.5,1) .2s both}
+  #cena .cmon img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 6px 10px rgba(60,30,10,.35))}
+  @keyframes cCarimbo{0%{transform:scale(2.4);opacity:0;filter:blur(6px)}60%{transform:scale(.94);opacity:1;filter:none}100%{transform:scale(1)}}
+  #cena .ctinta{position:absolute;left:50%;top:50%;width:min(60vw,320px);aspect-ratio:1;transform:translate(-50%,-62%) scale(.4);border-radius:50%;background:radial-gradient(circle,var(--cor,rgba(120,30,20,.25)) 0%,transparent 65%);opacity:0;animation:cTinta 1.4s ease-out .75s both;pointer-events:none}
+  @keyframes cTinta{0%{opacity:.9;transform:translate(-50%,-62%) scale(.4)}100%{opacity:0;transform:translate(-50%,-62%) scale(1.5)}}
+  #cena .cnome{font-family:var(--font-display);font-size:clamp(30px,6vw,48px);color:#2a1d12;margin-top:14px;opacity:0;animation:cSobe .8s ease 1s both}
+  #cena .cmote{font-family:var(--font-voice);font-style:italic;font-size:clamp(17px,2.6vw,22px);color:#6b4a2a;margin-top:4px;clip-path:inset(0 100% 0 0);animation:cPincel 1.3s ease 1.4s forwards}
+  @keyframes cSobe{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes cPincel{to{clip-path:inset(0 0 0 0)}}
+  /* 2. origem: o pincel escreve 源 */
+  #cena .ctraco{position:absolute;left:-10%;top:48%;width:120%;height:26px;background:linear-gradient(90deg,transparent,#1f140c 8%,#1f140c 88%,transparent);border-radius:13px;transform:scaleX(0) rotate(-4deg);transform-origin:left;opacity:.85;animation:cTraco .6s cubic-bezier(.6,0,.3,1) .15s forwards,cSome .5s ease .95s forwards}
+  @keyframes cTraco{to{transform:scaleX(1) rotate(-4deg)}} @keyframes cSome{to{opacity:0}}
+  #cena .ckanji{font-family:var(--font-display);font-size:clamp(110px,22vw,190px);line-height:1;color:#1f140c;clip-path:inset(0 0 100% 0);animation:cEscreve 1s ease .7s forwards}
+  @keyframes cEscreve{to{clip-path:inset(0 0 0 0)}}
+  #cena .crotulo{font-family:var(--font-body);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:#8a7350;opacity:0;animation:cSobe .6s ease 1.5s both}
+  #cena .csilhuetas{display:flex;gap:14px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+  #cena .csil{display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--font-body);font-size:12px;color:#5a4128;opacity:0;animation:cSobe .5s ease both;animation-delay:var(--d)}
+  #cena .csil i{width:34px;height:52px;background:#2a1d12;border-radius:17px 17px 6px 6px;position:relative;display:block}
+  #cena .csil i::before{content:"";position:absolute;left:50%;top:-20px;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:#2a1d12}
+  /* 3. história: o emakimono corre */
+  #cena .cemaki{position:relative;width:min(92vw,900px);height:230px;margin:0 auto;overflow:hidden;border-top:8px solid #4a2a14;border-bottom:8px solid #4a2a14;background:#efe2c4;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+  #cena .cfaixa{position:absolute;top:0;bottom:0;left:0;display:flex;align-items:stretch;gap:0;animation:cCorre var(--t,6s) linear .4s forwards;transform:translateX(min(92vw,900px))}
+  @keyframes cCorre{to{transform:translateX(calc(-100% + min(92vw,900px) * .5))}}
+  #cena .cquadro{width:210px;flex:none;padding:18px 16px;border-right:1px solid rgba(122,90,50,.3);text-align:left;display:flex;flex-direction:column;gap:6px;font-family:var(--font-body);color:#2a1d12}
+  #cena .cquadro .cn{font-family:var(--font-display);font-size:22px;color:#9e2a20}
+  #cena .cquadro b{font-family:var(--font-display);font-size:16px;line-height:1.25}
+  #cena .cquadro small{font-size:11.5px;color:#7a5a32}
+  #cena .cquadro.adv{background:linear-gradient(180deg,rgba(40,25,15,.12),rgba(40,25,15,.04))}
+  #cena .cquadro.adv .cn{color:#2a1d12}
+  #cena .cquadro.ano small.a{color:#9e2a20;font-weight:600}
+  #cena .cemtit{font-family:var(--font-display);font-size:clamp(22px,4vw,30px);color:#f1e6cd;margin-bottom:12px;opacity:0;animation:cSobe .6s ease .1s both}
+  /* 4. fundação: o hanko */
+  #cena .cdoc{background:#efe2c4;border:1px solid #c9b388;border-radius:4px;padding:30px 44px 30px;margin:0 30px;min-width:min(420px,86vw);box-shadow:0 12px 30px rgba(0,0,0,.35);position:relative;animation:cSobe .5s ease both}
+  #cena .cdoc .dn{font-family:var(--font-display);font-size:clamp(26px,5vw,38px);color:#1f140c}
+  #cena .cdoc .dl{font-family:var(--font-body);font-size:13px;color:#6b4a2a;margin-top:6px}
+  #cena .chanko{position:absolute;right:-40px;top:-44px;width:96px;height:96px;border-radius:10px;background:#a8281e;color:#f6e3c8;font-family:var(--font-display);font-size:64px;display:flex;align-items:center;justify-content:center;transform:rotate(-8deg);box-shadow:0 0 0 4px #7c1a12 inset;animation:cHanko .55s cubic-bezier(.3,1.7,.5,1) .9s both;mix-blend-mode:multiply}
+  @keyframes cHanko{0%{transform:rotate(-8deg) scale(2.6);opacity:0}70%{transform:rotate(-8deg) scale(.92);opacity:1}100%{transform:rotate(-8deg) scale(1);opacity:.92}}
+  #cena .csub{font-family:var(--font-voice);font-style:italic;font-size:18px;color:#5a4128;margin-top:26px;opacity:0;animation:cSobe .6s ease 1.6s both}
+  @media (max-width:640px){#cena .cdoc{min-width:0;margin:0 14px;padding:30px 22px}#cena .chanko{right:-6px;top:-48px;width:76px;height:76px;font-size:46px}#cena .cquadro{width:170px}}
+  @media (prefers-reduced-motion:reduce){#cena *{animation-duration:.01s!important;animation-delay:0s!important}}
+  .assist .acenas{font-size:11.5px;color:var(--muted-tx,#8a7d68);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
 </style>
 </head>
 <body>
@@ -1118,6 +1171,7 @@
   <div class="pgrolo"><div class="pgvara"></div><div class="pgpapel"><div class="pgconteudo" id="pgConteudo"></div></div><div class="pgvara"></div>
     <div class="pgfaixa"></div><div class="pgselo">封</div></div>
 </div>
+<div id="cena" hidden onclick="fecharCena()" role="dialog" aria-label="Fundação da família"><div class="cfundo"></div><div class="cpalco" id="cenaPalco"></div><button class="cpular" onclick="event.stopPropagation();fecharCena()">pular</button></div>
 <div id="abertura" hidden onclick="avancarAbertura()" role="dialog" aria-label="Rokugan em 1137">
   <div class="bruma"></div><div class="sol"></div>
   <div class="ano" aria-hidden="true"><span>千</span><span>百</span><span>三</span><span>十</span><span>七</span><span>年</span></div>
@@ -3162,7 +3216,7 @@ function renderSync(){
 }
 
 /* ============ AÇÕES ============ */
-function selecionarCla(id){if(bloqueadoLeitura())return;if(S.cla!==id&&S.vassalaLore){S.vassalaLore="";S.familiaPrincipal="";}S.cla=id;verTodosClas=false;feedPush("Clã definido: "+(claAtual()?claAtual().nome:id)+".");salvar();render();}
+function selecionarCla(id){if(bloqueadoLeitura())return;const cenaC=emCriacao()&&S.cla!==id;if(S.cla!==id&&S.vassalaLore){S.vassalaLore="";S.familiaPrincipal="";}S.cla=id;verTodosClas=false;feedPush("Clã definido: "+(claAtual()?claAtual().nome:id)+".");salvar();render();if(cenaC)cenaCla();}
 function trocarCla(){if(bloqueadoLeitura())return;verTodosClas=true;render();}
 function setBase(attr,val){if(bloqueadoLeitura())return;S.base[attr]=parseFloat(val)||0;salvar();render();} /* o "ajuste" do atributo */
 function setIdade(v){if(bloqueadoLeitura())return;S.idade=v||null;
@@ -3217,14 +3271,16 @@ function escolherOrigem(id){
   const e=eventoInfo(id);if(!e||e.tipo!=="origem")return;
   if(!origemPermitida(e)){feedPush(e.nome+" só existe para famílias "+IDADE_LABEL[e.idadeMin]+" ou mais velhas.");salvar();render();return;}
   if(S.origem)removerConcessaoEvento(S.origem);
+  const cenaO=emCriacao()&&S.origem!==id;
   S.origem=id;aplicarConcessaoEvento(id);verTodasOrigens=false;
-  feedPush("Origem da família: "+e.nome+".");salvar();render();
+  feedPush("Origem da família: "+e.nome+".");salvar();render();if(cenaO)cenaOrigem();
 }
 function trocarOrigem(){if(bloqueadoLeitura())return;verTodasOrigens=true;render();}
 function sortearOrigem(){
   const lista=origensDisponiveis();if(!lista.length)return;
   if(S.origem)removerConcessaoEvento(S.origem);
   const e=pickPeso(lista);S.origem=e.id;aplicarConcessaoEvento(e.id);verTodasOrigens=false;
+  if(emCriacao()&&!cenasSuprimidas)setTimeout(cenaOrigem,0);
 }
 /* Sorteio: origem primeiro (se faltar), depois o mínimo de adversos, e em cada vaga que sobra
    15% de chance de mais um adverso ou ambíguo; o resto sai dos favoráveis. */
@@ -3440,6 +3496,38 @@ function concluirInvestimentos(){
   return prontos;
 }
 
+/* ---- cenas da fundação: curtas, um toque pula; desligáveis por navegador ---- */
+let cenaTimer=null,cenaDepois=null,cenasSuprimidas=false;
+function cenasLigadas(){try{return localStorage.getItem("l5r_sem_cenas")!=="1";}catch(e){return true;}}
+function alternarCenas(){try{localStorage.setItem("l5r_sem_cenas",cenasLigadas()?"1":"0");}catch(e){}render();}
+function mostrarCena(html,dur,opts,depois){
+  opts=opts||{};const el=document.getElementById("cena");
+  const reduz=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(!el||cenasSuprimidas||!cenasLigadas()||reduz||(typeof papel!=="undefined"&&papel==="jogador"&&!opts.todos)){depois&&depois();return;}
+  clearTimeout(cenaTimer);if(cenaDepois){const f=cenaDepois;cenaDepois=null;f();}
+  document.getElementById("cenaPalco").innerHTML=html;
+  el.className=opts.escuro?"escuro":"";el.hidden=false;cenaDepois=depois||null;
+  cenaTimer=setTimeout(fecharCena,dur);
+}
+function fecharCena(){const el=document.getElementById("cena");if(!el||el.hidden)return;clearTimeout(cenaTimer);
+  el.classList.add("saindo");const f=cenaDepois;cenaDepois=null;setTimeout(()=>{el.hidden=true;el.className="";},450);f&&f();}
+function cenaCla(){const c=claAtual();if(!c)return;
+  mostrarCena("<div class=\"ctinta\" style=\"--cor:"+(CLA_COR[c.id]||"#9e2a20")+"55\"></div><div class=\"cmon\"><img src=\""+monSrc(c.id)+"\" alt=\"\" onerror=\"this.style.display='none'\"></div>"+
+    "<div class=\"cnome\">"+esc(c.nome)+"</div>"+(c.mote?"<div class=\"cmote\">"+esc(c.mote)+"</div>":""),3000);}
+function cenaOrigem(){const e=S.origem&&eventoInfo(S.origem);if(!e)return;const d=doacaoOrigem(e.id);
+  const sil=d?d.personagens.map((p,i)=>"<div class=\"csil\" style=\"--d:"+(1.8+i*0.18).toFixed(2)+"s\"><i></i>"+esc(NOME_PAPEL_CURTO(p))+"</div>").join(""):"";
+  mostrarCena("<div class=\"ctraco\"></div><div class=\"ckanji\">源</div><div class=\"crotulo\">a origem da casa</div><div class=\"cnome\" style=\"animation-delay:1.6s;margin-top:22px\">"+esc(e.nome)+"</div>"+
+    (sil?"<div class=\"csilhuetas\">"+sil+"</div>":""),sil?3600:3000);}
+function cenaHistoria(depois){
+  const o=S.origem&&eventoInfo(S.origem),evs=S.eventos.map(eventoInfo).filter(Boolean);
+  const q=(e,n)=>"<div class=\"cquadro"+(e.tipo==="adverso"||e.tipo==="ambiguo"?" adv":"")+(e.ano?" ano":"")+"\"><span class=\"cn\">"+n+"</span><b>"+esc(e.nome)+"</b><small>"+esc(e.tipo==="origem"?"origem":TIPO_EVENTO_LABEL[e.tipo]||"")+"</small>"+(e.ano?"<small class=\"a\">"+esc(e.ano)+"</small>":"")+"</div>";
+  const quadros=(o?[q(o,"源")]:[]).concat(evs.map((e,i)=>q(e,["一","二","三","四","五","六","七","八","九","十","十一"][i]||String(i+1))));
+  const t=Math.max(3.5,Math.min(9,quadros.length*0.9));
+  mostrarCena("<div class=\"cemtit\">A história da casa "+esc(S.nome||"")+"</div><div class=\"cemaki\"><div class=\"cfaixa\" style=\"--t:"+t+"s\">"+quadros.join("")+"</div></div>",(t+1.4)*1000,{escuro:true},depois);
+}
+function cenaFundacao(depois){const c=claAtual();
+  mostrarCena("<div class=\"cdoc\"><div class=\"dn\">Casa "+esc(S.nome||"")+"</div><div class=\"dl\">"+esc((c?c.nome:"")+(S.idade?" · família "+IDADE_LABEL[S.idade].toLowerCase():"")+(S.daimyo?" · daimyō "+S.daimyo:""))+"</div><div class=\"chanko\">成</div></div>"+
+    "<div class=\"csub\">Que os ancestrais guiem a casa.</div>",3000,{},depois);}
 /* ============ FUNDAÇÃO DA FAMÍLIA, PASSO A PASSO ============
    2026-11-05 (Thiago: ver tudo de uma vez assusta). S.criacao = número do passo (1 a 8) enquanto
    a família está sendo fundada; "concluida" (ou ausente, nas famílias antigas) mostra tudo. */
@@ -3459,8 +3547,9 @@ const PASSOS_CRIACAO=[
 function emCriacao(){return typeof S.criacao==="number"&&S.criacao>=1&&S.criacao<=PASSOS_CRIACAO.length;}
 function passoLiberado(n){for(let i=1;i<n;i++){if(PASSOS_CRIACAO[i-1].falta().length)return false;}return true;}
 function irPasso(n){if(bloqueadoLeitura())return;n=Math.max(1,Math.min(PASSOS_CRIACAO.length,n));if(!passoLiberado(n))return;
+  if(S.criacao===3&&n===4&&S.eventos.length){cenaHistoria(()=>{S.criacao=4;salvar();render();window.scrollTo&&window.scrollTo({top:0});});return;}
   S.criacao=n;if(n===2&&!S.origem)verTodasOrigens=true;salvar();render();window.scrollTo&&window.scrollTo({top:0,behavior:"smooth"});}
-function concluirFundacao(){if(bloqueadoLeitura())return;S.criacao="concluida";feedPush("A casa "+(S.nome||"")+" está fundada.");salvar();render();}
+function concluirFundacao(comCena){if(bloqueadoLeitura())return;const f=()=>{S.criacao="concluida";feedPush("A casa "+(S.nome||"")+" está fundada.");salvar();render();};if(comCena)cenaFundacao(f);else f();}
 function refazerPassoAPasso(){if(bloqueadoLeitura())return;S.criacao=1;setAbaPrincipal("familia");salvar();render();}
 function renderAssistente(){
   const box=document.getElementById("assistente"),b=document.body,on=emCriacao();
@@ -3484,9 +3573,10 @@ function renderAssistente(){
   box.innerHTML="<div class=\"apassos\">"+passos+"</div>"+
     "<div class=\"atit\">"+esc(P.tit)+"<small>passo "+n+" de "+PASSOS_CRIACAO.length+"</small></div><p class=\"atxt\">"+esc(P.txt)+"</p>"+corpo+
     "<div class=\"anav so-mestre\">"+(n>1?"<button class=\"ghost\" onclick=\"irPasso("+(n-1)+")\">← voltar</button>":"")+
-    (n<PASSOS_CRIACAO.length?"<button class=\"primary\" "+(falta.length?"disabled":"")+" onclick=\"irPasso("+(n+1)+")\">próximo: "+esc(PASSOS_CRIACAO[n].nome)+" →</button>":"<button class=\"primary\" onclick=\"concluirFundacao()\">concluir a fundação</button>")+
+    (n<PASSOS_CRIACAO.length?"<button class=\"primary\" "+(falta.length?"disabled":"")+" onclick=\"irPasso("+(n+1)+")\">próximo: "+esc(PASSOS_CRIACAO[n].nome)+" →</button>":"<button class=\"primary\" onclick=\"concluirFundacao(true)\">concluir a fundação</button>")+
     (falta.length?"<span class=\"falta\">falta "+esc(falta.join(" e "))+"</span>":"")+
-    "<button class=\"ghost tudo\" onclick=\"concluirFundacao()\" title=\"sai do passo a passo e mostra o app inteiro\">mostrar tudo de uma vez</button></div>";
+    "<button class=\"ghost tudo\" onclick=\"concluirFundacao()\" title=\"sai do passo a passo e mostra o app inteiro\">mostrar tudo de uma vez</button>"+
+    "<button class=\"acenas\" onclick=\"alternarCenas()\" title=\"vale só para este navegador\">animações "+(cenasLigadas()?"ligadas":"desligadas")+"</button></div>";
 }
 /* ============ ESTAÇÕES: ACONTECIMENTOS ============
    (Versão de antes da mudança "o jogo não é automático"; a regra atual está logo abaixo do
@@ -3734,7 +3824,7 @@ function limparPendenciasLiberar(){if(!S.liberar)return;Object.keys(S.liberar).f
    históricos — na mesma ordem e reaproveitando exatamente as mesmas funções que o
    Mestre usaria manualmente, uma de cada vez (nada de fórmula paralela e divergente). */
 function randomizarFamilia(){
-  if(bloqueadoLeitura())return;
+  if(bloqueadoLeitura())return;cenasSuprimidas=true;try{
   const c=pickRandom(CLAS);
   selecionarCla(c.id);
   if(!S.idade)S.idade=pickRandom(["recente","jovem","estabelecida","antiga"]);
@@ -3746,6 +3836,7 @@ function randomizarFamilia(){
   sortearEventosFaltantes();
   feedPush("Uma família inteira nasceu por sorteio: "+c.nome+", "+(eventoInfo(S.origem)||{nome:"sem origem"}).nome+".");
   salvar();render();
+  }finally{cenasSuprimidas=false;}
 }
 
 function addTerreno(){if(bloqueadoLeitura())return;if(bloqueadoSobrecarga("dominio","uma terra nova"))return;S.terrenos.push({id:uid(),nome:"",terreno:"planicies",c1:"",c2:"",c3:"",c4:""});salvar();render();}
