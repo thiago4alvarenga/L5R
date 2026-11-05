@@ -358,6 +358,9 @@
   .terrainrow .tbody{flex:1;min-width:220px}
   .terrainrow .trow1{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
   .terrainrow .trow2{display:flex;gap:6px;flex-wrap:wrap}
+  .terrainrow .tslot{display:flex;flex-direction:column;gap:2px;min-width:150px}
+  .terrainrow .tslot.cheio select{font-weight:600}
+  .terrainrow .tsnome{font-style:italic;font-size:12px!important;border-bottom:1px dotted var(--line)!important}
   .terrainrow select,.terrainrow input{background:transparent;border:1px solid transparent;font-size:12.5px;padding:3px 5px}
   .terrainrow select:hover,.terrainrow input:hover,.terrainrow select:focus,.terrainrow input:focus{border-color:var(--line);background:var(--panel2)}
   .terrainrow .tname{font-family:var(--font-display);font-size:14.5px;min-width:120px}
@@ -811,6 +814,7 @@
     .terrainrow .trow1 .costs{grid-column:1/-1;display:flex!important;justify-content:space-between;align-items:center;margin:0!important}
     .terrainrow .trow2{display:grid!important;grid-template-columns:1fr 1fr;gap:4px!important}
     .terrainrow .trow2 select,.terrainrow .trow1 select{width:100%;min-width:0;border-color:var(--line)!important}
+    .terrainrow .tslot{min-width:0} .terrainrow .tsnome{width:100%;min-width:0;font-size:16px!important}
   }
   .pcard{display:grid;grid-template-columns:108px minmax(0,1fr);gap:12px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:10px}
   .pret{position:relative;align-self:start;aspect-ratio:3/4;border-radius:4px;overflow:hidden;background:#2a201b;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)}
@@ -3240,7 +3244,13 @@ function randomizarFamilia(){
 }
 
 function addTerreno(){if(bloqueadoLeitura())return;if(bloqueadoSobrecarga("dominio","uma terra nova"))return;S.terrenos.push({id:uid(),nome:"",terreno:"planicies",c1:"",c2:"",c3:"",c4:""});salvar();render();}
-function setTerreno(id,campo,val){if(bloqueadoLeitura())return;const r=S.terrenos.find(x=>x.id===id);if(!r)return;r[campo]=val;salvar();render();}
+function setTerreno(id,campo,val){if(bloqueadoLeitura())return;const r=S.terrenos.find(x=>x.id===id);if(!r)return;r[campo]=val;
+  if(/^c[1-4]$/.test(campo)&&!val)r["n"+campo[1]]="";salvar();render();}
+/* 2026-11-05: cada característica ou fortificação de um terreno pode ter nome próprio
+   (o rio, a vila, a mina, o shiro). Fica em n1..n4, ao lado de c1..c4. */
+function nomeTipoFeature(id){const f=FORTIFICACOES.find(x=>x.id===id),c=CARACTERISTICAS.find(x=>x.id===id);return(f&&f.nome)||(c&&c.nome)||"";}
+function sugestaoNomeFeature(id){return "nome próprio";}
+function featuresNomeadas(r){return[1,2,3,4].map(i=>({i,id:r["c"+i],nome:r["n"+i]||""})).filter(x=>x.id);}
 function delTerreno(id){if(bloqueadoLeitura())return;S.terrenos=S.terrenos.filter(x=>x.id!==id);salvar();render();}
 
 /* ============ CONCESSÕES DE EVENTOS HISTÓRICOS ============
@@ -4174,7 +4184,8 @@ function resumoCasa(){
   if(S.sede)partes.push("A sede fica em "+S.sede+".");
   const ev=(S.eventos||[]).map(id=>eventoInfo(id)).filter(Boolean).map(e=>e.nome);
   if(ev.length)partes.push("Marcaram a história: "+ev.join(", ")+".");
-  const terras=(S.terrenos||[]).filter(t=>t.nome).map(t=>t.nome);
+  const terras=(S.terrenos||[]).map(t=>{const dentro=featuresNomeadas(t).filter(x=>x.nome).map(x=>x.nome);
+    return t.nome?(t.nome+(dentro.length?" ("+dentro.join(", ")+")":"")):dentro.join(", ");}).filter(Boolean);
   if(terras.length)partes.push("Terras: "+terras.join(", ")+".");
   const vs=(S.vassalas||[]).filter(v=>v.nome);
   if(vs.length)partes.push("Famílias vassalas: "+vs.map(v=>v.nome+" ("+(VASSALA_FUNCOES[v.funcao]||{nome:""}).nome.toLowerCase()+")").join(", ")+".");
@@ -4377,11 +4388,9 @@ function renderTerrenos(){
           "<div class=\"costs\" title=\"Os dois saem do mesmo Domínio da família\">estrutura <b>"+c.custoDefesa.toFixed(0)+"</b> extensão <b>"+c.custoTerras.toFixed(0)+"</b> fortuna <b>"+c.fortuna.toFixed(0)+"</b>"+
           "<button class=\"ghost\" onclick=\"delTerreno('"+r.id+"')\">✕</button></div>"+
         "</div>"+
-        "<div class=\"trow2\">"+
-          "<select onchange=\"setTerreno('"+r.id+"','c1',this.value)\">"+opcoesFeature(r.c1)+"</select>"+
-          "<select onchange=\"setTerreno('"+r.id+"','c2',this.value)\">"+opcoesFeature(r.c2)+"</select>"+
-          "<select onchange=\"setTerreno('"+r.id+"','c3',this.value)\">"+opcoesFeature(r.c3)+"</select>"+
-          "<select onchange=\"setTerreno('"+r.id+"','c4',this.value)\">"+opcoesFeature(r.c4)+"</select>"+
+        "<div class=\"trow2\">"+[1,2,3,4].map(i=>{const f=r["c"+i];
+          return "<div class=\"tslot"+(f?" cheio":"")+"\"><select onchange=\"setTerreno('"+r.id+"','c"+i+"',this.value)\">"+opcoesFeature(f)+"</select>"+
+            (f?"<input class=\"tsnome\" placeholder=\""+esc(sugestaoNomeFeature(f))+"\" title=\"nome desta "+esc(nomeTipoFeature(f).toLowerCase())+" (ex.: Rio Tsuma, Vila de Shiba, Minas de Kaiu); aparece na Casa e no mapa\" value=\""+esc(r["n"+i]||"")+"\" onchange=\"setTerreno('"+r.id+"','n"+i+"',this.value.trim())\">":"")+"</div>";}).join("")+
         "</div>"+origem+
       "</div></div>";
   }).join("");
@@ -4589,8 +4598,9 @@ function opcoesVinculo(fonte){
         return(f&&f.nome)||(c&&c.nome)||"";
       }).filter(Boolean);
       const nome=r.nome||("Terreno sem nome"+(base?" ("+base.nome+")":""));
-      return{id:r.id,label:nome+(extras.length?(" — "+extras.join(", ")):"")};
-    });
+      return[{id:r.id,label:nome+(extras.length?(" — "+extras.join(", ")):""),curto:r.nome?nome+(extras.length?(" — "+extras.join(", ")):""):undefined}].concat(
+        featuresNomeadas(r).map(x=>({id:r.id+"#"+x.i,label:"  ↳ "+(x.nome||nomeTipoFeature(x.id))+(x.nome?" ("+nomeTipoFeature(x.id)+")":"")+" — em "+nome,curto:x.nome||(nomeTipoFeature(x.id)+(r.nome?" de "+r.nome:""))})));
+    }).flat();
   }
   if(fonte==="personagens")return(S.personagens||[]).map(p=>({id:p.id,label:(p.nome||"sem nome")+(p.categoria?(" — "+p.categoria):"")+(p.estado&&p.estado!=="Vivo"?(" ("+p.estado+")"):"")}));
   if(fonte==="tropas")return(S.tropas||[]).map(t=>({id:t.id,label:((TROPA_TIPOS[t.tipo]&&TROPA_TIPOS[t.tipo].nome)||t.tipo)+(t.local?(" — "+t.local):"")+(t.estado?(" ("+t.estado+")"):"")}));
@@ -4618,7 +4628,7 @@ function nomeVinculo(m){
   const info=marcaTipoInfo(m.tipo);
   if(!info.fonte)return"";
   const op=opcoesVinculo(info.fonte).find(o=>o.id===m.vinculoId);
-  return op?op.label:"";
+  return op?(op.curto||op.label):"";
 }
 function vinculoQuebrado(m){return!!(m&&m.vinculoId&&marcaTipoInfo(m.tipo).fonte&&!nomeVinculo(m));}
 /* Rótulo que aparece no alfinete: o nome do vínculo manda (assim renomear na ficha reflete
