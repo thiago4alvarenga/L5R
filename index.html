@@ -423,6 +423,29 @@
   .feridasgrid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px}
   .fer{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 5px;display:flex;flex-direction:column;align-items:center;font-size:10.5px;color:var(--muted-tx);text-align:center}
   .fer b{color:var(--ink);font-size:13px} .fer.atual{background:var(--seal);border-color:var(--seal);color:#faf3e6} .fer.atual b{color:#fff}
+  .cbbarra{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px;font-size:13px} .cbbarra b{font-family:var(--font-display);font-size:16px}
+  .cbgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:14px;align-items:start}
+  .cbadd{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px} .cbadd select{max-width:220px}
+  .cbrow{background:var(--panel2);border:1px solid var(--line);border-left:4px solid var(--lado);border-radius:8px;padding:6px 10px;margin-bottom:6px}
+  .cbrow.vez{box-shadow:0 0 0 2px var(--accent)} .cbrow.fora{opacity:.55} .cbrow.sel{outline:2px dashed var(--lado)}
+  .cbtop{display:flex;gap:6px;align-items:center;flex-wrap:wrap} .cbtop .del{margin-left:auto}
+  .cbtok{width:28px;height:28px;border-radius:50%;background:var(--lado);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;flex:none}
+  .cbini{width:52px;text-align:center;font-weight:700} input.cbnome{flex:1;min-width:120px} b.cbnome{font-family:var(--font-display);font-size:15px;flex:1}
+  .cbmeio{display:flex;gap:4px 14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted-tx);margin:4px 0} .cbmeio b{color:var(--ink);font-family:var(--font-display)}
+  .cbestado{margin-left:auto;color:var(--ink)}
+  .cbfer{display:flex;gap:2px;margin:2px 0 4px} .cbfer i{flex:1;height:6px;border-radius:2px;background:var(--line)} .cbfer i.pas{background:var(--seal);opacity:.55} .cbfer i.at{background:var(--seal)}
+  .cbacoes{display:flex;gap:4px;flex-wrap:wrap;align-items:center} .cbacoes button{padding:3px 8px;font-size:12px} .cbacoes input{width:64px}
+  .cbdet>summary{cursor:pointer;font-size:11.5px;color:var(--muted-tx);margin-top:3px}
+  .cbcurta{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;font-size:11.5px;color:var(--muted-tx)} .cbcurta label{display:flex;flex-direction:column} .cbcurta input{width:58px;padding:2px 4px}
+  .shogi{display:grid;grid-template-columns:repeat(9,1fr);aspect-ratio:1;background:#e3c08a;border:3px solid #6b4a24;border-radius:4px;box-shadow:inset 0 0 30px rgba(107,74,36,.35);max-width:440px}
+  .shogi .shc{border:1px solid rgba(60,38,14,.55);position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .shogi .shc.ponto::after{content:"";position:absolute;right:-4px;bottom:-4px;width:7px;height:7px;border-radius:50%;background:#3c260e;z-index:1}
+  .shogi .shc:hover{background:rgba(255,255,255,.18)}
+  .peca{width:78%;aspect-ratio:1;max-width:36px;clip-path:polygon(50% 0,88% 18%,100% 100%,0 100%,12% 18%);background:#f3e2bf;border-bottom:3px solid var(--lado);color:var(--lado);font-weight:800;font-size:11px;display:inline-flex;align-items:flex-end;justify-content:center;padding-bottom:3px;cursor:pointer;position:relative;z-index:2}
+  .peca.sel{background:#fff6d8;outline:none;filter:drop-shadow(0 0 4px var(--accent))} .peca.vez{filter:drop-shadow(0 0 5px var(--lado))}
+  .cbbandeja{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0} .cbbandeja .peca{width:32px} .cbbandeja small{font-size:11px;color:var(--muted-tx)}
+  .cblog{font-size:12px;max-height:220px;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 8px} .cblog div{border-bottom:1px dotted var(--line);padding:2px 0}
+  @media (max-width:860px){.cbgrid{grid-template-columns:1fr}.shogi{max-width:none}}
   .efeitosbox{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--good);border-radius:8px;padding:6px 10px;font-size:12.5px;margin:4px 0 8px}
   .efeitosbox .lemb{color:var(--muted-tx)} .efeitosbox small{display:block;color:var(--muted-tx);font-size:11px;margin-top:4px}
   .ref{font-size:11px;color:var(--muted-tx);font-style:italic;margin-top:3px}
@@ -958,6 +981,7 @@
     <button class="tabbtn" id="tabBtnEstacoes" onclick="setAbaPrincipal('estacoes')"><span class="ti" aria-hidden="true">季</span><span>Estações <span class="tag" id="tabEstacoesCount"></span></span></button>
     <button class="tabbtn" id="tabBtnPersonagens" onclick="setAbaPrincipal('personagens')"><span class="ti" aria-hidden="true">人</span><span>Personagens <span class="tag" id="tabPersonagensCount"></span></span></button>
     <button class="tabbtn" id="tabBtnBatalha" onclick="setAbaPrincipal('batalha')"><span class="ti" aria-hidden="true">兵</span><span>Batalha<span class="tl-longo"> em Massa</span></span></button>
+    <button class="tabbtn" id="tabBtnCombate" onclick="setAbaPrincipal('combate')"><span class="ti" aria-hidden="true">剣</span><span>Combate</span></button>
     <button class="tabbtn" id="tabBtnMapa" onclick="setAbaPrincipal('mapa')"><span class="ti" aria-hidden="true">図</span><span>Mapa<span class="tl-longo"> de Rokugan</span></span></button>
   </div>
 
@@ -1120,6 +1144,13 @@
         <div class="panel"><h2><span class="kan">築</span>Investimentos<span class="sub">disponível virando atributo, com tempo</span></h2><div id="estInvest"></div></div>
         <div class="panel so-mestre"><h2><span class="kan">令</span>Ferramentas do Mestre<span class="sub">fora do sorteio da estação</span></h2><div id="estMestre"></div></div>
       </div>
+    </div>
+  </div>
+
+  <div id="viewCombate" style="display:none">
+    <div class="panel">
+      <h2><span class="kan">剣</span>Combate<span class="sub">escaramuça: iniciativa, postura, ferimentos e posição</span></h2>
+      <div id="combateBox"></div>
     </div>
   </div>
 
@@ -3910,6 +3941,7 @@ function render(){
   if(abaPrincipal==="personagens")renderCharTabs();
   if(abaPrincipal==="batalha")renderBatalha();
   if(abaPrincipal==="mapa")renderMapa();
+  if(abaPrincipal==="combate")renderCombate();
   renderMapaLista();
 }
 function renderClas(){
@@ -4682,6 +4714,9 @@ function setAbaPrincipal(a){
   document.getElementById("viewPersonagens").style.display=(a==="personagens")?"":"none";
   document.getElementById("viewBatalha").style.display=(a==="batalha")?"":"none";
   document.getElementById("viewMapa").style.display=(a==="mapa")?"":"none";
+  document.getElementById("viewCombate").style.display=(a==="combate")?"":"none";
+  document.getElementById("tabBtnCombate").className="tabbtn"+(a==="combate"?" on":"");
+  if(a==="combate")renderCombate();
   document.getElementById("viewEstacoes").style.display=(a==="estacoes")?"":"none";
   document.getElementById("tabBtnEstacoes").className="tabbtn"+(a==="estacoes"?" on":"");
   document.getElementById("tabBtnFamilia").className="tabbtn"+(a==="familia"?" on":"");
@@ -6328,6 +6363,122 @@ function addUnidadeDoCadastro(){
   const id=sel?sel.value:"";
   if(!id){feedPush("Escolha uma tropa do cadastro no seletor ao lado.");salvar();render();return;}
   addUnidadeBatalha("familia",id);}
+/* ============ COMBATE (escaramuça) ============
+   2026-11-05 (Thiago: uma aba para o Mestre controlar um combate). Jogadores, aliados e quantos
+   inimigos quiser; ordem de iniciativa, postura, TN, ferimentos e ataques de cada um; e um
+   tabuleiro de shogi (9×9) só para posicionar, sem regra nenhuma. Fica em S.combate, então
+   quem estiver com a família aberta vê o mesmo combate. Os jogadores puxam tudo da ficha
+   (TN com armadura e postura, Iniciativa, arma, ferimentos); os outros têm ficha curta. */
+const COMBATE_LADOS={pj:{nome:"Jogador",cor:"#2f5f9e"},aliado:{nome:"Aliado",cor:"#3f7d4e"},inimigo:{nome:"Inimigo",cor:"#a8322d"}};
+/* perfis rápidos do app (não são do livro): ponto de partida para o Mestre ajustar */
+const COMBATE_PERFIS=[
+ {id:"bandido",nome:"Bandido",tn:15,red:0,terra:2,ini:"3k2",ataque:"4k2",dano:"4k2"},
+ {id:"ashigaru",nome:"Ashigaru",tn:18,red:1,terra:2,ini:"3k2",ataque:"4k2",dano:"4k2"},
+ {id:"samurai",nome:"Samurai (bushi)",tn:25,red:3,terra:3,ini:"5k3",ataque:"6k3",dano:"5k2"},
+ {id:"ronin",nome:"Rōnin veterano",tn:25,red:3,terra:3,ini:"6k3",ataque:"7k3",dano:"6k2"},
+ {id:"ninja",nome:"Ninja",tn:30,red:0,terra:2,ini:"6k4",ataque:"6k4",dano:"3k2"},
+ {id:"goblin",nome:"Goblin",tn:15,red:1,terra:1,ini:"3k2",ataque:"3k2",dano:"3k2"},
+ {id:"oni",nome:"Oni menor",tn:20,red:8,terra:4,ini:"4k3",ataque:"6k3",dano:"6k3"}];
+let combateSel=null;
+function combate(){if(!S.combate)S.combate={rodada:1,vez:null,lista:[],log:[]};return S.combate;}
+function cbItem(id){return combate().lista.find(x=>x.id===id);}
+function cbPersonagem(c){return c.pid?S.personagens.find(p=>p.id===c.pid):null;}
+function cbLog(t){const C=combate();C.log.unshift("R"+C.rodada+" · "+t);if(C.log.length>40)C.log.pop();}
+function cbAddPJ(pid){if(bloqueadoLeitura())return;const p=S.personagens.find(x=>x.id===pid);if(!p||combate().lista.some(c=>c.pid===pid))return;fichaBase(p);
+  combate().lista.push({id:uid(),lado:"pj",pid,nome:p.nome||"Personagem",ini:null,x:null,y:null});salvar();render();}
+function cbAddNPC(lado,perfilId){if(bloqueadoLeitura())return;const pf=COMBATE_PERFIS.find(x=>x.id===perfilId)||COMBATE_PERFIS[0];
+  const n=combate().lista.filter(c=>c.perfil===pf.id).length+1;
+  combate().lista.push({id:uid(),lado,perfil:pf.id,nome:pf.nome+" "+n,tn:pf.tn,red:pf.red,terra:pf.terra,iniDados:pf.ini,ataque:pf.ataque,dano:pf.dano,danoAtual:0,postura:"",ini:null,x:null,y:null,notas:""});salvar();render();}
+function cbDel(id){if(bloqueadoLeitura())return;const C=combate();C.lista=C.lista.filter(c=>c.id!==id);if(C.vez===id)C.vez=null;salvar();render();}
+function cbSet(id,campo,v){if(bloqueadoLeitura())return;const c=cbItem(id);if(!c)return;
+  const num=["tn","red","terra","ini","danoAtual"];c[campo]=num.includes(campo)?(v===""?null:Number(v)||0):v;
+  if(c.pid&&campo==="postura"){const p=cbPersonagem(c);if(p)p.postura=v;}
+  salvar();render();}
+function cbDano(id,delta){if(bloqueadoLeitura())return;const c=cbItem(id);if(!c)return;const p=cbPersonagem(c);
+  if(p){p.danoAtual=Math.max(0,(Number(p.danoAtual)||0)+delta);}else c.danoAtual=Math.max(0,(Number(c.danoAtual)||0)+delta);
+  if(delta>0)cbLog(c.nome+" sofre "+delta+" Ferimentos.");salvar();render();}
+function cbDanoCampo(id){const el=document.getElementById("cbdano_"+id);const v=parseInt(el&&el.value)||0;if(v)cbDano(id,v);}
+/* números de cada combatente, da ficha ou da ficha curta */
+function cbStats(c){const p=cbPersonagem(c);
+  if(p){fichaBase(p);const w=(p.armas||[]).map(a=>armaInfo(a.catalogo)).find(x=>x&&!(x.tags||[]).includes("arrow"));const r=w?rolagemArma(p,w):null;
+    return{tn:tnAtualPersonagem(p),red:reducaoPersonagem(p),ini:iniciativaPersonagem(p).split(" ")[0],iniExtra:efeitosPersonagem(p).ini,ataque:r?r.ataque:"—",dano:r?r.dano:"—",arma:w?w.nome:"sem arma do livro",
+      feridas:feridasNiveis(p),danoAtual:Number(p.danoAtual)||0,postura:p.postura||""};}
+  const terra=Number(c.terra)||2;
+  const feridas=FERIDAS_DEF.map(([nome,pen],i)=>({nome,penalidade:pen,total:terra*5+i*terra*2}));
+  const pb=POSTURA_BASE[c.postura||""];let tn=Number(c.tn)||0,at=c.ataque||"—";
+  if(pb&&pb.tn)tn+=pb.tn;if(pb&&pb.ataque)at=somaDado(at,pb.ataque);
+  return{tn,red:Number(c.red)||0,ini:c.iniDados||"2k2",iniExtra:0,ataque:at,dano:c.dano||"—",arma:"",feridas,danoAtual:Number(c.danoAtual)||0,postura:c.postura||""};}
+function cbFerida(st){let i=st.feridas.findIndex(f=>st.danoAtual<=f.total);if(i<0)i=st.feridas.length-1;return{i,f:st.feridas[i]};}
+function rolarTexto(txt,extra){const m=/^(\d+)k(\d+)$/.exec(txt||"");if(!m)return null;return rolarAnelL5R(Number(m[1]),Number(m[2]),extra||0);}
+function cbRolarIni(id){if(bloqueadoLeitura())return;const C=combate();
+  (id?[cbItem(id)]:C.lista).forEach(c=>{if(!c)return;const st=cbStats(c);const r=rolarTexto(st.ini,st.iniExtra);if(r){c.ini=r.total;cbLog(c.nome+" rola Iniciativa "+st.ini+": "+r.total+".");}});
+  if(!id){const o=cbOrdem();C.vez=o.length?o[0].id:null;}salvar();render();}
+function cbAtacar(id){const c=cbItem(id);if(!c)return;const st=cbStats(c);const r=rolarTexto(st.ataque);
+  if(!r){flashHint("Sem rolagem de ataque.");return;}const fe=cbFerida(st);
+  cbLog(c.nome+" ataca ("+st.ataque+"): "+r.total+(fe.f.penalidade?" · lembre: ferido, +"+fe.f.penalidade+" no TN das ações":"")+".");salvar();render();}
+function cbRolarDano(id){const c=cbItem(id);if(!c)return;const st=cbStats(c);const r=rolarTexto(st.dano);
+  if(!r){flashHint("Sem rolagem de dano.");return;}cbLog(c.nome+" causa dano ("+st.dano+"): "+r.total+" Ferimentos (antes da Redução do alvo).");salvar();render();}
+function cbOrdem(){return combate().lista.slice().sort((a,b)=>(b.ini==null?-1:b.ini)-(a.ini==null?-1:a.ini));}
+function cbProximo(){if(bloqueadoLeitura())return;const C=combate(),o=cbOrdem().filter(c=>!c.fora);if(!o.length)return;
+  const i=o.findIndex(c=>c.id===C.vez);if(i<0||i===o.length-1){if(i===o.length-1){C.rodada++;cbLog("Começa a rodada "+C.rodada+".");}C.vez=o[0].id;}else C.vez=o[i+1].id;salvar();render();}
+function cbNovo(){if(bloqueadoLeitura())return;if(combate().lista.length&&!confirm("Encerrar este combate e começar outro?"))return;
+  S.combate={rodada:1,vez:null,lista:[],log:[]};combateSel=null;salvar();render();}
+/* tabuleiro: toca numa peça e depois numa casa */
+function cbSelecionar(id){combateSel=combateSel===id?null:id;renderCombate();}
+function cbCasa(x,y){if(!combateSel){const c=combate().lista.find(k=>k.x===x&&k.y===y);if(c){combateSel=c.id;renderCombate();}return;}
+  if(bloqueadoLeitura())return;const c=cbItem(combateSel);if(!c)return;
+  const ocup=combate().lista.find(k=>k.x===x&&k.y===y&&k.id!==c.id);if(ocup){combateSel=ocup.id;renderCombate();return;}
+  c.x=x;c.y=y;combateSel=null;salvar();render();}
+function cbTirar(id){if(bloqueadoLeitura())return;const c=cbItem(id);if(!c)return;c.x=null;c.y=null;combateSel=null;salvar();render();}
+function renderCombate(){
+  const box=document.getElementById("combateBox");if(!box)return;const C=combate(),ordem=cbOrdem();
+  const sigla=n=>{const w=(n||"?").replace(/[^\p{L}\d\s]/gu," ").split(/\s+/).filter(Boolean);const num=w.find(x=>/^\d+$/.test(x));
+    return ((w[0]||"?")[0]+(num||((w[1]||"")[0]||""))).toUpperCase();};
+  const linha=c=>{const st=cbStats(c),fe=cbFerida(st),L=COMBATE_LADOS[c.lado],p=cbPersonagem(c),vez=C.vez===c.id;
+    const pos="<select onchange=\"cbSet('"+c.id+"','postura',this.value)\">"+POSTURAS.map(([v,l])=>"<option value=\""+v+"\" "+(st.postura===v?"selected":"")+">"+l+"</option>").join("")+"</select>";
+    const fer="<div class=\"cbfer\">"+st.feridas.map((f,i)=>"<i class=\""+(i<fe.i?"pas":i===fe.i?"at":"")+"\" title=\""+esc(f.nome+" até "+f.total+(f.penalidade?" · +"+f.penalidade+" no TN":""))+"\"></i>").join("")+"</div>";
+    const ficha=p?"":"<details class=\"cbdet\"><summary>ficha curta</summary><div class=\"cbcurta\">"+
+      "<label>TN <input type=\"number\" value=\""+(c.tn||0)+"\" onchange=\"cbSet('"+c.id+"','tn',this.value)\"></label>"+
+      "<label>Red. <input type=\"number\" value=\""+(c.red||0)+"\" onchange=\"cbSet('"+c.id+"','red',this.value)\"></label>"+
+      "<label title=\"escala dos ferimentos\">Terra <input type=\"number\" min=\"1\" value=\""+(c.terra||2)+"\" onchange=\"cbSet('"+c.id+"','terra',this.value)\"></label>"+
+      "<label>Inic. <input value=\""+esc(c.iniDados||"")+"\" onchange=\"cbSet('"+c.id+"','iniDados',this.value)\"></label>"+
+      "<label>Ataque <input value=\""+esc(c.ataque||"")+"\" onchange=\"cbSet('"+c.id+"','ataque',this.value)\"></label>"+
+      "<label>Dano <input value=\""+esc(c.dano||"")+"\" onchange=\"cbSet('"+c.id+"','dano',this.value)\"></label></div></details>";
+    return "<div class=\"cbrow"+(vez?" vez":"")+(fe.f.penalidade===null?" fora":"")+(combateSel===c.id?" sel":"")+"\" style=\"--lado:"+L.cor+"\">"+
+      "<div class=\"cbtop\"><span class=\"cbtok\" onclick=\"cbSelecionar('"+c.id+"')\" title=\"tocar e depois tocar no tabuleiro\">"+esc(sigla(c.nome))+"</span>"+
+        "<input class=\"cbini\" type=\"number\" title=\"Iniciativa\" value=\""+(c.ini==null?"":c.ini)+"\" onchange=\"cbSet('"+c.id+"','ini',this.value)\">"+
+        (p?"<b class=\"cbnome\">"+esc(c.nome)+"</b>":"<input class=\"cbnome\" value=\""+esc(c.nome)+"\" onchange=\"cbSet('"+c.id+"','nome',this.value)\">")+
+        "<span class=\"tag\">"+L.nome+"</span>"+pos+
+        "<button class=\"ghost del\" onclick=\"cbDel('"+c.id+"')\">✕</button></div>"+
+      "<div class=\"cbmeio\"><span>TN <b>"+st.tn+"</b></span><span>Red. <b>"+st.red+"</b></span><span>Inic. <b>"+esc(st.ini)+(st.iniExtra?" +"+st.iniExtra:"")+"</b></span>"+
+        "<span>Ataque <b>"+esc(st.ataque)+"</b></span><span>Dano <b>"+esc(st.dano)+"</b></span>"+(st.arma?"<small>"+esc(st.arma)+"</small>":"")+
+        "<span class=\"cbestado\">"+esc(fe.f.nome)+(fe.f.penalidade?" (+"+fe.f.penalidade+" TN)":"")+" · "+st.danoAtual+"/"+st.feridas[st.feridas.length-1].total+"</span></div>"+fer+
+      "<div class=\"cbacoes\"><button class=\"ghost\" onclick=\"cbRolarIni('"+c.id+"')\">🎲 inic.</button><button class=\"ghost\" onclick=\"cbAtacar('"+c.id+"')\">🎲 ataque</button><button class=\"ghost\" onclick=\"cbRolarDano('"+c.id+"')\">🎲 dano</button>"+
+        "<input id=\"cbdano_"+c.id+"\" type=\"number\" min=\"0\" placeholder=\"ferim.\"><button class=\"ghost\" onclick=\"cbDanoCampo('"+c.id+"')\">+ ferimentos</button><button class=\"ghost\" onclick=\"cbDano('"+c.id+"',-5)\" title=\"curar 5\">−5</button>"+
+        (c.x!=null?"<button class=\"ghost\" onclick=\"cbTirar('"+c.id+"')\">tirar do tabuleiro</button>":"")+"</div>"+ficha+"</div>";};
+  const livres=S.personagens.filter(p=>!C.lista.some(c=>c.pid===p.id));
+  const perfis=COMBATE_PERFIS.map(f=>"<option value=\""+f.id+"\">"+esc(f.nome)+"</option>").join("");
+  let tab="<div class=\"shogi\">";
+  for(let y=0;y<9;y++)for(let x=0;x<9;x++){const c=C.lista.find(k=>k.x===x&&k.y===y);
+    tab+="<div class=\"shc"+((x===3||x===6)&&(y===3||y===6)?" ponto":"")+"\" onclick=\"cbCasa("+x+","+y+")\">"+(c?"<span class=\"peca"+(combateSel===c.id?" sel":"")+(C.vez===c.id?" vez":"")+"\" style=\"--lado:"+COMBATE_LADOS[c.lado].cor+"\" title=\""+esc(c.nome)+"\">"+esc(sigla(c.nome))+"</span>":"")+"</div>";}
+  tab+="</div>";
+  const fora=C.lista.filter(c=>c.x==null);
+  box.innerHTML=
+    "<div class=\"cbbarra\"><span>Rodada <b>"+C.rodada+"</b></span>"+(C.vez&&cbItem(C.vez)?"<span>vez de <b>"+esc(cbItem(C.vez).nome)+"</b></span>":"")+
+      "<button onclick=\"cbRolarIni()\">🎲 rolar Iniciativa de todos</button><button class=\"primary\" onclick=\"cbProximo()\">próximo ▶</button><button class=\"ghost\" onclick=\"cbNovo()\">novo combate</button></div>"+
+    "<div class=\"cbgrid\"><div>"+
+      "<div class=\"cbadd\"><select onchange=\"cbAddPJ(this.value)\"><option value=\"\">+ personagem da família…</option>"+livres.map(p=>"<option value=\""+p.id+"\">"+esc(p.nome||"sem nome")+"</option>").join("")+"</select>"+
+        "<select id=\"cbPerfilAl\"><option value=\"\" disabled selected>aliado…</option>"+perfis+"</select><button class=\"ghost\" onclick=\"cbAddNPC('aliado',document.getElementById('cbPerfilAl').value)\">+ aliado</button>"+
+        "<select id=\"cbPerfilIn\">"+perfis+"</select><button class=\"ghost\" onclick=\"cbAddNPC('inimigo',document.getElementById('cbPerfilIn').value)\">+ inimigo</button></div>"+
+      (ordem.length?ordem.map(linha).join(""):"<div class=\"linha-vazia\">Ninguém no combate ainda. Os personagens puxam tudo da ficha; aliados e inimigos vêm de um perfil rápido que você ajusta.</div>")+
+    "</div><div>"+
+      "<div class=\"secao\">Posição</div>"+tab+
+      (fora.length?"<div class=\"cbbandeja\">"+fora.map(c=>"<span class=\"peca"+(combateSel===c.id?" sel":"")+"\" style=\"--lado:"+COMBATE_LADOS[c.lado].cor+"\" onclick=\"cbSelecionar('"+c.id+"')\" title=\""+esc(c.nome)+"\">"+esc(sigla(c.nome))+"</span>").join("")+"<small>fora do tabuleiro: toque numa peça e depois numa casa</small></div>":"")+
+      "<div class=\"hint\">Só para posição, sem regra de movimento. Toque numa peça (ou no círculo ao lado do nome) e depois na casa.</div>"+
+      "<div class=\"secao\">Registro</div><div class=\"cblog\">"+(C.log.length?C.log.map(t=>"<div>"+esc(t)+"</div>").join(""):"<div class=\"hint\">As rolagens aparecem aqui.</div>")+"</div>"+
+    "</div></div>"+
+    "<div class=\"hint\">Os perfis rápidos são do app, não do livro: ponto de partida para você ajustar. A postura de um jogador é a mesma da ficha dele; os ferimentos também.</div>";
+}
 function irGrupo(g){const d=document.querySelector("details.grupo[data-g='"+g+"']");if(!d)return;d.open=true;d.scrollIntoView({behavior:"smooth",block:"start"});}
 function renderDados(){
   const box=document.getElementById("dadosBox");
