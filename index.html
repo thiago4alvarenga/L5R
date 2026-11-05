@@ -986,8 +986,21 @@
   #abertura h2{font-size:clamp(30px,5vw,50px);font-weight:600;margin:.15em 0 .1em;color:#f5ead3;opacity:0;animation:abLinha 1.4s 1.4s ease forwards}
   #abertura .traco{height:5px;width:0;margin:6px 0 22px;border-radius:3px;background:linear-gradient(90deg,#b5352b,#b5352b 70%,transparent);animation:abTraco 1.4s 2.2s ease forwards}
   @keyframes abTraco{to{width:min(260px,60%)}}
-  #abertura p{font-family:var(--font-voice);font-size:clamp(15.5px,1.9vw,18px);line-height:1.58;margin:0 0 .7em;color:#e6d9bf;opacity:0;transform:translateY(12px);transition:opacity 1.3s ease,transform 1.3s ease}
-  #abertura p.vis{opacity:1;transform:none}
+  #abertura p{font-family:var(--font-voice);font-size:clamp(15.5px,1.9vw,18px);line-height:1.58;margin:0 0 .7em;color:#e6d9bf;position:relative;opacity:0;transition:opacity .4s ease}
+  #abertura p.vis{opacity:1}
+  /* cada parágrafo nasce em japonês; os ideogramas se soltam como almas que sobem e pétalas que caem, e o português se materializa */
+  #abertura p .w{display:inline;opacity:0;filter:blur(7px);transition:opacity 1.1s ease,filter 1.3s ease;transition-delay:var(--d,0s)}
+  #abertura p.pt .w,#abertura p.feito .w{opacity:1;filter:none}
+  #abertura p .jp{position:absolute;left:0;top:0;width:100%;font-family:var(--font-display);font-style:normal;font-size:1.12em;letter-spacing:.06em;line-height:1.7;color:#f4e9d2;pointer-events:none}
+  #abertura p .jp .c{display:inline-block;opacity:0;filter:blur(6px);transform:translateY(5px) scale(1.15);transition:opacity .55s ease,filter .7s ease,transform .7s ease;transition-delay:var(--d,0s)}
+  #abertura p.jpf .jp .c{opacity:1;filter:none;transform:none}
+  #abertura p.diss .jp .c{animation:abAlma 1.9s cubic-bezier(.4,0,.7,1) var(--e,0s) forwards}
+  #abertura p.diss .jp .c.pe{animation-name:abPetala}
+  #abertura p.feito .jp{display:none}
+  @keyframes abAlma{0%{opacity:1;color:#f4e9d2}25%{color:#cfe6ff;text-shadow:0 0 10px #8fc4ff,0 0 22px rgba(143,196,255,.6)}
+    100%{opacity:0;color:#cfe6ff;text-shadow:0 0 18px #8fc4ff;transform:translate(var(--dx),var(--dy)) scale(.35);filter:blur(5px)}}
+  @keyframes abPetala{0%{opacity:1}30%{color:#f0bdb6}100%{opacity:0;color:#e9b4ae;transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(.5);filter:blur(2px)}}
+
   #abertura p.fecho{color:#c9a54e;font-style:italic}
   @keyframes abLinha{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
   #abertura .abacoes{display:flex;gap:10px;align-items:center;margin-top:18px;opacity:0;transition:opacity 1s ease}
@@ -1022,13 +1035,13 @@
     <div class="sobre">Calendário Isawa · Reinado de Toturi I</div>
     <h2>Rokugan, ano 1137</h2>
     <div class="traco"></div>
-    <p>Há catorze anos, Bayushi Shoju matou o Imperador Hantei XXXVIII, e os clãs se lançaram uns contra os outros na Guerra dos Clãs.</p>
-    <p>No Dia do Trovão, sete heróis venceram Fu Leng sobre as ruínas de Otosan Uchi. Com a linhagem Hantei extinta, um ronin, Toturi, subiu ao Trono de Crisântemo.</p>
-    <p>Vieram então o sequestro do Imperador, o exílio do Escorpião, a fome e vinte e sete dias sem sol. A Escuridão Mentirosa quase apagou o passado do Império.</p>
-    <p>Em Volturnum, vivos e mortos lutaram lado a lado. O próprio Toturi, que tinha morrido, voltou pelo Portão. Hitomi chamou a Escuridão pelo seu verdadeiro nome, e ela se desfez.</p>
-    <p>Hoje Toturi governa de novo e as cidades se reerguem. Mas o Portão do Esquecimento deixou passar os mortos, e eles andam entre os vivos com nomes antigos e lealdades mais antigas ainda.</p>
-    <p>A Aliança de Yoritomo se desfaz. Nas províncias, espíritos sussurram que um Hantei ainda reclama o trono.</p>
-    <p class="fecho">É neste ano que a sua casa escreve a próxima página.</p>
+    <p data-jp="十四年前、バユシ・ショウジュは帝ハンテイ三十八世を弑し、諸氏族は互いに刃を向けた。">Há catorze anos, Bayushi Shoju matou o Imperador Hantei XXXVIII, e os clãs se lançaram uns contra os outros na Guerra dos Clãs.</p>
+    <p data-jp="雷の日、七人の英雄が都の廃墟にてフ・レンを討った。ハンテイの血は絶え、浪人トトゥリが菊の玉座に昇った。">No Dia do Trovão, sete heróis venceram Fu Leng sobre as ruínas de Otosan Uchi. Com a linhagem Hantei extinta, um ronin, Toturi, subiu ao Trono de Crisântemo.</p>
+    <p data-jp="やがて帝の拐かし、蠍の追放、飢饉、そして日の昇らぬ二十七日が続いた。偽りの闇は帝国の過去を消し去らんとした。">Vieram então o sequestro do Imperador, o exílio do Escorpião, a fome e vinte e sete dias sem sol. A Escuridão Mentirosa quase apagou o passado do Império.</p>
+    <p data-jp="ヴォルトゥルナムにて、生者と死者が肩を並べて戦った。死したトトゥリもまた門を越えて還った。ヒトミが闇の真の名を呼ぶと、闇は消え去った。">Em Volturnum, vivos e mortos lutaram lado a lado. O próprio Toturi, que tinha morrido, voltou pelo Portão. Hitomi chamou a Escuridão pelo seu verdadeiro nome, e ela se desfez.</p>
+    <p data-jp="今、トトゥリは再び治め、町は甦りつつある。だが忘却の門は死者を通し、彼らは古き名と、さらに古き忠義を携えて、生者の間を歩む。">Hoje Toturi governa de novo e as cidades se reerguem. Mas o Portão do Esquecimento deixou passar os mortos, e eles andam entre os vivos com nomes antigos e lealdades mais antigas ainda.</p>
+    <p data-jp="ヨリトモの盟は崩れゆく。諸国では霊たちが囁く。ハンテイはなお玉座を求めている、と。">A Aliança de Yoritomo se desfaz. Nas províncias, espíritos sussurram que um Hantei ainda reclama o trono.</p>
+    <p class="fecho" data-jp="この年、汝の家が次の頁を記す。">É neste ano que a sua casa escreve a próxima página.</p>
     <div class="abacoes"><button class="primary" onclick="event.stopPropagation();fecharAbertura()">Entrar na história</button></div>
   </div>
   <button class="pular" onclick="event.stopPropagation();fecharAbertura()">pular</button>
@@ -6778,29 +6791,46 @@ if(typeof window!=="undefined"&&window.addEventListener)window.addEventListener(
 render();
 /* entra sozinho na família mudada mais recentemente */
 /* Abertura: o ano de 1137. Mostra uma vez por navegador; o botão ⛩ 1137 no topo repete. */
-let abTimer=null;
+let abTimer=null,abTimers=[],abAtual=null;
+function abLimpar(){clearTimeout(abTimer);abTimers.forEach(clearTimeout);abTimers=[];}
+function abMontar(p){
+  if(p.dataset.montado)return;p.dataset.montado="1";
+  const pt=p.textContent,jp=p.dataset.jp||"";
+  p.innerHTML=pt.split(/(\s+)/).map((w,i)=>/^\s+$/.test(w)?w:"<span class=\"w\" style=\"--d:"+(i*0.035).toFixed(2)+"s\">"+esc(w)+"</span>").join("")+
+    "<span class=\"jp\" aria-hidden=\"true\">"+[...jp].map((c,i)=>{const sobe=i%3!==1;
+      return "<span class=\"c"+(sobe?"":" pe")+"\" style=\"--d:"+(i*0.045).toFixed(2)+"s;--e:"+(Math.random()*0.7).toFixed(2)+"s;--dx:"+((Math.random()-0.5)*(sobe?60:140)).toFixed(0)+"px;--dy:"+(sobe?-(60+Math.random()*90):(50+Math.random()*80)).toFixed(0)+"px;--r:"+((Math.random()-0.5)*540).toFixed(0)+"deg\">"+esc(c)+"</span>";}).join("")+"</span>";
+}
+function abTerminar(p){if(!p)return;p.classList.add("vis","jpf","diss","pt","feito");}
+function abVerso(p,depois){
+  abAtual=p;abMontar(p);p.classList.add("vis");
+  if(p.getBoundingClientRect().bottom>innerHeight-40)p.scrollIntoView({behavior:"smooth",block:"end"});
+  const n=[...(p.dataset.jp||"")].length,tInk=n*45+600;
+  abTimers.push(setTimeout(()=>p.classList.add("jpf"),30));
+  abTimers.push(setTimeout(()=>{p.classList.add("diss");abTimers.push(setTimeout(()=>p.classList.add("pt"),500));},tInk+1500));
+  abTimers.push(setTimeout(()=>{p.classList.add("feito");abAtual=null;depois&&depois();},tInk+1500+2700));
+}
+function abFim(el){el.classList.add("fim");el.querySelector(".abacoes").classList.add("vis");}
 function abrirAbertura(){
   const el=document.getElementById("abertura");if(!el)return;
-  el.hidden=false;el.classList.remove("saindo","fim");el.scrollTop=0;
-  el.querySelectorAll("p").forEach(p=>p.classList.remove("vis"));el.querySelector(".abacoes").classList.remove("vis");
+  el.hidden=false;el.classList.remove("saindo","fim");el.scrollTop=0;abLimpar();abAtual=null;
+  el.querySelectorAll("p").forEach(p=>p.classList.remove("vis","jpf","diss","pt","feito"));el.querySelector(".abacoes").classList.remove("vis");
   el.querySelectorAll(".ano span").forEach((s,i)=>s.style.animationDelay=(0.5+i*0.35)+"s");
   if(!el.querySelector(".petala"))for(let i=0;i<12;i++){const d=document.createElement("i");d.className="petala";
     d.style.left=(10+Math.random()*95)+"%";d.style.animationDuration=(11+Math.random()*10)+"s";d.style.animationDelay=(-Math.random()*18)+"s";el.appendChild(d);}
+  el.querySelectorAll("p").forEach(abMontar);
   const reduz=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
-  clearTimeout(abTimer);
-  if(reduz){el.querySelectorAll("p").forEach(p=>p.classList.add("vis"));(el.classList.add("fim"),el.querySelector(".abacoes").classList.add("vis"));return;}
+  if(reduz){el.querySelectorAll("p").forEach(abTerminar);abFim(el);return;}
   abTimer=setTimeout(avancarAbertura,3000);
 }
 function avancarAbertura(){
   const el=document.getElementById("abertura");if(!el||el.hidden)return;
-  clearTimeout(abTimer);
+  if(abAtual){abLimpar();abTerminar(abAtual);abAtual=null;}else abLimpar();
   const prox=el.querySelector("p:not(.vis)");
-  if(prox){prox.classList.add("vis");if(prox.getBoundingClientRect().bottom>innerHeight-40)prox.scrollIntoView({behavior:"smooth",block:"end"});if(!el.querySelector("p:not(.vis)"))setTimeout(()=>(el.classList.add("fim"),el.querySelector(".abacoes").classList.add("vis")),900);
-    else abTimer=setTimeout(avancarAbertura,prox.textContent.length*45+1400);}
-  else (el.classList.add("fim"),el.querySelector(".abacoes").classList.add("vis"));
+  if(!prox){abFim(el);return;}
+  abVerso(prox,()=>{if(el.querySelector("p:not(.vis)"))abTimer=setTimeout(avancarAbertura,400);else setTimeout(()=>abFim(el),300);});
 }
 function fecharAbertura(){
-  const el=document.getElementById("abertura");if(!el)return;clearTimeout(abTimer);
+  const el=document.getElementById("abertura");if(!el)return;abLimpar();abAtual=null;
   try{localStorage.setItem("l5r_abertura_vista","1");}catch(e){}
   el.classList.add("saindo");setTimeout(()=>{el.hidden=true;el.classList.remove("saindo");},800);
 }
