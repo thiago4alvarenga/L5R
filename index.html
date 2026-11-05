@@ -778,6 +778,40 @@
 
   /* cards de personagem e de tropa, estandartes, carimbo */
   .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(330px,100%),1fr));gap:12px}
+  .cresumo{display:none}
+  .atalhos{display:none}
+  details.opdobra>summary{cursor:pointer;font-size:12.5px;color:var(--accent);margin:4px 0 8px}
+  @media (max-width:720px){
+    input,select,textarea{font-size:16px}  /* abaixo de 16px o iPhone dá zoom ao tocar no campo */
+    .atalhos{display:flex;gap:6px;overflow-x:auto;padding:8px 2px 4px;margin:0 -2px;scrollbar-width:none;position:sticky;top:0;z-index:30}
+    .atalhos::-webkit-scrollbar{display:none}
+    .atalhos button{flex:none;font-size:13px;padding:7px 12px;border-radius:20px;white-space:nowrap;background:var(--panel);box-shadow:0 2px 8px rgba(0,0,0,.35)}
+    .cresumo{display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 8px;width:100%;text-align:left;background:none;border:0;padding:2px 0;color:var(--ink);cursor:pointer}
+    .cresumo b{font-family:var(--font-display);font-size:15px} .cresumo small{grid-column:1;font-size:12px;color:var(--muted-tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cresumo i{grid-row:1/3;grid-column:2;font-style:normal;color:var(--accent);transition:transform .2s}
+    .aberto>.pcorpo>.cresumo b,.aberto>.pcorpo>.cresumo small,.aberto>.tcorpo>.cresumo b,.aberto>.tcorpo>.cresumo small{display:none}
+    .aberto>.pcorpo>.cresumo,.aberto>.tcorpo>.cresumo{justify-content:end;grid-template-columns:1fr auto}
+    .aberto>.pcorpo>.cresumo i::before,.aberto>.tcorpo>.cresumo i::before{content:"fechar ";font-size:12px}
+    details.grupo{scroll-margin-top:58px}
+    .pcard:not(.aberto){grid-template-columns:44px minmax(0,1fr);align-items:center;padding:6px 10px}
+    .pcard:not(.aberto) .pret{aspect-ratio:1;border-radius:50%} .pcard:not(.aberto) .pselo{display:none}
+    .pcard:not(.aberto) .pcorpo>:not(.cresumo){display:none}
+    .tcard:not(.aberto){grid-template-columns:36px minmax(0,1fr);align-items:center;padding:6px 10px}
+    .tcard:not(.aberto) .tcena{display:none} .tcard:not(.aberto) .testand{width:36px}
+    .tcard:not(.aberto) .tcorpo>:not(.cresumo){display:none}
+    .hint.clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer;position:relative}
+    .hint.clamp:not(.solto){padding-right:0} .hint.clamp.solto{display:block}
+    .dadoslinha{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+    .dadoslinha .grp{display:flex;flex-direction:column;gap:2px;font-size:12px} .dadoslinha input[type=number]{width:100%!important}
+    .dadoslinha>span:nth-child(4){grid-column:1/-1} .dadoslinha>button{grid-column:1/-1}
+    .terrainrow{display:grid!important;grid-template-columns:44px minmax(0,1fr);gap:8px!important;padding:8px 0!important}
+    .terrainrow img.tic{width:44px!important;height:44px!important}
+    .terrainrow .trow1{display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:4px 8px!important}
+    .terrainrow .trow1 .tname{grid-column:1/-1;min-width:0!important;width:100%}
+    .terrainrow .trow1 .costs{grid-column:1/-1;display:flex!important;justify-content:space-between;align-items:center;margin:0!important}
+    .terrainrow .trow2{display:grid!important;grid-template-columns:1fr 1fr;gap:4px!important}
+    .terrainrow .trow2 select,.terrainrow .trow1 select{width:100%;min-width:0;border-color:var(--line)!important}
+  }
   .pcard{display:grid;grid-template-columns:108px minmax(0,1fr);gap:12px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:10px}
   .pret{position:relative;align-self:start;aspect-ratio:3/4;border-radius:4px;overflow:hidden;background:#2a201b;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)}
   .pret img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
@@ -922,6 +956,9 @@
     </div>
     <div class="resumoalertas" id="resumoAlertas"></div>
   </section>
+  <nav class="atalhos" aria-label="Ir para">
+    <button type="button" onclick="irGrupo('identidade')">家 Identidade</button><button type="button" onclick="irGrupo('cronica')">史 Crônica</button><button type="button" onclick="irGrupo('dominio')">地 Domínio</button><button type="button" onclick="irGrupo('pessoas')">人 Pessoas</button>
+  </nav>
   <details class="grupo" data-g="identidade" open>
     <summary><span class="gk" aria-hidden="true">家</span><span class="gt">Identidade</span><span class="gd">nome, clã, idade e os Anéis em detalhe</span></summary>
     <div class="gcorpo">
@@ -1055,7 +1092,7 @@
       <h2><span class="kan">巻</span>Referência para o Mestre<span class="sub">oportunidades heroicas</span></h2>
       <div class="hint" style="margin-bottom:10px">Situações prontas pra jogar num personagem no meio da batalha, tiradas da 4ª edição. Nenhuma delas tem efeito automático aqui — são ganchos de cena. "Comando" são as que dependem de liderar tropa; "Pessoal" são as que o personagem resolve sozinho. Na conversão para este modelo: "+5 no Battle Roll do general" vira +1k1 na próxima Inspiração ou Mudança de Tática; "−5 no próximo turno do general inimigo" vira "ele não pode Inspirar no próximo turno"; +3 / −3 vira +1k0 / −1k0.</div>
       <div class="linha" style="margin-bottom:10px"><button class="ghost" onclick="sortearOportunidade('pessoal')">Sortear (Pessoal)</button><button class="ghost" onclick="sortearOportunidade('comando')">Sortear (Comando)</button></div>
-      <div class="linhas" id="oportunidadesBox"></div>
+      <details class="dobra opdobra"><summary>ver todas as oportunidades</summary><div class="linhas" id="oportunidadesBox"></div></details>
     </div>
   </div>
 
@@ -4358,14 +4395,20 @@ function opcoesCategoria(sel){
   out+="<optgroup label=\"Papel\">"+PERSONAGEM_PAPEL.filter(p=>p.efeito!=="fortuna").map(p=>"<option value=\""+esc(p.nome)+"\" "+(sel===p.nome?"selected":"")+">"+esc(p.nome)+" ("+p.custo+")</option>").join("")+"</optgroup>";
   return out;
 }
+/* 2026-11-05: no celular, personagens e tropas da aba Família viram uma linha; um toque abre o cartão */
+const cartaoAberto=new Set();
+function alternarCartao(id){if(cartaoAberto.has(id))cartaoAberto.delete(id);else cartaoAberto.add(id);
+  document.querySelectorAll("[data-cid='"+id+"']").forEach(e=>e.classList.toggle("aberto",cartaoAberto.has(id)));}
 function renderPersonagens(){
   document.getElementById("personagensSaldo").innerHTML=saldoChip("influencia");
   const cards=S.personagens.map(p=>{
     const custo=personagemCustoP(p),est=(p.estado||"Vivo");
     const cls="est-"+est.toLowerCase().normalize("NFD").replace(/[^a-z]/g,"");
-    return "<div class=\"pcard "+cls+"\">"+
+    const papelNome=p.categoria||"sem papel";
+    return "<div class=\"pcard "+cls+(cartaoAberto.has(p.id)?" aberto":"")+"\" data-cid=\""+p.id+"\">"+
       "<div class=\"pret\"><img src=\""+esc(retratoSrc(p))+"\" alt=\"\" loading=\"lazy\" onerror=\"this.src='img/retratos/ukiyoe.jpg'\"><span class=\"pselo\">"+esc(est)+"</span></div>"+
       "<div class=\"pcorpo\">"+
+        "<button type=\"button\" class=\"cresumo\" onclick=\"alternarCartao('"+p.id+"')\"><b>"+esc(p.nome||"Sem nome")+"</b><small>"+esc(papelNome+" · "+est+" · "+(p.doado&&!custo?"dado pela origem":custo+" de Influência"))+"</small><i aria-hidden=\"true\">▾</i></button>"+
         "<input class=\"pnome\" aria-label=\"Nome\" value=\""+esc(p.nome)+"\" onchange=\"setPersonagem('"+p.id+"','nome',this.value)\">"+
         "<label class=\"pcampo\">Papel <select onchange=\"setPersonagem('"+p.id+"','categoria',this.value)\">"+opcoesCategoria(p.categoria)+"</select></label>"+
         "<div class=\"plinha\"><label class=\"pcampo\">Estado <select onchange=\"setPersonagem('"+p.id+"','estado',this.value)\">"+ESTADO_PERSONAGEM.map(e=>"<option "+(est===e?"selected":"")+">"+e+"</option>").join("")+"</select></label>"+
@@ -5600,10 +5643,11 @@ function renderTropas(){
     const eqHtml=TROPA_EQUIP.map(e=>"<span class=\"it "+(eq.includes(e.id)?"on":"")+"\" title=\""+esc(e.efeito)+"\" onclick=\"toggleTropaEquip('"+t.id+"','"+e.id+"')\">"+e.nome+"</span>").join("");
     const custoTip="recrutar "+c.recrut+(tropaClaEstrangeiro(t)?" (clã de fora, +50%)":"")+", armadura "+c.armadura+", equipamento "+c.equip+", treino "+c.treino;
     const manut=TROPA_ESTADO[t.estado]?(TROPA_ESTADO[t.estado].autoridade||0)*tropaMultManut(t,"autoridade"):0;
-    return "<div class=\"tcard\" style=\"--cla-t:"+(CLA_COR[t.clan]||"var(--muted-tx)")+"\">"+
+    return "<div class=\"tcard"+(cartaoAberto.has(t.id)?" aberto":"")+"\" data-cid=\""+t.id+"\" style=\"--cla-t:"+(CLA_COR[t.clan]||"var(--muted-tx)")+"\">"+
       "<div class=\"tcena\" style=\"background-image:url('"+tropaCenaSrc(t.tipo)+"')\" aria-hidden=\"true\"></div>"+
       "<img class=\"testand\" src=\""+estandarteSrc(t.clan)+"\" alt=\"\" loading=\"lazy\">"+
       "<div class=\"tcorpo\">"+
+        "<button type=\"button\" class=\"cresumo\" onclick=\"alternarCartao('"+t.id+"')\"><b>"+esc(t.local||(tropaTipo(t).nome+" "+z.nome))+"</b><small>"+esc((TROPA_ESTADO[t.estado]?TROPA_ESTADO[t.estado].nome:t.estado)+" · "+resumoFicha(f))+"</small><i aria-hidden=\"true\">▾</i></button>"+
         "<div class=\"thead\"><input class=\"tnome\" aria-label=\"Nome da tropa\" value=\""+esc(t.local||"")+"\" placeholder=\""+esc(tropaTipo(t).nome+" "+z.nome)+"\" onchange=\"setTropa('"+t.id+"','local',this.value)\">"+
           "<select aria-label=\"Estado\" onchange=\"setTropa('"+t.id+"','estado',this.value)\">"+opts(Object.keys(TROPA_ESTADO).map(k=>[k,TROPA_ESTADO[k].nome]),t.estado)+"</select>"+
           "<button class=\"ghost\" onclick=\"delTropa('"+t.id+"')\" aria-label=\"Dispensar tropa\">✕</button></div>"+
@@ -5940,10 +5984,11 @@ function addUnidadeDoCadastro(){
   const id=sel?sel.value:"";
   if(!id){feedPush("Escolha uma tropa do cadastro no seletor ao lado.");salvar();render();return;}
   addUnidadeBatalha("familia",id);}
+function irGrupo(g){const d=document.querySelector("details.grupo[data-g='"+g+"']");if(!d)return;d.open=true;d.scrollIntoView({behavior:"smooth",block:"start"});}
 function renderDados(){
   const box=document.getElementById("dadosBox");
   if(!box)return;
-  let out="<div class=\"linha\" style=\"flex-wrap:wrap\">"+
+  let out="<div class=\"linha dadoslinha\" style=\"flex-wrap:wrap\">"+
     "<span class=\"grp\">Dados <input type=\"number\" min=\"1\" max=\"30\" value=\""+dadosState.qtd+"\" style=\"width:66px\" onchange=\"setDadoCampo('qtd',this.value)\"></span>"+
     "<span class=\"grp\">Manter <input type=\"number\" min=\"1\" max=\"30\" value=\""+dadosState.manter+"\" style=\"width:66px\" onchange=\"setDadoCampo('manter',this.value)\"></span>"+
     "<span class=\"grp\">Modificador <input type=\"number\" value=\""+dadosState.mod+"\" style=\"width:70px\" onchange=\"setDadoCampo('mod',this.value)\"></span>"+
@@ -5990,6 +6035,15 @@ document.getElementById("btnHardReset").onclick=hardReset;
     const g=d.dataset.g;if(salvo[g]===false)d.open=false;
     d.addEventListener("toggle",()=>{salvo[g]=d.open;try{localStorage.setItem("l5r_grupos",JSON.stringify(salvo));}catch(e){}});
   });
+  /* no celular, na primeira visita, só a Identidade começa aberta (os atalhos levam aos outros) */
+  if(window.matchMedia&&window.matchMedia("(max-width:720px)").matches)
+    document.querySelectorAll("details.grupo").forEach(d=>{if(salvo[d.dataset.g]===undefined&&d.dataset.g!=="identidade")d.open=false;});
+  /* textos de explicação longos: no celular, duas linhas; um toque mostra o resto */
+  if(window.matchMedia&&window.matchMedia("(max-width:720px)").matches&&window.MutationObserver){
+    let t=null;const dobrar=()=>{document.querySelectorAll(".panel .hint:not([data-dobra]),.fichapanel .hint:not([data-dobra])").forEach(h=>{h.dataset.dobra="1";
+      if((h.textContent||"").length>170&&!h.closest(".derivadoexp,.vdesc,.xpconta,.travada")){h.classList.add("clamp");h.addEventListener("click",()=>h.classList.toggle("solto"));}});};
+    dobrar();new MutationObserver(()=>{clearTimeout(t);t=setTimeout(dobrar,60);}).observe(document.body,{childList:true,subtree:true});
+  }
   /* menus do cabeçalho fecham ao clicar fora */
   document.addEventListener("click",e=>{document.querySelectorAll("details.casamenu[open]").forEach(d=>{if(!d.contains(e.target))d.open=false;});});
 })();
