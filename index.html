@@ -322,6 +322,11 @@
   .estlink{background:none;border:none;padding:0;font:inherit;color:inherit;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
   #viewEstacoes .tfl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px}
   body.modo-jogador .so-mestre{display:none!important}
+  .so-jogador{display:none!important} body.modo-jogador .so-jogador{display:flex!important}
+  .acselado{display:flex;gap:12px;align-items:center;border-style:dashed}
+  .acselado .selo{font-family:var(--font-display);font-size:30px;color:var(--seal);border:2px solid var(--seal);border-radius:6px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;flex:none;transform:rotate(-4deg)}
+  .acoculto{border-style:dashed;opacity:.97}
+
   @media (max-width:640px){
     .lote{display:grid;grid-template-columns:1fr auto;gap:2px 8px}
     .lote .lv{grid-column:1} .lote .del{grid-column:2;grid-row:1 / span 3;align-self:center}
@@ -1691,7 +1696,7 @@ const EVENTOS=[
    equilíbrio). Pesa no sorteio (comum 6, incomum 3, raro 1, lendário 0,3) e multiplica os
    modificadores do evento histórico (raro ×1,5, lendário ×2). O que não está na lista é comum.
    Os eventos são do próprio app (planilha "Familias L5R"), não de um livro. */
-const RARIDADE_EVENTO={exilados_cla:"incomum",casa_caida:"incomum",usurpacao_terras:"incomum",ramo_elevado:"incomum",mercadores_nome:"incomum",vitoria_torneio:"incomum",refem_prestigio:"incomum",artesao_renomado:"incomum",escola_artistica:"incomum",magistrado_renome:"incomum",gloria_batalha:"incomum",segredo_guardado:"incomum",recurso_valioso:"incomum",rota_comercial_cedida:"incomum",dojo_renomado:"incomum",arquivo_pergaminhos:"incomum",corte_inverno:"incomum",defesa_gloriosa:"incomum",fortaleza_cedida_cla:"incomum",porto_herdado_afogados:"incomum",corrupcao_escandalo:"incomum",derrota_marcante:"incomum",intervencao_senhor:"incomum",guerra_prolongada:"incomum",isolamento_deliberado:"incomum",perda_territorio:"incomum",reconstrucao_pos_guerra:"incomum",herdeiro_desonrado:"incomum",traicao_vassalo:"incomum",ofensa_corte:"incomum",pacto_ronin:"incomum",casamento_abaixo:"incomum",chantagem:"incomum",rivalidade_juramentada:"incomum",torneio_verao:"incomum",favor_daimyo:"incomum",colheita_extraordinaria:"incomum",saque_guerra:"incomum",tributo_vassalo:"incomum",dote_casamento:"incomum",fundacao_decreto:"raro",fundacao_religiosa:"raro",escolhidos_kami:"raro",bencao_kami:"raro",templo_importante:"raro",figura_espiritual:"raro",ruinas_ancestrais_descobertas:"raro",heranca_castelo_amaldicoado:"raro",contato_terras_sombrias:"raro",incursao_macula:"raro",maldicao_linhagem:"raro",contrabando_gaijin:"raro",duelo_morte:"raro",graca_kami:"raro",pressagio_sombrio:"raro",linhagem_primeiros:"lendario",fieis_hantei:"incomum",exercito_toturi:"incomum",espirito_retornado:"raro",casa_restaurada:"raro",guardioes_historias:"incomum",cacadores_sangue:"incomum",linhagem_cervo_branco:"raro",remanescentes_gozoku:"raro",portao_esquecimento:"raro",ancestral_em_casa:"incomum",audiencia_toturi:"incomum",presente_naga:"raro",retomada_hiruma:"incomum",dia_trovao:"raro",bencao_hitomi:"raro",nome_contra_escuridao:"lendario",infiltracao_kolat:"incomum",expurgo_corte:"raro",tocados_escuridao:"raro",saque_mantis:"incomum",dividida_guerra_civil:"incomum",ancestrais_calados:"raro",macula_vassalos:"incomum",aranha_mar:"raro",seita_sangue:"incomum",terras_escorpiao:"incomum",segredo_gozoku:"raro",pergaminho_iuchiban:"raro",crisantemo_aco:"raro",troca_cla_yasuki:"incomum",fragmento_ambicao:"raro",alianca_yoritomo:"incomum",disputa_retornado:"incomum"};
+const RARIDADE_EVENTO={exilados_cla:"incomum",casa_caida:"incomum",usurpacao_terras:"incomum",ramo_elevado:"incomum",mercadores_nome:"incomum",vitoria_torneio:"incomum",refem_prestigio:"incomum",artesao_renomado:"incomum",escola_artistica:"incomum",magistrado_renome:"incomum",gloria_batalha:"incomum",segredo_guardado:"incomum",recurso_valioso:"incomum",rota_comercial_cedida:"incomum",dojo_renomado:"incomum",arquivo_pergaminhos:"incomum",corte_inverno:"incomum",defesa_gloriosa:"incomum",fortaleza_cedida_cla:"incomum",porto_herdado_afogados:"incomum",corrupcao_escandalo:"incomum",derrota_marcante:"incomum",intervencao_senhor:"incomum",guerra_prolongada:"incomum",isolamento_deliberado:"incomum",perda_territorio:"incomum",reconstrucao_pos_guerra:"incomum",herdeiro_desonrado:"incomum",traicao_vassalo:"incomum",ofensa_corte:"incomum",pacto_ronin:"incomum",casamento_abaixo:"incomum",chantagem:"incomum",rivalidade_juramentada:"incomum",torneio_verao:"incomum",favor_daimyo:"incomum",colheita_extraordinaria:"incomum",saque_guerra:"incomum",tributo_vassalo:"incomum",dote_casamento:"incomum",fundacao_decreto:"raro",fundacao_religiosa:"raro",escolhidos_kami:"raro",bencao_kami:"raro",templo_importante:"raro",figura_espiritual:"raro",ruinas_ancestrais_descobertas:"raro",heranca_castelo_amaldicoado:"raro",contato_terras_sombrias:"raro",incursao_macula:"raro",maldicao_linhagem:"raro",contrabando_gaijin:"raro",duelo_morte:"raro",graca_kami:"raro",pressagio_sombrio:"raro",linhagem_primeiros:"lendario",fieis_hantei:"incomum",exercito_toturi:"incomum",espirito_retornado:"raro",casa_restaurada:"raro",guardioes_historias:"incomum",cacadores_sangue:"incomum",linhagem_cervo_branco:"raro",remanescentes_gozoku:"raro",portao_esquecimento:"raro",ancestral_em_casa:"incomum",audiencia_toturi:"incomum",presente_naga:"raro",retomada_hiruma:"incomum",dia_trovao:"raro",bencao_hitomi:"raro",nome_contra_escuridao:"lendario",infiltracao_kolat:"incomum",expurgo_corte:"raro",tocados_escuridao:"raro",saque_mantis:"incomum",dividida_guerra_civil:"incomum",ancestrais_calados:"raro",macula_vassalos:"incomum",aranha_mar:"raro",seita_sangue:"incomum",terras_escorpiao:"incomum",segredo_gozoku:"raro",pergaminho_iuchiban:"raro",crisantemo_aco:"raro",troca_cla_yasuki:"incomum",fragmento_ambicao:"raro",alianca_yoritomo:"incomum",disputa_retornado:"incomum",espirito_arrozal:"incomum",peregrinos_portao:"incomum",olhos_crisantemo:"raro",ecos_yasuki:"incomum",bocas_mortos:"incomum",edito_espiritos:"incomum",ancestral_corte:"incomum",alianca_desfeita:"raro"};
 const RAR_INFO={comum:{nome:"comum",peso:6,mult:1},incomum:{nome:"incomum",peso:3,mult:1.2},raro:{nome:"raro",peso:1,mult:1.5},lendario:{nome:"lendário",peso:0.3,mult:2}};
 function raridade(e){return RARIDADE_EVENTO[e&&e.id]||"comum";}
 function modEvento(e,attr){const v=(e.mods||{})[attr]||0;const r=Math.round(v*RAR_INFO[raridade(e)].mult);return attr==="vazio"&&r>0?Math.round(r*0.5):r;}
@@ -3363,32 +3368,83 @@ function concluirInvestimentos(){
    cerca de metade das vezes (sim/reservas_sim.js). Se falhar estando em sobrecarga no Anel do
    teste, a família precisa liberar algo daquele pool (S.liberar), como antes.
    Efeitos: d = estações (4 = um ano), d:0 = até gastar, perm = muda o atributo para sempre. */
+/* 2026-11-05 (Thiago): cada acontecimento tem duas partes, e as duas têm Teste da Família.
+   im = o que acontece na hora em que o Mestre revela: rola o Anel e aplica já, escalado pelo grau.
+   re = a consequência que ainda pode ser mudada: fica em aberto, com o que os jogadores podem fazer
+        (acao); no fim rola o outro Anel, soma as ações dos jogadores e o Mestre aplica.
+   Efeitos: a = atributo, v = valor cheio, d = estações (4 = um ano), d:0 = até gastar, perm = muda o
+   atributo para sempre. O acontecimento nasce oculto: os jogadores só veem um selo até o Mestre revelar. */
 const ACONTECIMENTOS=[
- {id:"migracao_esporadica",est:0,anel:"dominio",nome:"Migração esporádica",texto:"Famílias de camponeses de outra província chegam com suas ferramentas.",ef:[{a:"dominio",v:8,d:8}]},
- {id:"leva_camponeses",est:0,anel:"dominio",nome:"Leva de camponeses",texto:"A família arma os camponeses para a temporada; os campos ficam com menos mãos.",ef:[{a:"autoridade",v:6,d:2},{a:"dominio",v:-2,d:4}]},
- {id:"cheias_primavera",est:0,anel:"dominio",nome:"Cheias de primavera",texto:"O degelo transborda os rios e leva diques e mudas.",ef:[{a:"dominio",v:-6,d:4},{a:"riqueza",v:-3,d:4}]},
- {id:"boa_negociacao",est:0,anel:"riqueza",nome:"Boa negociação",texto:"Um contrato de seda ou de sal fechado na hora certa.",ef:[{a:"riqueza",v:12,d:0}]},
- {id:"emprestimo",est:0,anel:"riqueza",nome:"Empréstimo de um mercador",texto:"Dinheiro agora, juros por dois anos. Quem negocia bem paga menos.",ef:[{a:"riqueza",v:15,d:0},{a:"riqueza",v:-8,d:8}]},
- {id:"praga_mudas",est:0,anel:"riqueza",nome:"Praga nas mudas",texto:"Os brotos de arroz amarelam antes do verão.",ef:[{a:"riqueza",v:-8,d:4}]},
- {id:"alistamento_obrigatorio",est:1,anel:"autoridade",nome:"Alistamento obrigatório",texto:"O senhor exige homens; a família convoca, e a honra da casa paga o preço.",ef:[{a:"autoridade",v:10,d:4},{a:"vazio",v:-2,perm:true}]},
- {id:"mercenarios",est:1,anel:"autoridade",nome:"Mercenários contratados",texto:"Ronin de aluguel reforçam a guarnição por uma temporada.",ef:[{a:"autoridade",v:8,d:2},{a:"riqueza",v:-6,d:4}]},
- {id:"saque_guerra",est:1,anel:"autoridade",nome:"Saque de guerra",texto:"Uma vitória numa escaramuça deixa baús para levar. Saquear não é honroso.",ef:[{a:"riqueza",v:10,d:0},{a:"vazio",v:-1,perm:true}]},
- {id:"bandidos_estrada",est:1,anel:"autoridade",nome:"Bandidos nas estradas",texto:"Caravanas atacadas e patrulhas desmoralizadas.",ef:[{a:"autoridade",v:-6,d:4},{a:"riqueza",v:-3,d:4}]},
- {id:"desercao",est:1,anel:"autoridade",nome:"Deserção na guarnição",texto:"Ashigaru somem à noite, levando as lanças.",ef:[{a:"autoridade",v:-8,d:4}]},
- {id:"torneio_verao",est:1,anel:"autoridade",nome:"Vitória num torneio de verão",texto:"Um samurai da casa vence diante de convidados importantes.",ef:[{a:"autoridade",v:6,d:4},{a:"influencia",v:4,d:4}]},
- {id:"colheita_extraordinaria",est:2,anel:"riqueza",nome:"Colheita extraordinária",texto:"Os celeiros não dão conta do arroz.",ef:[{a:"riqueza",v:8,d:4}]},
- {id:"tributo_vassalo",est:2,anel:"influencia",nome:"Tributo de um vassalo",texto:"Uma família menor manda presentes e pede proteção.",ef:[{a:"influencia",v:6,d:4}]},
- {id:"refugiados",est:2,anel:"dominio",nome:"Refugiados acolhidos",texto:"Gente fugida da guerra pede abrigo: braços para o campo, bocas para alimentar.",ef:[{a:"dominio",v:6,d:4},{a:"riqueza",v:-3,d:4}]},
- {id:"feira_outono",est:2,anel:"riqueza",nome:"Feira de outono",texto:"Mercadores de três províncias montam tendas nas terras da família.",ef:[{a:"riqueza",v:6,d:4},{a:"influencia",v:2,d:4}]},
- {id:"geada_precoce",est:2,anel:"riqueza",nome:"Geada precoce",texto:"O frio chega antes da colheita terminar.",ef:[{a:"riqueza",v:-8,d:4}]},
- {id:"incendio_celeiros",est:2,anel:"dominio",nome:"Incêndio nos celeiros",texto:"Uma noite de vento e uma lanterna derrubada.",ef:[{a:"dominio",v:-4,d:4},{a:"riqueza",v:-4,d:4}]},
- {id:"favor_daimyo",est:3,anel:"influencia",nome:"Favor de um daimyō",texto:"Na corte de inverno, um senhor importante lembra o nome da família.",ef:[{a:"influencia",v:10,d:4}]},
- {id:"dote_casamento",est:3,anel:"influencia",nome:"Dote de casamento",texto:"Um casamento acertado na corte traz um dote generoso.",ef:[{a:"riqueza",v:8,d:0}]},
- {id:"intriga_corte",est:3,anel:"influencia",nome:"Intriga na corte de inverno",texto:"Um boato bem plantado faz a família perder lugares à mesa.",ef:[{a:"influencia",v:-8,d:4}]},
- {id:"graca_kami",est:3,anel:"vazio",nome:"Graça dos kami",texto:"Os ritos de inverno saem perfeitos; os kami respondem.",ef:[{a:"vazio",v:1,d:4}]},
- {id:"pressagio_sombrio",est:3,anel:"vazio",nome:"Presságio sombrio",texto:"Um corvo branco, um sino que racha sozinho.",ef:[{a:"vazio",v:-1,d:4}]},
- {id:"inverno_rigoroso",est:3,anel:"dominio",nome:"Inverno rigoroso",texto:"Neve até os beirais; estradas fechadas e guarnições com frio.",ef:[{a:"dominio",v:-4,d:4},{a:"autoridade",v:-4,d:4}]}
+ /* primavera */
+ {id:"migracao_esporadica",est:0,nome:"Migração esporádica",texto:"Famílias de camponeses de outra província chegam com suas ferramentas e muita fome.",
+  im:{anel:"dominio",ef:[{a:"dominio",v:4,d:4}]},re:{anel:"riqueza",acao:"Alimentar e assentar os recém-chegados até a colheita: dividir terras com justiça, achar um capataz, ou mandar embora quem traz problemas.",ef:[{a:"dominio",v:6,d:8}]}},
+ {id:"leva_camponeses",est:0,nome:"Leva de camponeses",texto:"O senhor do clã pede ashigaru para a temporada de campanha, e a casa arma os camponeses.",
+  im:{anel:"autoridade",ef:[{a:"autoridade",v:6,d:2}]},re:{anel:"dominio",acao:"Os campos ficam sem braços. Negociar a volta dos homens antes da colheita, contratar trabalhadores ou convencer as aldeias vizinhas a ajudar.",ef:[{a:"dominio",v:-6,d:4}]}},
+ {id:"cheias_primavera",est:0,nome:"Cheias de primavera",texto:"O degelo transborda os rios e leva diques e mudas.",
+  im:{anel:"dominio",ef:[{a:"dominio",v:-4,d:4}]},re:{anel:"riqueza",acao:"Reerguer os diques antes da próxima chuva: mobilizar as aldeias, pedir a um shugenja que acalme os kami da água, ou descobrir quem abriu o dique do vizinho.",ef:[{a:"riqueza",v:-6,d:4},{a:"dominio",v:-2,d:4}]}},
+ {id:"boa_negociacao",est:0,nome:"Boa negociação",texto:"Um contrato de seda ou de sal fechado na hora certa.",
+  im:{anel:"riqueza",ef:[{a:"riqueza",v:6,d:0}]},re:{anel:"influencia",acao:"Um rival tenta desfazer o contrato na corte do governador. Defender o acordo, ampliá-lo ou comprar o silêncio do rival.",ef:[{a:"riqueza",v:8,d:0}]}},
+ {id:"emprestimo",est:0,nome:"Empréstimo de um mercador",texto:"Dinheiro agora, juros por dois anos.",
+  im:{anel:"riqueza",ef:[{a:"riqueza",v:15,d:0}]},re:{anel:"riqueza",acao:"Renegociar os juros, descobrir os negócios escusos do mercador ou pagar com favores em vez de koku.",ef:[{a:"riqueza",v:-10,d:8}]}},
+ {id:"praga_mudas",est:0,nome:"Praga nas mudas",texto:"Os brotos de arroz amarelam antes do verão.",
+  im:{anel:"riqueza",ef:[{a:"riqueza",v:-4,d:4}]},re:{anel:"vazio",acao:"Os camponeses dizem que um kami foi ofendido. Achar a causa: um santuário esquecido, a maldição de um rival ou só a terra cansada.",ef:[{a:"riqueza",v:-6,d:4}]}},
+ {id:"espirito_arrozal",est:0,nome:"Um morto reclama o arrozal",texto:"Um samurai que voltou pelo Portão do Esquecimento chega a uma aldeia da casa e diz que aquelas terras eram dele há duzentos anos.",
+  im:{anel:"dominio",ef:[{a:"dominio",v:-3,d:4}]},re:{anel:"influencia",acao:"Convencê-lo a voltar a Meido com honra, aceitá-lo a serviço da casa ou levar o caso ao magistrado do clã.",ef:[{a:"dominio",v:-8,d:8}]}},
+ {id:"peregrinos_portao",est:0,nome:"Peregrinos de Volturnum",texto:"Monges e veteranos do Portão do Esquecimento atravessam as terras e pedem abrigo. Trazem histórias e um ar de outro mundo.",
+  im:{anel:"vazio",ef:[{a:"vazio",v:1,d:4}]},re:{anel:"influencia",acao:"Hospedá-los com cerimônia faz o nome da casa correr pelos templos. Ouvir as histórias pode render segredos sobre os mortos que ficaram.",ef:[{a:"influencia",v:6,d:4}]}},
+ /* verão */
+ {id:"alistamento_obrigatorio",est:1,nome:"Alistamento obrigatório",texto:"O senhor exige homens, e a família convoca.",
+  im:{anel:"autoridade",ef:[{a:"autoridade",v:8,d:4}]},re:{anel:"vazio",acao:"As aldeias resistem. A casa pode compensar as famílias com arroz, ouvir os chefes de aldeia ou arrastar os homens à força, e a honra paga o preço.",ef:[{a:"vazio",v:-2,perm:true}]}},
+ {id:"mercenarios",est:1,nome:"Mercenários contratados",texto:"Ronin de aluguel reforçam a guarnição por uma temporada.",
+  im:{anel:"autoridade",ef:[{a:"autoridade",v:8,d:2}]},re:{anel:"riqueza",acao:"Os ronin querem pagamento, e às vezes mais. Mantê-los na linha, dispensá-los antes que causem problemas ou oferecer um juramento aos melhores.",ef:[{a:"riqueza",v:-6,d:4}]}},
+ {id:"saque_guerra",est:1,nome:"Saque de guerra",texto:"Uma vitória numa escaramuça deixa baús para levar. Saquear não é honroso.",
+  im:{anel:"autoridade",ef:[{a:"riqueza",v:6,d:0}]},re:{anel:"vazio",acao:"O saque tem dono. Devolver o que não é da casa, oferecer parte ao templo ou esconder tudo e torcer para ninguém perguntar.",ef:[{a:"riqueza",v:4,d:0},{a:"vazio",v:-1,perm:true}]}},
+ {id:"bandidos_estrada",est:1,nome:"Bandidos nas estradas",texto:"Caravanas atacadas e patrulhas desmoralizadas.",
+  im:{anel:"autoridade",ef:[{a:"riqueza",v:-3,d:4}]},re:{anel:"autoridade",acao:"Caçar o bando, descobrir quem o protege ou pagar uma escolta para as caravanas.",ef:[{a:"autoridade",v:-6,d:4},{a:"riqueza",v:-3,d:4}]}},
+ {id:"desercao",est:1,nome:"Deserção na guarnição",texto:"Ashigaru somem à noite, levando as lanças.",
+  im:{anel:"autoridade",ef:[{a:"autoridade",v:-4,d:4}]},re:{anel:"influencia",acao:"Os desertores fugiram para as terras de um vizinho. Exigir a devolução, descobrir por que fugiram ou deixar o caso morrer.",ef:[{a:"autoridade",v:-6,d:4}]}},
+ {id:"torneio_verao",est:1,nome:"Vitória num torneio de verão",texto:"Um samurai da casa vence diante de convidados importantes.",
+  im:{anel:"autoridade",ef:[{a:"autoridade",v:4,d:4}]},re:{anel:"influencia",acao:"Os convidados viram. Aproveitar a vitória na corte, ganhar o rival derrotado como amigo ou deixar que ele planeje a revanche.",ef:[{a:"influencia",v:6,d:4}]}},
+ {id:"olhos_crisantemo",est:1,nome:"Perguntas demais",texto:"Um forasteiro de modos antiquados, que cita leis de quinhentos anos atrás, faz perguntas sobre as guarnições e as lealdades da casa.",
+  im:{anel:"autoridade",ef:[{a:"influencia",v:-3,d:4}]},re:{anel:"influencia",acao:"Descobrir para quem ele trabalha. Prendê-lo, segui-lo até o mestre dele ou alimentá-lo com mentiras.",ef:[{a:"autoridade",v:-6,d:4}]}},
+ {id:"ecos_yasuki",est:1,nome:"Um ancestral quer o clã antigo",texto:"Um espírito retornado exige que um ramo da casa volte ao clã de origem, como Yasuki Masashi faz com os Yasuki. Metade dos vassalos o escuta.",
+  im:{anel:"influencia",ef:[{a:"influencia",v:-4,d:4}]},re:{anel:"autoridade",acao:"Convencer o espírito, desafiá-lo em duelo ou levar o caso ao daimyō do clã antes que vire sangue.",ef:[{a:"autoridade",v:-8,d:4}]}},
+ /* outono */
+ {id:"colheita_extraordinaria",est:2,nome:"Colheita extraordinária",texto:"Os celeiros não dão conta do arroz.",
+  im:{anel:"riqueza",ef:[{a:"riqueza",v:6,d:4}]},re:{anel:"dominio",acao:"Há mais arroz que celeiro. Construir armazéns, vender antes que estrague ou guardar para um inverno pior.",ef:[{a:"riqueza",v:6,d:4}]}},
+ {id:"tributo_vassalo",est:2,nome:"Tributo de um vassalo",texto:"Uma família menor manda presentes e pede proteção.",
+  im:{anel:"influencia",ef:[{a:"influencia",v:4,d:4}]},re:{anel:"autoridade",acao:"O vassalo pede proteção contra alguém. Cumprir a promessa vale mais que o presente; quebrá-la custa mais ainda.",ef:[{a:"influencia",v:4,d:8},{a:"autoridade",v:3,d:4}]}},
+ {id:"refugiados",est:2,nome:"Refugiados acolhidos",texto:"Gente fugida da guerra pede abrigo: braços para o campo, bocas para alimentar.",
+  im:{anel:"dominio",ef:[{a:"dominio",v:4,d:4},{a:"riqueza",v:-2,d:4}]},re:{anel:"riqueza",acao:"Assentá-los antes do inverno, descobrir de quem estão fugindo ou mandá-los adiante.",ef:[{a:"dominio",v:4,d:8},{a:"riqueza",v:-3,d:4}]}},
+ {id:"feira_outono",est:2,nome:"Feira de outono",texto:"Mercadores de três províncias montam tendas nas terras da família.",
+  im:{anel:"riqueza",ef:[{a:"riqueza",v:4,d:4}]},re:{anel:"influencia",acao:"Com os mercadores vêm espiões, ladrões e oportunidades. Escolher com quem fazer negócio e quem vigiar.",ef:[{a:"riqueza",v:4,d:4},{a:"influencia",v:3,d:4}]}},
+ {id:"geada_precoce",est:2,nome:"Geada precoce",texto:"O frio chega antes da colheita terminar.",
+  im:{anel:"riqueza",ef:[{a:"riqueza",v:-4,d:4}]},re:{anel:"dominio",acao:"Salvar o que resta: mobilizar os camponeses noite adentro, pedir aos kami ou comprar arroz do vizinho antes que o preço suba.",ef:[{a:"riqueza",v:-6,d:4}]}},
+ {id:"incendio_celeiros",est:2,nome:"Incêndio nos celeiros",texto:"Uma noite de vento e uma lanterna derrubada.",
+  im:{anel:"dominio",ef:[{a:"dominio",v:-3,d:4},{a:"riqueza",v:-3,d:4}]},re:{anel:"autoridade",acao:"Foi mesmo acidente? Investigar a lanterna, punir o culpado ou consolar as aldeias antes que o medo vire revolta.",ef:[{a:"riqueza",v:-5,d:4}]}},
+ {id:"bocas_mortos",est:2,nome:"Os mortos querem servos",texto:"Espíritos retornados se instalam numa aldeia. Não comem, mas exigem servos, terras e arroz para os vassalos que tinham em vida.",
+  im:{anel:"riqueza",ef:[{a:"riqueza",v:-4,d:4}]},re:{anel:"influencia",acao:"Pedir ao clã que os assuma, convencê-los a partir ou dar a eles um lugar na casa, com tudo o que isso traz.",ef:[{a:"riqueza",v:-4,d:8},{a:"dominio",v:-3,d:4}]}},
+ {id:"edito_espiritos",est:2,nome:"O édito sobre os espíritos",texto:"Chega o pedido do Imperador: os espíritos retornados devem voltar a Meido por vontade própria. Os que vivem nas terras da casa ouvem com rancor.",
+  im:{anel:"autoridade",ef:[{a:"autoridade",v:-3,d:4}]},re:{anel:"vazio",acao:"Convencer os espíritos com honra, deixar que fiquem às escondidas ou entregá-los aos magistrados.",ef:[{a:"influencia",v:5,d:4},{a:"autoridade",v:-4,d:4}]}},
+ /* inverno */
+ {id:"favor_daimyo",est:3,nome:"Favor de um daimyō",texto:"Na corte de inverno, um senhor importante lembra o nome da família.",
+  im:{anel:"influencia",ef:[{a:"influencia",v:5,d:4}]},re:{anel:"autoridade",acao:"O senhor espera um serviço antes do degelo: escoltar alguém, resolver uma disputa ou emprestar samurai.",ef:[{a:"influencia",v:5,d:4}]}},
+ {id:"dote_casamento",est:3,nome:"Dote de casamento",texto:"Um casamento acertado na corte traz um dote generoso.",
+  im:{anel:"influencia",ef:[{a:"riqueza",v:6,d:0}]},re:{anel:"influencia",acao:"O casamento une duas casas. A outra família espera respeito, lugar à mesa e talvez um favor que ninguém mencionou.",ef:[{a:"riqueza",v:4,d:0},{a:"influencia",v:3,d:4}]}},
+ {id:"intriga_corte",est:3,nome:"Intriga na corte de inverno",texto:"Um boato bem plantado faz a família perder lugares à mesa.",
+  im:{anel:"influencia",ef:[{a:"influencia",v:-4,d:4}]},re:{anel:"influencia",acao:"Descobrir quem plantou o boato e responder à altura, ou deixar passar e esperar a primavera.",ef:[{a:"influencia",v:-6,d:4}]}},
+ {id:"graca_kami",est:3,nome:"Graça dos kami",texto:"Os ritos de inverno saem perfeitos, e os kami respondem.",
+  im:{anel:"vazio",ef:[{a:"vazio",v:1,d:4}]},re:{anel:"vazio",acao:"A graça pede continuidade: uma oferenda, um templo reformado, um sacerdote dedicado à casa.",ef:[{a:"vazio",v:1,d:4}]}},
+ {id:"pressagio_sombrio",est:3,nome:"Presságio sombrio",texto:"Um corvo branco, um sino que racha sozinho.",
+  im:{anel:"vazio",ef:[{a:"vazio",v:-1,d:4}]},re:{anel:"influencia",acao:"Descobrir o que o presságio anuncia, consultar um oráculo ou acalmar os camponeses antes que fujam.",ef:[{a:"vazio",v:-1,d:4},{a:"autoridade",v:-3,d:4}]}},
+ {id:"inverno_rigoroso",est:3,nome:"Inverno rigoroso",texto:"Neve até os beirais, estradas fechadas e guarnições com frio.",
+  im:{anel:"dominio",ef:[{a:"dominio",v:-3,d:4}]},re:{anel:"autoridade",acao:"Manter as estradas abertas e as guarnições alimentadas até o degelo.",ef:[{a:"dominio",v:-2,d:4},{a:"autoridade",v:-4,d:4}]}},
+ {id:"ancestral_corte",est:3,nome:"Um ancestral na corte de inverno",texto:"Um antepassado retornado aparece na corte de inverno e fala em nome da casa sem que ninguém tenha pedido.",
+  im:{anel:"influencia",ef:[{a:"influencia",v:3,d:4}]},re:{anel:"influencia",acao:"Ele abre portas antigas e cria inimigos novos. Apoiá-lo, contê-lo ou mandá-lo de volta para casa com cortesia.",ef:[{a:"influencia",v:6,d:4},{a:"vazio",v:-1,d:4}]}},
+ {id:"alianca_desfeita",est:3,nome:"Órfãos da Aliança",texto:"Com o fim da Aliança de Yoritomo, uma família de um clã menor procura um novo protetor e bate à porta da casa.",
+  im:{anel:"influencia",ef:[{a:"influencia",v:3,d:4}]},re:{anel:"autoridade",acao:"Aceitar traz gente, navios e os inimigos deles. Recusar com elegância também é uma arte.",ef:[{a:"influencia",v:4,d:8},{a:"autoridade",v:-3,d:4}]}}
 ];
+ACONTECIMENTOS.forEach(c=>{c.anel=c.im.anel;c.ef=c.im.ef.concat(c.re.ef);});
 function acontecimentoInfo(id){return ACONTECIMENTOS.find(c=>c.id===id);}
 function tipoAcontecimento(c){const p=c.ef.some(e=>e.v>0),n=c.ef.some(e=>e.v<0);return p&&n?"misto":(p?"bom":"ruim");}
 /* 2026-11 (Thiago: "o jogo não é automático"): o acontecimento abre, não se aplica sozinho.
@@ -3406,47 +3462,45 @@ function grauFinal(a){const g=a.grauMestre!=null?a.grauMestre:grauDoTeste(a.rol)
 function rotuloGrau(g){return(GRAUS_ACONT.find(x=>x[0]===g)||[g,String(g)])[1];}
 function tnManutencao(attr){return 5*nivelAttr(attr)+5+5*Math.ceil(sobrecarga(attr)/10);}
 /* Rola o Anel do acontecimento. Só mostra; não aplica nada. */
-function rolarAcontecimento(c,comPV){
-  const n=nivelAttr(c.anel),tn=tnManutencao(c.anel),graca=gracaKami(),favor=favorDasFortunas();
+function rolarAcontecimento(c,comPV,anel){
+  anel=anel||c.anel;
+  const n=nivelAttr(anel),tn=tnManutencao(anel),graca=gracaKami(),favor=favorDasFortunas();
   const tnF=tn+(graca<0?5*(-graca):0)+(favor<0?5*(-favor):0);
   const pv=comPV&&gastarPVFamilia()?1:0;
   const x=Math.max(1,n)+pv,y=Math.max(1,n)+pv;
   const r=rolarAnelL5R(x,y,0),m=r.total-tnF;
   const raises=m>=0?Math.floor(m/5)+Math.max(0,graca)+Math.max(0,favor):0;
-  return{n,x,y,pv,tn:tnF,total:r.total,margem:m,raises,dados:r.dados};
+  return{n,x,y,pv,anel,tn:tnF,total:r.total,margem:m,raises,dados:r.dados};
 }
 /* o que cada efeito vira num grau, sem aplicar */
 function efeitosNoGrau(c,g){
-  return c.ef.map(e=>{const mult=e.v>0?multBomG(g):multRuimG(g);return{e,v:Math.sign(e.v)*Math.round(Math.abs(e.v)*mult)};});
+  return(Array.isArray(c)?c:c.ef).map(e=>{const mult=e.v>0?multBomG(g):multRuimG(g);return{e,v:Math.sign(e.v)*Math.round(Math.abs(e.v)*mult)};});
 }
 function txtEfeito(e,v){
   if(!v)return(e.perm?rotuloAttr(e.a)+" "+e.v:fmtLote(e.a,e.v))+" anulado";
   if(e.perm)return rotuloAttr(e.a)+" "+(v>0?"+":"")+v+" permanente";
   return fmtLote(e.a,v)+" ("+(e.d?(PRAZOS_LOTE.find(p=>p[0]===e.d)||[0,e.d+" estações"])[1]:"até gastar")+")";
 }
-/* Aplica no grau dado. Usado ao fechar um acontecimento em aberto. */
-function aplicarAcontecimento(c,g,quando,rol,extra){
+/* Aplica uma lista de efeitos num grau. Devolve as frases do que mudou. */
+function aplicarEfeitos(c,efs,g,anel){
   const partes=[];
-  efeitosNoGrau(c,g).forEach(({e,v})=>{
+  efeitosNoGrau(efs,g).forEach(({e,v})=>{
     partes.push(txtEfeito(e,v));if(!v)return;
     if(e.perm){S.base[e.a]=(Number(S.base[e.a])||0)+v;return;}
     criarLote(e.a,v,e.d||0,c.nome,{acontecimento:c.id});
   });
-  if(g<0&&sobrecarga(c.anel)>0){S.liberar=S.liberar||{};S.liberar[c.anel]=true;partes.push("em sobrecarga, a família precisa liberar algo de "+rotuloAttr(c.anel));}
-  const gl=GLORIA_ACONT[c.id];
-  if(gl){const mult=gl>0?multBomG(g):multRuimG(g),v=Math.round(gl*mult*10)/10;if(v){registrarGloria(v,c.nome);partes.push("Glória da casa "+(v>0?"+":"")+v.toFixed(1));}}
-  const tier=rotuloGrau(g)+(extra||"");
-  S.ultimoAcontecimento={id:c.id,quando:quando||nomeEstacaoAbs(estacaoAbs()),rol:rol?{n:rol.n,tn:rol.tn,total:rol.total,margem:rol.margem,raises:rol.raises,dados:rol.dados}:null,partes,tier,grau:g};
-  S.historicoAcontecimentos=S.historicoAcontecimentos||[];
-  S.historicoAcontecimentos.unshift(S.ultimoAcontecimento);
-  if(S.historicoAcontecimentos.length>24)S.historicoAcontecimentos.length=24;
-  return c.nome+" ("+tier+"): "+partes.join("; ");
+  if(g<0&&anel&&sobrecarga(anel)>0){S.liberar=S.liberar||{};S.liberar[anel]=true;partes.push("em sobrecarga, a família precisa liberar algo de "+rotuloAttr(anel));}
+  return partes;
 }
+function rolCurto(r){return r?{n:r.n,x:r.x,y:r.y,pv:r.pv,anel:r.anel,tn:r.tn,total:r.total,margem:r.margem,raises:r.raises,dados:r.dados}:null;}
 function sortearAcontecimento(estIdx){const op=ACONTECIMENTOS.filter(c=>c.est===estIdx);return pickPeso(op);}
-/* ---- acontecimentos em aberto ---- */
+/* ---- acontecimentos em aberto ----
+   fase "oculto": só o Mestre vê; "resposta": já revelado, a parte imediata aplicada, a
+   consequência em aberto. Acontecimentos antigos, sem fase, contam como "resposta". */
+function faseAcont(a){return a.fase||"resposta";}
 function abrirAcontecimento(c,origem){
   S.acontAbertos=S.acontAbertos||[];
-  const a={id:uid(),acId:c.id,quando:nomeEstacaoAbs(estacaoAbs()),origem:origem||"estacao",rol:null,ajuste:0,grauMestre:null,notas:""};
+  const a={id:uid(),acId:c.id,quando:nomeEstacaoAbs(estacaoAbs()),origem:origem||"estacao",fase:"oculto",im:null,rol:null,ajuste:0,grauMestre:null,notas:""};
   S.acontAbertos.push(a);return a;
 }
 function acontAberto(id){return(S.acontAbertos||[]).find(a=>a.id===id);}
@@ -3455,31 +3509,51 @@ function lancarAcontecimento(){
   if(bloqueadoLeitura())return;
   const c=acontecimentoInfo(acontForm.id)||sortearAcontecimento(S.estacaoIdx||0);
   abrirAcontecimento(c,"mestre");
-  feedPush("Acontecimento aberto pelo Mestre: "+c.nome+". Fica em aberto até a história se resolver.");salvar();render();
+  feedPush("O Mestre guardou um acontecimento. Ele fica selado até ser revelado.");salvar();render();
+}
+/* Revelar: os jogadores passam a ver, e a parte imediata acontece com o seu Teste da Família. */
+function revelarAcontecimento(id){
+  if(bloqueadoLeitura())return;const a=acontAberto(id),c=a&&acontecimentoInfo(a.acId);if(!c||faseAcont(a)!=="oculto")return;
+  const rol=rolarAcontecimento(c,a.usarPV,c.im.anel);a.usarPV=false;
+  const g=grauDoTeste(rol),partes=aplicarEfeitos(c,c.im.ef,g,c.im.anel);
+  a.im={rol:rolCurto(rol),grau:g,partes};a.fase="resposta";a.rol=null;a.reveladoEm=nomeEstacaoAbs(estacaoAbs());
+  feedPush("Revelado: "+c.nome+". "+c.texto+" Teste da Família de "+rotuloAttr(c.im.anel)+" ("+rol.total+" contra TN "+rol.tn+", "+rotuloGrau(g).toLowerCase()+"): "+partes.join("; ")+". Em aberto: "+c.re.acao);
+  salvar();render();
 }
 function rolarTendencia(id){
   if(bloqueadoLeitura())return;const a=acontAberto(id),c=a&&acontecimentoInfo(a.acId);if(!c)return;
-  a.rol=rolarAcontecimento(c,a.usarPV);a.usarPV=false;a.grauMestre=null;
-  feedPush("Teste da Família para "+c.nome+" ("+rotuloAttr(c.anel)+" "+a.rol.x+"k"+a.rol.y+(a.rol.pv?", com 1 Ponto de Vazio":"")+" contra TN "+a.rol.tn+"): "+a.rol.total+", tendência: "+rotuloGrau(grauDoTeste(a.rol)).toLowerCase()+".");
+  a.rol=rolarAcontecimento(c,a.usarPV,c.re.anel);a.usarPV=false;a.grauMestre=null;
+  feedPush("Teste da Família para "+c.nome+" ("+rotuloAttr(c.re.anel)+" "+a.rol.x+"k"+a.rol.y+(a.rol.pv?", com 1 Ponto de Vazio":"")+" contra TN "+a.rol.tn+"): "+a.rol.total+", "+rotuloGrau(grauDoTeste(a.rol)).toLowerCase()+" antes das ações dos jogadores.");
   salvar();render();
 }
 function ajusteAcont(id,d){if(bloqueadoLeitura())return;const a=acontAberto(id);if(!a)return;a.grauMestre=null;a.ajuste=Math.max(-6,Math.min(6,(Number(a.ajuste)||0)+d));salvar();render();}
 function setGrauAcont(id,v){if(bloqueadoLeitura())return;const a=acontAberto(id);if(!a)return;a.grauMestre=v===""?null:Number(v);salvar();render();}
 function setNotaAcont(id,v){if(bloqueadoLeitura())return;const a=acontAberto(id);if(!a)return;a.notas=v;salvar();}
 function fecharAcontecimento(id){
-  if(bloqueadoLeitura())return;const a=acontAberto(id),c=a&&acontecimentoInfo(a.acId);if(!c)return;
+  if(bloqueadoLeitura())return;let a=acontAberto(id),c=a&&acontecimentoInfo(a.acId);if(!c)return;
+  if(faseAcont(a)==="oculto"){revelarAcontecimento(id);a=acontAberto(id);}
+  if(!a.rol&&a.grauMestre==null)a.rol=rolarAcontecimento(c,false,c.re.anel);
   const g=grauFinal(a);
   const extra=(a.ajuste&&a.grauMestre==null?" ("+(a.ajuste>0?"+":"")+a.ajuste+" pelas ações dos jogadores)":"")+(a.grauMestre!=null?" (decidido pelo Mestre)":"");
-  const txt=aplicarAcontecimento(c,g,a.quando,a.rol,extra);
+  const p2=aplicarEfeitos(c,c.re.ef,g,c.re.anel);
+  const gl=GLORIA_ACONT[c.id];
+  if(gl){const mult=gl>0?multBomG(g):multRuimG(g),v=Math.round(gl*mult*10)/10;if(v){registrarGloria(v,c.nome);p2.push("Glória da casa "+(v>0?"+":"")+v.toFixed(1));}}
+  const partes=(a.im?["na hora: "+a.im.partes.join(", ")]:[]).concat(["depois: "+p2.join(", ")]);
+  const tier=rotuloGrau(g)+extra;
+  S.ultimoAcontecimento={id:c.id,quando:a.quando,rol:rolCurto(a.rol),anel:c.re.anel,rolIm:a.im?a.im.rol:null,partes,tier,grau:g};
+  S.historicoAcontecimentos=S.historicoAcontecimentos||[];
+  S.historicoAcontecimentos.unshift(S.ultimoAcontecimento);
+  if(S.historicoAcontecimentos.length>24)S.historicoAcontecimentos.length=24;
   S.acontAbertos=S.acontAbertos.filter(x=>x.id!==id);
-  feedPush("Acontecimento resolvido — "+txt+"."+(a.notas?" "+a.notas:""));salvar();render();
+  feedPush("Acontecimento resolvido: "+c.nome+" ("+tier+"): "+p2.join("; ")+"."+(a.notas?" "+a.notas:""));salvar();render();
 }
 function descartarAcontecimento(id){
   if(bloqueadoLeitura())return;const a=acontAberto(id),c=a&&acontecimentoInfo(a.acId);if(!a)return;
+  const oculto=faseAcont(a)==="oculto";
   S.acontAbertos=S.acontAbertos.filter(x=>x.id!==id);
-  if(c){S.historicoAcontecimentos=S.historicoAcontecimentos||[];
-    S.historicoAcontecimentos.unshift({id:c.id,quando:a.quando,rol:a.rol,partes:["sem efeito"+(a.notas?": "+a.notas:"")],tier:"descartado: não aconteceu ou os jogadores evitaram",grau:null});}
-  feedPush("Acontecimento descartado: "+(c?c.nome:"")+".");salvar();render();
+  if(c&&!oculto){S.historicoAcontecimentos=S.historicoAcontecimentos||[];
+    S.historicoAcontecimentos.unshift({id:c.id,quando:a.quando,rol:null,partes:(a.im?["na hora: "+a.im.partes.join(", ")]:[]).concat(["depois: sem efeito"+(a.notas?": "+a.notas:"")]),tier:"os jogadores evitaram a consequência",grau:null});}
+  feedPush(oculto?"O Mestre desfez um acontecimento selado.":"Acontecimento encerrado sem consequência: "+(c?c.nome:"")+".");salvar();render();
 }
 function avancarEstacao(){
   if(bloqueadoLeitura())return;
@@ -3500,7 +3574,7 @@ function avancarEstacao(){
   if(obrasT.length)feedPush("Tropas prontas: "+obrasT.join("; ")+".");
   gloriaNaEstacao().forEach(m=>feedPush(m+"."));
   feedPush("Fim de "+estacao.toLowerCase()+" do ano "+ano+"."+(abertos?" "+(abertos===1?"Um acontecimento continua":abertos+" acontecimentos continuam")+" em aberto.":"")+
-    " Começa "+ESTACOES[S.estacaoIdx].toLowerCase()+" com um acontecimento: "+c.nome+".");
+    " Começa "+ESTACOES[S.estacaoIdx].toLowerCase()+", e um acontecimento selado aguarda o Mestre.");
   if(venc.length){
     feedPush("Venceram: "+venc.map(l=>fmtLote(l.attr,l.valor)+" ("+(l.motivo||"lote")+")").join("; ")+".");
     const sc=[...new Set(venc.map(l=>l.attr))].filter(k=>sobrecarga(k)>0);
@@ -4285,44 +4359,63 @@ function htmlAcontecimento(u,grande){
   const tipo=tipoAcontecimento(uc);
   return "<div class=\"acontult t-"+tipo+(grande?"":" mini")+"\"><div class=\"tag\">"+esc(u.quando)+" · resolvido</div>"+
     "<div class=\"an\">"+esc(uc.nome)+"</div>"+(grande?"<div class=\"ad\">"+esc(uc.texto)+"</div>":"")+
-    (u.rol?"<div class=\"ar\">"+rotuloAttr(uc.anel)+" "+u.rol.n+"k"+u.rol.n+": <b>"+u.rol.total+"</b> contra TN "+u.rol.tn+" · <b class=\""+(u.rol.margem>=0?"good":"bad")+"\">"+esc(u.tier)+"</b>"+
+    (u.rol?"<div class=\"ar\">"+rotuloAttr(u.anel||u.rol.anel||uc.anel)+" "+(u.rol.x||u.rol.n)+"k"+(u.rol.y||u.rol.n)+": <b>"+u.rol.total+"</b> contra TN "+u.rol.tn+" · <b class=\""+(u.rol.margem>=0?"good":"bad")+"\">"+esc(u.tier)+"</b>"+
       (grande?"<div class=\"dados\">"+(u.rol.dados||[]).map(d=>"<span class=\""+(d.mantido?"k":"")+"\">"+d.chain.join("+")+"</span>").join("")+"</div>":"")+"</div>":"<div class=\"ar\">"+esc(u.tier)+"</div>")+
     "<div class=\"ae\">"+u.partes.map(esc).join(" · ")+"</div></div>";
 }
+function efTxtCheio(efs){return efs.map(e=>e.perm?rotuloAttr(e.a)+" "+(e.v>0?"+":"")+e.v+" permanente":fmtLote(e.a,e.v)+(e.d?" por "+prazoLoteCurto(e.d):" até gastar")).join("; ");}
+function testeTxt(anel){return rotuloAttr(anel)+" "+Math.max(1,nivelAttr(anel))+"k"+Math.max(1,nivelAttr(anel))+" contra TN "+tnManutencao(anel);}
+function rolHTML(r,rotulo){return r?"<div class=\"ar\">"+rotuloAttr(r.anel||"dominio")+" "+(r.x||r.n)+"k"+(r.y||r.n)+": <b>"+r.total+"</b> contra TN "+r.tn+" · <b class=\""+(r.margem>=0?"good":"bad")+"\">"+esc(rotulo)+"</b>"+
+  "<div class=\"dados\">"+(r.dados||[]).map(d=>"<span class=\""+(d.mantido?"k":"")+"\">"+d.chain.join("+")+"</span>").join("")+"</div></div>":"";}
+function pvCheck(a){return pvFamiliaRestantes()?"<label class=\"tag\" data-dica=\"Ponto de Vazio da família: +1k1 nesta rolagem.\"><input type=\"checkbox\" "+(a.usarPV?"checked":"")+" onchange=\"acontAberto('"+a.id+"').usarPV=this.checked\"> +1k1 (Ponto de Vazio, "+pvFamiliaRestantes()+")</label>":"";}
 function htmlAcontAberto(a){
   const c=acontecimentoInfo(a.acId);if(!c)return"";
-  const tipo=tipoAcontecimento(c),gT=a.rol?grauDoTeste(a.rol):null,g=grauFinal(a);
-  const cheio=c.ef.map(e=>e.perm?rotuloAttr(e.a)+" "+(e.v>0?"+":"")+e.v+" permanente":fmtLote(e.a,e.v)+(e.d?" por "+prazoLoteCurto(e.d):" até gastar")).join("; ");
+  const tipo=tipoAcontecimento(c),fase=faseAcont(a);
+  if(fase==="oculto"){
+    /* jogadores: só o selo. Mestre: tudo, e o botão de revelar. */
+    return "<div class=\"acontaberto acselado so-jogador\"><div class=\"selo\">封</div><div><div class=\"tag\">"+esc(a.quando)+"</div>"+
+        "<div class=\"an\">Um acontecimento se aproxima</div><div class=\"ad\">O Mestre guarda o que vai acontecer. Ele aparece aqui quando chegar a hora.</div></div></div>"+
+      "<div class=\"acontaberto t-"+tipo+" acoculto so-mestre\"><div class=\"tag\">"+esc(a.quando)+" · <b>selado</b>: os jogadores ainda não veem"+(a.origem==="mestre"?" · lançado pelo Mestre":"")+"</div>"+
+        "<div class=\"an\">"+esc(c.nome)+" <small>"+({bom:"bom",ruim:"ruim",misto:"bom e ruim"})[tipo]+(raridade(c)!=="comum"?", "+RAR_INFO[raridade(c)].nome:"")+"</small></div>"+
+        "<div class=\"ad\">"+esc(c.texto)+"</div>"+
+        "<div class=\"ae\"><b>Na hora</b> (testa "+esc(testeTxt(c.im.anel))+"): "+esc(efTxtCheio(c.im.ef))+".</div>"+
+        "<div class=\"ae\"><b>Depois</b> (testa "+esc(testeTxt(c.re.anel))+", mais as ações dos jogadores): "+esc(efTxtCheio(c.re.ef))+". "+esc(c.re.acao)+"</div>"+
+        "<div class=\"uacoes\">"+pvCheck(a)+"<button class=\"primary\" onclick=\"revelarAcontecimento('"+a.id+"')\">revelar aos jogadores e rolar "+esc(rotuloAttr(c.im.anel))+"</button>"+
+        "<button class=\"ghost\" onclick=\"descartarAcontecimento('"+a.id+"')\">desfazer</button></div></div>";
+  }
+  const gT=a.rol?grauDoTeste(a.rol):null,g=grauFinal(a);
   let h="<div class=\"acontaberto t-"+tipo+"\"><div class=\"tag\">"+esc(a.quando)+" · em aberto"+(a.origem==="mestre"?" · lançado pelo Mestre":"")+"</div>"+
     "<div class=\"an\">"+esc(c.nome)+" <small>"+({bom:"bom",ruim:"ruim",misto:"bom e ruim"})[tipo]+"</small></div>"+
-    "<div class=\"ad\">"+esc(c.texto)+"</div>"+
-    "<div class=\"ae\">Efeito cheio: "+esc(cheio)+". Anel ligado: "+rotuloAttr(c.anel)+".</div>";
-  /* 1. tendência */
-  h+="<div class=\"apasso\"><span class=\"cmdnum\">1</span><div class=\"cmdcorpo\"><div class=\"cmdrot\">Teste da Família <small>a tendência, se o Mestre quiser rolar</small></div>";
-  if(a.rol)h+="<div class=\"ar\">"+rotuloAttr(c.anel)+" "+(a.rol.x||a.rol.n)+"k"+(a.rol.y||a.rol.n)+": <b>"+a.rol.total+"</b> contra TN "+a.rol.tn+" · <b class=\""+(a.rol.margem>=0?"good":"bad")+"\">"+esc(rotuloGrau(gT))+"</b>"+
-    "<div class=\"dados\">"+(a.rol.dados||[]).map(d=>"<span class=\""+(d.mantido?"k":"")+"\">"+d.chain.join("+")+"</span>").join("")+"</div></div>";
-  h+="<div class=\"uacoes so-mestre\">"+(pvFamiliaRestantes()?"<label class=\"tag\" data-dica=\"Ponto de Vazio da família: +1k1 nesta rolagem.\"><input type=\"checkbox\" "+(a.usarPV?"checked":"")+" onchange=\"acontAberto('"+a.id+"').usarPV=this.checked\"> +1k1 (Ponto de Vazio, "+pvFamiliaRestantes()+")</label>":"")+"<button class=\"ghost\" onclick=\"rolarTendencia('"+a.id+"')\">"+(a.rol?"rolar de novo":"rolar "+rotuloAttr(c.anel)+" "+Math.max(1,nivelAttr(c.anel))+"k"+Math.max(1,nivelAttr(c.anel))+" contra TN "+tnManutencao(c.anel))+"</button></div></div></div>";
-  /* 2. jogadores */
-  h+="<div class=\"apasso\"><span class=\"cmdnum\">2</span><div class=\"cmdcorpo\"><div class=\"cmdrot\">A aventura <small>o que os jogadores fizeram</small></div>"+
+    "<div class=\"ad\">"+esc(c.texto)+"</div>";
+  /* 1. o que já aconteceu */
+  h+="<div class=\"apasso\"><span class=\"cmdnum\">1</span><div class=\"cmdcorpo\"><div class=\"cmdrot\">Na hora <small>já aplicado</small></div>"+
+    (a.im?rolHTML(a.im.rol,rotuloGrau(a.im.grau))+"<div class=\"ae\">"+esc(a.im.partes.join("; "))+".</div>":"<div class=\"ae\">Acontecimento de antes da regra nova: não teve parte imediata.</div>")+"</div></div>";
+  /* 2. a resposta */
+  h+="<div class=\"apasso\"><span class=\"cmdnum\">2</span><div class=\"cmdcorpo\"><div class=\"cmdrot\">O que a casa pode fazer <small>a aventura</small></div>"+
+    "<div class=\"ae\">"+esc(c.re.acao)+"</div>"+
+    "<div class=\"ae\">Em jogo: "+esc(efTxtCheio(c.re.ef))+". Teste da Família: "+esc(testeTxt(c.re.anel))+".</div>"+
+    rolHTML(a.rol,a.rol?rotuloGrau(gT)+" antes das ações":"")+
+    "<div class=\"uacoes so-mestre\">"+pvCheck(a)+"<button class=\"ghost\" onclick=\"rolarTendencia('"+a.id+"')\">"+(a.rol?"rolar de novo":"rolar "+esc(testeTxt(c.re.anel)))+"</button></div>"+
     "<div class=\"uacoes\"><span class=\"tag\" data-dica=\"Cada sucesso dos jogadores que mexe na situação sobe um passo; cada fracasso desce um. Dois passos acima de Falhou é Passou com 1 Raise.\">ações dos jogadores</span>"+
     "<button class=\"ghost so-mestre\" onclick=\"ajusteAcont('"+a.id+"',-1)\" aria-label=\"piorar um passo\">−</button><b class=\"ajv\">"+((Number(a.ajuste)||0)>0?"+":"")+(Number(a.ajuste)||0)+"</b>"+
     "<button class=\"ghost so-mestre\" onclick=\"ajusteAcont('"+a.id+"',1)\" aria-label=\"melhorar um passo\">+</button></div>"+
     "<textarea class=\"anota so-mestre\" placeholder=\"o que aconteceu na aventura (vai para o registro)\" onchange=\"setNotaAcont('"+a.id+"',this.value)\">"+esc(a.notas||"")+"</textarea></div></div>";
   /* 3. desfecho */
-  const pv=efeitosNoGrau(c,g).map(({e,v})=>txtEfeito(e,v)).join("; ");
+  const pv=efeitosNoGrau(c.re.ef,g).map(({e,v})=>txtEfeito(e,v)).join("; ");
+  const gAuto=Math.max(-2,Math.min(4,grauDoTeste(a.rol)+(Number(a.ajuste)||0)));
   h+="<div class=\"apasso\"><span class=\"cmdnum\">3</span><div class=\"cmdcorpo\"><div class=\"cmdrot\">Desfecho <small>o Mestre fecha quando a história terminar</small></div>"+
-    "<div class=\"uacoes\"><select class=\"so-mestre\" onchange=\"setGrauAcont('"+a.id+"',this.value)\"><option value=\"\" "+(a.grauMestre==null?"selected":"")+">pelo teste e pelas ações: "+esc(rotuloGrau(grauDoTeste(a.rol)+(Number(a.ajuste)||0)<-2?-2:Math.min(4,grauDoTeste(a.rol)+(Number(a.ajuste)||0))))+"</option>"+
+    "<div class=\"uacoes\"><select class=\"so-mestre\" onchange=\"setGrauAcont('"+a.id+"',this.value)\"><option value=\"\" "+(a.grauMestre==null?"selected":"")+">"+(a.rol?"pelo teste e pelas ações: "+esc(rotuloGrau(gAuto)):"pelo teste (rola ao aplicar) e pelas ações")+"</option>"+
       GRAUS_ACONT.map(([v,l])=>"<option value=\""+v+"\" "+(a.grauMestre===v?"selected":"")+">"+esc(l)+"</option>").join("")+"</select></div>"+
-    "<div class=\"ae\">Fica assim: <b>"+esc(pv)+"</b>.</div>"+
+    (a.rol||a.grauMestre!=null?"<div class=\"ae\">Fica assim: <b>"+esc(pv)+"</b>.</div>":"")+
     "<div class=\"uacoes so-mestre\"><button class=\"primary\" onclick=\"fecharAcontecimento('"+a.id+"')\">aplicar o desfecho</button>"+
-    "<button class=\"ghost\" onclick=\"descartarAcontecimento('"+a.id+"')\">descartar (não aconteceu)</button></div></div></div>";
+    "<button class=\"ghost\" onclick=\"descartarAcontecimento('"+a.id+"')\">os jogadores evitaram tudo</button></div></div></div>";
   return h+"</div>";
 }
 function renderEstacoes(){
   const cab=document.getElementById("estCabecalho");if(!cab)return;
   const prox=ESTACOES[S.estacaoIdx||0];
   cab.innerHTML="<div class=\"estcab\"><div><div class=\"tag\">agora</div><div class=\"estnome\">"+esc(prox+" do ano "+(S.anoEstacao||1))+"</div>"+
-    "<div class=\"hint\" style=\"margin:2px 0 0\">Ao avançar, os lotes vencidos saem, os investimentos prontos viram atributo e a estação nova traz um acontecimento em aberto: um gancho de aventura, que o Mestre resolve quando a história terminar.</div></div>"+
+    "<div class=\"hint\" style=\"margin:2px 0 0\">Ao avançar, os lotes vencidos saem, os investimentos prontos viram atributo e a estação nova traz um acontecimento selado. O Mestre revela na hora certa: a parte imediata rola um Teste da Família e se aplica, e a consequência fica em aberto para os jogadores mudarem.</div></div>"+
     "<button class=\"primary so-mestre\" onclick=\"avancarEstacao()\">Avançar estação</button></div>";
   /* acontecimentos */
   const hist=S.historicoAcontecimentos||[],abertos=S.acontAbertos||[];
@@ -4362,11 +4455,10 @@ function renderEstacoes(){
   const opts="<option value=\"\">sortear um "+({0:"da primavera",1:"do verão",2:"do outono",3:"do inverno"})[est]+"</option>"+
     ESTACOES.map((e,i)=>"<optgroup label=\""+e+"\">"+ACONTECIMENTOS.filter(c=>c.est===i).map(c=>"<option value=\""+c.id+"\" "+(acontForm.id===c.id?"selected":"")+">"+esc(c.nome)+" ("+tipoAcontecimento(c)+(raridade(c)!=="comum"?", "+RAR_INFO[raridade(c)].nome:"")+")</option>").join("")+"</optgroup>").join("");
   const sel=acontecimentoInfo(acontForm.id);
-  const prev=sel?"<div class=\"hint\" style=\"margin:4px 0 0\">"+esc(sel.texto)+" Testa "+rotuloAttr(sel.anel)+" (TN "+tnManutencao(sel.anel)+"). Cheio: "+
-    sel.ef.map(e=>e.perm?rotuloAttr(e.a)+" "+(e.v>0?"+":"")+e.v+" permanente":fmtLote(e.a,e.v)+(e.d?" por "+prazoLoteCurto(e.d):" até gastar")).join("; ")+".</div>":"";
+  const prev=sel?"<div class=\"hint\" style=\"margin:4px 0 0\">"+esc(sel.texto)+" Na hora ("+esc(testeTxt(sel.im.anel))+"): "+esc(efTxtCheio(sel.im.ef))+". Depois ("+esc(testeTxt(sel.re.anel))+"): "+esc(efTxtCheio(sel.re.ef))+".</div>":"";
   const attrOpts=ATRIBUTOS.map(([k,l])=>"<option value=\""+k+"\" "+(loteForm.attr===k?"selected":"")+">"+l+(k==="vazio"?" (Raises)":"")+"</option>").join("");
   const prazoOpts=PRAZOS_LOTE.map(([v,l])=>"<option value=\""+v+"\" "+(Number(loteForm.prazo)===v?"selected":"")+">"+l+"</option>").join("");
-  document.getElementById("estMestre").innerHTML="<div class=\"secao\" style=\"margin-top:0\">Abrir um acontecimento</div><div class=\"hint\" style=\"margin:0 0 4px\">Fora do sorteio da estação: fica em aberto, como os outros.</div>"+
+  document.getElementById("estMestre").innerHTML="<div class=\"secao\" style=\"margin-top:0\">Abrir um acontecimento</div><div class=\"hint\" style=\"margin:0 0 4px\">Fora do sorteio da estação. Nasce selado, como os outros: só aparece para os jogadores quando você revelar.</div>"+
     "<div class=\"tfl\"><select onchange=\"acontForm.id=this.value;renderEstacoes()\">"+opts+"</select>"+
     "<button class=\"ghost\" onclick=\"lancarAcontecimento()\">abrir</button></div>"+prev+
     "<div class=\"secao\">Lote livre</div><div class=\"tfl\"><select onchange=\"setLoteForm('attr',this.value)\">"+attrOpts+"</select>"+
@@ -4393,10 +4485,11 @@ const GLORIA_EVENTO={
  terras_conflito:0.5,alianca_casamento:0.3,vitoria_torneio:1,refem_prestigio:0.5,rivalidade_juramentada:0.3,artesao_renomado:0.5,escola_artistica:0.5,construcao_fortaleza:0.3,
  magistrado_renome:0.5,corrupcao_escandalo:-1,gloria_batalha:1,derrota_marcante:-0.5,intervencao_senhor:-0.3,guerra_prolongada:0.3,isolamento_deliberado:-0.5,tradicao_marcial:0.5,
  figura_espiritual:0.5,perda_territorio:-0.3,fortaleza_cedida_cla:0.5,dojo_renomado:0.5,corte_inverno:0.5,defesa_gloriosa:1,herdeiro_desonrado:-0.5,traicao_vassalo:-0.3,
- ofensa_corte:-0.5,pacto_ronin:-0.3,casamento_abaixo:-0.3,contrabando_gaijin:-0.3,duelo_morte:0.5,chantagem:-0.3
+ ofensa_corte:-0.5,pacto_ronin:-0.3,casamento_abaixo:-0.3,contrabando_gaijin:-0.3,duelo_morte:0.5,chantagem:-0.3,
+ fieis_hantei:1,exercito_toturi:1,espirito_retornado:1,casa_restaurada:0.5,sobreviventes_otosan:0,guardioes_historias:0.5,cacadores_sangue:0.5,linhagem_cervo_branco:1,remanescentes_gozoku:-0.5,luz_escuridao:0.5,portao_esquecimento:1.5,ancestral_em_casa:0.5,magistratura_editos:0.3,audiencia_toturi:0.5,presente_naga:0.3,contratos_reconstrucao:0,retomada_hiruma:0.5,dia_trovao:1.5,celeiros_fome:0.3,ronin_paz:0,bencao_hitomi:0.5,santuario_novo_sol:0.3,nome_contra_escuridao:2,grande_fome_1132:0,infiltracao_kolat:-0.5,expurgo_corte:-0.3,tocados_escuridao:-0.3,saque_mantis:-0.3,dividida_guerra_civil:-0.5,ancestrais_calados:0,macula_vassalos:-0.5,aranha_mar:0,seita_sangue:-0.5,terras_escorpiao:0,criancas_escorpiao:0.3,segredo_gozoku:0,pergaminho_iuchiban:0,crisantemo_aco:-0.5,troca_cla_yasuki:-0.3,fragmento_ambicao:0,alianca_yoritomo:0,disputa_retornado:0
 };
 const GLORIA_BATALHA={vitoria:0.3,empate:0.1,derrota:-0.2};
-const GLORIA_ACONT={torneio_verao:0.2,favor_daimyo:0.1,intriga_corte:-0.2,saque_guerra:0.1,desercao:-0.1};
+const GLORIA_ACONT={torneio_verao:0.2,favor_daimyo:0.1,intriga_corte:-0.2,saque_guerra:0.1,desercao:-0.1,peregrinos_portao:0.1,ancestral_corte:0.1,ecos_yasuki:-0.1,alianca_desfeita:0.1};
 function gloriaInicial(){
   let g=S.idade?(GLORIA_IDADE[S.idade]||1):0;
   (S.origem?[S.origem]:[]).concat(S.eventos||[]).forEach(id=>{g+=GLORIA_EVENTO[id]||0;});
