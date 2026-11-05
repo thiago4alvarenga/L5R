@@ -21,3 +21,11 @@ create policy "l5r_insert" on public.l5r_familias for insert with check (true);
 create policy "l5r_update" on public.l5r_familias for update using (true) with check (true);
 
 alter publication supabase_realtime add table public.l5r_familias;
+
+-- 2026-11-05: a lista de famílias do app ordena por updated_at. O app já manda a data em cada
+-- gravação; este gatilho garante a ordem mesmo se alguma gravação vier sem ela.
+create or replace function public.l5r_tocar_updated_at() returns trigger language plpgsql as $$
+begin new.updated_at := now(); return new; end $$;
+drop trigger if exists l5r_tocar on public.l5r_familias;
+create trigger l5r_tocar before insert or update on public.l5r_familias
+  for each row execute function public.l5r_tocar_updated_at();

@@ -591,6 +591,13 @@
     background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
   .menucorpo label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--ink2)}
   .menuacoes{display:flex;gap:6px;flex-wrap:wrap}
+  .famlista{min-width:300px!important;max-height:70vh;overflow:auto}
+  .famtit{font-family:var(--font-display);font-size:14px} .famtit small{font-family:var(--font-body);font-size:11px;color:var(--muted-tx);margin-left:6px}
+  .famitem{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:6px 8px;cursor:pointer;margin-bottom:4px;color:var(--ink)}
+  .famitem.on{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+  .famitem img,.famsemmon{width:30px;height:30px;object-fit:contain;flex:none;font-size:20px;text-align:center}
+  .famitem .famtx{display:flex;flex-direction:column;min-width:0} .famitem .famtx small{font-size:11px;color:var(--muted-tx)}
+  .famavancado>summary{cursor:pointer;font-size:11.5px;color:var(--muted-tx)}
   button.perigo{color:var(--seal);border-color:rgba(181,53,43,.45)}
   .selo-leitura{font-family:var(--font-display);font-size:12.5px;color:#f6e3d8;background:var(--seal);padding:2px 10px;border-radius:3px;transform:rotate(-2deg)}
   body.modo-jogador .gcorpo button:not(.tabbtn),body.modo-jogador .attrrow .pts{opacity:.4;pointer-events:none}
@@ -825,11 +832,16 @@
     <div class="casaacoes">
       <span class="selo-leitura" id="seloLeitura" hidden>só leitura</span>
       <label class="casapapel">Papel <select id="papelSel"><option value="mestre">Mestre</option><option value="jogador">Jogador (só leitura)</option></select></label>
-      <details class="casamenu salabox">
-        <summary id="syncStatus">nuvem</summary>
-        <div class="menucorpo">
-          <label>Sala <input type="text" id="salaInput" placeholder="código da família"></label>
-          <div class="menuacoes"><button class="ghost" id="btnConectar">Conectar ou criar</button><button class="ghost" id="btnDesconectar">Desconectar</button></div>
+      <details class="casamenu salabox" id="familiasMenu">
+        <summary id="syncStatus">Famílias</summary>
+        <div class="menucorpo famlista">
+          <div class="famtit">Famílias da mesa <small id="famStatus"></small></div>
+          <div id="listaFamilias"><div class="hint">carregando…</div></div>
+          <div class="menuacoes"><button class="ghost" onclick="novaFamiliaNuvem()">+ nova família</button><button class="ghost" onclick="carregarListaFamilias()">atualizar</button></div>
+          <details class="famavancado"><summary>código manual</summary>
+            <label>Código <input type="text" id="salaInput" placeholder="código da família"></label>
+            <div class="menuacoes"><button class="ghost" id="btnConectar">abrir</button><button class="ghost" id="btnDesconectar">trabalhar offline</button></div>
+          </details>
         </div>
       </details>
       <details class="casamenu">
@@ -2583,7 +2595,7 @@ async function conectarSala(codigo){
   sala=codigo.trim().toLowerCase();sbStatus="conectando…";renderSync();
   const{data,error}=await sb.from(SUPA_TABELA).select("data").eq("codigo",sala).maybeSingle();
   if(!error&&data&&data.data){S=data.data;const mig=migrarEstado(S);salvarLocal();render();if(mig)pushCloud();}
-  else{await sb.from(SUPA_TABELA).upsert({codigo:sala,data:S});}
+  else{await sb.from(SUPA_TABELA).upsert({codigo:sala,data:S,updated_at:new Date().toISOString()});}
   assinarSala();sbStatus="conectado";renderSync();
 }
 function assinarSala(){
@@ -2597,17 +2609,69 @@ function assinarSala(){
   });
   sbCanal.subscribe(status=>{if(status==="SUBSCRIBED")sbCanal.track({papel,em:Date.now()});});
 }
-function pushCloud(){if(!sb||!sala)return;sb.from(SUPA_TABELA).upsert({codigo:sala,data:S}).then(()=>{});}
+function pushCloud(){if(!sb||!sala)return;sb.from(SUPA_TABELA).upsert({codigo:sala,data:S,updated_at:new Date().toISOString()}).then(()=>{});}
+/* ============ FAMÍLIAS DA MESA ============
+   2026-11-05 (Thiago: uma mesa por vez, jogadores confiáveis). Toda família fica na nuvem, sem
+   precisar salvar nada. Ao abrir o site, entra sozinho na família mudada mais recentemente; o
+   menu Famílias lista todas e troca de uma para outra. Cada família é uma linha da tabela
+   (o código é a "sala" de antes). Uma ficha que só existia neste navegador sobe para a nuvem
+   antes de ser trocada, para não se perder. */
+let listaFamilias=[];
+function slugFamilia(n){return((n||"familia").normalize("NFD").replace(/[^a-zA-Z0-9]+/g,"-").replace(/^-|-$/g,"").toLowerCase()||"familia")+"-"+uid().slice(0,4);}
+function quandoTxt(iso){if(!iso)return"";const d=(Date.now()-new Date(iso).getTime())/60000;
+  if(d<2)return"agora";if(d<60)return"há "+Math.round(d)+" min";if(d<1440)return"há "+Math.round(d/60)+" h";return"há "+Math.round(d/1440)+" dia"+(Math.round(d/1440)===1?"":"s");}
+async function carregarListaFamilias(){
+  sbInit();const box=document.getElementById("listaFamilias");
+  if(!sb){if(box)box.innerHTML="<div class=\"hint\">Sem nuvem neste navegador: a ficha fica só aqui.</div>";return[];}
+  const{data,error}=await sb.from(SUPA_TABELA).select("codigo,updated_at,nome:data->>nome,cla:data->>cla,idade:data->>idade").order("updated_at",{ascending:false}).limit(40);
+  listaFamilias=error?[]:(data||[]);renderListaFamilias();return listaFamilias;
+}
+function renderListaFamilias(){
+  const box=document.getElementById("listaFamilias");if(!box)return;
+  box.innerHTML=listaFamilias.length?listaFamilias.map(f=>{const c=CLAS.find(x=>x.id===f.cla);
+    return "<button class=\"famitem"+(f.codigo===sala?" on":"")+"\" onclick=\"abrirFamilia('"+esc(f.codigo)+"')\">"+(c?"<img src=\""+monSrc(c.id)+"\" alt=\"\">":"<span class=\"famsemmon\">家</span>")+
+      "<span class=\"famtx\"><b>"+esc(f.nome||"Família")+"</b><small>"+esc((c?c.nome:"sem clã")+(f.idade?" · "+(IDADE_LABEL[f.idade]||f.idade):"")+" · "+quandoTxt(f.updated_at))+"</small></span></button>";}).join("")
+    :"<div class=\"hint\">Nenhuma família na nuvem ainda.</div>";
+}
+async function abrirFamilia(codigo){
+  if(!codigo)return;if(codigo===sala){const m=document.getElementById("familiasMenu");if(m)m.open=false;return;}
+  if(sbCanal&&sb)sb.removeChannel(sbCanal);sbCanal=null;
+  await conectarSala(codigo);
+  try{localStorage.setItem("l5r_sala_atual",codigo);}catch(e){}
+  const m=document.getElementById("familiasMenu");if(m)m.open=false;
+  feedPush("Família aberta: "+(S.nome||"Família")+".");render();carregarListaFamilias();
+}
+async function novaFamiliaNuvem(){
+  if(bloqueadoLeitura())return;sbInit();
+  const nome=prompt("Nome da família nova:","Família");if(nome===null)return;
+  if(sbCanal&&sb)sb.removeChannel(sbCanal);sbCanal=null;
+  S=estadoInicial();S.nome=(nome||"Família").trim()||"Família";salvarLocal();
+  if(sb){const cod=slugFamilia(S.nome);await sb.from(SUPA_TABELA).upsert({codigo:cod,data:S,updated_at:new Date().toISOString()});await abrirFamilia(cod);}
+  else render();
+}
+async function abrirMaisRecente(){
+  sbInit();if(!sb)return;
+  let atual=null;try{atual=localStorage.getItem("l5r_sala_atual");}catch(e){}
+  /* ficha que só existia neste navegador: sobe antes de trocar */
+  let l=await carregarListaFamilias();
+  if(!atual&&S&&(S.cla||(S.personagens||[]).length||(S.eventos||[]).length)&&!l.some(f=>(f.nome||"")===(S.nome||"")&&(f.cla||"")===(S.cla||""))){
+    const cod=slugFamilia(S.nome);await sb.from(SUPA_TABELA).upsert({codigo:cod,data:S,updated_at:new Date().toISOString()});
+    l=await carregarListaFamilias();
+  }
+  if(l.length){await conectarSala(l[0].codigo);try{localStorage.setItem("l5r_sala_atual",l[0].codigo);}catch(e){}renderListaFamilias();}
+  else{const cod=slugFamilia(S.nome);await sb.from(SUPA_TABELA).upsert({codigo:cod,data:S,updated_at:new Date().toISOString()});await conectarSala(cod);try{localStorage.setItem("l5r_sala_atual",cod);}catch(e){}carregarListaFamilias();}
+}
 function agendarPush(){if(!sala)return;clearTimeout(pushTimer);pushTimer=setTimeout(pushCloud,600);}
 function desconectar(){if(sbCanal&&sb)sb.removeChannel(sbCanal);sbCanal=null;sala=null;presentes=[];sbStatus="off";renderSync();}
 function mudarPapel(p){papel=p;if(sbCanal)sbCanal.track({papel,em:Date.now()});render();}
 function renderSync(){
   const s=document.getElementById("syncStatus");if(!s)return;
-  const base=!SUPA_KEY?"cole a chave no topo do index.html":(sala?("conectado · sala “"+sala+"”"):(sbStatus==="off"?"pronta — digite uma sala e conecte":sbStatus));
+  const base=!SUPA_KEY?"cole a chave no topo do index.html":(sala?("conectado · família “"+sala+"”"):(sbStatus==="off"?"pronta":sbStatus));
   let quem="";
   if(sala&&presentes.length){const nm=presentes.filter(p=>p.papel==="mestre").length,nj=presentes.filter(p=>p.papel==="jogador").length;
     quem=" · online: "+presentes.length+" ("+nm+" mestre, "+nj+" jogador"+(nj===1?"":"es")+")";}
-  s.textContent=sala?("● sala "+sala+(presentes.length?" ("+presentes.length+" online)":"")):"Sala: offline";
+  s.textContent=sala?("● "+(S.nome||"Família")+(presentes.length>1?" · "+presentes.length+" online":"")+" ▾"):"Famílias ▾ (offline)";
+  const fs=document.getElementById("famStatus");if(fs)fs.textContent=sala?(presentes.length?presentes.length+" online agora":"conectado"):"offline";
   s.title="nuvem: "+base+quem;
 }
 
@@ -5773,7 +5837,8 @@ document.getElementById("btnAddTerreno").onclick=addTerreno;
 document.getElementById("btnAddPersonagem").onclick=addPersonagem;
 document.getElementById("btnAddTropa").onclick=addTropa;
 document.getElementById("btnAddConversao").onclick=addConversao;
-document.getElementById("btnConectar").onclick=()=>conectarSala(document.getElementById("salaInput").value);
+document.getElementById("btnConectar").onclick=()=>abrirFamilia((document.getElementById("salaInput").value||"").trim().toLowerCase());
+{const fm=document.getElementById("familiasMenu");if(fm&&fm.addEventListener)fm.addEventListener("toggle",()=>{if(fm.open)carregarListaFamilias();});}
 document.getElementById("btnDesconectar").onclick=desconectar;
 document.getElementById("papelSel").onchange=e=>mudarPapel(e.target.value);
 /* O palco do mapa tem tamanho calculado em px (pra posicionar as marcações em %), então
@@ -5782,6 +5847,8 @@ document.getElementById("papelSel").onchange=e=>mudarPapel(e.target.value);
 if(typeof window!=="undefined"&&window.addEventListener)window.addEventListener("resize",()=>{if(abaPrincipal==="mapa")renderMapa();});
 
 render();
+/* entra sozinho na família mudada mais recentemente */
+if(typeof window!=="undefined"&&window.supabase)abrirMaisRecente().catch(()=>{});
 </script>
 </body>
 </html>
