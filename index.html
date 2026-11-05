@@ -472,6 +472,25 @@
   .feridastab tr.atual td{background:var(--seal);color:#faf3e6;border-color:var(--seal)}
 
   .eventgrid{display:flex;flex-direction:column;gap:4px;max-height:560px;overflow:auto;padding-right:6px}
+  .cronbarra{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+  .cronprog{display:flex;gap:6px;flex-wrap:wrap;margin-right:auto} .cronprog span{font-size:12px;padding:3px 10px;border-radius:20px;border:1px solid var(--bad);color:var(--bad)} .cronprog span.ok{border-color:var(--good);color:var(--good)}
+  .evtimeline{display:flex;flex-direction:column;gap:4px;margin-bottom:12px;border-left:2px solid var(--line);padding-left:10px}
+  .evlinha{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--good);border-radius:6px}
+  .evlinha.t-adverso{border-left-color:var(--bad)} .evlinha.t-ambiguo{border-left-color:#a8741a} .evlinha.t-origem{border-left-color:var(--seal)}
+  .evlinha>summary{display:flex;gap:10px;align-items:center;padding:6px 10px;cursor:pointer;list-style:none;flex-wrap:wrap}
+  .evlinha>summary::-webkit-details-marker{display:none}
+  .evn{width:24px;height:24px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none}
+  .evt{display:flex;flex-direction:column;min-width:160px;flex:1} .evt b{font-family:var(--font-display);font-size:14.5px} .evt small{font-size:11.5px;color:var(--muted-tx)}
+  .evlinha .em{display:flex;gap:4px;flex-wrap:wrap} .evlinha .em span,.evcatalogo .em span{font-size:11px;padding:1px 6px;border-radius:4px;background:var(--panel2)}
+  .evlinha .em .pos,.evcatalogo .em .pos{color:var(--good)} .evlinha .em .neg,.evcatalogo .em .neg{color:var(--bad)}
+  .evcorpo{padding:4px 14px 10px 44px;font-family:var(--font-voice);font-style:italic;font-size:15px;line-height:1.55;color:var(--ink2)}
+  .evcorpo .gift{font-family:var(--font-body);font-style:normal;font-size:12px;color:var(--seal);margin-top:4px}
+  .evfiltros{display:flex;flex-direction:column;gap:2px;margin-bottom:8px} .evbusca{max-width:280px}
+  .evcatalogo{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+  .evcatalogo .torncard .ed{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;line-height:1.5}
+  .evcatalogo .torncard:hover .ed{-webkit-line-clamp:unset}
+  @media (max-width:720px){.evcatalogo{grid-template-columns:1fr;gap:6px}.evcatalogo .torncard{padding:10px 12px}.evcatalogo .torncard .ed{-webkit-line-clamp:2;font-size:13.5px}.evcorpo{padding-left:14px}.evlinha .em{order:5;flex-basis:100%}.evfiltros .filtrotema{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-bottom:4px}.evfiltros .filtrotema button{flex:none;font-size:12px!important;padding:4px 10px!important}.evlinha .rar{order:4}}
+  .evcatalogo .torncard .em.reveal{opacity:1;max-height:none;pointer-events:auto;margin-top:6px;display:flex;gap:4px;flex-wrap:wrap}
   .torncard{position:relative;background:var(--panel);padding:14px 16px 12px;cursor:pointer;transition:background .15s}
   .torncard::before{content:"";position:absolute;left:6px;right:6px;top:-3px;height:6px;
     background:linear-gradient(115deg,transparent 48%,var(--bg) 49% 51%,transparent 52%) 0 0/20px 6px repeat-x}
@@ -1041,17 +1060,17 @@
   <details class="grupo" data-g="cronica" open>
     <summary><span class="gk" aria-hidden="true">史</span><span class="gt">Crônica</span><span class="gd">eventos, conquistas, sacrifícios e registro</span></summary>
     <div class="gcorpo">
-<div class="grid">
-<div><div class="panel"><h2><span class="kan">史</span>Eventos Históricos<span class="sub" id="eventosSub">0/0 escolhidos</span></h2>
-        <button class="ghost" id="btnSortearEventos" style="margin-bottom:8px">🎲 sortear o que falta</button>
-        <button class="ghost" id="btnLimparEventos" style="margin-bottom:8px">limpar os eventos</button>
+<div class="panel cronpanel"><h2><span class="kan">史</span>Eventos Históricos<span class="sub" id="eventosSub">0/0 escolhidos</span></h2>
+        <div class="cronbarra"><div id="cronProgresso" class="cronprog"></div>
+          <button class="ghost" id="btnSortearEventos">🎲 sortear o que falta</button>
+          <button class="ghost" id="btnLimparEventos">limpar os eventos</button></div>
         <div id="origemBox"></div>
-        <div class="eventgrid" id="eventos"></div>
-        <div style="margin-top:16px;padding-top:12px;border-top:1px dashed var(--line)">
-          <div class="tag" style="display:block;margin-bottom:8px;font-size:11px">Conquistas registradas pelo Mestre</div>
+        <div id="eventos"></div>
+      </div>
+<div class="grid">
+<div><div class="panel"><h2><span class="kan">功</span>Conquistas<span class="sub">registradas pelo Mestre</span></h2>
           <div class="linhas" id="conquistas"></div>
           <button class="ghost" id="btnAddConquista" style="margin-top:8px">+ registrar conquista</button>
-        </div>
       </div></div>
 <div><div class="panel"><h2><span class="kan">記</span>Registro<span class="sub">o que mudou</span></h2>
         <div class="log" id="log"></div>
@@ -4495,6 +4514,7 @@ function eventoCardHTML(e,opts){
     doa.lotes.forEach(l=>{presente+="<div class=\"gift"+(l.valor<0?" neg":"")+"\" title=\"temporário: soma no disponível, não no Nível\">"+(l.valor<0?"⚖ ":"蔵 ")+esc(fmtLote(l.attr,l.valor))+" temporário, "+prazoLoteCurto(l.d)+": "+esc(l.motivo)+"</div>";});
   }
   const rr=raridade(e);
+  if(opts.soPresentes)return presente;
   const tipo="<div class=\"tipo t-"+(e.tipo||"favoravel")+"\">"+(rr!=="comum"?"<span class=\"rar rar-"+rr+"\" title=\"aparece "+(rr==="incomum"?"metade das vezes":rr==="raro"?"uma vez a cada seis":"muito raramente")+" no sorteio"+(RAR_INFO[rr].mult>1?"; modificadores ×"+String(RAR_INFO[rr].mult).replace(".",","):"")+"\">"+RAR_INFO[rr].nome+"</span>":"")+(e.tipo&&e.tipo!=="favoravel"?TIPO_EVENTO_LABEL[e.tipo]:"")+(e.tema?"<span class=\"tema\">"+TEMA_EVENTO[e.tema]+"</span>":"")+
     (e.idadeMin?"<span class=\"tema\">só "+IDADE_LABEL[e.idadeMin]+" ou mais velha</span>":"")+"</div>";
   const remover=opts.comRemover?"<button class=\"ghost\" style=\"margin-top:6px\" onclick=\"event.stopPropagation();toggleEvento('"+e.id+"')\">✕ remover</button>":"";
@@ -4504,32 +4524,51 @@ function eventoCardHTML(e,opts){
 }
 let filtroTema="";
 function setFiltroTema(t){filtroTema=(filtroTema===t?"":t);renderEventos();}
+/* 2026-11-05: a Crônica em duas partes. Em cima, a história da casa como uma linha do tempo
+   (origem e eventos, um por linha, que abre para ler). Embaixo, o catálogo para escolher, em
+   grade larga, com filtros de tipo, tema e raridade e busca por nome. */
+let filtroTipoEv="",filtroRarEv="",filtroBuscaEv="";
+function setFiltroEv(campo,v){if(campo==="tipo")filtroTipoEv=v;else if(campo==="rar")filtroRarEv=v;else filtroBuscaEv=v;renderEventos();}
+function chipsEvento(e){return ATRIBUTOS.filter(([k])=>e.mods[k]).map(([k,l])=>{const v=modEvento(e,k);return "<span class=\""+(v>0?"pos":"neg")+"\">"+l.slice(0,3)+" "+(v>0?"+":"")+v+"</span>";}).join("");}
+function eventoLinhaHTML(e,ehOrigem,n){
+  const rr=raridade(e),desc=EVENTO_DESC[e.id]||"";
+  return "<details class=\"evlinha t-"+(e.tipo||"favoravel")+"\"><summary>"+
+    "<span class=\"evn\">"+(ehOrigem?"源":n)+"</span>"+
+    "<span class=\"evt\"><b>"+esc(e.nome)+"</b><small>"+(ehOrigem?"origem":TIPO_EVENTO_LABEL[e.tipo]||"favorável")+(e.tema?" · "+TEMA_EVENTO[e.tema]:"")+"</small></span>"+
+    (rr!=="comum"?"<span class=\"rar rar-"+rr+"\">"+RAR_INFO[rr].nome+"</span>":"")+
+    "<span class=\"em\">"+chipsEvento(e)+"</span>"+(e.concede?"<span title=\"concede uma terra\">🎁</span>":"")+
+    (ehOrigem?"<button class=\"ghost\" onclick=\"event.preventDefault();trocarOrigem()\">trocar</button>":"<button class=\"ghost\" onclick=\"event.preventDefault();toggleEvento('"+e.id+"')\" aria-label=\"tirar\">✕</button>")+
+    "</summary><div class=\"evcorpo\">"+esc(desc)+eventoCardHTML(e,{soPresentes:true})+"</div></details>";
+}
 function renderEventos(){
   const vagas=vagasEventos(),madv=minAdversos();
-  document.getElementById("eventosSub").textContent="origem e "+S.eventos.length+"/"+vagas+" eventos ("+(IDADE_LABEL[S.idade]||"idade não escolhida")+")"+(madv?", adversos "+adversosEscolhidos()+" (mínimo "+madv+")":"");
-  const ob=document.getElementById("origemBox");
+  document.getElementById("eventosSub").textContent=IDADE_LABEL[S.idade]?"família "+IDADE_LABEL[S.idade].toLowerCase():"idade não escolhida";
   const o=S.origem&&eventoInfo(S.origem);
-  if(ob){
-    if(o&&!verTodasOrigens){
-      ob.innerHTML="<div class=\"secao\">Origem</div>"+eventoCardHTML(o,{compact:true})+
-        "<button class=\"ghost\" style=\"margin-top:6px\" onclick=\"trocarOrigem()\">trocar a origem</button>";
-    }else{
-      ob.innerHTML="<div class=\"secao\">Origem: como a família surgiu</div><div class=\"hint\" style=\"margin:0 0 8px\">Toda família tem uma, e ela é o primeiro evento da história.</div>"+
-        "<div class=\"eventgrid origens\">"+EVENTOS.filter(e=>e.tipo==="origem").map(e=>eventoCardHTML(e,{origem:true})).join("")+"</div>"+
-        (o?"<button class=\"ghost\" style=\"margin-top:6px\" onclick=\"verTodasOrigens=false;render()\">manter "+esc(o.nome)+"</button>":"");
-    }
-  }
+  const prog=document.getElementById("cronProgresso");
+  if(prog)prog.innerHTML="<span class=\""+(o?"ok":"")+"\">origem "+(o?"✓":"falta")+"</span><span class=\""+(S.eventos.length>=vagas?"ok":"")+"\">eventos "+S.eventos.length+"/"+vagas+"</span>"+(madv?"<span class=\""+(adversosEscolhidos()>=madv?"ok":"")+"\">adversos "+adversosEscolhidos()+"/"+madv+"</span>":"");
+  /* linha do tempo */
+  const escolhidos=S.eventos.map(id=>eventoInfo(id)).filter(Boolean);
+  const ob=document.getElementById("origemBox");
+  if(ob)ob.innerHTML=(o||escolhidos.length)?"<div class=\"secao\">A história da casa</div><div class=\"evtimeline\">"+(o?eventoLinhaHTML(o,true):"")+escolhidos.map((e,i)=>eventoLinhaHTML(e,false,i+1)).join("")+"</div>":"";
+  /* catálogo */
   const box=document.getElementById("eventos");
-  if(S.eventos.length>0&&!verTodosEventos){
-    const escolhidos=S.eventos.map(id=>eventoInfo(id)).filter(Boolean);
-    box.innerHTML="<div class=\"secao\">Eventos históricos</div>"+escolhidos.map(e=>eventoCardHTML(e,{compact:true,comRemover:true})).join("")+
-      "<div class=\"torncard\" style=\"display:flex;align-items:center;justify-content:center;cursor:pointer\" onclick=\"verEventosCompletos()\"><div class=\"en\">ver lista completa ou trocar</div></div>";
-    return;
-  }
-  const filtros="<div class=\"filtrotema\" role=\"group\" aria-label=\"Filtrar por tema\">"+
-    ["",...Object.keys(TEMA_EVENTO)].map(t=>"<button class=\"ghost"+(filtroTema===t?" on":"")+"\" onclick=\"setFiltroTema('"+t+"')\">"+(t?TEMA_EVENTO[t]:"Todos")+"</button>").join("")+"</div>";
-  const lista=EVENTOS.filter(e=>e.tipo!=="origem"&&(!filtroTema||e.tema===filtroTema));
-  box.innerHTML="<div class=\"secao\">Eventos históricos</div>"+(vagas?filtros+lista.map(e=>eventoCardHTML(e)).join(""):"<div class=\"hint\">Uma família Nascente só tem a origem.</div>");
+  const precisaOrigem=!o||verTodasOrigens;
+  const fechado=!precisaOrigem&&S.eventos.length>=vagas&&!verTodosEventos;
+  if(fechado){box.innerHTML="<button class=\"ghost\" onclick=\"verEventosCompletos()\">ver o catálogo e trocar eventos</button>";return;}
+  const titulo=precisaOrigem?"Escolha a origem: como a família surgiu":"Escolha os eventos ("+(vagas-S.eventos.length)+" vaga"+(vagas-S.eventos.length===1?"":"s")+")";
+  if(!precisaOrigem&&!vagas){box.innerHTML="<div class=\"hint\">Uma família Nascente só tem a origem.</div>";return;}
+  const bt=(campo,v,l,atual)=>"<button class=\"ghost"+(atual===v?" on":"")+"\" onclick=\"setFiltroEv('"+campo+"','"+v+"')\">"+l+"</button>";
+  const filtros="<div class=\"evfiltros\">"+
+    (precisaOrigem?"":"<div class=\"filtrotema\">"+bt("tipo","","Todos",filtroTipoEv)+bt("tipo","favoravel","Favoráveis",filtroTipoEv)+bt("tipo","adverso","Adversos",filtroTipoEv)+bt("tipo","ambiguo","Ambíguos",filtroTipoEv)+"</div>")+
+    "<div class=\"filtrotema\">"+["",...Object.keys(TEMA_EVENTO)].map(t=>"<button class=\"ghost"+(filtroTema===t?" on":"")+"\" onclick=\"setFiltroTema('"+t+"')\">"+(t?TEMA_EVENTO[t]:"Todos os temas")+"</button>").join("")+"</div>"+
+    "<div class=\"filtrotema\">"+bt("rar","","Qualquer raridade",filtroRarEv)+Object.keys(RAR_INFO).map(r=>bt("rar",r,RAR_INFO[r].nome,filtroRarEv)).join("")+"</div>"+
+    "<input class=\"evbusca\" placeholder=\"buscar pelo nome\" value=\""+esc(filtroBuscaEv)+"\" oninput=\"filtroBuscaEv=this.value;clearTimeout(window._evb);window._evb=setTimeout(renderEventos,250)\"></div>";
+  const busca=filtroBuscaEv.trim().toLowerCase();
+  const lista=EVENTOS.filter(e=>(precisaOrigem?e.tipo==="origem":e.tipo!=="origem")&&(!filtroTema||e.tema===filtroTema)&&(!filtroTipoEv||precisaOrigem||e.tipo===filtroTipoEv)&&(!filtroRarEv||raridade(e)===filtroRarEv)&&(!busca||e.nome.toLowerCase().includes(busca)));
+  box.innerHTML="<div class=\"secao\">"+titulo+"</div>"+filtros+
+    "<div class=\"evcatalogo\">"+(lista.map(e=>eventoCardHTML(e,precisaOrigem?{origem:true}:{})).join("")||"<div class=\"hint\">Nada com esses filtros.</div>")+"</div>"+
+    (precisaOrigem&&o?"<button class=\"ghost\" style=\"margin-top:8px\" onclick=\"verTodasOrigens=false;render()\">manter "+esc(o.nome)+"</button>":"")+
+    (!precisaOrigem&&S.eventos.length>=vagas?"<button class=\"ghost\" style=\"margin-top:8px\" onclick=\"verTodosEventos=false;render()\">fechar o catálogo</button>":"");
 }
 function opcoesAtributoConquista(sel,id,itemId){
   return "<select onchange=\"setConquistaItem('"+id+"','"+itemId+"','attr',this.value)\">"+
