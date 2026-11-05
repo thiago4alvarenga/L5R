@@ -423,6 +423,9 @@
   .feridasgrid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px}
   .fer{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 5px;display:flex;flex-direction:column;align-items:center;font-size:10.5px;color:var(--muted-tx);text-align:center}
   .fer b{color:var(--ink);font-size:13px} .fer.atual{background:var(--seal);border-color:var(--seal);color:#faf3e6} .fer.atual b{color:#fff}
+  .armacard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:2px 0 4px} .armacard .linha{border:0;background:none;margin:0}
+  .rolarma{font-size:12px;color:var(--muted-tx);white-space:nowrap} .rolarma b{font-family:var(--font-display);color:var(--ink);font-size:14px} .rolarma i.bad{color:var(--bad);font-style:normal;font-size:11px}
+  .armainfo{font-size:11.5px;color:var(--muted-tx);padding:0 10px;line-height:1.4}
   .linha.pericia .rol{font-family:var(--font-display);font-weight:600;min-width:38px;text-align:center}
   .tag.escola{border-color:var(--accent);color:var(--accent)}
   .vdgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px} .vdcab{margin-bottom:6px}
@@ -432,7 +435,7 @@
   .armlinha select{max-width:220px}
   details.tecnica{border-bottom:1px solid var(--line);padding:6px 0} details.tecnica>summary{cursor:pointer}
   details.tecnica .hint{margin:4px 0 2px 22px}
-  @media (max-width:720px){.criacao,.armlinha{display:grid;grid-template-columns:1fr 1fr;gap:6px}.criacao .monimg{display:none!important}.armlinha select{max-width:none;grid-column:1/-1}.saldos.compacto .saldo{padding:3px 6px;font-size:11.5px}.saldos.compacto input{width:40px!important;min-width:0!important;padding:0!important;height:auto!important}.aneis5{grid-template-columns:repeat(2,minmax(0,1fr))}.feridasgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.vdgrid{grid-template-columns:1fr}}
+  @media (max-width:720px){.fichapanel .linha>.campo-nome{flex:1 1 100%!important}.armaspanel .linha{position:relative;padding-right:52px!important}.armaspanel .linha>.del{position:absolute;right:6px;top:6px;margin:0}.armaspanel .linha>input.campo-curto{width:64px!important;flex:none!important}.armacard .armainfo{padding:0 8px}.criacao,.armlinha{display:grid;grid-template-columns:1fr 1fr;gap:6px}.criacao .monimg{display:none!important}.armlinha select{max-width:none;grid-column:1/-1}.saldos.compacto .saldo{padding:3px 6px;font-size:11.5px}.saldos.compacto input{width:40px!important;min-width:0!important;padding:0!important;height:auto!important}.aneis5{grid-template-columns:repeat(2,minmax(0,1fr))}.feridasgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.vdgrid{grid-template-columns:1fr}}
   .feridastab{width:100%;border-collapse:separate;border-spacing:0 4px;font-size:12.5px}
   .feridastab td{padding:6px 10px;background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .feridastab td:first-child{border-left:1px solid var(--line);border-radius:8px 0 0 8px}
@@ -1687,10 +1690,13 @@ const PERSONAGEM_PAPEL=[
  {nome:"Cortesão Jovem",custo:5,efeito:"influencia",valor:1}, /* o cortesão traz Influência, pela metade para não se pagar sozinho (era Autoridade) */
  {nome:"Cortesão Experiente",custo:10,efeito:"influencia",valor:2},
  {nome:"Cortesão Veterano",custo:20,efeito:"influencia",valor:3},
- /* Shugenja e Monge: o valor/2 (para cima) vira Pontos de Vazio da família por estação */
- {nome:"Shugenja Jovem",custo:15,efeito:"vazio",valor:1},
- {nome:"Shugenja Experiente",custo:25,efeito:"vazio",valor:3},
- {nome:"Shugenja Veterano",custo:40,efeito:"vazio",valor:5},
+ /* Shugenja e Monge: o valor/2 (para cima) vira Pontos de Vazio da família por estação.
+    2026-11-05 (Thiago: campanha com pouca intervenção dos kami): shugenja ficou raro e caro.
+    Um jovem já pede mais da metade da Influência típica de uma família (~50); um veterano,
+    mais que ela inteira. Era 15/25/40. Os dados pela origem continuam sem custo. */
+ {nome:"Shugenja Jovem",custo:30,efeito:"vazio",valor:1},
+ {nome:"Shugenja Experiente",custo:50,efeito:"vazio",valor:3},
+ {nome:"Shugenja Veterano",custo:75,efeito:"vazio",valor:5},
  {nome:"Monge Jovem",custo:10,efeito:"vazio",valor:1},
  {nome:"Monge Experiente",custo:15,efeito:"vazio",valor:3},
  {nome:"Monge Veterano",custo:25,efeito:"vazio",valor:5}
@@ -1730,7 +1736,10 @@ const ESCOLA_ORDEM=["bushi","cortesao","shugenja"];
 const ESCOLA_CUSTO_BASE=15; /* custo de fundar a 1ª escola da família, em qualquer dos três tipos */
 const ESCOLA_MULT_ORDEM=[1,2.5,5]; /* multiplicador sobre ESCOLA_CUSTO_BASE conforme quantas escolas a família já tem ANTES de fundar esta (0→1x, 1→2.5x, 2→5x) */
 const ESCOLA_NIVEL_CUSTOS=[12,18,25,35]; /* custo pra subir 1→2, 2→3, 3→4, 4→5 (só Bushi/Cortesão) — cumulativo até nível 5: 15+12+18+25+35=105, mais que o dobro do pool típico */
-const ENCANTAMENTO_CUSTO_POR_MASTERY=8; /* custo de um Encantamento Protegido = mastery×8 (mastery 6 = 48, quase o pool inteiro de Riqueza de uma família típica) */
+/* 2026-11-05: o Shoin custa o triplo para fundar (um templo que forma shugenja é raro), e o
+   encantamento protegido sobe de mastery×8 para mastery×12. */
+const ESCOLA_CUSTO_TIPO={bushi:1,cortesao:1,shugenja:3};
+const ENCANTAMENTO_CUSTO_POR_MASTERY=12; /* custo de um Encantamento Protegido = mastery×8 (mastery 6 = 48, quase o pool inteiro de Riqueza de uma família típica) */
 /* Nem todo clã do app tem um clanId correspondente nos data packs OpenNingia (faltam Gato,
    Centopeia e Vespa como clãs catalogados, e Tartaruga existe mas sem escola bushi/cortesã/
    shugenja marcada nesse pacote) — pra essas, escolasCanonicasDisponiveis() cai no fallback
@@ -1749,7 +1758,7 @@ function escolasCanonicasDisponiveis(tipo){
   return lista;
 }
 function escolasAtivasCount(){return ESCOLA_ORDEM.filter(t=>S.escolas[t]&&S.escolas[t].ativa).length;}
-function custoFundarEscola(tipo){if(S.escolas[tipo]&&S.escolas[tipo].ativa)return 0;return Math.round(ESCOLA_CUSTO_BASE*ESCOLA_MULT_ORDEM[Math.min(escolasAtivasCount(),ESCOLA_MULT_ORDEM.length-1)]);}
+function custoFundarEscola(tipo){if(S.escolas[tipo]&&S.escolas[tipo].ativa)return 0;return Math.round(ESCOLA_CUSTO_BASE*(ESCOLA_CUSTO_TIPO[tipo]||1)*ESCOLA_MULT_ORDEM[Math.min(escolasAtivasCount(),ESCOLA_MULT_ORDEM.length-1)]);}
 function custoProximoNivelEscola(tipo){
   const e=S.escolas[tipo];if(!e||!e.ativa||!ESCOLA_TIPOS[tipo].temNivel)return null;
   const idx=e.nivel-1;
@@ -3880,7 +3889,7 @@ const METER_INFO={
   fortunas:"Soma das curvas de Autoridade, Domínio e Vazio, mais a Fortuna de manutenção dos terrenos e tropas e o bônus de personagens com título ou posição — mede o prestígio geral da família.",
   favor:"Regra de mesa: escala com o valor atual de Fortunas. Este número é o Raise bônus que qualquer membro da família ganha em testes sociais dentro do próprio território, em ações que beneficiem diretamente a família. Fortunas muito baixas viram desfavor de verdade (número negativo) — o mesmo valor entra como dificuldade extra nesses testes.",
   dojo:"Quantos samurai as escolas fundadas formam a cada estação, cada uma pelo seu Anel. Antes: quantos samurai o dojo da família forma de fato a cada estação, de acordo com o Vazio alcançado — retidão e devoção atraindo quem quer aprender. Não é mais um Rank abstrato, é gente formada.",
-  tecnicaDojo:"O dojo ensina até onde vai o samurai mais graduado e vivo da família — é ele (ou ela) quem carrega a técnica de Rank mais alto e a repassa aos demais. Sem ninguém formado ainda, o dojo não tem o que ensinar.",
+  tecnicaDojo:"Quem da família, vivo, sabe a técnica de Rank mais alto e pode demonstrá-la em pessoa. Não é o teto do dojo: o nível da escola vem da tradição guardada (pergaminhos de técnica, desenhos de kata, poemas que guardam os movimentos) e de quem ensina, que pode ser um sensei aposentado, um mestre emprestado pela família principal ou um rōnin contratado.",
   equilibrio:"Regra de mesa: este número é o Raise bônus (pode passar de +1) que um shugenja da família ganha ao conjurar um encanto que ajude a família, desde que esteja dentro do próprio território — escala direto com o Vazio da família (retidão e devoção como uma só coisa). Se o valor for negativo, o mesmo número vira dificuldade extra: os kami estão incomodados.",
   augurio:"Um presságio sobre como os kami veem o Vazio atual da família, de maus agouros a sinais muito favoráveis.",
   samurai:"Total de personagens ativos a serviço desta família, somando os quatro papéis abaixo — todos são samurai, cada um a seu jeito."
@@ -4564,9 +4573,15 @@ function renderPersonagens(){
     "<div class=\"gridtotal\">Total gasto de Influência: <b>"+personagensCustoTotal().toFixed(0)+"</b></div>";
 }
 function abrirFichaPersonagem(id){personagemAtivoId=id;setAbaPrincipal("personagens");}
+const ENSINO_EXEMPLO={bushi:"ex.: o velho Akodo Genzo, aposentado, e os pergaminhos do avô",cortesao:"ex.: uma cortesã emprestada pela família principal",shugenja:"ex.: o shugenja do templo do vale"};
+function setEscolaSensei(tipo,v){if(bloqueadoLeitura())return;if(!S.escolas[tipo])return;S.escolas[tipo].sensei=v;salvar();render();}
 function renderEscolas(){
   const box=document.getElementById("escolasBox");if(!box)return;
-  box.innerHTML=ESCOLA_ORDEM.map(tipo=>{
+  box.innerHTML="<details class=\"dobra opdobra\"><summary>de onde vem o ensino de uma escola</summary><div class=\"hint\" style=\"line-height:1.5\">"+
+    "O nível do dojo ou do salão é o que a tradição da casa guarda, não o rank de quem está vivo. Uma técnica de escola sobrevive em pergaminhos (makimono) com a sequência de movimentos, em desenhos de kata, em poemas curtos que os alunos decoram para lembrar o ritmo de um golpe, e nos exercícios que se repetem há gerações. "+
+    "Quem ensina pode ser um sensei aposentado (inkyo) que já passou a casa ao herdeiro e não vai mais à guerra, um mestre emprestado pela família principal ou pelo clã, um rōnin contratado, ou um veterano ferido que já não luta. "+
+    "Por isso a escola pode ensinar acima do rank de qualquer personagem: a linha \"Técnica mais alta do Dojo\" diz só quem consegue demonstrar em pessoa. Um Shoin é diferente: sem um shugenja de verdade, os kami não respondem a pergaminho nenhum, e por isso ele custa tanto."+
+    "</div></details>"+ESCOLA_ORDEM.map(tipo=>{
     const info=ESCOLA_TIPOS[tipo],e=S.escolas[tipo];
     let corpo;
     if(!e.ativa){
@@ -4601,7 +4616,8 @@ function renderEscolas(){
           (opcoes?"<select id=\"selNovoEncantamento_"+tipo+"\">"+opcoes+"</select>"+
             "<button class=\"ghost\" onclick=\"adicionarEncantamento(document.getElementById('selNovoEncantamento_"+tipo+"').value)\">proteger encantamento</button>":"");
       }
-      corpo="<div class=\"hint\">Escola canônica: "+selEscola+"</div>"+alunos+nivelHtml+shugenjaHtml+
+      const quem="<label class=\"pcampo\" style=\"margin:4px 0\">Quem ensina <input value=\""+esc(e.sensei||"")+"\" placeholder=\""+esc(ENSINO_EXEMPLO[tipo])+"\" onchange=\"setEscolaSensei('"+tipo+"',this.value)\"></label>";
+      corpo="<div class=\"hint\">Escola canônica: "+selEscola+"</div>"+quem+alunos+nivelHtml+shugenjaHtml+
         "<div class=\"hint\">Investido até agora: "+custoEscolaInvestido(tipo)+" "+info.attrFundacao+".</div>";
     }
     return "<div class=\"panel\" style=\"margin-bottom:8px\"><h3><span class=\"kan\">"+info.kan+"</span>"+esc(info.nome)+"</h3>"+corpo+"</div>";
@@ -5112,7 +5128,7 @@ function escolhaCla4e(id,claId){
   const p=S.personagens.find(x=>x.id===id);if(!p)return;
   const antes=bonusTracos4e(p.familia4e,p.escola4e);
   p.cla4e=claId;p.familia4e="";p.escola4e="";
-  ajustarBonusTracos(p,antes);aplicarPericiasEscola(p);
+  ajustarBonusTracos(p,antes);aplicarPericiasEscola(p);aplicarKitEscola(p);
   salvar();render();
 }
 /* Honra/Glória/Status iniciais: a Honra vem direto da escola na base de dados
@@ -5144,14 +5160,14 @@ function escolhaFamilia4e(id,familiaId){
   p.familia4e=familiaId;
   const esc=l5r4ePronto()?L5R4E.escolas.find(e=>e.clanId===p.cla4e&&e.id.indexOf(familiaId+"_")===0):null;
   if(esc||!p.escola4e)p.escola4e=esc?esc.id:"";
-  fichaBase(p);ajustarBonusTracos(p,antes);aplicarPericiasEscola(p);aplicarValoresIniciais4e(p);
+  fichaBase(p);ajustarBonusTracos(p,antes);aplicarPericiasEscola(p);aplicarKitEscola(p);aplicarValoresIniciais4e(p);
   salvar();render();
 }
 function escolhaEscola4e(id,escolaId){
   const p=S.personagens.find(x=>x.id===id);if(!p)return;
   const antes=bonusTracos4e(p.familia4e,p.escola4e);
   p.escola4e=escolaId;
-  fichaBase(p);ajustarBonusTracos(p,antes);aplicarPericiasEscola(p);aplicarValoresIniciais4e(p);
+  fichaBase(p);ajustarBonusTracos(p,antes);aplicarPericiasEscola(p);aplicarKitEscola(p);aplicarValoresIniciais4e(p);
   salvar();render();
 }
 /* Sorteia UM personagem, um de cada vez (nunca todos juntos): clã/família/escola 4e
@@ -5183,7 +5199,7 @@ function randomizarPersonagem(id){
   const bon=bonusTracos4e(p.familia4e,p.escola4e);
   const traits={reflexes:2,awareness:2,stamina:2,willpower:2,agility:2,intelligence:2,strength:2,perception:2,vazio:2};
   Object.keys(bon).forEach(k=>{if(traits[k]!==undefined)traits[k]+=bon[k];});
-  p.traits=traits;p.pericias=[];aplicarPericiasEscola(p);
+  p.traits=traits;p.pericias=[];aplicarPericiasEscola(p);aplicarKitEscola(p);
   p.xpInicial=XP_INICIAL;p.xp=0;
 
   const descPool=(L5R4E.desvantagens||[]).slice();
@@ -5361,7 +5377,7 @@ function iniciativaPersonagem(p){const rank=rankPersonagem(p);const reflexos=Num
    Reflexos×5 (um personagem com Reflexos 4 tem TN 25, não 20). Fonte: philgamer.wordpress.com,
    "Let's Study: L5R 4e — Sample Combat". */
 function tnBasePersonagem(p){return 5+5*(Number(p.traits.reflexes)||0);}
-function tnAtualPersonagem(p){return tnBasePersonagem(p)+(Number(p.tnAjuste)||0);}
+function tnAtualPersonagem(p){return tnBasePersonagem(p)+armaduraTN(p)+(Number(p.tnAjuste)||0);}
 const FERIDAS_DEF=[["Sadio",0],["Machucado",3],["Arranhado",5],["Ferido",10],["Contundido",15],["Mutilado",20],["Caído",40],["Fora de Combate",null]];
 function feridasNiveis(p){const earth=aneisPersonagem(p).terra;
   return FERIDAS_DEF.map(([nome,pen],i)=>({nome,penalidade:pen,total:earth*5+i*earth*2}));}
@@ -5510,7 +5526,7 @@ function renderFichaCompleta(p){
   out+="<div class=\"saldos compacto\">"+
     "<div class=\"saldo\">Insight <b>"+insight.toFixed(0)+"</b></div><div class=\"saldo\">Rank <b>"+rank+"</b></div>"+
     "<div class=\"saldo\">Iniciativa <b>"+iniciativaPersonagem(p)+"</b></div>"+
-    "<div class=\"saldo\" title=\"TN base "+tnBasePersonagem(p)+" mais o ajuste (armadura, técnicas)\">TN <b>"+tnAtualPersonagem(p)+"</b> <input type=\"number\" title=\"ajuste de TN\" value=\""+(Number(p.tnAjuste)||0)+"\" onchange=\"setPersonagem('"+p.id+"','tnAjuste',this.value)\"></div>"+
+    "<div class=\"saldo\" title=\"TN base "+tnBasePersonagem(p)+(armaduraTN(p)?", armadura +"+armaduraTN(p):"")+" e o ajuste (técnicas, outra armadura)\">TN <b>"+tnAtualPersonagem(p)+"</b> <input type=\"number\" title=\"ajuste de TN\" value=\""+(Number(p.tnAjuste)||0)+"\" onchange=\"setPersonagem('"+p.id+"','tnAjuste',this.value)\"></div>"+
     "<div class=\"saldo\">Cura <b>"+taxaCuraPersonagem(p)+"</b>/dia</div>"+
     sInput("honorRank","Honra","Entra na Honra da casa: a média da Honra dos personagens vivos, mais o ajuste do Mestre, menos a Honra queimada.")+
     sInput("gloriaRank","Glória","Glória pessoal, de 0 a 10. Um samurai famoso puxa a Glória da casa aos poucos.")+
@@ -5518,8 +5534,12 @@ function renderFichaCompleta(p){
     sInput("taintRank","Mancha","Mancha das Sombras, de 0 a 10.")+
     "</div>";
   out+="<div class=\"armlinha\">"+
-    "<label class=\"grp\">Armadura <input type=\"text\" placeholder=\"tipo\" value=\""+esc(p.armadura.tipo)+"\" onchange=\"setArmadura('"+p.id+"','tipo',this.value)\"></label>"+
-    "<label class=\"grp\">Redução <input type=\"number\" style=\"width:52px\" value=\""+(Number(p.armadura.reducao)||0)+"\" onchange=\"setArmadura('"+p.id+"','reducao',this.value)\"></label>"+
+    (()=>{const ac=armaduraInfo(p.armadura.catalogo);
+      return "<label class=\"grp\" title=\""+esc(ac?efeitoEquipTxt(ac.efeitos):"")+"\">Armadura <select onchange=\"setArmaduraLivro('"+p.id+"',this.value)\"><option value=\"\">"+(ac?"— outra (livre) —":"nenhuma / livre")+"</option>"+
+        (l5r4ePronto()&&L5R4E.armaduras?L5R4E.armaduras.map(a=>"<option value=\""+a.id+"\" "+(ac&&ac.id===a.id?"selected":"")+">"+esc(a.nome)+" (TN +"+a.tn+", Redução "+a.rd+")</option>").join(""):"")+"</select></label>"+
+        (ac?"<span class=\"tag\" title=\""+esc(efeitoEquipTxt(ac.efeitos))+"\">TN +"+ac.tn+" · Redução "+ac.rd+(p.armadura.origem==="kit"?" · kit":"")+"</span>":
+        "<label class=\"grp\">Qual <input type=\"text\" placeholder=\"tipo\" value=\""+esc(p.armadura.tipo)+"\" onchange=\"setArmadura('"+p.id+"','tipo',this.value)\"></label>"+
+        "<label class=\"grp\">Redução <input type=\"number\" style=\"width:52px\" value=\""+(Number(p.armadura.reducao)||0)+"\" onchange=\"setArmadura('"+p.id+"','reducao',this.value)\"></label>");})()+
     "<label class=\"grp\">Notas <input type=\"text\" value=\""+esc(p.armadura.notas)+"\" onchange=\"setArmadura('"+p.id+"','notas',this.value)\"></label>"+
     "<label class=\"grp\">Dano atual <input type=\"number\" style=\"width:60px\" value=\""+(Number(p.danoAtual)||0)+"\" onchange=\"setPersonagem('"+p.id+"','danoAtual',this.value)\"></label>"+
     "</div>";
@@ -5591,28 +5611,86 @@ function renderFichaCompleta(p){
     "</select><button class=\"ghost\" onclick=\"addTecnicaExtra('"+p.id+"',document.getElementById('extraTecSel_"+p.id+"').value)\">+ adicionar técnica</button>";
   out+="</details>";
 
-  out+="<div class=\"fichapanel\">";
+  out+="<div class=\"fichapanel armaspanel\">";
   out+="<h2>Armas, equipamento e dinheiro</h2>";
   out+="<div class=\"linhas\">"+
-    (p.armas.map(a=>"<div class=\"linha\"><input class=\"campo-nome\" placeholder=\"arma\" value=\""+esc(a.tipo)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','tipo',this.value)\">"+
+    (p.armas.map(a=>{const w=armaInfo(a.catalogo);
+      if(w){const r=rolagemArma(p,w),fx=efeitoEquipTxt(w.efeitos);
+        return "<div class=\"armacard\"><div class=\"linha\"><input class=\"campo-nome\" value=\""+esc(a.tipo)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','tipo',this.value)\">"+
+          "<span class=\"tag\">"+esc(PERICIA_ARMA_PT[w.pericia]||w.pericia)+"</span>"+
+          "<span class=\"rolarma\" title=\""+esc((r.traco==="reflexes"?"Reflexos":"Agilidade")+" + rank da perícia"+(r.semPericia?"; sem a perícia: rola só o traço, sem dado explodindo":""))+"\">ataque <b>"+r.ataque+"</b>"+(r.semPericia?" <i class=\"bad\">sem perícia</i>":"")+"</span>"+
+          "<span class=\"rolarma\" title=\"DR "+esc(w.dr||"—")+" com a Força somada aos dados rolados\">dano <b>"+esc(r.dano)+"</b></span>"+
+          "<input class=\"campo-curto\" placeholder=\"bônus\" value=\""+esc(a.bonus)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','bonus',this.value)\">"+
+          (a.origem==="kit"?"<span class=\"tag escola\">kit</span>":"")+
+          "<button class=\"ghost del\" onclick=\"delArma('"+p.id+"','"+a.id+"')\">✕</button></div>"+
+          "<div class=\"armainfo\">"+esc((w.tags||[]).map(t=>TAG_ARMA_PT[t]||t).join(", ")+(w.alcance?" · alcance "+w.alcance:"")+(w.custo?" · preço "+w.custo.replace(/k$/," koku").replace(/b$/," bu").replace(/z$/," zeni"):""))+(fx?" · "+esc(fx):"")+"</div></div>";}
+      return "<div class=\"linha\"><input class=\"campo-nome\" placeholder=\"arma\" value=\""+esc(a.tipo)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','tipo',this.value)\">"+
       "<span class=\"tag\">ataque</span><input class=\"campo-curto\" value=\""+esc(a.ataque)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','ataque',this.value)\">"+
       "<span class=\"tag\">dano</span><input class=\"campo-curto\" value=\""+esc(a.dano)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','dano',this.value)\">"+
       "<span class=\"tag\">bônus</span><input class=\"campo-curto\" value=\""+esc(a.bonus)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','bonus',this.value)\">"+
       "<input class=\"campo-medio\" placeholder=\"notas\" value=\""+esc(a.notas)+"\" onchange=\"setArma('"+p.id+"','"+a.id+"','notas',this.value)\">"+
-      "<button class=\"ghost del\" onclick=\"delArma('"+p.id+"','"+a.id+"')\">✕</button></div>").join(""))+
-    (p.equipamento.map(it=>"<div class=\"linha\"><input class=\"campo-nome\" placeholder=\"item\" value=\""+esc(it.nome)+"\" onchange=\"setEquip('"+p.id+"','"+it.id+"','nome',this.value)\">"+
+      "<button class=\"ghost del\" onclick=\"delArma('"+p.id+"','"+a.id+"')\">✕</button></div>";}).join(""))+
+    (p.equipamento.map(it=>"<div class=\"linha\"><input class=\"campo-nome\" placeholder=\"item\" value=\""+esc(it.nome)+"\" onchange=\"setEquip('"+p.id+"','"+it.id+"','nome',this.value)\">"+(it.origem==="kit"?"<span class=\"tag escola\">kit</span>":"")+
       "<label class=\"tag\"><input type=\"checkbox\" "+(it.consigo?"checked":"")+" onchange=\"setEquip('"+p.id+"','"+it.id+"','consigo',this.checked)\"> comigo</label>"+
       "<label class=\"tag\"><input type=\"checkbox\" "+(it.casa?"checked":"")+" onchange=\"setEquip('"+p.id+"','"+it.id+"','casa',this.checked)\"> em casa</label>"+
       "<button class=\"ghost del\" onclick=\"delEquip('"+p.id+"','"+it.id+"')\">✕</button></div>").join(""))+
     (!p.armas.length&&!p.equipamento.length?"<div class=\"linha-vazia\">Nenhuma arma ou item ainda.</div>":"")+
     "</div>";
-  out+="<div class=\"armlinha\"><button class=\"ghost\" onclick=\"addArma('"+p.id+"')\">+ arma</button><button class=\"ghost\" onclick=\"addEquip('"+p.id+"')\">+ item</button>"+
+  out+="<div class=\"armlinha\"><select onchange=\"addArmaLivro('"+p.id+"',this.value)\"><option value=\"\">+ arma do livro…</option>"+optsCatalogoArmas()+"</select>"+
+    "<button class=\"ghost\" onclick=\"addArma('"+p.id+"')\">+ arma livre</button><button class=\"ghost\" onclick=\"addEquip('"+p.id+"')\">+ item</button>"+
+    (l5r4ePronto()&&L5R4E.kits&&L5R4E.kits[p.escola4e]?"<button class=\"ghost\" title=\"tira o que veio do kit e põe de novo o equipamento inicial da escola\" onclick=\"refazerKitEscola('"+p.id+"')\">refazer kit da escola</button>":"")+
     "<label class=\"grp\" title=\"1 koku = 5 bu = 50 zeni\">Koku <input type=\"number\" style=\"width:56px\" value=\""+(Number(p.dinheiro.koku)||0)+"\" onchange=\"setDinheiro('"+p.id+"','koku',this.value)\"></label>"+
     "<label class=\"grp\" title=\"1 bu = 10 zeni\">Bu <input type=\"number\" style=\"width:56px\" value=\""+(Number(p.dinheiro.bu)||0)+"\" onchange=\"setDinheiro('"+p.id+"','bu',this.value)\"></label>"+
     "<label class=\"grp\">Zeni <input type=\"number\" style=\"width:56px\" value=\""+(Number(p.dinheiro.zeni)||0)+"\" onchange=\"setDinheiro('"+p.id+"','zeni',this.value)\"></label></div>";
   out+="</div>";
   return out;
 }
+/* ============ ARMAS, ARMADURA E KIT DA ESCOLA (4ª edição) ============
+   2026-11-05. Catálogo do livro básico (L5R4E.armas / armaduras / kits). Uma arma do catálogo
+   mostra a rolagem pronta: ataque = (traço da perícia + rank)k(traço); dano = DR com a Força
+   somada aos dados rolados (arco usa a força do arco; shuriken e tsubute não somam Força).
+   A armadura do catálogo entra sozinha no TN e na Redução. O kit da escola entra ao escolher
+   a escola e sai se ela for trocada (o que vier dele fica marcado "kit"). */
+const PERICIA_ARMA_PT={chain_weapons:"Correntes",heavy_weapons:"Armas Pesadas",jiujutsu:"Jiujutsu",kenjutsu:"Kenjutsu",knives:"Facas",kyujutsu:"Kyujutsu",ninjutsu:"Ninjutsu",polearms:"Armas de Haste",spears:"Lanças",staves:"Bastões",war_fan:"Leque de Guerra"};
+const TAG_ARMA_PT={small:"pequena",medium:"média",large:"grande",samurai:"samurai",peasant:"camponesa",ninja:"ninja",gaijin:"gaijin",melee:"corpo a corpo",ranged:"à distância",arrow:"flecha"};
+function armaInfo(id){return id&&l5r4ePronto()&&L5R4E.armas?L5R4E.armas.find(a=>a.id===id)||null:null;}
+function armaduraInfo(id){return id&&l5r4ePronto()&&L5R4E.armaduras?L5R4E.armaduras.find(a=>a.id===id)||null:null;}
+function efeitoEquipTxt(ids){return(ids||[]).map(i=>(L5R4E.efeitosEquip||{})[i]).filter(Boolean).join(" ");}
+function rankPericiaPersonagem(p,skillId){const s=(p.pericias||[]).find(x=>{const i=skill4e(x.skill);return i&&i.id===skillId;});return s?Number(s.rank)||0:0;}
+function dadoSoma(dr,extra){const m=/^(\d+)k(\d+)$/.exec(dr||"");if(!m)return dr||"—";return(Number(m[1])+extra)+"k"+m[2];}
+function rolagemArma(p,w){
+  const sk=skill4e(w.pericia),tk=sk?chaveTraco4e(sk.traco):"agility",tv=Number(p.traits[tk])||0,rk=rankPericiaPersonagem(p,w.pericia);
+  const forca=Number(p.traits.strength)||0;
+  let dano;
+  if(w.forca)dano="flecha + "+w.forca+(w.forcaMin&&forca<Number(w.forcaMin)?" (pede Força "+w.forcaMin+")":"");
+  else if((w.efeitos||[]).some(e=>/tsubute|shuriken/.test(e)))dano=w.dr+" (arremessada, sem Força)";
+  else if((w.tags||[]).includes("arrow")){const arco=(p.armas||[]).map(a=>armaInfo(a.catalogo)).find(x=>x&&x.forca);
+    dano=arco?dadoSoma(w.dr,Number(arco.forca))+" (com "+arco.nome+")":w.dr+" + força do arco";}
+  else dano=dadoSoma(w.dr,forca);
+  return{ataque:(tv+rk)+"k"+tv,semPericia:!rk,traco:tk,dano};
+}
+function optsCatalogoArmas(){
+  if(!l5r4ePronto()||!L5R4E.armas)return"";
+  const grupos={};L5R4E.armas.forEach(w=>{(grupos[w.pericia]=grupos[w.pericia]||[]).push(w);});
+  return Object.keys(grupos).sort((a,b)=>(PERICIA_ARMA_PT[a]||a).localeCompare(PERICIA_ARMA_PT[b]||b)).map(g=>"<optgroup label=\""+esc(PERICIA_ARMA_PT[g]||g)+"\">"+
+    grupos[g].map(w=>"<option value=\""+w.id+"\">"+esc(w.nome)+(w.dr?" ("+w.dr+")":w.forca?" (força "+w.forca+")":"")+"</option>").join("")+"</optgroup>").join("");
+}
+function addArmaLivro(id,armaId){if(bloqueadoLeitura())return;const p=S.personagens.find(x=>x.id===id);const w=armaInfo(armaId);if(!p||!w)return;fichaBase(p);
+  p.armas.push({id:uid(),catalogo:w.id,tipo:w.nome,ataque:"",dano:"",bonus:"",notas:""});salvar();render();}
+function setArmaduraLivro(id,armId){if(bloqueadoLeitura())return;const p=S.personagens.find(x=>x.id===id);if(!p)return;fichaBase(p);
+  const a=armaduraInfo(armId);p.armadura.catalogo=a?a.id:"";if(a){p.armadura.tipo=a.nome;p.armadura.reducao=a.rd;}delete p.armadura.origem;salvar();render();}
+function armaduraTN(p){const a=armaduraInfo(p.armadura&&p.armadura.catalogo);return a?a.tn:0;}
+function aplicarKitEscola(p){fichaBase(p);
+  p.armas=p.armas.filter(a=>a.origem!=="kit");p.equipamento=p.equipamento.filter(i=>i.origem!=="kit");
+  if(p.armadura&&p.armadura.origem==="kit")p.armadura={tipo:"",reducao:0,notas:""};
+  const k=l5r4ePronto()&&L5R4E.kits?L5R4E.kits[p.escola4e]:null;if(!k)return;
+  (k.armas||[]).forEach(id=>{const w=armaInfo(id);if(w&&!p.armas.some(a=>a.catalogo===id))p.armas.push({id:uid(),catalogo:id,tipo:w.nome,ataque:"",dano:"",bonus:"",notas:"",origem:"kit"});});
+  (k.itens||[]).forEach(n=>p.equipamento.push({id:uid(),nome:n,consigo:true,casa:false,origem:"kit"}));
+  if(k.armadura&&!(p.armadura.catalogo||p.armadura.tipo)){const a=armaduraInfo(k.armadura);if(a)p.armadura={tipo:a.nome,reducao:a.rd,notas:"",catalogo:a.id,origem:"kit"};}
+  const d=p.dinheiro||{};if(!(Number(d.koku)||Number(d.bu)||Number(d.zeni)))p.dinheiro={koku:k.koku||0,bu:k.bu||0,zeni:k.zeni||0};
+}
+function refazerKitEscola(id){if(bloqueadoLeitura())return;const p=S.personagens.find(x=>x.id===id);if(!p)return;aplicarKitEscola(p);
+  feedPush("Equipamento da escola refeito para "+(p.nome||"o personagem")+".");salvar();render();}
 /* Vantagens e desvantagens: escolhe do livro (com a descrição) ou escreve uma livre. */
 function catalogoVD(lista){return l5r4ePronto()?(lista==="vantagens"?L5R4E.vantagens:L5R4E.desvantagens):[];}
 function itemVD(lista,nome){const n=(nome||"").trim().toLowerCase();return n?catalogoVD(lista).find(c=>c.nome.toLowerCase()===n)||null:null;}
