@@ -1187,7 +1187,17 @@ function pvBonusPartes(){
   const tv=S.tropas.filter(t=>t.estado==="refem"||t.estado==="derrotado").length;if(tv)L.push(["tropas em vergonha (refém ou derrotada)",-tv]);
   return L;
 }
-function pvFamiliaMax(){return Math.max(0,nivelAttr("vazio")+pvBonusPartes().reduce((s,[,v])=>s+v,0));}
+function pvFamiliaMax(){if(ritoVazioAtivo())return 0;return Math.max(0,nivelAttr("vazio")+pvBonusPartes().reduce((s,[,v])=>s+v,0));}
+/* 2026-11-05 (Thiago: o Vazio não se compra com Riqueza). O Vazio só cresce por um rito ou
+   peregrinação: pede um monge ou shugenja vivo na casa e Honra da casa 5 ou mais; custa
+   Nível do Vazio × 8 de Influência (patrocínio a templos, presentes aos sacerdotes) e, enquanto
+   dura (4 estações, um ano), a casa não tem Pontos de Vazio: toda a devoção vai para o rito.
+   Dá +3, menos que os outros Anéis. */
+const RITO_VAZIO={passo:3,dur:4,honraMin:5};
+function ritoVazioAtivo(){return(S.investimentos||[]).some(i=>i.attr==="vazio"&&i.rito);}
+function guiaEspiritual(){return(S.personagens||[]).find(p=>personagemPresente(p)&&/^(Monge|Shugenja)/.test(p.categoria||""))||null;}
+function ritoVazioFalta(){const f=[];if(!guiaEspiritual())f.push("um monge ou shugenja vivo na casa");
+  const h=honraCasa();if(h==null||h<RITO_VAZIO.honraMin)f.push("Honra da casa "+RITO_VAZIO.honraMin+" ou mais (agora "+(h==null?"—":h.toFixed(1))+")");return f;}
 function pvFamiliaRestantes(){return Math.max(0,pvFamiliaMax()-(Number(S.pvFamiliaUsados)||0));}
 function gastarPVFamilia(){if(!pvFamiliaRestantes())return false;S.pvFamiliaUsados=(Number(S.pvFamiliaUsados)||0)+1;return true;}
 /* A origem pesa mais quanto mais nova a casa: ela ainda é quase só a história da fundação. */
@@ -3065,20 +3075,22 @@ function investimentoDe(attr){return(S.investimentos||[]).find(i=>i.attr===attr)
 function investComprometido(attr){return(S.investimentos||[]).filter(i=>i.fonte===attr).reduce((s,i)=>s+(Number(i.comprometido)||0),0);}
 function podeInvestir(attr,via){
   if(totalAttr(attr)>=100||investimentoDe(attr))return false;
-  if(!via&&attr==="vazio")return false;
+  if(attr==="vazio")return !via&&!ritoVazioFalta().length&&poolRestante("influencia")>=custoInvestir("vazio",false);
   return poolRestante(via?"riqueza":attr)>=custoInvestir(attr,via);
 }
 function investir(attr,via){
   if(bloqueadoLeitura())return;
   if(investimentoDe(attr)){feedPush("Já há um investimento em andamento em "+rotuloAttr(attr)+".");salvar();render();return;}
   if(!podeInvestir(attr,via)){feedPush("Disponível insuficiente para investir em "+rotuloAttr(attr)+".");salvar();render();return;}
-  const fonte=via?"riqueza":attr,custo=custoInvestir(attr,via),dur=duracaoInvestir(attr);
+  const rito=attr==="vazio";
+  const fonte=rito?"influencia":via?"riqueza":attr,custo=custoInvestir(attr,via),dur=rito?RITO_VAZIO.dur:duracaoInvestir(attr);
   /* paga primeiro com os ganhos temporários (gastos de vez); o resto fica preso na obra */
   let falta;
   if(fonte==="riqueza"){gastarRiqueza(custo);falta=0;}else falta=consumirReserva(fonte,custo);
   S.investimentos=S.investimentos||[];
-  const passo=passoInvestir(attr);
-  S.investimentos.push({id:uid(),attr,fonte,custo,deTemporarios:custo-falta,comprometido:falta,inicio:estacaoAbs(),dur,passo});
+  const passo=rito?Math.min(RITO_VAZIO.passo,passoInvestir(attr)):passoInvestir(attr);
+  S.investimentos.push({id:uid(),attr,fonte,custo,deTemporarios:custo-falta,comprometido:falta,inicio:estacaoAbs(),dur,passo,rito:rito||undefined});
+  if(rito){const g=guiaEspiritual();feedPush("Começou um rito do Vazio, conduzido por "+(g&&g.nome||"o guia espiritual da casa")+": por um ano a casa fica sem Pontos de Vazio.");}
   feedPush("Investimento começou: "+rotuloAttr(attr)+" +"+passo+", custa "+custo+" de "+rotuloAttr(fonte)+(fonte==="riqueza"?" (gastos do tesouro)":
     (custo-falta?" ("+(custo-falta)+" gastos dos ganhos temporários"+(falta?", "+falta+" presos no disponível até a obra ficar pronta":"")+")":", presos no disponível até a obra ficar pronta"))+"; fica pronto em "+dur+" estações.");
   salvar();render();
@@ -4097,12 +4109,13 @@ function renderEstacoes(){
     const c=custoInvestir(k,false),cr=custoInvestir(k,true),tem=reservaPositiva(k),ocup=investimentoDe(k),ps=passoInvestir(k);
     const prev=(fonte,custo)=>{if(fonte==="riqueza")return l+" +"+ps+": custa "+custo+" de Riqueza, gastos do tesouro (a renda das estações repõe). Pronto em "+nomeEstacaoAbs(estacaoAbs()+duracaoInvestir(k))+"."+(poolRestante("riqueza")<custo?" Falta Riqueza: "+poolRestante("riqueza").toFixed(0)+" de "+custo+".":"");
       const t=Math.min(reservaPositiva(fonte),custo),pr=custo-t;return l+" +"+ps+": custa "+custo+" de "+rotuloAttr(fonte)+". "+(t?t+" saem dos ganhos temporários (gastos)"+(pr?" e ":""):"")+(pr?pr+" ficam presos no disponível por "+duracaoInvestir(k)+" estações e depois voltam":"")+". Pronto em "+nomeEstacaoAbs(estacaoAbs()+duracaoInvestir(k))+"."+(poolRestante(fonte)<custo?" Falta disponível: "+poolRestante(fonte).toFixed(0)+" de "+custo+".":"");};
-    const b1=ocup?"<span class=\"tag\">em andamento</span>":(k==="vazio"?"<span class=\"tag\">paga só via Riqueza</span>":"<button class=\"ghost\" "+(podeInvestir(k,false)?"":"disabled")+" data-dica=\""+esc(prev(k,c))+"\" onclick=\"investir('"+k+"',false)\">+"+ps+" por "+c+" de "+l+"</button>");
-    const b2=ocup||k==="riqueza"?"":"<button class=\"ghost\" "+(podeInvestir(k,true)?"":"disabled")+" data-dica=\""+esc(prev("riqueza",cr))+"\" onclick=\"investir('"+k+"',true)\">+"+ps+" por "+cr+" de Riqueza</button>";
+    const b1=ocup?"<span class=\"tag\">em andamento</span>":(k==="vazio"?(()=>{const f=ritoVazioFalta(),cv=custoInvestir("vazio",false);
+      return "<button class=\"ghost\" "+(podeInvestir("vazio",false)?"":"disabled")+" data-dica=\""+esc("Rito ou peregrinação: +"+RITO_VAZIO.passo+" de Vazio em "+RITO_VAZIO.dur+" estações, por "+cv+" de Influência (patrocínio aos templos). Enquanto dura, a casa fica sem Pontos de Vazio."+(f.length?" Falta: "+f.join("; ")+".":""))+"\" onclick=\"investir('vazio',false)\">rito: +"+RITO_VAZIO.passo+" por "+cv+" de Influência</button>"+(f.length?"<small class=\"bad\"> falta "+esc(f.join(" e "))+"</small>":"");})():"<button class=\"ghost\" "+(podeInvestir(k,false)?"":"disabled")+" data-dica=\""+esc(prev(k,c))+"\" onclick=\"investir('"+k+"',false)\">+"+ps+" por "+c+" de "+l+"</button>");
+    const b2=ocup||k==="riqueza"||k==="vazio"?"":"<button class=\"ghost\" "+(podeInvestir(k,true)?"":"disabled")+" data-dica=\""+esc(prev("riqueza",cr))+"\" onclick=\"investir('"+k+"',true)\">+"+ps+" por "+cr+" de Riqueza</button>";
     return "<div class=\"invrow\"><span class=\"il\">"+l+" <small>Nível "+nivelAttr(k)+" · "+duracaoInvestir(k)+" estações"+(k!=="vazio"?" · disponível "+poolRestante(k).toFixed(0):"")+(S.investido&&S.investido[k]?" · já investido +"+S.investido[k]:"")+"</small></span>"+b1+b2+"</div>";
   }).join("");
   document.getElementById("estInvest").innerHTML=(and?"<div class=\"obras\">"+and+"</div>":"<div class=\"linha-vazia\">Nenhum investimento em andamento.</div>")+
-    "<div class=\"secao\">Começar</div><div class=\"hint\" style=\"margin:0 0 6px\">+5 permanente custa o Nível × 8 do disponível do próprio Anel e fica pronto em 2 estações. Os ganhos temporários pagam primeiro e se gastam; o resto fica preso no disponível até a obra ficar pronta. Um por Anel de cada vez. A Riqueza paga qualquer Anel pelo dobro; o Vazio só cresce por ela.</div>"+
+    "<div class=\"secao\">Começar</div><div class=\"hint\" style=\"margin:0 0 6px\">+5 permanente custa o Nível × 8 do disponível do próprio Anel e fica pronto em 2 estações. Os ganhos temporários pagam primeiro e se gastam; o resto fica preso no disponível até a obra ficar pronta. Um por Anel de cada vez. A Riqueza paga os outros Anéis pelo dobro. O Vazio não se compra: só cresce por um rito ou peregrinação (+3 em 4 estações, pago em Influência), que pede um monge ou shugenja vivo e Honra da casa 5 ou mais, e deixa a casa um ano sem Pontos de Vazio.</div>"+
     "<div class=\"invlist\">"+inv+"</div>";
   /* ferramentas do Mestre */
   const est=S.estacaoIdx||0;
