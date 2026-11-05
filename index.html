@@ -1192,15 +1192,15 @@ function pvFamiliaRestantes(){return Math.max(0,pvFamiliaMax()-(Number(S.pvFamil
 function gastarPVFamilia(){if(!pvFamiliaRestantes())return false;S.pvFamiliaUsados=(Number(S.pvFamiliaUsados)||0)+1;return true;}
 /* A origem pesa mais quanto mais nova a casa: ela ainda é quase só a história da fundação. */
 const PESO_ORIGEM={nascente:2,recente:1.5,jovem:1.25};
-const BASE_IDADE={ /* recalibrada em 2026-11-04 com a origem e os eventos novos (sim/cria_v3.js); Domínio
+const BASE_IDADE={ /* 2026-11-05: Vazio ~10 abaixo (o Vazio pesa muito); recalibrada em 2026-11-04 com a origem e os eventos novos (sim/cria_v3.js); Domínio
    quase plano desde que a terra dada pela história passou a ser doada */
- nascente:    {dominio:33,riqueza:36,influencia:32,autoridade:38,vazio:33},
- recente:     {dominio:33,riqueza:36,influencia:32,autoridade:38,vazio:32},
- jovem:       {dominio:33,riqueza:36,influencia:34,autoridade:37,vazio:34},
- estabelecida:{dominio:32,riqueza:36,influencia:37,autoridade:36,vazio:37},
- antiga:      {dominio:32,riqueza:35,influencia:39,autoridade:36,vazio:39},
- "anciã":     {dominio:31,riqueza:35,influencia:40,autoridade:35,vazio:40},
- milenar:     {dominio:31,riqueza:34,influencia:41,autoridade:35,vazio:41}
+ nascente:    {dominio:33,riqueza:36,influencia:32,autoridade:38,vazio:28},
+ recente:     {dominio:33,riqueza:36,influencia:32,autoridade:38,vazio:27},
+ jovem:       {dominio:33,riqueza:36,influencia:34,autoridade:37,vazio:28},
+ estabelecida:{dominio:32,riqueza:36,influencia:37,autoridade:36,vazio:30},
+ antiga:      {dominio:32,riqueza:35,influencia:39,autoridade:36,vazio:31},
+ "anciã":     {dominio:31,riqueza:35,influencia:40,autoridade:35,vazio:32},
+ milenar:     {dominio:31,riqueza:34,influencia:41,autoridade:35,vazio:33}
 };
 /* 2026-11 (Thiago): sem pontos livres na criação; a Riqueza e os investimentos fazem esse papel.
    As fichas antigas guardam o que tinham distribuído no ajuste (migrarPontosV6). */
@@ -1498,7 +1498,7 @@ const EVENTOS=[
 const RARIDADE_EVENTO={exilados_cla:"incomum",casa_caida:"incomum",usurpacao_terras:"incomum",ramo_elevado:"incomum",mercadores_nome:"incomum",vitoria_torneio:"incomum",refem_prestigio:"incomum",artesao_renomado:"incomum",escola_artistica:"incomum",magistrado_renome:"incomum",gloria_batalha:"incomum",segredo_guardado:"incomum",recurso_valioso:"incomum",rota_comercial_cedida:"incomum",dojo_renomado:"incomum",arquivo_pergaminhos:"incomum",corte_inverno:"incomum",defesa_gloriosa:"incomum",fortaleza_cedida_cla:"incomum",porto_herdado_afogados:"incomum",corrupcao_escandalo:"incomum",derrota_marcante:"incomum",intervencao_senhor:"incomum",guerra_prolongada:"incomum",isolamento_deliberado:"incomum",perda_territorio:"incomum",reconstrucao_pos_guerra:"incomum",herdeiro_desonrado:"incomum",traicao_vassalo:"incomum",ofensa_corte:"incomum",pacto_ronin:"incomum",casamento_abaixo:"incomum",chantagem:"incomum",rivalidade_juramentada:"incomum",torneio_verao:"incomum",favor_daimyo:"incomum",colheita_extraordinaria:"incomum",saque_guerra:"incomum",tributo_vassalo:"incomum",dote_casamento:"incomum",fundacao_decreto:"raro",fundacao_religiosa:"raro",escolhidos_kami:"raro",bencao_kami:"raro",templo_importante:"raro",figura_espiritual:"raro",ruinas_ancestrais_descobertas:"raro",heranca_castelo_amaldicoado:"raro",contato_terras_sombrias:"raro",incursao_macula:"raro",maldicao_linhagem:"raro",contrabando_gaijin:"raro",duelo_morte:"raro",graca_kami:"raro",pressagio_sombrio:"raro",linhagem_primeiros:"lendario"};
 const RAR_INFO={comum:{nome:"comum",peso:6,mult:1},incomum:{nome:"incomum",peso:3,mult:1.2},raro:{nome:"raro",peso:1,mult:1.5},lendario:{nome:"lendário",peso:0.3,mult:2}};
 function raridade(e){return RARIDADE_EVENTO[e&&e.id]||"comum";}
-function modEvento(e,attr){const v=(e.mods||{})[attr]||0;return Math.round(v*RAR_INFO[raridade(e)].mult);}
+function modEvento(e,attr){const v=(e.mods||{})[attr]||0;const r=Math.round(v*RAR_INFO[raridade(e)].mult);return attr==="vazio"&&r>0?Math.round(r*0.5):r;}
 function pickPeso(lista){const tot=lista.reduce((s,e)=>s+RAR_INFO[raridade(e)].peso,0);let r=Math.random()*tot;
   for(const e of lista){r-=RAR_INFO[raridade(e)].peso;if(r<=0)return e;}return lista[lista.length-1];}
 
@@ -2341,7 +2341,11 @@ let verTodosEventos=S.eventos.length<vagasEventos();
 
 /* ============ MOTOR DE CÁLCULO ============ */
 function claAtual(){return CLAS.find(c=>c.id===S.cla);}
-function claMod(attr){const c=claAtual();return c?(c.mods[attr]||0):0;}
+/* 2026-11-05 (Thiago: o Vazio pesa muito, deve vir sempre menor nos bônus gerais): o que soma no
+   Vazio vindo do clã e dos eventos vale a metade; o que tira, vale inteiro. */
+const VAZIO_FATOR=0.5;
+function fatorVazio(attr,v){return attr==="vazio"&&v>0?Math.round(v*VAZIO_FATOR):v;}
+function claMod(attr){const c=claAtual();return c?fatorVazio(attr,c.mods[attr]||0):0;}
 function eventosMod(attr){let s=0;
   const og=S.origem&&EVENTOS.find(x=>x.id===S.origem);if(og)s+=modEvento(og,attr)*(PESO_ORIGEM[S.idade]||1);
   (S.eventos||[]).forEach(id=>{const e=EVENTOS.find(x=>x.id===id);if(e)s+=modEvento(e,attr);});return s;}
@@ -3051,11 +3055,11 @@ function setLoteForm(campo,val){loteForm[campo]=val;}
    permanentes de Honra dos acontecimentos comem o resto). Crescer de verdade é Conquista. */
 /* 2026-11-05 (Thiago: o Nível quase não se mexia numa campanha de poucos anos): cada investimento
    dá +5 em vez de +1, custa Nível × 8 (era × 3) e leva metade do Nível + 1 estações (mínimo 2).
-   Uma casa Nível 5 que se dedica sobe um Nível em uns dois anos de jogo (duas obras de 4 estações). */
+   Uma casa que se dedica sobe um Nível em um ano de jogo (duas obras de 2 estações). */
 const INVEST_PASSO=5;
 function passoInvestir(attr){return Math.max(0,Math.min(INVEST_PASSO,100-Math.floor(totalAttr(attr))));}
 function custoInvestir(attr,viaRiqueza){const c=Math.max(1,nivelAttr(attr))*8;return viaRiqueza&&attr!=="riqueza"?c*2:c;}
-function duracaoInvestir(attr){return Math.max(2,Math.ceil(nivelAttr(attr)/2)+1);}
+function duracaoInvestir(attr){return 2;} /* 2026-11-05: duas estações por obra, em qualquer Nível */
 function investimentoDe(attr){return(S.investimentos||[]).find(i=>i.attr===attr);}
 /* o que fica preso na obra, tirado do disponível, até ela ficar pronta */
 function investComprometido(attr){return(S.investimentos||[]).filter(i=>i.fonte===attr).reduce((s,i)=>s+(Number(i.comprometido)||0),0);}
@@ -4098,7 +4102,7 @@ function renderEstacoes(){
     return "<div class=\"invrow\"><span class=\"il\">"+l+" <small>Nível "+nivelAttr(k)+" · "+duracaoInvestir(k)+" estações"+(k!=="vazio"?" · disponível "+poolRestante(k).toFixed(0):"")+(S.investido&&S.investido[k]?" · já investido +"+S.investido[k]:"")+"</small></span>"+b1+b2+"</div>";
   }).join("");
   document.getElementById("estInvest").innerHTML=(and?"<div class=\"obras\">"+and+"</div>":"<div class=\"linha-vazia\">Nenhum investimento em andamento.</div>")+
-    "<div class=\"secao\">Começar</div><div class=\"hint\" style=\"margin:0 0 6px\">+5 permanente custa o Nível × 8 do disponível do próprio Anel e fica pronto depois de metade do Nível + 1 estações (mínimo 2). Os ganhos temporários pagam primeiro e se gastam; o resto fica preso no disponível até a obra ficar pronta. Um por Anel de cada vez. A Riqueza paga qualquer Anel pelo dobro; o Vazio só cresce por ela.</div>"+
+    "<div class=\"secao\">Começar</div><div class=\"hint\" style=\"margin:0 0 6px\">+5 permanente custa o Nível × 8 do disponível do próprio Anel e fica pronto em 2 estações. Os ganhos temporários pagam primeiro e se gastam; o resto fica preso no disponível até a obra ficar pronta. Um por Anel de cada vez. A Riqueza paga qualquer Anel pelo dobro; o Vazio só cresce por ela.</div>"+
     "<div class=\"invlist\">"+inv+"</div>";
   /* ferramentas do Mestre */
   const est=S.estacaoIdx||0;
