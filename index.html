@@ -1163,6 +1163,42 @@
   @media (prefers-reduced-motion:reduce){#cena *{animation-duration:.01s!important;animation-delay:0s!important}}
   .assist .acenas{font-size:11.5px;color:var(--muted-tx,#8a7d68);background:none;border:0;text-decoration:underline;cursor:pointer;padding:0}
   .clabarra{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;margin-bottom:2px}
+
+  /* 2026-11-05: rolagens do Combate na tela — d10 rolando, explosão quica e rola de novo */
+  #rolagem{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:8800;width:min(720px,calc(100% - 24px));
+    background:rgba(24,15,10,.94);color:#f1e6cd;border:1px solid rgba(201,165,78,.45);border-radius:14px;padding:14px 16px 16px;
+    box-shadow:0 18px 40px rgba(0,0,0,.5);cursor:pointer;animation:rgEntra .35s cubic-bezier(.2,.8,.3,1.2) both}
+  #rolagem[hidden]{display:none}
+  #rolagem.saindo{animation:rgSai .4s ease forwards}
+  @keyframes rgEntra{from{transform:translate(-50%,30px);opacity:0}} @keyframes rgSai{to{transform:translate(-50%,24px);opacity:0}}
+  #rolagem .rgquem{font-family:var(--font-display);font-size:19px;line-height:1.25}
+  #rolagem .rgquem small{font-family:var(--font-body);font-size:12px;color:#b8a888;margin-left:6px}
+  #rolagem .rgmesa{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:14px 0 6px;min-height:64px}
+  #rolagem .d10{position:relative;width:54px;height:60px;display:flex;align-items:center;justify-content:center;opacity:0;
+    animation:rgCai .55s cubic-bezier(.3,1.5,.5,1) var(--d) forwards}
+  #rolagem .d10 svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 4px 4px rgba(0,0,0,.45))}
+  #rolagem .d10 svg path{fill:#efe2c4;stroke:#7a5a32;stroke-width:2}
+  #rolagem .d10 b{position:relative;font-family:var(--font-display);font-size:21px;color:#1f140c;margin-top:4px}
+  #rolagem .d10.girando svg{animation:rgGira .25s linear infinite}
+  #rolagem .d10.explode{animation:rgCai .55s cubic-bezier(.3,1.5,.5,1) var(--d) forwards,rgQuica .6s cubic-bezier(.3,1.6,.5,1) forwards}
+  #rolagem .d10.explode svg path{fill:#f6c96b;stroke:#b5352b}
+  #rolagem .d10.explode::after{content:"";position:absolute;inset:-6px;border-radius:50%;box-shadow:0 0 18px 6px rgba(255,150,40,.6);animation:rgBrilho .6s ease-out forwards}
+  #rolagem .d10.fica svg path{fill:#c9a54e;stroke:#f1e6cd}
+  #rolagem .d10.sai{opacity:.38!important;filter:grayscale(.6)}
+  #rolagem .d10 .cad{position:absolute;bottom:-17px;left:50%;transform:translateX(-50%);font-family:var(--font-body);font-size:10.5px;color:#f6c96b;white-space:nowrap}
+  #rolagem .d10 .boom{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-family:var(--font-body);font-size:11px;font-weight:700;color:#ffb04a;animation:rgSobe .7s ease-out forwards}
+  @keyframes rgCai{0%{opacity:0;transform:translateY(-70px) rotate(-200deg) scale(.6)}70%{opacity:1}100%{opacity:1;transform:none}}
+  @keyframes rgGira{to{transform:rotate(360deg)}}
+  @keyframes rgQuica{0%{transform:none}35%{transform:translateY(-34px) scale(1.12)}65%{transform:translateY(0)}82%{transform:translateY(-9px)}100%{transform:none}}
+  @keyframes rgBrilho{from{opacity:1}to{opacity:0}}
+  @keyframes rgSobe{from{opacity:1;transform:translate(-50%,0)}to{opacity:0;transform:translate(-50%,-14px)}}
+  #rolagem .rgtotal{text-align:center;font-family:var(--font-display);font-size:15px;color:#b8a888;margin-top:16px;opacity:0;transition:opacity .4s}
+  #rolagem .rgtotal b{font-size:40px;color:#f6c96b;margin:0 6px;vertical-align:middle}
+  #rolagem.fim .rgtotal{opacity:1}
+  #rolagem .rgdica{position:absolute;right:12px;top:10px;font-family:var(--font-body);font-size:11px;color:#8a7d68}
+  @media (max-width:640px){#rolagem{bottom:calc(76px + env(safe-area-inset-bottom,0px));padding:12px 12px 14px}#rolagem .rgdica{display:none}#rolagem .d10{width:46px;height:52px}#rolagem .rgquem{font-size:17px}
+    .casaacoes .rotx{display:none}}
+  @media (prefers-reduced-motion:reduce){#rolagem,#rolagem *{animation-duration:.01s!important;animation-delay:0s!important}}
 </style>
 </head>
 <body>
@@ -1173,6 +1209,7 @@
   <div class="pgrolo"><div class="pgvara"></div><div class="pgpapel"><div class="pgconteudo" id="pgConteudo"></div></div><div class="pgvara"></div>
     <div class="pgfaixa"></div><div class="pgselo">封</div></div>
 </div>
+<div id="rolagem" hidden onclick="fecharRolagem()" role="status" aria-live="polite"></div>
 <div id="cena" hidden onclick="fecharCena()" role="dialog" aria-label="Fundação da família"><div class="cfundo"></div><div class="cpalco" id="cenaPalco"></div><button class="cpular" onclick="event.stopPropagation();fecharCena()">pular</button></div>
 <div id="abertura" hidden onclick="avancarAbertura()" role="dialog" aria-label="Rokugan em 1137">
   <div class="bruma"></div><div class="sol"></div>
@@ -1205,8 +1242,8 @@
     </div>
     <div class="casaacoes">
       <span class="selo-leitura" id="seloLeitura" hidden>só leitura</span>
-      <button class="ghost so-mestre" id="btnDesfazer" onclick="desfazer()" disabled aria-label="desfazer">↶ desfazer</button>
-      <button class="ghost abrever" onclick="abrirAbertura()" title="rever a abertura sobre o ano de 1137">⛩ 1137</button>
+      <button class="ghost so-mestre" id="btnDesfazer" onclick="desfazer()" disabled aria-label="desfazer">↶<span class="rotx"> desfazer</span></button>
+      <button class="ghost abrever" onclick="abrirAbertura()" title="rever a abertura sobre o ano de 1137" aria-label="abertura de 1137">⛩<span class="rotx"> 1137</span></button>
       <label class="casapapel">Papel <select id="papelSel"><option value="mestre">Mestre</option><option value="jogador">Jogador (só leitura)</option></select></label>
       <details class="casamenu salabox" id="familiasMenu">
         <summary id="syncStatus">Famílias</summary>
@@ -3530,6 +3567,51 @@ function concluirInvestimentos(){
   return prontos;
 }
 
+/* ---- rolagens do Combate na tela ----
+   2026-11-05 (Thiago): ao rolar ataque, dano ou Iniciativa, os d10 caem e rolam na tela; um 10
+   quica, brilha e rola de novo; no fim acendem os dados que ficam e aparece o total. A rolagem fica
+   em S.combate.rolagem, então quem estiver com a família aberta vê a mesma cena (cada navegador
+   lembra o que já viu). O 🔊 do Combate também lê em voz alta. */
+const D10_SVG='<svg viewBox="0 0 54 60" aria-hidden="true"><path d="M27 2 L52 24 L27 58 L2 24 Z"/><path d="M2 24 L27 33 L52 24 M27 33 L27 58" fill="none"/></svg>';
+let rgTimers=[],rgVistas=new Set(),rgFila=[],rgAtiva=false;
+function rgVoz(){try{return localStorage.getItem("l5r_voz_dados")==="1";}catch(e){return false;}}
+function alternarVozDados(){try{localStorage.setItem("l5r_voz_dados",rgVoz()?"0":"1");}catch(e){}renderCombate();}
+function registrarRolagem(c,acao,expr,r){const C=combate();
+  C.rolagem={id:uid(),ts:Date.now(),quem:c.nome||"Alguém",acao,expr,total:r.total,mod:r.mod||0,dados:r.dados.map(d=>({chain:d.chain,mantido:d.mantido}))};
+  rgVistas.add(C.rolagem.id);try{const v=JSON.parse(localStorage.getItem("l5r_rolagens_vistas")||"[]");v.push(C.rolagem.id);localStorage.setItem("l5r_rolagens_vistas",JSON.stringify(v.slice(-60)));}catch(e){}
+  mostrarRolagem(C.rolagem);}
+function verificarRolagem(){const C=S.combate;const g=C&&C.rolagem;if(!g||rgVistas.has(g.id))return;rgVistas.add(g.id);
+  let v=[];try{v=JSON.parse(localStorage.getItem("l5r_rolagens_vistas")||"[]");}catch(e){}
+  if(v.includes(g.id))return;try{v.push(g.id);localStorage.setItem("l5r_rolagens_vistas",JSON.stringify(v.slice(-60)));}catch(e){}
+  if(Date.now()-g.ts<90*1000)mostrarRolagem(g);}
+function mostrarRolagem(g){
+  if(rgAtiva){rgFila.push(g);return;}
+  const el=document.getElementById("rolagem");if(!el)return;rgAtiva=true;rgTimers.forEach(clearTimeout);rgTimers=[];
+  const n=g.dados.length,fala=g.quem+" "+({ataque:"rolou um ataque",dano:"rolou o dano",iniciativa:"rolou a Iniciativa"}[g.acao]||"rolou");
+  el.innerHTML="<span class=\"rgdica\">toque para fechar</span><div class=\"rgquem\">"+esc(fala)+"<small>"+esc(g.expr)+(g.mod?" "+(g.mod>0?"+":"")+g.mod:"")+"</small></div>"+
+    "<div class=\"rgmesa\">"+g.dados.map((d,i)=>"<div class=\"d10 girando\" style=\"--d:"+(i*0.09).toFixed(2)+"s\" data-i=\""+i+"\">"+D10_SVG+"<b>"+(1+Math.floor(Math.random()*10))+"</b></div>").join("")+"</div>"+
+    "<div class=\"rgtotal\">ficam "+g.dados.filter(d=>d.mantido).length+" dados ·<b>"+g.total+"</b>"+({ataque:"no ataque",dano:"Ferimentos",iniciativa:"de Iniciativa"}[g.acao]||"")+"</div>";
+  el.className="";el.hidden=false;
+  const reduz=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const dies=[...el.querySelectorAll(".d10")];
+  const flick=setInterval(()=>dies.forEach(x=>{if(x.classList.contains("girando"))x.querySelector("b").textContent=1+Math.floor(Math.random()*10);}),70);
+  rgTimers.push({clear:()=>clearInterval(flick)});
+  let fimMax=0;
+  g.dados.forEach((d,i)=>{const x=dies[i];let t=reduz?0:550+i*90+Math.random()*250;
+    d.chain.forEach((v,k)=>{const tk=t;
+      rgTimers.push(setTimeout(()=>{x.classList.remove("girando");const soma=d.chain.slice(0,k+1).reduce((a,b)=>a+b,0);x.querySelector("b").textContent=soma;
+        if(k>0){const c=x.querySelector(".cad")||x.appendChild(Object.assign(document.createElement("span"),{className:"cad"}));c.textContent=d.chain.slice(0,k+1).join("+");}
+        if(v===10&&k<d.chain.length-1){const bm=document.createElement("span");bm.className="boom";bm.textContent="explodiu!";x.appendChild(bm);
+          x.classList.remove("explode");void x.offsetWidth;x.classList.add("explode","girando");}},tk));
+      t+=reduz?0:(v===10?650:0);});
+    fimMax=Math.max(fimMax,t);});
+  rgTimers.push(setTimeout(()=>{clearInterval(flick);dies.forEach((x,i)=>{x.classList.remove("girando");x.classList.add(g.dados[i].mantido?"fica":"sai");});el.classList.add("fim");
+    if(rgVoz()&&window.speechSynthesis){try{const u=new SpeechSynthesisUtterance(fala+": "+g.total);u.lang="pt-BR";speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}},fimMax+250));
+  rgTimers.push(setTimeout(fecharRolagem,fimMax+4200));
+}
+function fecharRolagem(){const el=document.getElementById("rolagem");if(!el||el.hidden)return;
+  rgTimers.forEach(t=>t&&t.clear?t.clear():clearTimeout(t));rgTimers=[];el.classList.add("saindo");
+  setTimeout(()=>{el.hidden=true;el.className="";rgAtiva=false;if(rgFila.length)mostrarRolagem(rgFila.shift());},380);}
 /* ---- cenas da fundação: curtas, um toque pula; desligáveis por navegador ---- */
 let cenaTimer=null,cenaDepois=null,cenasSuprimidas=false;
 function cenasLigadas(){try{return localStorage.getItem("l5r_sem_cenas")!=="1";}catch(e){return true;}}
@@ -4478,6 +4560,7 @@ function hardReset(){const n=prompt("Isto apaga a família inteira. Para confirm
 
 /* ============ RENDER ============ */
 function render(){
+  try{setTimeout(verificarRolagem,0);}catch(e){}
   try{renderAssistente();}catch(e){}
   try{setTimeout(verificarRevelacoes,0);}catch(e){}
   document.getElementById("familiaNome").textContent=S.nome||"Família";
@@ -7084,13 +7167,13 @@ function cbFerida(st){let i=st.feridas.findIndex(f=>st.danoAtual<=f.total);if(i<
 function rolarTexto(txt,extra){const m=/^(\d+)k(\d+)$/.exec(txt||"");if(!m)return null;return rolarAnelL5R(Number(m[1]),Number(m[2]),extra||0);}
 function cbRolarIni(id){if(bloqueadoLeitura())return;const C=combate();
   if(!id&&C.fase==="posturas"){const f=cbSemPostura();if(f.length&&!confirm("Ainda sem postura: "+f.map(c=>c.nome).join(", ")+". Rolar a Iniciativa mesmo assim?"))return;C.fase="combate";cbLog("Posturas declaradas; rola-se a Iniciativa.");}
-  (id?[cbItem(id)]:C.lista).forEach(c=>{if(!c)return;const st=cbStats(c);const r=rolarTexto(st.ini,st.iniExtra);if(r){c.ini=r.total;cbLog(c.nome+" rola Iniciativa "+st.ini+": "+r.total+".");}});
+  (id?[cbItem(id)]:C.lista).forEach(c=>{if(!c)return;const st=cbStats(c);const r=rolarTexto(st.ini,st.iniExtra);if(r){c.ini=r.total;cbLog(c.nome+" rola Iniciativa "+st.ini+": "+r.total+".");if(id)registrarRolagem(c,"iniciativa",st.ini,r);}});
   if(!id){const o=cbOrdem();C.vez=o.length?o[0].id:null;}salvar();render();}
 function cbAtacar(id){const c=cbItem(id);if(!c)return;const st=cbStats(c);const r=rolarTexto(st.ataque);
   if(!r){flashHint("Sem rolagem de ataque.");return;}const fe=cbFerida(st);
-  cbLog(c.nome+" ataca ("+st.ataque+"): "+r.total+(fe.f.penalidade?" · lembre: ferido, +"+fe.f.penalidade+" no TN das ações":"")+".");salvar();render();}
+  cbLog(c.nome+" ataca ("+st.ataque+"): "+r.total+(fe.f.penalidade?" · lembre: ferido, +"+fe.f.penalidade+" no TN das ações":"")+".");registrarRolagem(c,"ataque",st.ataque,r);salvar();render();}
 function cbRolarDano(id){const c=cbItem(id);if(!c)return;const st=cbStats(c);const r=rolarTexto(st.dano);
-  if(!r){flashHint("Sem rolagem de dano.");return;}cbLog(c.nome+" causa dano ("+st.dano+"): "+r.total+" Ferimentos (antes da Redução do alvo).");salvar();render();}
+  if(!r){flashHint("Sem rolagem de dano.");return;}cbLog(c.nome+" causa dano ("+st.dano+"): "+r.total+" Ferimentos (antes da Redução do alvo).");registrarRolagem(c,"dano",st.dano,r);salvar();render();}
 function cbOrdem(){return combate().lista.slice().sort((a,b)=>(b.ini==null?-1:b.ini)-(a.ini==null?-1:a.ini));}
 function cbProximo(){if(bloqueadoLeitura())return;const C=combate(),o=cbOrdem().filter(c=>!c.fora);if(!o.length)return;
   const i=o.findIndex(c=>c.id===C.vez);if(i<0||i===o.length-1){if(i===o.length-1){C.rodada++;cbLog("Começa a rodada "+C.rodada+".");}C.vez=o[0].id;}else C.vez=o[i+1].id;salvar();render();}
@@ -7140,7 +7223,7 @@ function renderCombate(){
   box.innerHTML=
     (C.fase==="posturas"&&C.lista.length?"<div class=\"cbfase\"><b>1. Posturas.</b> Antes da Iniciativa, cada um escolhe a postura (faltam "+cbSemPostura().length+"). Depois, <b>2.</b> rolar a Iniciativa, que vale para toda a escaramuça; e a cada vez, <b>3.</b> quem age pode trocar de postura no começo do turno.</div>":"")+
     "<div class=\"cbbarra\"><span>Rodada <b>"+C.rodada+"</b></span>"+(C.vez&&cbItem(C.vez)?"<span>vez de <b>"+esc(cbItem(C.vez).nome)+"</b></span>":"")+
-      "<button onclick=\"cbRolarIni()\">🎲 rolar Iniciativa de todos</button><button class=\"primary\" onclick=\"cbProximo()\">próximo ▶</button><button class=\"ghost\" onclick=\"cbNovo()\">novo combate</button></div>"+
+      "<button class=\"ghost\" onclick=\"alternarVozDados()\" title=\"ler as rolagens em voz alta neste navegador\">"+(rgVoz()?"🔊 voz ligada":"🔇 voz desligada")+"</button><button onclick=\"cbRolarIni()\">🎲 rolar Iniciativa de todos</button><button class=\"primary\" onclick=\"cbProximo()\">próximo ▶</button><button class=\"ghost\" onclick=\"cbNovo()\">novo combate</button></div>"+
     "<div class=\"cbgrid\"><div>"+
       "<div class=\"cbadd\"><select onchange=\"cbAddPJ(this.value)\"><option value=\"\">+ personagem da família…</option>"+livres.map(p=>"<option value=\""+p.id+"\">"+esc(p.nome||"sem nome")+"</option>").join("")+"</select>"+
         "<select id=\"cbPerfilAl\"><option value=\"\" disabled selected>aliado…</option>"+perfis+"</select><button class=\"ghost\" onclick=\"cbAddNPC('aliado',document.getElementById('cbPerfilAl').value)\">+ aliado</button>"+
