@@ -1082,6 +1082,63 @@
 
   /* 2026-11-05: fundação da família em etapas (Thiago: tudo de uma vez assusta) */
   .assist{display:none}
+
+  /* ===== Livro da casa (aba Casa): cargos, anotações e calendário de Rokugan ===== */
+  .lvcab{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .lvdata{display:flex;gap:14px;align-items:center;flex:1 1 300px}
+  .lvk{font-family:var(--font-display);font-size:46px;line-height:1;color:var(--seal)}
+  .lvhoje{font-family:var(--font-display);font-size:24px;font-weight:600;line-height:1.2}
+  .lvsub{font-size:13px;color:var(--ink2)}
+  .lvcab .hint{flex:1 1 280px;margin:0}
+  .lvlista{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;align-items:start}
+  .lvcargo,.lvnota{border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:var(--panel2)}
+  .lvcargo.vago{border-style:dashed;background:transparent}
+  .lvct{display:flex;gap:6px;align-items:center}
+  #viewCasa input.lvtit{flex:1 1 auto;min-width:0;font-family:var(--font-display);font-weight:600;font-size:15px;background:transparent;border:1px solid transparent;padding:3px 5px;margin-left:-5px}
+  #viewCasa input.lvtit:hover,#viewCasa input.lvtit:focus{border-color:var(--line);background:var(--panel)}
+  .lvjp{font-family:var(--font-display);color:var(--muted-tx);font-size:14px;white-space:nowrap}
+  #viewCasa button.lvx{border:none;background:transparent;color:var(--muted-tx);font-size:17px;line-height:1;padding:2px 7px;cursor:pointer;border-radius:6px}
+  #viewCasa button.lvx:hover{color:var(--seal);background:var(--panel)}
+  .lvdesc{font-size:12.5px;color:var(--muted-tx);margin:0 0 6px}
+  .lvquem{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .lvquem select{flex:1 1 170px;min-width:0;max-width:100%}
+  .lvquem input[type=text]{flex:1 1 150px;min-width:0}
+  #viewCasa input.lvobs{width:100%;box-sizing:border-box;margin-top:6px;font-size:13px;background:transparent;border:none;border-bottom:1px dashed var(--line);border-radius:0;padding:3px 2px;color:var(--ink2)}
+  #viewCasa input.lvobs:focus{outline:none;border-bottom-color:var(--seal)}
+  #viewCasa textarea.lvta{display:block;width:100%;box-sizing:border-box;font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 8px;resize:none;overflow:hidden;min-height:34px;line-height:1.5}
+  .lvnota textarea.lvta{margin-top:5px;min-height:64px}
+  .lvmais{margin-top:10px}
+  .lvanonav{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+  .lvanonav>button{font-size:18px;line-height:1;padding:6px 12px}
+  .lvano{text-align:center;min-width:150px}
+  .lvano b{display:block;font-family:var(--font-display);font-size:26px;line-height:1.1}
+  .lvano small{color:var(--ink2);font-size:12px}
+  .lvest{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+  .lvestn{font-family:var(--font-display);font-weight:600;font-size:14px;color:var(--ink2)}
+  .lvestn span{display:block;font-size:32px;line-height:1.1;color:var(--lvcor)}
+  .lvestn em{display:inline-block;font-style:normal;font-family:var(--font-body);font-weight:600;font-size:11px;background:var(--seal);color:#fff;border-radius:99px;padding:1px 8px;margin-top:4px}
+  .lvest.e0{--lvcor:#c2607a}.lvest.e1{--lvcor:#3f8a55}.lvest.e2{--lvcor:#c0702a}.lvest.e3{--lvcor:#4a78a8}
+  .lvmeses{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:8px;min-width:0;align-items:start}
+  .lvmes{border:1px solid var(--line);border-top:3px solid var(--lvcor);border-radius:8px;padding:8px 9px;background:var(--panel2);min-width:0}
+  .lvest.agora .lvmes{background:var(--panel);box-shadow:0 1px 6px rgba(40,25,10,.10)}
+  .lvmh{display:flex;gap:8px;align-items:center}
+  .lvmk{font-family:var(--font-display);font-size:24px;line-height:1;color:var(--lvcor)}
+  .lvmh div{flex:1 1 auto;min-width:0;line-height:1.25}
+  .lvmh b{font-family:var(--font-display);font-size:14.5px}
+  .lvmh small{display:block;font-size:11.5px;color:var(--muted-tx)}
+  #viewCasa button.lvadd{padding:2px 9px;font-size:16px;line-height:1.2}
+  details.lvfest{font-size:12.5px;color:var(--ink2);margin-top:6px}
+  details.lvfest summary{cursor:pointer;list-style:none}
+  details.lvfest summary::-webkit-details-marker{display:none}
+  details.lvfest summary b{color:var(--lvcor);font-weight:600;font-variant-numeric:tabular-nums}
+  details.lvfest p{margin:3px 0 0;color:var(--muted-tx)}
+  .lvent{display:flex;gap:5px;align-items:flex-start;margin-top:6px}
+  #viewCasa .lvent input[type=number]{width:50px;flex:none;padding:6px 4px;text-align:center}
+  .lvent textarea.lvta{flex:1 1 auto;min-width:0}
+  .lvanotxt{margin-bottom:6px}
+  .lvrodape{margin-top:10px;font-size:12.5px;color:var(--muted-tx);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .lvrodape input{width:80px}
+  @media(max-width:640px){.lvest{grid-template-columns:1fr;gap:6px}.lvestn{display:flex;gap:8px;align-items:center}.lvestn span{display:inline;font-size:24px}.lvestn em{margin-top:0}.lvk{font-size:36px}.lvhoje{font-size:20px}}
   body.criando .assist{display:block;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:4px 0 14px;box-shadow:0 2px 10px rgba(40,25,10,.08)}
   .assist .apassos{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;margin:0 0 12px;scrollbar-width:thin}
   .assist .ap{flex:1;min-width:74px;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:0;padding:4px 2px;cursor:pointer;color:var(--muted-tx,#8a7d68);font-family:var(--font-body);font-size:11.5px}
@@ -1107,7 +1164,7 @@
   body.criando[data-passo="4"] #viewFamilia .aneisfaixa,body.criando[data-passo="8"] #viewFamilia .aneisfaixa{display:block}
   body.criando[data-passo="4"] #viewFamilia .resumoestacao{display:none}
   body.criando #viewFamilia details.grupo{border:0;background:none;padding:0;margin:0;box-shadow:none}
-  body.criando #tabBtnEstacoes,body.criando #tabBtnBatalha,body.criando #tabBtnCombate{display:none}
+  body.criando #tabBtnEstacoes,body.criando #tabBtnBatalha,body.criando #tabBtnCombate,body.criando #tabBtnCasa{display:none}
   @media (max-width:640px){.assist .ap{min-width:56px;font-size:10.5px}.assist .ap .apk{width:30px;height:30px;font-size:15px}.assist .atit{font-size:19px}}
 
   /* 2026-11-05: cenas da fundação (clã, origem, história, conclusão); um toque pula */
@@ -1272,6 +1329,7 @@
     <button class="tabbtn on" id="tabBtnFamilia" onclick="setAbaPrincipal('familia')"><span class="ti" aria-hidden="true">家</span><span>Família</span></button>
     <button class="tabbtn" id="tabBtnEstacoes" onclick="setAbaPrincipal('estacoes')"><span class="ti" aria-hidden="true">季</span><span>Estações <span class="tag" id="tabEstacoesCount"></span></span></button>
     <button class="tabbtn" id="tabBtnPersonagens" onclick="setAbaPrincipal('personagens')"><span class="ti" aria-hidden="true">人</span><span>Personagens <span class="tag" id="tabPersonagensCount"></span></span></button>
+    <button class="tabbtn" id="tabBtnCasa" onclick="setAbaPrincipal('casa')"><span class="ti" aria-hidden="true">記</span><span>Casa</span></button>
     <button class="tabbtn" id="tabBtnBatalha" onclick="setAbaPrincipal('batalha')"><span class="ti" aria-hidden="true">兵</span><span>Batalha<span class="tl-longo"> em Massa</span></span></button>
     <button class="tabbtn" id="tabBtnCombate" onclick="setAbaPrincipal('combate')"><span class="ti" aria-hidden="true">剣</span><span>Combate</span></button>
     <button class="tabbtn" id="tabBtnMapa" onclick="setAbaPrincipal('mapa')"><span class="ti" aria-hidden="true">図</span><span>Mapa<span class="tl-longo"> de Rokugan</span></span></button>
@@ -1428,6 +1486,12 @@
     </div>
   </div>
 
+  <div id="viewCasa" style="display:none">
+    <div class="panel"><div id="livroCab"></div></div>
+    <div class="panel"><h2><span class="kan">記</span>Anotações<span class="sub">aliados, rivais, dívidas, planos</span></h2><div id="livroNotas"></div></div>
+    <div class="panel"><h2><span class="kan">役</span>Cargos da casa<span class="sub">quem responde pelo quê</span></h2><div id="livroCargos"></div></div>
+    <div class="panel"><h2><span class="kan">暦</span>Calendário de Rokugan<span class="sub">doze meses de 28 dias; o ano começa na primavera</span></h2><div id="livroCal"></div></div>
+  </div>
   <div id="viewEstacoes" style="display:none">
     <div class="panel"><div id="estCabecalho"></div></div>
     <div class="grid">
@@ -3672,7 +3736,7 @@ function renderAssistente(){
   b.classList.toggle("criando",on);if(!box)return;
   if(!on){delete b.dataset.passo;box.innerHTML="";return;}
   const n=S.criacao;b.dataset.passo=String(n);
-  if(["estacoes","batalha","combate"].includes(typeof abaPrincipal!=="undefined"?abaPrincipal:""))setTimeout(()=>setAbaPrincipal("familia"),0);
+  if(["estacoes","batalha","combate","casa"].includes(typeof abaPrincipal!=="undefined"?abaPrincipal:""))setTimeout(()=>setAbaPrincipal("familia"),0);
   document.querySelectorAll("#viewFamilia details.grupo").forEach(d=>d.open=true);
   const P=PASSOS_CRIACAO[n-1],falta=P.falta();
   const passos=PASSOS_CRIACAO.map((x,i)=>{const k=i+1,feito=k<n&&!x.falta().length,lib=passoLiberado(k);
@@ -3728,29 +3792,29 @@ const ACONTECIMENTOS=[
  {id:"praga_mudas",est:0,nome:"Praga nas mudas",texto:"Os brotos de arroz amarelam antes do verão.",
   im:{anel:"riqueza",ef:[{a:"riqueza",v:-4,d:4}]},re:{anel:"vazio",acao:"Os camponeses dizem que um kami foi ofendido. Achar a causa: um santuário esquecido, a maldição de um rival ou só a terra cansada.",ef:[{a:"riqueza",v:-6,d:4}]}},
  {id:"espirito_arrozal",est:0,nome:"Um morto reclama o arrozal",texto:"Um samurai que voltou pelo Portão do Esquecimento chega a uma aldeia da casa e diz que aquelas terras eram dele há duzentos anos.",
-  im:{anel:"dominio",ef:[{a:"dominio",v:-3,d:4}]},re:{anel:"influencia",acao:"Convencê-lo a voltar a Meido com honra, aceitá-lo a serviço da casa ou levar o caso ao magistrado do clã.",ef:[{a:"dominio",v:-8,d:8}]}},
+  im:{anel:"dominio",ef:[{a:"dominio",v:-3,d:4}]},re:{anel:"influencia",acao:"Convencê-lo a voltar a Meido com honra, aceitá-lo a serviço da casa ou levar o caso ao magistrado do clã.",ef:[{a:"dominio",v:-6,d:8}]}},
  {id:"peregrinos_portao",est:0,nome:"Peregrinos de Volturnum",texto:"Monges e veteranos do Portão do Esquecimento atravessam as terras e pedem abrigo. Trazem histórias e um ar de outro mundo.",
-  im:{anel:"vazio",ef:[{a:"vazio",v:1,d:4}]},re:{anel:"influencia",acao:"Hospedá-los com cerimônia faz o nome da casa correr pelos templos. Ouvir as histórias pode render segredos sobre os mortos que ficaram.",ef:[{a:"influencia",v:6,d:4}]}},
+  im:{anel:"vazio",ef:[{a:"vazio",v:1,d:4}]},re:{anel:"influencia",acao:"Hospedá-los com cerimônia faz o nome da casa correr pelos templos. Ouvir as histórias pode render segredos sobre os mortos que ficaram.",ef:[{a:"influencia",v:4,d:4}]}},
  /* verão */
  {id:"alistamento_obrigatorio",est:1,nome:"Alistamento obrigatório",texto:"O senhor exige homens, e a família convoca.",
-  im:{anel:"autoridade",ef:[{a:"autoridade",v:8,d:4}]},re:{anel:"vazio",acao:"As aldeias resistem. A casa pode compensar as famílias com arroz, ouvir os chefes de aldeia ou arrastar os homens à força, e a honra paga o preço.",ef:[{a:"vazio",v:-2,perm:true}]}},
+  im:{anel:"autoridade",ef:[{a:"autoridade",v:8,d:4}]},re:{anel:"vazio",acao:"As aldeias resistem. A casa pode compensar as famílias com arroz, ouvir os chefes de aldeia ou arrastar os homens à força, e a honra paga o preço.",ef:[{a:"vazio",v:-1,perm:true}]}},
  {id:"mercenarios",est:1,nome:"Mercenários contratados",texto:"Ronin de aluguel reforçam a guarnição por uma temporada.",
   im:{anel:"autoridade",ef:[{a:"autoridade",v:8,d:2}]},re:{anel:"riqueza",acao:"Os ronin querem pagamento, e às vezes mais. Mantê-los na linha, dispensá-los antes que causem problemas ou oferecer um juramento aos melhores.",ef:[{a:"riqueza",v:-6,d:4}]}},
  {id:"saque_guerra",est:1,nome:"Saque de guerra",texto:"Uma vitória numa escaramuça deixa baús para levar. Saquear não é honroso.",
   im:{anel:"autoridade",ef:[{a:"riqueza",v:6,d:0}]},re:{anel:"vazio",acao:"O saque tem dono. Devolver o que não é da casa, oferecer parte ao templo ou esconder tudo e torcer para ninguém perguntar.",ef:[{a:"riqueza",v:4,d:0},{a:"vazio",v:-1,perm:true}]}},
  {id:"bandidos_estrada",est:1,nome:"Bandidos nas estradas",texto:"Caravanas atacadas e patrulhas desmoralizadas.",
-  im:{anel:"autoridade",ef:[{a:"riqueza",v:-3,d:4}]},re:{anel:"autoridade",acao:"Caçar o bando, descobrir quem o protege ou pagar uma escolta para as caravanas.",ef:[{a:"autoridade",v:-6,d:4},{a:"riqueza",v:-3,d:4}]}},
+  im:{anel:"autoridade",ef:[{a:"riqueza",v:-3,d:4}]},re:{anel:"autoridade",acao:"Caçar o bando, descobrir quem o protege ou pagar uma escolta para as caravanas.",ef:[{a:"autoridade",v:-4,d:4},{a:"riqueza",v:-3,d:4}]}},
  {id:"desercao",est:1,nome:"Deserção na guarnição",texto:"Ashigaru somem à noite, levando as lanças.",
   im:{anel:"autoridade",ef:[{a:"autoridade",v:-4,d:4}]},re:{anel:"influencia",acao:"Os desertores fugiram para as terras de um vizinho. Exigir a devolução, descobrir por que fugiram ou deixar o caso morrer.",ef:[{a:"autoridade",v:-6,d:4}]}},
  {id:"torneio_verao",est:1,nome:"Vitória num torneio de verão",texto:"Um samurai da casa vence diante de convidados importantes.",
-  im:{anel:"autoridade",ef:[{a:"autoridade",v:4,d:4}]},re:{anel:"influencia",acao:"Os convidados viram. Aproveitar a vitória na corte, ganhar o rival derrotado como amigo ou deixar que ele planeje a revanche.",ef:[{a:"influencia",v:6,d:4}]}},
+  im:{anel:"autoridade",ef:[{a:"autoridade",v:5,d:4}]},re:{anel:"influencia",acao:"Os convidados viram. Aproveitar a vitória na corte, ganhar o rival derrotado como amigo ou deixar que ele planeje a revanche.",ef:[{a:"influencia",v:4,d:4}]}},
  {id:"olhos_crisantemo",est:1,nome:"Perguntas demais",texto:"Um forasteiro de modos antiquados, que cita leis de quinhentos anos atrás, faz perguntas sobre as guarnições e as lealdades da casa.",
-  im:{anel:"autoridade",ef:[{a:"influencia",v:-3,d:4}]},re:{anel:"influencia",acao:"Descobrir para quem ele trabalha. Prendê-lo, segui-lo até o mestre dele ou alimentá-lo com mentiras.",ef:[{a:"autoridade",v:-6,d:4}]}},
+  im:{anel:"autoridade",ef:[{a:"influencia",v:-3,d:4}]},re:{anel:"influencia",acao:"Descobrir para quem ele trabalha. Prendê-lo, segui-lo até o mestre dele ou alimentá-lo com mentiras.",ef:[{a:"influencia",v:-4,d:4},{a:"autoridade",v:-2,d:4}]}},
  {id:"ecos_yasuki",est:1,nome:"Um ancestral quer o clã antigo",texto:"Um espírito retornado exige que um ramo da casa volte ao clã de origem, como Yasuki Masashi faz com os Yasuki. Metade dos vassalos o escuta.",
-  im:{anel:"influencia",ef:[{a:"influencia",v:-4,d:4}]},re:{anel:"autoridade",acao:"Convencer o espírito, desafiá-lo em duelo ou levar o caso ao daimyō do clã antes que vire sangue.",ef:[{a:"autoridade",v:-8,d:4}]}},
+  im:{anel:"influencia",ef:[{a:"influencia",v:-4,d:4}]},re:{anel:"autoridade",acao:"Convencer o espírito, desafiá-lo em duelo ou levar o caso ao daimyō do clã antes que vire sangue.",ef:[{a:"autoridade",v:-6,d:4}]}},
  /* outono */
  {id:"colheita_extraordinaria",est:2,nome:"Colheita extraordinária",texto:"Os celeiros não dão conta do arroz.",
-  im:{anel:"riqueza",ef:[{a:"riqueza",v:6,d:4}]},re:{anel:"dominio",acao:"Há mais arroz que celeiro. Construir armazéns, vender antes que estrague ou guardar para um inverno pior.",ef:[{a:"riqueza",v:6,d:4}]}},
+  im:{anel:"riqueza",ef:[{a:"riqueza",v:6,d:4}]},re:{anel:"dominio",acao:"Há mais arroz que celeiro. Construir armazéns, vender antes que estrague ou guardar para um inverno pior.",ef:[{a:"dominio",v:4,d:4},{a:"riqueza",v:2,d:4}]}},
  {id:"tributo_vassalo",est:2,nome:"Tributo de um vassalo",texto:"Uma família menor manda presentes e pede proteção.",
   im:{anel:"influencia",ef:[{a:"influencia",v:4,d:4}]},re:{anel:"autoridade",acao:"O vassalo pede proteção contra alguém. Cumprir a promessa vale mais que o presente; quebrá-la custa mais ainda.",ef:[{a:"influencia",v:4,d:8},{a:"autoridade",v:3,d:4}]}},
  {id:"refugiados",est:2,nome:"Refugiados acolhidos",texto:"Gente fugida da guerra pede abrigo: braços para o campo, bocas para alimentar.",
@@ -3764,10 +3828,10 @@ const ACONTECIMENTOS=[
  {id:"bocas_mortos",est:2,nome:"Os mortos querem servos",texto:"Espíritos retornados se instalam numa aldeia. Não comem, mas exigem servos, terras e arroz para os vassalos que tinham em vida.",
   im:{anel:"riqueza",ef:[{a:"riqueza",v:-4,d:4}]},re:{anel:"influencia",acao:"Pedir ao clã que os assuma, convencê-los a partir ou dar a eles um lugar na casa, com tudo o que isso traz.",ef:[{a:"riqueza",v:-4,d:8},{a:"dominio",v:-3,d:4}]}},
  {id:"edito_espiritos",est:2,nome:"O édito sobre os espíritos",texto:"Chega o pedido do Imperador: os espíritos retornados devem voltar a Meido por vontade própria. Os que vivem nas terras da casa ouvem com rancor.",
-  im:{anel:"autoridade",ef:[{a:"autoridade",v:-3,d:4}]},re:{anel:"vazio",acao:"Convencer os espíritos com honra, deixar que fiquem às escondidas ou entregá-los aos magistrados.",ef:[{a:"influencia",v:5,d:4},{a:"autoridade",v:-4,d:4}]}},
+  im:{anel:"autoridade",ef:[{a:"autoridade",v:-3,d:4}]},re:{anel:"vazio",acao:"Convencer os espíritos com honra, deixar que fiquem às escondidas ou entregá-los aos magistrados.",ef:[{a:"influencia",v:3,d:4},{a:"autoridade",v:-3,d:4}]}},
  /* inverno */
  {id:"favor_daimyo",est:3,nome:"Favor de um daimyō",texto:"Na corte de inverno, um senhor importante lembra o nome da família.",
-  im:{anel:"influencia",ef:[{a:"influencia",v:5,d:4}]},re:{anel:"autoridade",acao:"O senhor espera um serviço antes do degelo: escoltar alguém, resolver uma disputa ou emprestar samurai.",ef:[{a:"influencia",v:5,d:4}]}},
+  im:{anel:"influencia",ef:[{a:"influencia",v:5,d:4}]},re:{anel:"autoridade",acao:"O senhor espera um serviço antes do degelo: escoltar alguém, resolver uma disputa ou emprestar samurai. Bem servido, ele manda homens e armas para a guarnição da casa.",ef:[{a:"autoridade",v:4,d:4}]}},
  {id:"dote_casamento",est:3,nome:"Dote de casamento",texto:"Um casamento acertado na corte traz um dote generoso.",
   im:{anel:"influencia",ef:[{a:"riqueza",v:6,d:0}]},re:{anel:"influencia",acao:"O casamento une duas casas. A outra família espera respeito, lugar à mesa e talvez um favor que ninguém mencionou.",ef:[{a:"riqueza",v:4,d:0},{a:"influencia",v:3,d:4}]}},
  {id:"intriga_corte",est:3,nome:"Intriga na corte de inverno",texto:"Um boato bem plantado faz a família perder lugares à mesa.",
@@ -3777,11 +3841,11 @@ const ACONTECIMENTOS=[
  {id:"pressagio_sombrio",est:3,nome:"Presságio sombrio",texto:"Um corvo branco, um sino que racha sozinho.",
   im:{anel:"vazio",ef:[{a:"vazio",v:-1,d:4}]},re:{anel:"influencia",acao:"Descobrir o que o presságio anuncia, consultar um oráculo ou acalmar os camponeses antes que fujam.",ef:[{a:"vazio",v:-1,d:4},{a:"autoridade",v:-3,d:4}]}},
  {id:"inverno_rigoroso",est:3,nome:"Inverno rigoroso",texto:"Neve até os beirais, estradas fechadas e guarnições com frio.",
-  im:{anel:"dominio",ef:[{a:"dominio",v:-3,d:4}]},re:{anel:"autoridade",acao:"Manter as estradas abertas e as guarnições alimentadas até o degelo.",ef:[{a:"dominio",v:-2,d:4},{a:"autoridade",v:-4,d:4}]}},
+  im:{anel:"dominio",ef:[{a:"dominio",v:-3,d:4}]},re:{anel:"autoridade",acao:"Manter as estradas abertas e as guarnições alimentadas até o degelo.",ef:[{a:"dominio",v:-2,d:4},{a:"autoridade",v:-3,d:4}]}},
  {id:"ancestral_corte",est:3,nome:"Um ancestral na corte de inverno",texto:"Um antepassado retornado aparece na corte de inverno e fala em nome da casa sem que ninguém tenha pedido.",
-  im:{anel:"influencia",ef:[{a:"influencia",v:3,d:4}]},re:{anel:"influencia",acao:"Ele abre portas antigas e cria inimigos novos. Apoiá-lo, contê-lo ou mandá-lo de volta para casa com cortesia.",ef:[{a:"influencia",v:6,d:4},{a:"vazio",v:-1,d:4}]}},
+  im:{anel:"influencia",ef:[{a:"influencia",v:3,d:4}]},re:{anel:"influencia",acao:"Ele abre portas antigas e cria inimigos novos. Apoiá-lo, contê-lo ou mandá-lo de volta para casa com cortesia.",ef:[{a:"influencia",v:4,d:4},{a:"vazio",v:-1,d:4}]}},
  {id:"alianca_desfeita",est:3,nome:"Órfãos da Aliança",texto:"Com o fim da Aliança de Yoritomo, uma família de um clã menor procura um novo protetor e bate à porta da casa.",
-  im:{anel:"influencia",ef:[{a:"influencia",v:3,d:4}]},re:{anel:"autoridade",acao:"Aceitar traz gente, navios e os inimigos deles. Recusar com elegância também é uma arte.",ef:[{a:"influencia",v:4,d:8},{a:"autoridade",v:-3,d:4}]}}
+  im:{anel:"influencia",ef:[{a:"influencia",v:3,d:4}]},re:{anel:"autoridade",acao:"Aceitar traz gente, navios e os inimigos deles. Recusar com elegância também é uma arte.",ef:[{a:"dominio",v:4,d:8},{a:"autoridade",v:-2,d:4}]}}
 ];
 /* 2026-11-05 (Thiago): TN fixo pela gravidade de cada parte, não pelo Nível da casa. Assim o
    Nível do Anel pesa de verdade: uma casa Nível 2 contra TN 20 passa ~12%, uma Nível 6 ~85%.
@@ -3789,9 +3853,9 @@ const ACONTECIMENTOS=[
    grave 25; acima disso, ou mudança permanente, terrível 30. Sobrecarga ainda soma +5 a cada 10. */
 const GRAV_ACONT=[[15,"leve"],[20,"moderada"],[25,"grave"],[30,"terrível"]];
 function tnParteAuto(parte){if(parte.tn)return parte.tn;
-  if(parte.ef.some(e=>e.perm))return parte.anel==="vazio"?20:30;
+  if(parte.ef.some(e=>e.perm))return parte.anel==="vazio"?15:30;
   const m=parte.ef.reduce((s,e)=>s+Math.abs(e.v)*(e.a==="vazio"?4:1),0);
-  const t=m<=4?15:m<=7?20:m<=10?25:30;return parte.anel==="vazio"?Math.min(20,t):t;} /* o Vazio das casas é baixo: teste de Vazio vai até TN 20 */
+  const t=m<=4?15:m<=7?20:m<=10?25:30;return parte.anel==="vazio"?Math.min(15,t):t;} /* 2026-11-09 (balanceamento): o Vazio das casas fica em 1 a 3; contra TN 20 uma casa de Vazio 2 passava 12% e caía em desastre metade das vezes. Teste de Vazio vai até TN 15 */
 function gravidadeTxt(tn){return(GRAV_ACONT.find(g=>g[0]===tn)||[tn,""])[1];}
 ACONTECIMENTOS.forEach(c=>{c.anel=c.im.anel;c.ef=c.im.ef.concat(c.re.ef);c.im.tn=tnParteAuto(c.im);c.re.tn=tnParteAuto(c.re);});
 function acontecimentoInfo(id){return ACONTECIMENTOS.find(c=>c.id===id);}
@@ -4562,6 +4626,7 @@ function hardReset(){const n=prompt("Isto apaga a família inteira. Para confirm
 function render(){
   try{setTimeout(verificarRolagem,0);}catch(e){}
   try{renderAssistente();}catch(e){}
+  try{renderLivro();}catch(e){}
   try{setTimeout(verificarRevelacoes,0);}catch(e){}
   document.getElementById("familiaNome").textContent=S.nome||"Família";
   document.getElementById("nomeInput").value=S.nome||"";
@@ -4625,7 +4690,7 @@ function renderMeters(){
   const f=fortunas(),favor=favorDasFortunas(),r=rosterCounts(),eq=equilibrioEspiritual(),grad=personagemMaisGraduado();
   const estLab=document.getElementById("estacaoLabel");
   const favorTxt=favor>0?(" · favor das Fortunas "+fmtRaise(favor)):(favor<0?(" · desfavor das Fortunas "+fmtRaise(favor)):"");
-  if(estLab)estLab.textContent=(ESTACOES[S.estacaoIdx||0])+" do ano "+(S.anoEstacao||1);
+  if(estLab)estLab.textContent=(ESTACOES[S.estacaoIdx||0])+" do ano "+(S.anoEstacao||1)+" · "+anoIsawa();
   aplicarTemaEstacao();
   const CH={[METER_INFO.fortunas]:"fortunas",[METER_INFO.favor]:"favor",[METER_INFO.dojo]:"dojo",[METER_INFO.tecnicaDojo]:"tecnica",[METER_INFO.equilibrio]:"equilibrio",[METER_INFO.augurio]:"augurio"};
   const linha=(lbl,val,titulo,cls)=>{const k=CH[titulo]||"";return "<div class=\"ledgerline derivado-l"+(derivadoAberto===k?" on":"")+"\" role=\"button\" tabindex=\"0\" title=\""+esc(titulo)+"\" onclick=\"toggleDerivado('"+k+"')\" onkeydown=\"if(event.key==='Enter')toggleDerivado('"+k+"')\"><span class=\"lbl\">"+lbl+"</span><span class=\"fill\"></span><span class=\"val"+(cls?" "+cls:"")+"\">"+val+"</span>"+
@@ -5403,6 +5468,130 @@ function renderEscolas(){
     return "<div class=\"panel\" style=\"margin-bottom:8px\"><h3><span class=\"kan\">"+info.kan+"</span>"+esc(info.nome)+"</h3>"+corpo+"</div>";
   }).join("");
 }
+
+/* ============ LIVRO DA CASA (aba Casa) ============
+   2026-11-09 (Thiago): lugar para as anotações da casa, pensado para os jogadores escreverem:
+   cargos (quem ocupa: um personagem da ficha ou um nome solto de NPC), anotações livres e um
+   calendário de Rokugan para anotar o que aconteceu em cada mês de cada ano.
+   Nada aqui passa por bloqueadoLeitura(): jogador e Mestre escrevem. Campo de texto salva ao
+   sair dele, sem redesenhar; e a aba não se redesenha enquanto alguém digita nela, para a
+   sincronização de 4 s não apagar o que está sendo escrito.
+   Calendário (L5R 4e; Winter Court: Kyuden Seppun p. 65-67, via wiki): 12 meses de 28 dias com
+   nome de animal; a corte usa nomes dos Kami. Primavera = Lebre, Dragão, Serpente; verão =
+   Cavalo, Cabra, Macaco; outono = Galo e Cão (só dois); inverno = Javali a Tigre (quatro).
+   Ano pelo Calendário Isawa; o "Direito do Imperador" conta os anos do reinado (Toturi I: 1128-1158). */
+const MESES_ROKUGAN=[
+ {n:"Lebre",de:"da Lebre",k:"卯",corte:"do Sol"},{n:"Dragão",de:"do Dragão",k:"辰",corte:"da Lua"},{n:"Serpente",de:"da Serpente",k:"巳",corte:"de Hantei"},
+ {n:"Cavalo",de:"do Cavalo",k:"午",corte:"de Akodo"},{n:"Cabra",de:"da Cabra",k:"未",corte:"de Doji"},{n:"Macaco",de:"do Macaco",k:"申",corte:"de Shiba"},
+ {n:"Galo",de:"do Galo",k:"酉",corte:"de Bayushi"},{n:"Cão",de:"do Cão",k:"戌",corte:"de Shinjo"},
+ {n:"Javali",de:"do Javali",k:"亥",corte:"de Hida"},{n:"Rato",de:"do Rato",k:"子",corte:"de Togashi"},{n:"Boi",de:"do Boi",k:"丑",corte:"de Fu Leng"},{n:"Tigre",de:"do Tigre",k:"寅",corte:"do Décimo Kami"}];
+const EST_MESES=[[0,1,2],[3,4,5],[6,7],[8,9,10,11]],EST_KANJI=["春","夏","秋","冬"];
+const FESTIVAIS=[
+ {m:0,d:1,n:"Oshōgatsu, o Ano Novo",t:"O festival mais importante do ano. Ninguém comemora aniversário: todos ficam um ano mais velhos neste dia. Presentes entre famílias, flores nas ruas, torneios de arco para adivinhar a colheita, fogos à noite."},
+ {m:1,d:23,n:"Festival das Cerejeiras",t:"Cortes e banquetes ao ar livre, debaixo das cerejeiras em flor. Celebra a beleza; o costume vem do primeiro Hantei."},
+ {m:2,d:25,n:"Festival da Íris",t:"Também das Bonecas e das Pipas: dia das crianças. Elas ganham presentes de adulto (uma arma, um quimono de corte). Folhas de íris no banho dão espírito marcial."},
+ {m:3,d:6,n:"Festival do Crisântemo",t:"O dia em que os Kami caíram do céu. Oito dias sem trabalho, nem para os camponeses. Quatro dias depois do fim, as Terras Sombrias acendem a sua fogueira e os camponeses trancam as portas."},
+ {m:5,d:8,n:"Setsuban",t:"Dia de sorte: ninguém derrama sangue, as execuções são adiadas e algum preso ganha a liberdade. Os shugenja disputam o torneio da Orquídea Branca."},
+ {m:6,d:2,n:"Kantō",t:"Varas de bambu com fileiras de lanternas desfilam pelas ruas para espantar o sono do calor e pedir boa colheita."},
+ {m:7,d:28,n:"Bon, o festival dos mortos",t:"Os ancestrais voltam às casas dos descendentes, e os espíritos sem túmulo também. Dois altares, lanternas na porta, a dança do shugenja; no fim, lanternas de papel descem o rio para guiar os mortos de volta."},
+ {m:8,d:9,n:"Festival do Rio de Estrelas",t:"A Tecelã e o Vaqueiro se encontram no céu uma vez por ano. Desejos e esperanças de amor escritos em tiras de papel, penduradas em ramos de bambu."},
+ {m:11,d:28,n:"Toshi no Ichi",t:"O fim do ano. Casas e templos são purificados, a corda de palha é queimada, e os monges tocam o sino quarenta e nove vezes. Dizem que o Céu olha para o Império neste dia."}];
+const CARGOS_PADRAO=[
+ ["daimyo","Daimyō","大名","O senhor da casa. A palavra dele é a da família."],
+ ["herdeiro","Herdeiro","世継","Quem assume se o senhor cair. Enquanto isso, aprende e é observado."],
+ ["karo","Karō","家老","Conselheiro-chefe. Governa as terras quando o senhor está fora."],
+ ["hatamoto","Hatamoto","旗本","Vassalo de confiança, que fala e age em nome do senhor."],
+ ["guarnicao","Comandante da guarnição","番頭","Responde pelos bushi e ashigaru, pelas patrulhas e pela defesa da sede."],
+ ["sensei","Sensei do dōjō","師範","Treina os jovens da casa e guarda as técnicas."],
+ ["shugenja","Shugenja da casa","神主","Cuida dos santuários, dos ritos e da conversa com os kami."],
+ ["magistrado","Magistrado","奉行","Aplica a lei do senhor nas terras: crimes, disputas, impostos atrasados."],
+ ["intendente","Intendente","勘定","Celeiros, koku, contratos e mercadores. Sabe quanto a casa tem e quanto deve."],
+ ["emissario","Emissário na corte","使者","Representa a casa nas cortes, leva cartas e traz boatos."],
+ ["nakodo","Nakōdo","仲人","Casamenteiro: negocia os casamentos e as alianças que vêm com eles."]];
+function livro(){
+  if(!S.livro)S.livro={};const L=S.livro;
+  if(!L.cargos){const pd=(S.personagens||[]).find(p=>/daimy/i.test(p.posicao||""));
+    L.cargos=CARGOS_PADRAO.map(c=>({id:"c_"+c[0],titulo:c[1],jp:c[2],desc:c[3],pid:"",nome:"",modo:"",obs:""}));
+    if(pd){L.cargos[0].pid=pd.id;L.cargos[0].modo="pid";}else if(S.daimyo){L.cargos[0].nome=S.daimyo;L.cargos[0].modo="nome";}}
+  if(!L.notas)L.notas=[{id:"n_aliados",titulo:"Aliados e favores devidos",texto:""},{id:"n_rivais",titulo:"Rivais e desafetos",texto:""},{id:"n_planos",titulo:"Planos da casa",texto:""}];
+  if(!L.cal)L.cal=[];if(!L.anos)L.anos={};if(!L.anoBase)L.anoBase=1137;
+  return L;
+}
+function anoIsawa(){return(Number(S.livro&&S.livro.anoBase)||1137)+((S.anoEstacao||1)-1);}
+function reinadoTxt(ano){return ano>=1128&&ano<=1158?(ano-1127)+"º ano do reinado de Toturi I":"";}
+let livroAno=null;
+function livroFocado(){if(typeof document==="undefined")return false;const v=document.getElementById("viewCasa"),a=document.activeElement;return !!(v&&a&&v.contains&&v.contains(a)&&/^(INPUT|TEXTAREA)$/.test(a.tagName||""));}
+function lvAuto(t){if(!t||!t.scrollHeight)return;t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px";}
+function livroSet(lista,id,campo,v){const it=livro()[lista].find(x=>x.id===id);if(!it||it[campo]===v)return;it[campo]=v;salvar();}
+function livroAddCargo(){livro().cargos.push({id:uid(),titulo:"Novo cargo",jp:"",desc:"",pid:"",nome:"",modo:"",obs:""});salvar();renderLivro(true);}
+function livroDelCargo(id){const L=livro(),c=L.cargos.find(x=>x.id===id);if(!c)return;
+  if((c.pid||c.nome||c.obs)&&!confirm("Remover o cargo \""+c.titulo+"\" do livro da casa?"))return;
+  L.cargos=L.cargos.filter(x=>x.id!==id);salvar();renderLivro(true);}
+function livroCargoQuem(id,v){const c=livro().cargos.find(x=>x.id===id);if(!c)return;
+  if(v==="__nome"){c.modo="nome";c.pid="";}else if(v){c.modo="pid";c.pid=v;}else{c.modo="";c.pid="";c.nome="";}
+  salvar();renderLivro(true);
+  if(v==="__nome"){const i=document.querySelector("#livroCargos [data-cn=\""+id+"\"]");if(i&&i.focus)i.focus();}}
+function livroAddNota(){const n={id:uid(),titulo:"",texto:""};livro().notas.push(n);salvar();renderLivro(true);const i=document.querySelector("#livroNotas [data-nt=\""+n.id+"\"]");if(i&&i.focus)i.focus();}
+function livroDelNota(id){const L=livro(),n=L.notas.find(x=>x.id===id);if(!n)return;
+  if((n.texto||"").trim()&&!confirm("Apagar a anotação \""+(n.titulo||"sem título")+"\"?"))return;
+  L.notas=L.notas.filter(x=>x.id!==id);salvar();renderLivro(true);}
+function livroAnoVer(d){const at=anoIsawa();livroAno=d===0?at:(livroAno||at)+d;renderLivro(true);}
+function livroAnoNota(ano,v){const L=livro();if((L.anos[ano]||"")===v)return;if(v)L.anos[ano]=v;else delete L.anos[ano];salvar();}
+function livroAddCal(ano,m){const e={id:uid(),ano,m,d:null,t:""};livro().cal.push(e);salvar();renderLivro(true);const i=document.querySelector("#livroCal [data-ce=\""+e.id+"\"]");if(i&&i.focus)i.focus();}
+function livroCalDia(id,v){const e=livro().cal.find(x=>x.id===id);if(!e)return;const n=Math.round(Number(v));e.d=v===""||!isFinite(n)?null:Math.max(1,Math.min(28,n));salvar();}
+function livroDelCal(id){const L=livro(),e=L.cal.find(x=>x.id===id);if(!e)return;
+  if((e.t||"").trim()&&!confirm("Apagar esta anotação do calendário?"))return;
+  L.cal=L.cal.filter(x=>x.id!==id);salvar();renderLivro(true);}
+function livroAnoBase(v){if(bloqueadoLeitura())return;const n=Math.round(Number(v));if(!isFinite(n)||n<1)return;livro().anoBase=n;livroAno=null;salvar();render();renderLivro(true);}
+function renderLivro(forcar){
+  if(typeof document==="undefined")return;
+  const cab=document.getElementById("livroCab"),bc=document.getElementById("livroCargos"),bn=document.getElementById("livroNotas"),bk=document.getElementById("livroCal");
+  if(!cab||!bc||!bn||!bk)return;
+  if(!forcar&&livroFocado())return;
+  const L=livro(),ei=S.estacaoIdx||0,atual=anoIsawa(),ano=livroAno||atual,ms=EST_MESES[ei].map(i=>MESES_ROKUGAN[i].de);
+  const lista=ms.length>1?ms.slice(0,-1).join(", ")+" e "+ms[ms.length-1]:ms[0],rei=reinadoTxt(atual);
+  cab.innerHTML="<div class=\"lvcab\"><div class=\"lvdata\"><span class=\"lvk\" aria-hidden=\"true\">"+EST_KANJI[ei]+"</span><div><div class=\"tag\">hoje na casa "+esc(S.nome||"")+"</div>"+
+    "<div class=\"lvhoje\">"+ESTACOES[ei]+" de "+atual+"</div><div class=\"lvsub\">meses "+lista+(rei?" · "+rei:"")+"</div></div></div>"+
+    "<div class=\"hint\">O livro da casa. Jogadores e Mestre escrevem aqui: quem ocupa cada cargo, o que a casa sabe e deve, e o que aconteceu em cada mês. Tudo salva sozinho e aparece para a mesa inteira.</div></div>";
+  /* cargos */
+  const ps=(S.personagens||[]);
+  bc.innerHTML="<div class=\"lvlista\">"+L.cargos.map(c=>{
+    const p=c.modo==="pid"?ps.find(x=>x.id===c.pid):null,vago=!(p||(c.modo==="nome"&&(c.nome||"").trim()));
+    const opts="<option value=\"\">— vago —</option>"+ps.map(x=>"<option value=\""+esc(x.id)+"\""+(p&&p.id===x.id?" selected":"")+">"+esc((x.nome||"sem nome")+(x.jogador?" · "+x.jogador:"")+(x.estado&&x.estado!=="Vivo"?" ("+x.estado.toLowerCase()+")":""))+"</option>").join("")+
+      "<option value=\"__nome\""+(c.modo==="nome"?" selected":"")+">✎ outro nome (NPC)…</option>";
+    return "<div class=\"lvcargo"+(vago?" vago":"")+"\"><div class=\"lvct\"><input type=\"text\" class=\"lvtit\" value=\""+esc(c.titulo)+"\" aria-label=\"nome do cargo\" onchange=\"livroSet('cargos','"+c.id+"','titulo',this.value)\">"+
+      (c.jp?"<span class=\"lvjp\" aria-hidden=\"true\">"+c.jp+"</span>":"")+"<button class=\"lvx\" title=\"remover este cargo\" aria-label=\"remover este cargo\" onclick=\"livroDelCargo('"+c.id+"')\">×</button></div>"+
+      (c.desc?"<div class=\"lvdesc\">"+esc(c.desc)+"</div>":"")+
+      "<div class=\"lvquem\"><select aria-label=\"quem ocupa\" onchange=\"livroCargoQuem('"+c.id+"',this.value)\">"+opts+"</select>"+
+      (c.modo==="nome"?"<input type=\"text\" data-cn=\""+c.id+"\" placeholder=\"nome de quem ocupa\" value=\""+esc(c.nome)+"\" onchange=\"livroSet('cargos','"+c.id+"','nome',this.value);renderLivro()\">":"")+
+      (p?"<button class=\"ghost\" onclick=\"abrirFichaPersonagem('"+p.id+"')\">ficha →</button>":"")+"</div>"+
+      "<input type=\"text\" class=\"lvobs\" placeholder=\"observações: desde quando, deveres, a quem deve…\" value=\""+esc(c.obs)+"\" onchange=\"livroSet('cargos','"+c.id+"','obs',this.value)\"></div>";
+  }).join("")+"</div><button class=\"ghost lvmais\" onclick=\"livroAddCargo()\">+ criar um cargo</button>";
+  /* anotações */
+  bn.innerHTML="<div class=\"lvlista\">"+L.notas.map(n=>"<div class=\"lvnota\"><div class=\"lvct\"><input type=\"text\" class=\"lvtit\" data-nt=\""+n.id+"\" placeholder=\"título da anotação\" value=\""+esc(n.titulo)+"\" onchange=\"livroSet('notas','"+n.id+"','titulo',this.value)\">"+
+    "<button class=\"lvx\" title=\"apagar esta anotação\" aria-label=\"apagar esta anotação\" onclick=\"livroDelNota('"+n.id+"')\">×</button></div>"+
+    "<textarea class=\"lvta\" placeholder=\"escreva aqui…\" oninput=\"lvAuto(this)\" onchange=\"livroSet('notas','"+n.id+"','texto',this.value)\">"+esc(n.texto)+"</textarea></div>").join("")+
+    "</div><button class=\"ghost lvmais\" onclick=\"livroAddNota()\">+ nova anotação</button>";
+  /* calendário */
+  const rAno=reinadoTxt(ano),doAno=L.cal.filter(e=>e.ano===ano);
+  let h="<div class=\"lvanonav\"><button title=\"ano anterior\" aria-label=\"ano anterior\" onclick=\"livroAnoVer(-1)\">‹</button><div class=\"lvano\"><b>"+ano+"</b><small>"+(rAno||"Calendário Isawa")+"</small></div>"+
+    "<button title=\"ano seguinte\" aria-label=\"ano seguinte\" onclick=\"livroAnoVer(1)\">›</button>"+(ano!==atual?"<button class=\"ghost\" style=\"font-size:13px\" onclick=\"livroAnoVer(0)\">voltar a "+atual+"</button>":"")+"</div>"+
+    "<textarea class=\"lvta lvanotxt\" placeholder=\"O ano de "+ano+" em poucas linhas (opcional)\" oninput=\"lvAuto(this)\" onchange=\"livroAnoNota("+ano+",this.value)\">"+esc(L.anos[ano]||"")+"</textarea>";
+  EST_MESES.forEach((mm,e)=>{const ag=ano===atual&&e===ei;
+    h+="<div class=\"lvest e"+e+(ag?" agora":"")+"\"><div class=\"lvestn\"><span aria-hidden=\"true\">"+EST_KANJI[e]+"</span>"+ESTACOES[e]+(ag?" <em>agora</em>":"")+"</div><div class=\"lvmeses\">"+
+      mm.map(m=>{const M=MESES_ROKUGAN[m],fs=FESTIVAIS.filter(f=>f.m===m),es=doAno.filter(x=>x.m===m).sort((a,b)=>(a.d||99)-(b.d||99));
+        return "<div class=\"lvmes\"><div class=\"lvmh\"><span class=\"lvmk\" aria-hidden=\"true\">"+M.k+"</span><div><b>Mês "+M.de+"</b><small>"+(m+1)+"º mês · na corte, mês "+M.corte+"</small></div>"+
+          "<button class=\"ghost lvadd\" title=\"anotar algo neste mês\" aria-label=\"anotar algo no mês "+M.de+"\" onclick=\"livroAddCal("+ano+","+m+")\">＋</button></div>"+
+          fs.map(f=>"<details class=\"lvfest\"><summary><b>dia "+f.d+"</b> · "+esc(f.n)+"</summary><p>"+esc(f.t)+"</p></details>").join("")+
+          es.map(x=>"<div class=\"lvent\"><input type=\"number\" min=\"1\" max=\"28\" placeholder=\"dia\" aria-label=\"dia do mês\" value=\""+(x.d||"")+"\" onchange=\"livroCalDia('"+x.id+"',this.value)\">"+
+            "<textarea class=\"lvta\" rows=\"1\" data-ce=\""+x.id+"\" placeholder=\"o que aconteceu\" oninput=\"lvAuto(this)\" onchange=\"livroSet('cal','"+x.id+"','t',this.value)\">"+esc(x.t)+"</textarea>"+
+            "<button class=\"lvx\" title=\"apagar\" aria-label=\"apagar esta anotação\" onclick=\"livroDelCal('"+x.id+"')\">×</button></div>").join("")+"</div>";}).join("")+"</div></div>";});
+  h+="<div class=\"lvrodape\"><span>Outono tem só dois meses e o inverno, quatro: a Corte de Inverno vai do Javali ao Tigre.</span>"+
+    "<label class=\"so-mestre\">Ano em que a campanha começou <input type=\"number\" value=\""+L.anoBase+"\" onchange=\"livroAnoBase(this.value)\"></label></div>";
+  bk.innerHTML=h;
+  const vc=document.getElementById("viewCasa");if(vc&&vc.querySelectorAll)vc.querySelectorAll("textarea.lvta").forEach(lvAuto);
+}
+if(typeof document!=="undefined"&&document.addEventListener)document.addEventListener("focusout",ev=>{const v=document.getElementById("viewCasa");if(v&&v.contains&&ev.target&&v.contains(ev.target))setTimeout(()=>{try{renderLivro();}catch(e){}},80);});
 /* Navegação por abas no topo do app (Família / Personagens / Batalha) — estado só de tela,
    não é salvo em S nem sincronizado. */
 let abaPrincipal="familia";
@@ -5416,6 +5605,7 @@ function setAbaPrincipal(a){
   document.getElementById("tabBtnCombate").className="tabbtn"+(a==="combate"?" on":"");
   if(a==="combate")renderCombate();
   document.getElementById("viewEstacoes").style.display=(a==="estacoes")?"":"none";
+  {const vc=document.getElementById("viewCasa"),bc=document.getElementById("tabBtnCasa");if(vc)vc.style.display=(a==="casa")?"":"none";if(bc)bc.className="tabbtn"+(a==="casa"?" on":"");if(a==="casa")renderLivro(true);}
   document.getElementById("tabBtnEstacoes").className="tabbtn"+(a==="estacoes"?" on":"");
   document.getElementById("tabBtnFamilia").className="tabbtn"+(a==="familia"?" on":"");
   document.getElementById("tabBtnPersonagens").className="tabbtn"+(a==="personagens"?" on":"");
