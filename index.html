@@ -78,11 +78,11 @@
   .mapaMarca{position:absolute;pointer-events:auto;cursor:pointer;transform-origin:bottom center;
     display:flex;flex-direction:column;align-items:center;line-height:1.1;white-space:nowrap}
   .mapaMarcaIcone{font-size:19px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.65))}
-  .mapaMarcaNome{margin-top:1px;font-size:11px;font-weight:700;color:#fff;background:rgba(20,16,12,.78);
+  .mapaMarcaNome{margin-top:1px;font-size:12px;font-weight:700;color:#fff;background:rgba(20,16,12,.78);
     border:1px solid rgba(255,255,255,.25);border-radius:9px;padding:1px 7px;max-width:150px;overflow:hidden;text-overflow:ellipsis}
   .mapaMarcaPonta{width:2px;height:7px;background:rgba(20,16,12,.75)}
   .mapaMarca.sel .mapaMarcaNome{outline:2px solid #d1a13a}
-  .mapaMarcaAlerta{position:absolute;margin:-4px 0 0 -6px;font-size:11px;font-weight:900;color:#fff;
+  .mapaMarcaAlerta{position:absolute;margin:-4px 0 0 -6px;font-size:12px;font-weight:900;color:#fff;
     background:#b8332a;border-radius:50%;width:13px;height:13px;line-height:13px;text-align:center;
     box-shadow:0 1px 2px rgba(0,0,0,.6)}
   /* Barra de escala: HUD fixo no canto do visor, fora do palco, então não escala com o zoom —
@@ -91,7 +91,7 @@
     background:rgba(20,16,12,.72);border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:7px 10px}
   .mapaEscalaBarra{height:7px;background:linear-gradient(90deg,#fff 0 25%,#1b1713 25% 50%,#fff 50% 75%,#1b1713 75% 100%);
     border:1px solid rgba(255,255,255,.5);border-radius:2px}
-  .mapaEscalaTxt{margin-top:4px;font-size:11px;color:#f2ece2;letter-spacing:.3px;text-align:center}
+  .mapaEscalaTxt{margin-top:4px;font-size:12px;color:#f2ece2;letter-spacing:.3px;text-align:center}
   /* Régua de distância */
   .mapaMedPonto{position:absolute;width:11px;height:11px;border-radius:50%;transform-origin:center center;
     background:#b8332a;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.5);pointer-events:none}
@@ -108,10 +108,10 @@
      ilegíveis — cinco colunas não cabem em 360px de jeito nenhum. */
   .qbScroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .qbGrid{display:grid;grid-template-columns:112px repeat(5,minmax(116px,1fr));min-width:100%}
-  .qbHead{padding:7px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;
+  .qbHead{padding:7px 8px;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;
     color:var(--muted-tx);background:var(--panel2);border-bottom:1px solid var(--line);
     border-right:1px solid var(--line);text-align:center}
-  .qbRotulo{display:flex;align-items:center;padding:8px 9px;font-size:11px;text-transform:uppercase;
+  .qbRotulo{display:flex;align-items:center;padding:8px 9px;font-size:12px;text-transform:uppercase;
     letter-spacing:.4px;color:var(--muted-tx);background:var(--panel2);border-top:1px solid var(--line);
     border-right:1px solid var(--line);line-height:1.25}
   .qbCasa{min-height:72px;padding:5px;display:flex;flex-direction:column;gap:4px;align-items:stretch;
@@ -124,17 +124,17 @@
   .qbPeca.sel{outline:2px solid #d1a13a}
   .qbPeca.morta{opacity:.5;text-decoration:line-through}
   .qbPecaNome{font-weight:700;font-family:var(--font-display)}
-  .qbPecaTipo{font-size:10px;color:var(--muted-tx)}
-  .qbPecaEstado{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;cursor:pointer}
+  .qbPecaTipo{font-size:11.5px;color:var(--muted-tx)}
+  .qbPecaEstado{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;cursor:pointer}
   .qbPecaEstado:hover{text-decoration:underline}
-  .qbPecaCmd{font-size:10px;color:var(--ink2)}
+  .qbPecaCmd{font-size:11.5px;color:var(--ink2)}
   /* Cor do lado fica na borda de cima, pra não brigar com a cor de desgaste que já
      ocupa a borda esquerda. */
   .qbPeca.qbFam{border-top:3px solid #3f6ca6}
   .qbPeca.qbIni{border-top:3px solid #a63f3f}
   .qbPeca.qbAli{border-top:3px solid #4a8a5c}
   /* Resultado do rolador */
-  .secao{display:block;margin:16px 0 6px;font-size:11px;color:var(--muted-tx)}
+  .secao{display:block;margin:16px 0 6px;font-size:12px;color:var(--muted-tx)}
   .cmdgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .cmdbox{border:1px solid var(--line);border-radius:var(--radius);padding:10px;background:var(--panel)}
   .ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(420px,100%),1fr));gap:10px}
@@ -148,15 +148,15 @@
   .ulinha,.uacoes{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:6px;font-size:12.5px;color:var(--ink2)}
   .uacoes label{font-size:12px;white-space:nowrap}
   .ustats{display:flex;flex-wrap:wrap;gap:4px 10px;margin-top:8px;padding:6px 0;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line)}
-  .ustats span{display:flex;flex-direction:column;align-items:center;font-size:10.5px;color:var(--muted-tx);min-width:38px}
+  .ustats span{display:flex;flex-direction:column;align-items:center;font-size:11.5px;color:var(--muted-tx);min-width:38px}
   .ustats b{font-size:15px;color:var(--ink);font-variant-numeric:tabular-nums}
   .uaviso{margin-top:6px;font-size:12px;color:var(--bad);font-weight:600}
   .trilha{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-  .trilha .nivelbox{display:flex;gap:2px;align-items:center;font-size:10px;color:var(--muted-tx)}
+  .trilha .nivelbox{display:flex;gap:2px;align-items:center;font-size:11.5px;color:var(--muted-tx)}
   .trilha .nivelbox .nl{margin-right:2px}
   .trilha i{display:inline-block;width:13px;height:13px;border:1px solid var(--line);border-radius:3px;cursor:pointer;background:var(--panel2)}
   .trilha i.on{background:var(--seal);border-color:var(--seal)}
-  .trilha .passo{font-size:11px;padding:1px 7px;border:1px solid var(--line);border-radius:10px;cursor:pointer;color:var(--muted-tx)}
+  .trilha .passo{font-size:12px;padding:1px 7px;border:1px solid var(--line);border-radius:10px;cursor:pointer;color:var(--muted-tx)}
   .trilha .passo.on{background:var(--ink2);color:var(--panel);border-color:var(--ink2)}
   .uresult{margin-top:8px;padding:7px 9px;border-radius:7px;background:var(--panel2);font-size:12.5px;color:var(--ink2)}
   .uresult .dados{display:flex;gap:4px;flex-wrap:wrap;margin:5px 0}
@@ -178,9 +178,9 @@
   .batsec>summary small{font-family:var(--font-body);font-weight:400;font-size:11.5px;color:var(--muted-tx);margin-left:6px}
   .cmdtit{font-size:12px;letter-spacing:.4px;color:var(--muted-tx);margin-bottom:2px}
   .cmdpasso{display:flex;gap:9px;margin-top:9px;padding-top:8px;border-top:1px dotted var(--line)}
-  .cmdnum{flex:none;width:20px;height:20px;border-radius:50%;background:var(--ink2);color:var(--panel);font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .cmdnum{flex:none;width:20px;height:20px;border-radius:50%;background:var(--ink2);color:var(--panel);font-size:12px;display:flex;align-items:center;justify-content:center;margin-top:1px}
   .cmdcorpo{flex:1;min-width:0}
-  .cmdrot{font-family:var(--font-display);font-size:13.5px} .cmdrot small{font-family:var(--font-body);font-size:11px;color:var(--muted-tx);margin-left:4px}
+  .cmdrot{font-family:var(--font-display);font-size:13.5px} .cmdrot small{font-family:var(--font-body);font-size:12px;color:var(--muted-tx);margin-left:4px}
   .tag.bad{color:var(--bad);border-color:var(--bad)}
   .campo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;align-items:start}
   .campocol{display:flex;flex-direction:column;gap:10px;min-width:0}
@@ -191,9 +191,9 @@
   .uedit{margin-top:4px} .uedit>summary{cursor:pointer;font-size:11.5px;color:var(--muted-tx)}
   .ubloco{margin-top:8px;padding-top:6px;border-top:1px dashed var(--line)}
   .ubloco .ulinha{margin-top:4px}
-  .ubtit{font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted-tx)}
+  .ubtit{font-size:11.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted-tx)}
   .uefeito{font-size:11.5px;color:var(--muted-tx);margin-top:3px;line-height:1.45}
-  tr.fichalinha td{font-size:11px;color:var(--muted-tx);border-top:none;padding-top:0}
+  tr.fichalinha td{font-size:12px;color:var(--muted-tx);border-top:none;padding-top:0}
   @media (max-width:720px){.cmdgrid{grid-template-columns:1fr}.ugrid{grid-template-columns:minmax(0,1fr)}}
   .qbResultado{display:flex;align-items:baseline;gap:12px;margin-top:12px;flex-wrap:wrap}
   .qbTotal{font-size:38px;font-weight:700;font-family:var(--font-display);color:var(--seal);line-height:1}
@@ -211,10 +211,10 @@
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:16px}
   .panel h2{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 12px;font-size:23px;color:var(--ink);margin-bottom:16px;font-weight:600;letter-spacing:.2px}
   .panel h2 .kan{font-size:27px;color:var(--seal);line-height:1;font-weight:600}
-  .panel h2 .sub{flex-basis:100%;margin:2px 0 0 39px;letter-spacing:1.1px;text-transform:uppercase;font-size:11px;color:var(--muted-tx);font-weight:400;font-family:var(--font-body)}
-  .tag{font-size:12px;color:var(--muted-tx)}
-  .hint{font-size:12px;color:var(--muted-tx);margin-top:8px}
-  .foot{margin-top:16px;font-size:11px;color:var(--muted-tx);text-align:center}
+  .panel h2 .sub{flex-basis:100%;margin:2px 0 0 39px;letter-spacing:1.1px;text-transform:uppercase;font-size:12px;color:var(--muted-tx);font-weight:400;font-family:var(--font-body)}
+  .tag{font-size:13px;color:var(--muted-tx)}
+  .hint{font-size:13.5px;line-height:1.5;color:var(--muted-tx);margin-top:8px} /* 2026-11-10: revisão de leitura; nada abaixo de 11,5px no app */
+  .foot{margin-top:16px;font-size:12px;color:var(--muted-tx);text-align:center}
   .log{max-height:150px;overflow:auto;font-size:13px;color:var(--ink2);border:1px dashed var(--line);
     border-radius:8px;padding:10px;margin-bottom:0;background:rgba(44,38,32,.035)}
   .log p{margin:0 0 5px} .log .beat{color:var(--seal);font-weight:600}
@@ -247,10 +247,10 @@
   .attrrow .name{font-family:var(--font-display);font-size:17px}
   .attrrow .desc{font-family:var(--font-voice);font-style:italic;font-size:13px;color:var(--muted-tx);margin-top:1px}
   .attrrow .num{font-family:var(--font-display);font-size:27px;color:var(--seal);text-align:right;font-variant-numeric:tabular-nums}
-  .attrrow .brk{grid-column:1/-1;display:flex;gap:6px;font-size:11px;color:var(--muted-tx);flex-wrap:wrap;align-items:center;font-family:var(--font-body);border-top:1px dashed var(--line);padding-top:6px;margin-top:2px}
+  .attrrow .brk{grid-column:1/-1;display:flex;gap:6px;font-size:12px;color:var(--muted-tx);flex-wrap:wrap;align-items:center;font-family:var(--font-body);border-top:1px dashed var(--line);padding-top:6px;margin-top:2px}
   .attrrow .brk input{width:48px;padding:3px 4px;font-size:11.5px;text-align:center}
   .attrrow .brk b{color:var(--ink2)}
-  .attrrow .pool{grid-column:1/-1;font-size:11px;color:var(--muted-tx);margin-top:-2px}
+  .attrrow .pool{grid-column:1/-1;font-size:12px;color:var(--muted-tx);margin-top:-2px}
   .attrrow .conta{grid-column:1/-1;font-size:12px;margin-top:4px;border-top:1px dotted var(--line);padding-top:4px}
   .attrrow .conta .cl{display:flex;justify-content:space-between;gap:10px;padding:1px 0;color:var(--ink2)}
   .attrrow .conta .cl small{color:var(--muted-tx);margin-left:4px}
@@ -259,7 +259,7 @@
   .attrrow .pool .rest.bad{color:var(--bad);font-weight:600}
   .attrrow .pool .rest.good{color:var(--good);font-weight:600}
   .attrrow .numwrap{text-align:right}
-  .attrrow .nivel{font-size:11px;color:var(--muted-tx);letter-spacing:.6px;text-transform:uppercase;white-space:nowrap}
+  .attrrow .nivel{font-size:12px;color:var(--muted-tx);letter-spacing:.6px;text-transform:uppercase;white-space:nowrap}
   .attrrow .nivel b{color:var(--ink);font-size:13px}
   .attrrow .barra{height:4px;width:70px;margin:5px 0 0 auto;background:var(--panel2);border-radius:2px;overflow:hidden}
   .attrrow .barra i{display:block;height:100%;background:var(--accent)}
@@ -274,7 +274,7 @@
   .testefam .dados{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
   .testefam .dados span{border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12px;font-variant-numeric:tabular-nums;color:var(--muted-tx)}
   .testefam .dados span.k{color:var(--ink);border-color:var(--accent);font-weight:600}
-  .torncard .tipo{display:inline-block;font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--bad);margin-bottom:3px}
+  .torncard .tipo{display:inline-block;font-size:11.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--bad);margin-bottom:3px}
 
   .saldos{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
   .lotes{display:flex;flex-direction:column;gap:5px}
@@ -304,7 +304,7 @@
   .acontult.mini{padding:7px 10px;margin:0} .acontult.mini .an{font-size:13.5px}
   .acontaberto{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;margin-bottom:10px}
   .acontaberto.t-bom{border-left-color:var(--good)} .acontaberto.t-ruim{border-left-color:var(--bad)}
-  .acontaberto .an{font-family:var(--font-display);font-size:16px;margin:2px 0} .acontaberto .an small{font-family:var(--font-body);font-size:11px;color:var(--muted-tx);margin-left:6px}
+  .acontaberto .an{font-family:var(--font-display);font-size:16px;margin:2px 0} .acontaberto .an small{font-family:var(--font-body);font-size:12px;color:var(--muted-tx);margin-left:6px}
   .acontaberto .ad{font-size:12.5px;color:var(--ink2);font-style:italic}
   .acontaberto .ae{font-size:12.5px;margin-top:4px} .acontaberto .ar{font-size:12.5px;margin-top:4px}
   .acontaberto .ar b.good{color:var(--good)} .acontaberto .ar b.bad{color:var(--bad)}
@@ -329,7 +329,7 @@
   .acoculto{border-style:dashed;display:flex;gap:12px;align-items:flex-start}
   .acoculto .selo{font-family:var(--font-display);font-size:24px;color:var(--seal);border:2px solid var(--seal);border-radius:6px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;flex:none;transform:rotate(-4deg);margin-top:4px}
   .acespia{margin-top:4px} .acespia summary{cursor:pointer;color:var(--ink2);font-size:12.5px}
-  #pergaminho .pgprevia{font-family:var(--font-body);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#fff;background:#3b2a5a;display:inline-block;padding:3px 8px;border-radius:4px;margin-bottom:8px}
+  #pergaminho .pgprevia{font-family:var(--font-body);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#fff;background:#3b2a5a;display:inline-block;padding:3px 8px;border-radius:4px;margin-bottom:8px}
 
   @media (max-width:640px){
     .lote{display:grid;grid-template-columns:1fr auto;gap:2px 8px}
@@ -352,7 +352,7 @@
   .resv{font-size:11.5px;font-weight:600} .resv.good{color:var(--good)} .resv.bad{color:var(--bad)}
 
   .ctab{width:100%;border-collapse:collapse;font-size:12.5px;font-family:var(--font-body)}
-  .ctab th{text-align:left;color:var(--muted-tx);font-weight:500;padding:4px 6px 8px;font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--line)}
+  .ctab th{text-align:left;color:var(--muted-tx);font-weight:500;padding:4px 6px 8px;font-size:11.5px;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--line)}
   .ctab td{padding:7px 6px;border-bottom:1px dotted var(--line)}
   .ctab tr:last-child td{border-bottom:none}
   .ctab input,.ctab select{width:100%;padding:5px 6px;font-size:12.5px;background:transparent;border:1px solid transparent}
@@ -375,7 +375,7 @@
   .terrainrow .tname{font-family:var(--font-display);font-size:14.5px;min-width:120px}
   .terrainrow .costs{margin-left:auto;display:flex;gap:14px;font-size:11.5px;color:var(--ink2);white-space:nowrap;align-self:center}
   .terrainrow .costs b{font-family:var(--font-display);color:var(--seal);font-size:16px}
-  .terrainrow .fromevent{font-size:11px;color:var(--muted-tx);margin-top:2px;flex-basis:100%}
+  .terrainrow .fromevent{font-size:12px;color:var(--muted-tx);margin-top:2px;flex-basis:100%}
   @media(max-width:560px){.terrainrow .costs{white-space:normal;flex-wrap:wrap;margin-left:0}}
 
   /* Ficha do personagem: cartões em vez de tabelas apertadas — menos "planilha", mais ficha de mesa */
@@ -391,7 +391,7 @@
   .linha .campo-curto{width:56px;flex:none;text-align:center}
   .linha .campo-medio{flex:1;min-width:90px}
   .linha .del{margin-left:auto;flex-shrink:0}
-  .linha-vazia{font-size:12.5px;color:var(--muted-tx);font-style:italic;padding:6px 2px}
+  .linha-vazia{font-size:13.5px;color:var(--muted-tx);font-style:italic;padding:6px 2px}
 
   .anelRow{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
   .anelIcon{width:54px;height:54px;object-fit:contain;flex-shrink:0}
@@ -415,10 +415,10 @@
   .aneltile .anelIcon{width:30px;height:30px}
   .anelcab{display:flex;justify-content:space-between;font-family:var(--font-display);font-size:13px} .anelcab .val{color:var(--seal);font-size:18px;font-weight:700}
   .trcs{grid-column:1/-1;display:flex;gap:6px}
-  .trc{flex:1;display:flex;flex-direction:column;align-items:center;font-size:11px;color:var(--muted-tx);min-width:0}
+  .trc{flex:1;display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--muted-tx);min-width:0}
   .trc span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
   .trc input{width:46px;text-align:center;padding:3px;font-size:14px;font-weight:600}
-  .trc small{font-size:10px} .trc.comprado input{border-color:var(--accent)} .trc.abaixo input{border-color:var(--bad);color:var(--bad)}
+  .trc small{font-size:11.5px} .trc.comprado input{border-color:var(--accent)} .trc.abaixo input{border-color:var(--bad);color:var(--bad)}
   .xpbar{display:flex;gap:6px 14px;flex-wrap:wrap;align-items:center;margin-top:10px;font-size:12.5px;color:var(--muted-tx);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
   .xpbar b{color:var(--ink);font-family:var(--font-display);font-size:15px}
   .xpbar input{width:52px;padding:2px 4px;text-align:center}
@@ -430,7 +430,7 @@
   .saldos.compacto .saldo{padding:4px 8px} .saldos.compacto input{width:46px;padding:1px 3px;border:none;background:transparent;font-weight:600}
   .armlinha{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
   .feridasgrid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px}
-  .fer{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 5px;display:flex;flex-direction:column;align-items:center;font-size:10.5px;color:var(--muted-tx);text-align:center}
+  .fer{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 5px;display:flex;flex-direction:column;align-items:center;font-size:11.5px;color:var(--muted-tx);text-align:center}
   .fer b{color:var(--ink);font-size:13px} .fer.atual{background:var(--seal);border-color:var(--seal);color:#faf3e6} .fer.atual b{color:#fff}
   .cbbarra{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px;font-size:13px} .cbbarra b{font-family:var(--font-display);font-size:16px}
   .cbgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr);gap:14px;align-items:start}
@@ -438,7 +438,7 @@
   .cbrow{background:var(--panel2);border:1px solid var(--line);border-left:4px solid var(--lado);border-radius:8px;padding:6px 10px;margin-bottom:6px}
   .cbrow.vez{box-shadow:0 0 0 2px var(--accent)} .cbrow.fora{opacity:.55} .cbrow.sel{outline:2px dashed var(--lado)}
   .cbtop{display:flex;gap:6px;align-items:center;flex-wrap:wrap} .cbtop .del{margin-left:auto}
-  .cbtok{width:28px;height:28px;border-radius:50%;background:var(--lado);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;flex:none}
+  .cbtok{width:28px;height:28px;border-radius:50%;background:var(--lado);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;flex:none}
   .cbini{width:52px;text-align:center;font-weight:700} input.cbnome{flex:1;min-width:120px} b.cbnome{font-family:var(--font-display);font-size:15px;flex:1}
   .cbmeio{display:flex;gap:4px 14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted-tx);margin:4px 0} .cbmeio b{color:var(--ink);font-family:var(--font-display)}
   .cbestado{margin-left:auto;color:var(--ink)}
@@ -446,23 +446,23 @@
   .cbacoes{display:flex;gap:4px;flex-wrap:wrap;align-items:center} .cbacoes button{padding:3px 8px;font-size:12px} .cbacoes input{width:64px}
   .cbfase{background:var(--panel);border:1px solid var(--accent);border-radius:8px;padding:6px 10px;font-size:13px;margin-bottom:8px}
   .cbrow.pedepost select{border-color:var(--accent);box-shadow:0 0 0 2px rgba(201,151,42,.25)}
-  .cbtroca{font-size:11px;color:var(--accent);font-weight:600}
+  .cbtroca{font-size:12px;color:var(--accent);font-weight:600}
   .cbdet>summary{cursor:pointer;font-size:11.5px;color:var(--muted-tx);margin-top:3px}
   .cbcurta{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;font-size:11.5px;color:var(--muted-tx)} .cbcurta label{display:flex;flex-direction:column} .cbcurta input{width:58px;padding:2px 4px}
   .shogi{display:grid;grid-template-columns:repeat(9,1fr);aspect-ratio:1;background:#e3c08a;border:3px solid #6b4a24;border-radius:4px;box-shadow:inset 0 0 30px rgba(107,74,36,.35);max-width:440px}
   .shogi .shc{border:1px solid rgba(60,38,14,.55);position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer}
   .shogi .shc.ponto::after{content:"";position:absolute;right:-4px;bottom:-4px;width:7px;height:7px;border-radius:50%;background:#3c260e;z-index:1}
   .shogi .shc:hover{background:rgba(255,255,255,.18)}
-  .peca{width:78%;aspect-ratio:1;max-width:36px;clip-path:polygon(50% 0,88% 18%,100% 100%,0 100%,12% 18%);background:#f3e2bf;border-bottom:3px solid var(--lado);color:var(--lado);font-weight:800;font-size:11px;display:inline-flex;align-items:flex-end;justify-content:center;padding-bottom:3px;cursor:pointer;position:relative;z-index:2}
+  .peca{width:78%;aspect-ratio:1;max-width:36px;clip-path:polygon(50% 0,88% 18%,100% 100%,0 100%,12% 18%);background:#f3e2bf;border-bottom:3px solid var(--lado);color:var(--lado);font-weight:800;font-size:12px;display:inline-flex;align-items:flex-end;justify-content:center;padding-bottom:3px;cursor:pointer;position:relative;z-index:2}
   .peca.sel{background:#fff6d8;outline:none;filter:drop-shadow(0 0 4px var(--accent))} .peca.vez{filter:drop-shadow(0 0 5px var(--lado))}
-  .cbbandeja{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0} .cbbandeja .peca{width:32px} .cbbandeja small{font-size:11px;color:var(--muted-tx)}
+  .cbbandeja{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0} .cbbandeja .peca{width:32px} .cbbandeja small{font-size:12px;color:var(--muted-tx)}
   .cblog{font-size:12px;max-height:220px;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 8px} .cblog div{border-bottom:1px dotted var(--line);padding:2px 0}
   @media (max-width:860px){.cbgrid{grid-template-columns:1fr}.shogi{max-width:none}}
   .efeitosbox{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--good);border-radius:8px;padding:6px 10px;font-size:12.5px;margin:4px 0 8px}
-  .efeitosbox .lemb{color:var(--muted-tx)} .efeitosbox small{display:block;color:var(--muted-tx);font-size:11px;margin-top:4px}
-  .ref{font-size:11px;color:var(--muted-tx);font-style:italic;margin-top:3px}
+  .efeitosbox .lemb{color:var(--muted-tx)} .efeitosbox small{display:block;color:var(--muted-tx);font-size:12px;margin-top:4px}
+  .ref{font-size:12px;color:var(--muted-tx);font-style:italic;margin-top:3px}
   .armacard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:2px 0 4px} .armacard .linha{border:0;background:none;margin:0}
-  .rolarma{font-size:12px;color:var(--muted-tx);white-space:nowrap} .rolarma b{font-family:var(--font-display);color:var(--ink);font-size:14px} .rolarma i.bad{color:var(--bad);font-style:normal;font-size:11px}
+  .rolarma{font-size:12px;color:var(--muted-tx);white-space:nowrap} .rolarma b{font-family:var(--font-display);color:var(--ink);font-size:14px} .rolarma i.bad{color:var(--bad);font-style:normal;font-size:12px}
   .armainfo{font-size:11.5px;color:var(--muted-tx);padding:0 10px;line-height:1.4}
   .linha.pericia .rol{font-family:var(--font-display);font-weight:600;min-width:38px;text-align:center}
   .tag.escola{border-color:var(--accent);color:var(--accent)}
@@ -490,7 +490,7 @@
   .evlinha>summary::-webkit-details-marker{display:none}
   .evn{width:24px;height:24px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:none}
   .evt{display:flex;flex-direction:column;min-width:160px;flex:1} .evt b{font-family:var(--font-display);font-size:14.5px} .evt small{font-size:11.5px;color:var(--muted-tx)}
-  .evlinha .em{display:flex;gap:4px;flex-wrap:wrap} .evlinha .em span,.evcatalogo .em span{font-size:11px;padding:1px 6px;border-radius:4px;background:var(--panel2)}
+  .evlinha .em{display:flex;gap:4px;flex-wrap:wrap} .evlinha .em span,.evcatalogo .em span{font-size:12px;padding:1px 6px;border-radius:4px;background:var(--panel2)}
   .evlinha .em .pos,.evcatalogo .em .pos{color:var(--good)} .evlinha .em .neg,.evcatalogo .em .neg{color:var(--bad)}
   .evcorpo{padding:4px 14px 10px 44px;font-family:var(--font-voice);font-style:italic;font-size:15px;line-height:1.55;color:var(--ink2)}
   .evcorpo .gift{font-family:var(--font-body);font-style:normal;font-size:12px;color:var(--seal);margin-top:4px}
@@ -511,7 +511,7 @@
   .torncard .en{font-size:14.5px;font-weight:600;margin-bottom:4px;font-family:var(--font-display)}
   .torncard .ed{font-size:15px;color:var(--ink2);line-height:1.6;font-family:var(--font-voice);font-style:italic}
   .torncard .gift{display:block;margin-top:6px;font-size:11.5px;color:var(--seal)} .torncard .gift.neg{color:var(--bad)}
-  .torncard .em{font-size:10.5px;color:var(--muted-tx);display:flex;flex-wrap:wrap;gap:4px;border-top:1px dashed var(--line);padding-top:6px}
+  .torncard .em{font-size:11.5px;color:var(--muted-tx);display:flex;flex-wrap:wrap;gap:4px;border-top:1px dashed var(--line);padding-top:6px}
   .torncard .em span{background:rgba(44,38,32,.06);border-radius:4px;padding:1px 5px}
   .torncard .em span.pos{color:var(--good)} .torncard .em span.neg{color:var(--bad)}
 
@@ -525,13 +525,13 @@
   .samgroup .saldo{cursor:default}
   .origem:hover{border-color:var(--accent)} .origem.sel{border-color:var(--seal);box-shadow:0 0 0 1px var(--seal) inset;background:#f4e9cd}
   .origem .on{font-weight:600;margin-bottom:3px;font-family:var(--font-display)}
-  .origem .mote{font-size:10.5px;color:var(--muted-tx);font-style:italic;margin-bottom:3px}
-  .origem .om{font-size:10px;color:var(--muted-tx);display:flex;flex-wrap:wrap;gap:3px}
+  .origem .mote{font-size:11.5px;color:var(--muted-tx);font-style:italic;margin-bottom:3px}
+  .origem .om{font-size:11.5px;color:var(--muted-tx);display:flex;flex-wrap:wrap;gap:3px}
 
   .charhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;justify-content:space-between}
   .charhead .cap{font-size:12.5px;color:var(--ink2)} .charhead .cap b{color:var(--seal)}
   .inv{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0}
-  .inv .it{font-size:11px;background:rgba(44,38,32,.05);border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--ink2);display:inline-flex;align-items:center;gap:4px}
+  .inv .it{font-size:12px;background:rgba(44,38,32,.05);border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--ink2);display:inline-flex;align-items:center;gap:4px}
   .inv .it.on{background:#e3ead9;border-color:#a9c39c;color:#3f5c38}
   .inv .it button{background:none;border:none;color:inherit;cursor:pointer;padding:0}
 
@@ -567,7 +567,7 @@
     /* Tabuleiros: o rótulo da fileira era largo demais e roubava espaço das casas. */
     .qbGrid{grid-template-columns:92px repeat(5,minmax(104px,1fr))}
     .qbCasa{min-height:64px;padding:4px}
-    .qbRotulo{font-size:10px;padding:6px 7px}
+    .qbRotulo{font-size:11.5px;padding:6px 7px}
   }
 
   @media(max-width:560px){
@@ -620,7 +620,7 @@
        a ponto de ficar ilegível — melhor rolar do que espremer. */
     .tabwrap{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
     .ctab{min-width:560px}
-    .ctab th{font-size:10px;padding:4px 5px 7px}
+    .ctab th{font-size:11.5px;padding:4px 5px 7px}
     .ctab td{padding:8px 5px}
 
     .attrrow{grid-template-columns:44px 1fr auto;gap:9px;padding:10px 0}
@@ -643,16 +643,16 @@
        continuam funcionando; pinch de dois dedos ficaria pra uma passada em JS. */
     .mapaViewport{height:52vh;min-height:280px}
     .mapaEscala{left:9px;bottom:9px;padding:5px 8px}
-    .mapaEscalaTxt{font-size:10px}
+    .mapaEscalaTxt{font-size:11.5px}
     .mapaMarcaIcone{font-size:16px}
-    .mapaMarcaNome{font-size:10px;max-width:104px;padding:1px 5px}
+    .mapaMarcaNome{font-size:11.5px;max-width:104px;padding:1px 5px}
 
     /* A grade de batalha nao encolhe alem disso: 5 colunas legiveis nao cabem num celular,
        entao ela rola de lado dentro do .qbScroll. Espremer viraria peca ilegivel. */
     .qbGrid{grid-template-columns:78px repeat(5,minmax(96px,1fr))}
     .qbRotulo,.qbHead{font-size:9.5px;padding:5px 5px}
     .qbCasa{min-height:60px;padding:3px;gap:3px}
-    .qbPeca{font-size:11px;padding:3px 6px}
+    .qbPeca{font-size:12px;padding:3px 6px}
     .qbTotal{font-size:31px}
     .log{max-height:260px}
   }
@@ -663,7 +663,7 @@
   .wrap{max-width:1200px;padding:0 18px 28px}
   .panel{background:var(--panel) url('img/washi_textura.png') 0 0/460px 460px;background-blend-mode:multiply;
     border:1px solid #d9caa8;border-radius:var(--radius);box-shadow:0 1px 0 rgba(0,0,0,.35)}
-  .panel h2 .sub{text-transform:none;letter-spacing:0;font-size:12.5px;font-family:var(--font-body)}
+  .panel h2 .sub{text-transform:none;letter-spacing:0;font-size:13.5px;font-family:var(--font-body)}
   .ctab th{text-transform:none;letter-spacing:0;font-size:11.5px}
   .secao{text-transform:none;letter-spacing:0;font-size:13px;font-family:var(--font-display);font-weight:600;color:var(--ink2)}
   .attrrow .nivel{text-transform:none;letter-spacing:0}
@@ -698,11 +698,11 @@
   .menucorpo label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--ink2)}
   .menuacoes{display:flex;gap:6px;flex-wrap:wrap}
   .famlista{min-width:300px!important;max-height:70vh;overflow:auto}
-  .famtit{font-family:var(--font-display);font-size:14px} .famtit small{font-family:var(--font-body);font-size:11px;color:var(--muted-tx);margin-left:6px}
+  .famtit{font-family:var(--font-display);font-size:14px} .famtit small{font-family:var(--font-body);font-size:12px;color:var(--muted-tx);margin-left:6px}
   .famitem{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:6px 8px;cursor:pointer;margin-bottom:4px;color:var(--ink)}
   .famitem.on{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
   .famitem img,.famsemmon{width:30px;height:30px;object-fit:contain;flex:none;font-size:20px;text-align:center}
-  .famitem .famtx{display:flex;flex-direction:column;min-width:0} .famitem .famtx small{font-size:11px;color:var(--muted-tx)}
+  .famitem .famtx{display:flex;flex-direction:column;min-width:0} .famitem .famtx small{font-size:12px;color:var(--muted-tx)}
   .senhaov{position:fixed;inset:0;z-index:9999;background:rgba(20,12,10,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px}
   .senhaov[hidden]{display:none}
   .senhabox{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;width:min(320px,100%);display:flex;flex-direction:column;gap:12px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
@@ -711,9 +711,9 @@
   .senhabox input{padding:8px;font-size:15px} .senhabox .bad{color:var(--bad);font-size:12.5px}
   .senhabox button{padding:9px;font-size:14px}
   .lorecard{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:8px 12px;margin:4px 0 8px;font-size:13px}
-  .lorecard p{margin:4px 0;line-height:1.45} .lorecard small{color:var(--muted-tx);font-size:11px} .tag.bad{border-color:var(--bad);color:var(--bad)}
+  .lorecard p{margin:4px 0;line-height:1.45} .lorecard small{color:var(--muted-tx);font-size:12px} .tag.bad{border-color:var(--bad);color:var(--bad)}
   .vlore{font-size:12px;color:var(--muted-tx);margin-top:4px;line-height:1.4}
-  .rar{font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:10px;margin-right:6px;border:1px solid currentColor}
+  .rar{font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:10px;margin-right:6px;border:1px solid currentColor}
   .rar-incomum{color:#3f7d4e} .rar-raro{color:#2f5f9e} .rar-lendario{color:#a8741a;background:rgba(201,151,42,.14);font-weight:700}
   .famavancado>summary{cursor:pointer;font-size:11.5px;color:var(--muted-tx)}
   button.perigo{color:var(--seal);border-color:rgba(181,53,43,.45)}
@@ -805,12 +805,15 @@
     .anelcel .an{font-size:11.5px}
     .anelcel .av{flex-direction:column;gap:0}
     .anelcel .av b{font-size:26px}
-    .anelcel .disp{font-size:11px}
+    .anelcel .disp{font-size:12px}
     .resumoestacao{width:100%;justify-content:space-between}
     .grupo>summary .gd{display:none}
     #mainTabs{position:fixed;left:0;right:0;bottom:0;z-index:40;margin:0;background:var(--urushi2);border-top:1px solid rgba(233,220,196,.18);
-      border-bottom:none;padding:4px 4px calc(4px + env(safe-area-inset-bottom));flex-wrap:nowrap}
-    #mainTabs .tabbtn{flex:1 1 0;flex-direction:column;gap:0;padding:6px 2px;font-size:11px;min-height:52px;border-bottom:none;border-top:2px solid transparent}
+      border-bottom:none;padding:4px 4px calc(4px + env(safe-area-inset-bottom));flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;justify-content:flex-start}
+    #mainTabs::-webkit-scrollbar{display:none}
+    #mainTabs .tabbtn{flex-grow:1}
+    #tabPersonagensCount{display:none}
+    #mainTabs .tabbtn{flex:0 0 auto;min-width:62px;flex-direction:column;gap:0;padding:6px 6px;font-size:11px;min-height:52px;border-bottom:none;border-top:2px solid transparent}
     #mainTabs .tabbtn.on{border-top-color:var(--seal)}
     #mainTabs .tabbtn .ti{font-size:20px}
     #mainTabs .tabbtn .tl-longo{display:none}
@@ -885,7 +888,7 @@
   .pcard{display:grid;grid-template-columns:108px minmax(0,1fr);gap:12px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:10px}
   .pret{position:relative;align-self:start;aspect-ratio:3/4;border-radius:4px;overflow:hidden;background:#2a201b;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)}
   .pret img{width:100%;height:100%;object-fit:cover;object-position:50% 12%;display:block}
-  .pselo{position:absolute;left:6px;bottom:6px;font-size:11px;font-weight:700;padding:1px 7px;border-radius:3px;color:#fbf3e4;background:var(--good)}
+  .pselo{position:absolute;left:6px;bottom:6px;font-size:12px;font-weight:700;padding:1px 7px;border-radius:3px;color:#fbf3e4;background:var(--good)}
   .pcard.est-ferido .pselo{background:var(--warn)} .pcard.est-refem .pselo{background:var(--ai)}
   .pcard.est-ausente .pselo{background:var(--muted-tx)} .pcard.est-morto .pselo{background:#2b2622}
   .pcard.est-morto .pret img{filter:grayscale(1) brightness(.75)}
@@ -1083,7 +1086,153 @@
   /* 2026-11-05: fundação da família em etapas (Thiago: tudo de uma vez assusta) */
   .assist{display:none}
 
+
+
+  /* ===== Bestiário (aba Inimigos) ===== */
+  .bsgrid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px;align-items:start}
+  .bsesq{min-width:0}
+  .bsbusca{width:100%;box-sizing:border-box;margin-bottom:8px}
+  .bschips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+  .bschips button{padding:3px 10px;font-size:12.5px;border-radius:99px}
+  .bschips button.on{background:var(--seal);border-color:var(--seal);color:#fff}
+  .bslista{max-height:62vh;overflow:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
+  .bsitem{display:flex;gap:9px;align-items:center;padding:7px 10px;border-bottom:1px dotted var(--line);cursor:pointer}
+  .bsitem:last-child{border-bottom:none}
+  .bsitem:hover{background:var(--panel)}
+  .bsitem.on{background:var(--panel);box-shadow:inset 3px 0 0 var(--seal)}
+  .bsitem .k{font-family:var(--font-display);font-size:19px;color:var(--seal);width:22px;text-align:center;flex:none}
+  .bsitem b{display:block;font-family:var(--font-display);font-size:14.5px;line-height:1.25}
+  .bsitem small{display:block;color:var(--muted-tx);font-size:12px}
+  .bsgerar{border:1px solid var(--line);border-radius:10px;background:var(--panel2);padding:10px 11px;margin-bottom:10px}
+  .bsgerar .secao{margin:0 0 6px}
+  .bsgerar select{width:100%;box-sizing:border-box;margin-bottom:6px}
+  .bsgerar button{width:100%}
+  .bsficha{border:1px solid var(--line);border-radius:12px;background:var(--panel2);padding:16px 18px;min-width:0}
+  .bsficha h3{font-family:var(--font-display);font-size:24px;margin:0;line-height:1.2}
+  .bsfonte{font-size:12.5px;color:var(--muted-tx);margin:2px 0 8px}
+  .bsnota{font-size:14.5px;color:var(--ink2);margin:0 0 12px;max-width:68ch}
+  .bsaneis{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+  .bsaneis span{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:4px 12px;text-align:center;line-height:1.2;font-size:11.5px;color:var(--muted-tx)}
+  .bsaneis span b{display:block;font-family:var(--font-display);font-size:19px;color:var(--ink)}
+  .bstr{font-size:13.5px;color:var(--ink2);margin-bottom:10px}
+  .bsnums{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:6px;margin-bottom:12px}
+  .bsnums>div{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:6px 8px;line-height:1.25}
+  .bsnums small{display:block;font-size:11.5px;color:var(--muted-tx)}
+  .bsnums b{font-family:var(--font-display);font-size:18px}
+  .bsnums i{display:block;font-style:normal;font-size:11.5px;color:var(--ink2)}
+  table.bsatq{border-collapse:collapse;width:100%;margin-bottom:10px;font-size:14px}
+  table.bsatq th{text-align:left;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-tx);font-weight:500;padding:2px 8px 2px 0}
+  table.bsatq td{padding:4px 8px 4px 0;border-top:1px dotted var(--line)}
+  table.bsatq td.d{font-family:var(--font-display);font-weight:600;font-variant-numeric:tabular-nums}
+  .bshab{margin:0 0 6px;font-size:14px;line-height:1.5}
+  .bshab b{font-family:var(--font-display)}
+  .bsacoes{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+  .bsacoes input[type=number]{width:58px}
+  .bsform label{display:block;font-size:12px;color:var(--muted-tx);margin-top:8px}
+  .bsform input[type=text],.bsform textarea,.bsform select{width:100%;box-sizing:border-box;font:inherit}
+  .bsform textarea{min-height:74px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 8px;color:var(--ink)}
+  .bsform .l4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .bsform .l4>*{min-width:0!important;width:100%!important;box-sizing:border-box}
+  @media(max-width:860px){.bsgrid{grid-template-columns:1fr}.bslista{max-height:300px}}
+  /* ===== Combate, versão simples (2026-11-10) ===== */
+  .cbtopo{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
+  .cbpassos{display:flex;gap:4px;list-style:none;margin:0;padding:0;font-size:12.5px}
+  .cbpassos li{padding:4px 11px;border-radius:99px;border:1px solid var(--line);color:var(--muted-tx);background:var(--panel);white-space:nowrap}
+  .cbpassos li.on{background:var(--seal);border-color:var(--seal);color:#fff;font-weight:600}
+  .cbpassos li.ok{color:var(--ink2)}
+  .cbagora{flex:1 1 220px;font-size:14px;color:var(--ink2);min-width:0}
+  .cbagora b{font-family:var(--font-display);font-size:17px;color:var(--ink)}
+  .cbtopo>button.primary{font-size:15px;padding:8px 16px}
+  .cbmenu{position:relative}
+  .cbmenu summary{cursor:pointer;list-style:none;border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-size:13px;background:var(--panel)}
+  .cbmenu summary::-webkit-details-marker{display:none}
+  .cbmenu div{position:absolute;right:0;top:calc(100% + 4px);z-index:20;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;min-width:210px;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+  .cbadd{align-items:center} .cbadd select{max-width:260px;flex:1 1 160px} .cbadd input[type=number]{width:54px}
+  .cbrow{padding:8px 10px}
+  .cbl1{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .cbininum{font-family:var(--font-display);font-size:19px;font-weight:600;min-width:30px;text-align:center;font-variant-numeric:tabular-nums}
+  .cbnm{flex:1 1 130px;min-width:0;line-height:1.25}
+  .cbnm b{display:block;font-family:var(--font-display);font-size:15.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cbnm small{display:block;font-size:12px;color:var(--muted-tx)}
+  .cbnm small.mal{color:var(--bad);font-weight:600}
+  .cbnum{text-align:center;line-height:1.1;min-width:34px}
+  .cbnum small{display:block;font-size:11.5px;color:var(--muted-tx)}
+  .cbnum b{font-family:var(--font-display);font-size:17px;font-variant-numeric:tabular-nums}
+  .cbl1 select{font-size:13px;padding:5px 6px;max-width:132px}
+  .cbdn{display:flex;gap:4px} .cbdn input{width:58px;padding:5px 4px} .cbdn button{padding:4px 9px;font-size:13px}
+  button.cbexp{border:none;background:transparent;font-size:15px;padding:4px 8px;cursor:pointer;color:var(--ink2)}
+  .cbl2{margin-top:8px;padding-top:8px;border-top:1px dotted var(--line)}
+  .cbatq{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:5px;font-size:14px}
+  .cbatq .nm{flex:1 1 110px;min-width:0}
+  .cbatq .nm small{color:var(--muted-tx);font-size:12px}
+  .cbatq button{padding:4px 10px;font-size:13px}
+  .cbmini{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+  .cbmini button{padding:3px 9px;font-size:12.5px}
+  .cbfichain{margin-top:8px;font-size:13.5px;line-height:1.5;color:var(--ink2)}
+  .cbfichain b{color:var(--ink)}
+  .cbtab{border:1px solid var(--line);border-radius:10px;background:var(--panel2);padding:10px 12px;margin-bottom:12px}
+  .cbtabh{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+  .cbtabh b{font-family:var(--font-display);font-size:15px}
+  .cbtabh small{flex:1 1 auto;color:var(--muted-tx);font-size:12px}
+  .cbtabh button{padding:3px 10px;font-size:12.5px}
+  /* tabuleiro de tamanho fixo: as casas não crescem com a peça (a peça fica solta por cima) */
+  .shogi{grid-template-columns:repeat(9,minmax(0,1fr));grid-template-rows:repeat(9,minmax(0,1fr));width:100%;box-sizing:border-box;margin-top:8px}
+  .shogi .shc{min-width:0;min-height:0}
+  .shogi .shc .peca{position:absolute;left:11%;right:11%;top:8%;bottom:10%;width:auto;max-width:none;aspect-ratio:auto;font-size:clamp(9px,2.4vw,12px)}
+  @media(max-width:640px){.cbl1 select{max-width:none;flex:1 1 120px}.cbtopo{padding:8px 10px}.cbpassos li{padding:3px 8px;font-size:11.5px}}
+  /* ===== Personagens: cartões de mesa, registro de rolagens e ficha em janela ===== */
+  .pcgrid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+  .pccards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px;align-items:start;min-width:0}
+  .pcreg{position:sticky;top:10px;max-height:calc(100vh - 30px);overflow:auto;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--panel2)}
+  .pcreg .secao{margin-top:0}
+  .pcrol{padding:7px 0;border-bottom:1px dotted var(--line);font-size:13px;line-height:1.4}
+  .pcrol:last-child{border-bottom:none}
+  .pcrol b.t{float:right;font-family:var(--font-display);font-size:20px;line-height:1;margin-left:8px}
+  .pcrol small{display:block;color:var(--muted-tx);font-size:11.5px}
+  .pcrol .dd{color:var(--ink2);font-variant-numeric:tabular-nums}
+  .pcrol .dd i{font-style:normal;color:var(--muted-tx);text-decoration:line-through}
+  .pccard{border:1px solid var(--line);border-radius:12px;background:var(--panel2);padding:12px 13px;min-width:0}
+  .pccard.fora{opacity:.6}
+  .pctopo{display:flex;gap:10px;align-items:center}
+  .pctopo img{width:42px;height:42px;flex:none}
+  .pctopo .pcn{flex:1 1 auto;min-width:0}
+  .pctopo .pcn b{display:block;font-family:var(--font-display);font-size:18px;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pctopo .pcn small{display:block;color:var(--ink2);font-size:12.5px;line-height:1.35}
+  .pcnums{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 8px}
+  .pcnums>div{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:5px 4px;text-align:center;line-height:1.2;min-width:0}
+  .pcnums small{display:block;font-size:12px;color:var(--muted-tx)}
+  .pcnums b{font-family:var(--font-display);font-size:17px;font-variant-numeric:tabular-nums}
+  .pcnums button{border:none;background:transparent;padding:0 2px;font-size:13px;cursor:pointer}
+  .pcaneis{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+  .pcaneis span{font-size:12px;border-radius:99px;border:1px solid var(--line);padding:1px 9px;background:var(--panel);color:var(--ink2)}
+  .pcaneis span b{color:var(--ink)}
+  .pcferida{font-size:12.5px;color:var(--ink2);margin-bottom:8px}
+  .pcferida.mal{color:var(--bad);font-weight:600}
+  .pcsec{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-tx);margin:8px 0 3px}
+  .pclin{display:flex;align-items:center;gap:8px;padding:3px 0;border-bottom:1px dotted var(--line);font-size:14px;min-width:0}
+  .pclin:last-of-type{border-bottom:none}
+  .pclin .nm{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pclin .nm small{color:var(--muted-tx);font-size:12px}
+  .pclin .dd{font-family:var(--font-display);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .pclin button,.pcbarra button{padding:3px 9px;font-size:13px;white-space:nowrap}
+  .pcbarra{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+  .pcbarra select{flex:1 1 120px;min-width:0;max-width:100%;font-size:13px;padding:5px 6px}
+  .pcbarra label{font-size:12.5px;color:var(--ink2);white-space:nowrap}
+  .pcbarra input[type=number]{width:56px;padding:5px 4px;font-size:13px}
+  .pcbarra button.primary{flex:1 1 100%}
+  .pcvazia{font-size:13px;color:var(--muted-tx);padding:6px 0}
+  #fichaModal{position:fixed;inset:0;z-index:7000;background:rgba(20,14,10,.72);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px 12px}
+  #fichaModal[hidden]{display:none}
+  .fmcaixa{max-width:1120px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 18px 20px;box-shadow:0 12px 50px rgba(0,0,0,.5)}
+  .fmtopo{display:flex;gap:10px;align-items:flex-start;position:sticky;top:-18px;background:var(--panel);z-index:2;padding:8px 0 6px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+  .fmtopo .tabbar{flex:1 1 auto;margin:0;min-width:0}
+  .fmfechar{flex:none;white-space:nowrap}
+  body.ficha-aberta{overflow:hidden}
+  @media(max-width:900px){.pcgrid{grid-template-columns:1fr}.pcreg{position:static;max-height:320px}}
+  @media(max-width:640px){.pccards{grid-template-columns:1fr}#fichaModal{padding:0}.fmcaixa{border-radius:0;border:none;padding:8px 10px 90px;min-height:100%}.fmtopo{top:0}}
   /* ===== Livro da casa (aba Casa): cargos, anotações e calendário de Rokugan ===== */
+  input.vdnota{display:block;width:100%;box-sizing:border-box;margin-top:4px;font-size:13px;background:transparent;border:none;border-bottom:1px dashed var(--line);border-radius:0;padding:3px 2px;color:var(--ink2)}
+  input.vdnota:focus{outline:none;border-bottom-color:var(--seal)}
   .lvcab{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
   .lvdata{display:flex;gap:14px;align-items:center;flex:1 1 300px}
   .lvk{font-family:var(--font-display);font-size:46px;line-height:1;color:var(--seal)}
@@ -1116,7 +1265,7 @@
   .lvest{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
   .lvestn{font-family:var(--font-display);font-weight:600;font-size:14px;color:var(--ink2)}
   .lvestn span{display:block;font-size:32px;line-height:1.1;color:var(--lvcor)}
-  .lvestn em{display:inline-block;font-style:normal;font-family:var(--font-body);font-weight:600;font-size:11px;background:var(--seal);color:#fff;border-radius:99px;padding:1px 8px;margin-top:4px}
+  .lvestn em{display:inline-block;font-style:normal;font-family:var(--font-body);font-weight:600;font-size:12px;background:var(--seal);color:#fff;border-radius:99px;padding:1px 8px;margin-top:4px}
   .lvest.e0{--lvcor:#c2607a}.lvest.e1{--lvcor:#3f8a55}.lvest.e2{--lvcor:#c0702a}.lvest.e3{--lvcor:#4a78a8}
   .lvmeses{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:8px;min-width:0;align-items:start}
   .lvmes{border:1px solid var(--line);border-top:3px solid var(--lvcor);border-radius:8px;padding:8px 9px;background:var(--panel2);min-width:0}
@@ -1164,8 +1313,8 @@
   body.criando[data-passo="4"] #viewFamilia .aneisfaixa,body.criando[data-passo="8"] #viewFamilia .aneisfaixa{display:block}
   body.criando[data-passo="4"] #viewFamilia .resumoestacao{display:none}
   body.criando #viewFamilia details.grupo{border:0;background:none;padding:0;margin:0;box-shadow:none}
-  body.criando #tabBtnEstacoes,body.criando #tabBtnBatalha,body.criando #tabBtnCombate,body.criando #tabBtnCasa{display:none}
-  @media (max-width:640px){.assist .ap{min-width:56px;font-size:10.5px}.assist .ap .apk{width:30px;height:30px;font-size:15px}.assist .atit{font-size:19px}}
+  body.criando #tabBtnEstacoes,body.criando #tabBtnBatalha,body.criando #tabBtnCombate,body.criando #tabBtnCasa,body.criando #tabBtnInimigos{display:none}
+  @media (max-width:640px){.assist .ap{min-width:56px;font-size:11.5px}.assist .ap .apk{width:30px;height:30px;font-size:15px}.assist .atit{font-size:19px}}
 
   /* 2026-11-05: cenas da fundação (clã, origem, história, conclusão); um toque pula */
   #cena{position:fixed;inset:0;z-index:8500;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden}
@@ -1242,8 +1391,8 @@
   #rolagem .d10.explode::after{content:"";position:absolute;inset:-6px;border-radius:50%;box-shadow:0 0 18px 6px rgba(255,150,40,.6);animation:rgBrilho .6s ease-out forwards}
   #rolagem .d10.fica svg path{fill:#c9a54e;stroke:#f1e6cd}
   #rolagem .d10.sai{opacity:.38!important;filter:grayscale(.6)}
-  #rolagem .d10 .cad{position:absolute;bottom:-17px;left:50%;transform:translateX(-50%);font-family:var(--font-body);font-size:10.5px;color:#f6c96b;white-space:nowrap}
-  #rolagem .d10 .boom{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-family:var(--font-body);font-size:11px;font-weight:700;color:#ffb04a;animation:rgSobe .7s ease-out forwards}
+  #rolagem .d10 .cad{position:absolute;bottom:-17px;left:50%;transform:translateX(-50%);font-family:var(--font-body);font-size:11.5px;color:#f6c96b;white-space:nowrap}
+  #rolagem .d10 .boom{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-family:var(--font-body);font-size:12px;font-weight:700;color:#ffb04a;animation:rgSobe .7s ease-out forwards}
   @keyframes rgCai{0%{opacity:0;transform:translateY(-70px) rotate(-200deg) scale(.6)}70%{opacity:1}100%{opacity:1;transform:none}}
   @keyframes rgGira{to{transform:rotate(360deg)}}
   @keyframes rgQuica{0%{transform:none}35%{transform:translateY(-34px) scale(1.12)}65%{transform:translateY(0)}82%{transform:translateY(-9px)}100%{transform:none}}
@@ -1252,7 +1401,7 @@
   #rolagem .rgtotal{text-align:center;font-family:var(--font-display);font-size:15px;color:#b8a888;margin-top:16px;opacity:0;transition:opacity .4s}
   #rolagem .rgtotal b{font-size:40px;color:#f6c96b;margin:0 6px;vertical-align:middle}
   #rolagem.fim .rgtotal{opacity:1}
-  #rolagem .rgdica{position:absolute;right:12px;top:10px;font-family:var(--font-body);font-size:11px;color:#8a7d68}
+  #rolagem .rgdica{position:absolute;right:12px;top:10px;font-family:var(--font-body);font-size:12px;color:#8a7d68}
   @media (max-width:640px){#rolagem{bottom:calc(76px + env(safe-area-inset-bottom,0px));padding:12px 12px 14px}#rolagem .rgdica{display:none}#rolagem .d10{width:46px;height:52px}#rolagem .rgquem{font-size:17px}
     .casaacoes .rotx{display:none}}
   @media (prefers-reduced-motion:reduce){#rolagem,#rolagem *{animation-duration:.01s!important;animation-delay:0s!important}}
@@ -1332,6 +1481,7 @@
     <button class="tabbtn" id="tabBtnCasa" onclick="setAbaPrincipal('casa')"><span class="ti" aria-hidden="true">記</span><span>Casa</span></button>
     <button class="tabbtn" id="tabBtnBatalha" onclick="setAbaPrincipal('batalha')"><span class="ti" aria-hidden="true">兵</span><span>Batalha<span class="tl-longo"> em Massa</span></span></button>
     <button class="tabbtn" id="tabBtnCombate" onclick="setAbaPrincipal('combate')"><span class="ti" aria-hidden="true">剣</span><span>Combate</span></button>
+    <button class="tabbtn so-mestre" id="tabBtnInimigos" onclick="setAbaPrincipal('inimigos')"><span class="ti" aria-hidden="true">敵</span><span>Inimigos</span></button>
     <button class="tabbtn" id="tabBtnMapa" onclick="setAbaPrincipal('mapa')"><span class="ti" aria-hidden="true">図</span><span>Mapa<span class="tl-longo"> de Rokugan</span></span></button>
   </div>
 
@@ -1454,11 +1604,15 @@
 
   <div id="viewPersonagens" style="display:none">
     <div class="panel">
-      <h2><span class="kan">人</span>Personagens<span class="sub">ficha de cada personagem, vinculada ao gasto de Influência</span></h2>
-      <div class="hint" style="margin-bottom:10px">Quem cria e paga o papel de um personagem (o custo em Influência) é o Mestre, na aba Família → painel "Personagens". Aqui cada personagem tem sua própria ficha — um jogador pode ter mais de um.</div>
-      <div class="tabbar" id="charTabs"></div>
-      <div id="charSheet"></div>
+      <h2><span class="kan">人</span>Personagens<span class="sub">o que se usa na mesa; a ficha completa abre numa janela</span></h2>
+      <div class="pcgrid"><div id="pcCards" class="pccards"></div>
+        <aside class="pcreg"><div class="secao">Registro de rolagens</div><div id="pcRegistro"></div></aside></div>
+      <div class="hint" style="margin-top:10px">Quem cria e paga um personagem (em Influência) é o Mestre, na aba Família → painel "Personagens".</div>
     </div>
+  </div>
+  <div id="fichaModal" hidden role="dialog" aria-label="Ficha do personagem" onclick="if(event.target===this)fecharFicha()">
+    <div class="fmcaixa"><div class="fmtopo"><div class="tabbar" id="charTabs"></div><button class="fmfechar" onclick="fecharFicha()" aria-label="fechar a ficha" title="fechar (Esc)">✕ fechar</button></div>
+      <div id="charSheet"></div></div>
   </div>
 
   <div id="viewBatalha" style="display:none">
@@ -1504,6 +1658,12 @@
     </div>
   </div>
 
+  <div id="viewInimigos" style="display:none">
+    <div class="panel">
+      <h2><span class="kan">敵</span>Inimigos do Império<span class="sub">bestiário do Mestre; os jogadores não veem esta aba</span></h2>
+      <div id="bestBox"></div>
+    </div>
+  </div>
   <div id="viewCombate" style="display:none">
     <div class="panel">
       <h2><span class="kan">剣</span>Combate<span class="sub">escaramuça: iniciativa, postura, ferimentos e posição</span></h2>
@@ -1595,12 +1755,12 @@ function gastarPVFamilia(){if(!pvFamiliaRestantes())return false;S.pvFamiliaUsad
 const PESO_ORIGEM={nascente:2,recente:1.5,jovem:1.25};
 const BASE_IDADE={ /* 2026-11-05: Vazio ~10 abaixo (o Vazio pesa muito); recalibrada em 2026-11-04 com a origem e os eventos novos (sim/cria_v3.js); Domínio
    quase plano desde que a terra dada pela história passou a ser doada */
- nascente:    {dominio:33,riqueza:36,influencia:32,autoridade:38,vazio:28},
- recente:     {dominio:33,riqueza:36,influencia:32,autoridade:38,vazio:27},
- jovem:       {dominio:33,riqueza:36,influencia:34,autoridade:37,vazio:28},
- estabelecida:{dominio:32,riqueza:36,influencia:37,autoridade:36,vazio:30},
- antiga:      {dominio:32,riqueza:35,influencia:39,autoridade:36,vazio:31},
- "anciã":     {dominio:31,riqueza:35,influencia:40,autoridade:35,vazio:32},
+ nascente:    {dominio:37,riqueza:36,influencia:32,autoridade:34,vazio:28},
+ recente:     {dominio:37,riqueza:36,influencia:32,autoridade:34,vazio:27},
+ jovem:       {dominio:37,riqueza:36,influencia:34,autoridade:33,vazio:28},
+ estabelecida:{dominio:36,riqueza:36,influencia:37,autoridade:32,vazio:30},
+ antiga:      {dominio:36,riqueza:35,influencia:39,autoridade:32,vazio:31},
+ "anciã":     {dominio:35,riqueza:35,influencia:40,autoridade:31,vazio:32},
  milenar:     {dominio:31,riqueza:34,influencia:41,autoridade:35,vazio:33}
 };
 /* 2026-11 (Thiago): sem pontos livres na criação; a Riqueza e os investimentos fazem esse papel.
@@ -2531,7 +2691,7 @@ function esc(s){return(s||"").toString().replace(/&/g,"&amp;").replace(/"/g,"&qu
 function estadoInicial(){return{
   criacao:1,nome:"Família",cla:null,daimyo:"",ramoFamiliar:"",familiaPrincipal:"",vassalaLore:"",versaoRaridade:1,senhor:"",sede:"",lema:"",historia:"",vassalas:[],idade:null,versaoAtrib:2,
   base:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},
-  pontos:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},origem:null,versaoEventos:3,reservas:[],versaoReservas:2,investimentos:[],historicoAcontecimentos:[],acontAbertos:[],versaoPontos:1,versaoPapel:1,versaoCasa:1,versaoTerra:1,versaoConv:1,pvFamiliaUsados:0,versaoTesouro:1,riquezaGasta:0,honraAjuste:0,gloriaRegistro:[],infame:false,
+  pontos:{dominio:0,influencia:0,autoridade:0,riqueza:0,vazio:0},origem:null,versaoEventos:3,reservas:[],versaoReservas:2,investimentos:[],historicoAcontecimentos:[],acontAbertos:[],versaoPontos:1,versaoPapel:1,versaoBase:1,versaoCasa:1,versaoTerra:1,versaoConv:1,pvFamiliaUsados:0,versaoTesouro:1,riquezaGasta:0,honraAjuste:0,gloriaRegistro:[],infame:false,
   eventos:[],terrenos:[],personagens:[],tropas:[],conversoes:[],feed:[],
   conquistas:[],estacaoIdx:0,anoEstacao:1,sacrificios:[],
   batalhaAtual:null,batalhas:[],marcacoesMapa:[],
@@ -2807,7 +2967,12 @@ function migrarTesouroV10(st){
   st.reservas=(st.reservas||[]).filter(l=>!(l.attr==="riqueza"&&l.vence==null&&l.valor>0));
   st.versaoTesouro=1;return true;
 }
-function migrarEstado(st){const jaV2=!!st&&st.versaoAtrib>=2,jaV4=!!st&&st.versaoReservas>=1;migrarConversoesV9(st);migrarTesouroV10(st);const a=migrarAtributosV2(st),b=migrarBatalhaV7(st),c=migrarOrigemV3(st,jaV2),d=migrarReservasV4(st,jaV2),e=migrarReservasV5(st,jaV2),f=migrarPontosV6(st),g=migrarCasaV7(st),h=migrarTerraV8(st,jaV4,jaV2),i=migrarRaridadeV11(st),j=migrarPapelV12(st);return a||b||c||d||e||f||g||h||i||j;}
+function migrarEstado(st){const jaV2=!!st&&st.versaoAtrib>=2,jaV4=!!st&&st.versaoReservas>=1;migrarConversoesV9(st);migrarTesouroV10(st);const a=migrarAtributosV2(st),b=migrarBatalhaV7(st),c=migrarOrigemV3(st,jaV2),d=migrarReservasV4(st,jaV2),e=migrarReservasV5(st,jaV2),f=migrarPontosV6(st),g=migrarCasaV7(st),h=migrarTerraV8(st,jaV4,jaV2),i=migrarRaridadeV11(st),j=migrarPapelV12(st),k=migrarBaseV13(st,jaV2);return a||b||c||d||e||f||g||h||i||j||k;}
+/* v13 (2026-11-10, balanceamento): a base por idade passou 4 pontos de Autoridade para Domínio
+   (na fundação a Autoridade nascia dois Níveis acima do Domínio). Família que já tinha idade
+   guarda a diferença em S.base, para os atributos dela não mudarem. */
+function migrarBaseV13(st,jaV2){if(!st||st.versaoBase>=1)return false;st.versaoBase=1;
+  if(st.idade&&jaV2){ /* ficha da v1 já foi acertada pela migração v2, que usa a base nova */st.base=st.base||{};st.base.dominio=(Number(st.base.dominio)||0)-4;st.base.autoridade=(Number(st.base.autoridade)||0)+4;}return true;}
 /* v12: título separado da classe. Quem tinha um título como "papel" passa a ter o título e a classe em branco. */
 function migrarPapelV12(st){if(!st||st.versaoPapel>=1)return false;st.versaoPapel=1;
   (st.personagens||[]).forEach(p=>{if(ehTitulo(p.categoria)){p.posicao=p.categoria;p.categoria="";}
@@ -3640,8 +3805,15 @@ const D10_SVG='<svg viewBox="0 0 54 60" aria-hidden="true"><path d="M27 2 L52 24
 let rgTimers=[],rgVistas=new Set(),rgFila=[],rgAtiva=false;
 function rgVoz(){try{return localStorage.getItem("l5r_voz_dados")==="1";}catch(e){return false;}}
 function alternarVozDados(){try{localStorage.setItem("l5r_voz_dados",rgVoz()?"0":"1");}catch(e){}renderCombate();}
-function registrarRolagem(c,acao,expr,r){const C=combate();
+/* 2026-11-10 (Thiago): toda rolagem (combate, perícia, traço) entra no registro S.rolagens, que
+   aparece na aba Personagens. extra.fala troca o "rolou um ataque"; extra.rotulo é o que foi rolado. */
+function registrarRolagem(c,acao,expr,r,extra){const C=combate();extra=extra||{};
   C.rolagem={id:uid(),ts:Date.now(),quem:c.nome||"Alguém",acao,expr,total:r.total,mod:r.mod||0,dados:r.dados.map(d=>({chain:d.chain,mantido:d.mantido}))};
+  if(extra.fala)C.rolagem.fala=extra.fala;if(extra.suf)C.rolagem.suf=extra.suf;
+  S.rolagens=S.rolagens||[];
+  S.rolagens.unshift({id:C.rolagem.id,ts:C.rolagem.ts,quem:C.rolagem.quem,oque:extra.rotulo||({ataque:"Ataque",dano:"Dano",iniciativa:"Iniciativa"}[acao]||acao),expr:expr+(r.mod?(r.mod>0?" +":" ")+r.mod:""),total:r.total,
+    fica:r.dados.filter(d=>d.mantido).map(d=>d.chain.join("+")),sai:r.dados.filter(d=>!d.mantido).map(d=>d.chain.join("+")),nota:extra.nota||""});
+  if(S.rolagens.length>40)S.rolagens.length=40;
   rgVistas.add(C.rolagem.id);try{const v=JSON.parse(localStorage.getItem("l5r_rolagens_vistas")||"[]");v.push(C.rolagem.id);localStorage.setItem("l5r_rolagens_vistas",JSON.stringify(v.slice(-60)));}catch(e){}
   mostrarRolagem(C.rolagem);}
 function verificarRolagem(){const C=S.combate;const g=C&&C.rolagem;if(!g||rgVistas.has(g.id))return;rgVistas.add(g.id);
@@ -3651,10 +3823,10 @@ function verificarRolagem(){const C=S.combate;const g=C&&C.rolagem;if(!g||rgVist
 function mostrarRolagem(g){
   if(rgAtiva){rgFila.push(g);return;}
   const el=document.getElementById("rolagem");if(!el)return;rgAtiva=true;rgTimers.forEach(clearTimeout);rgTimers=[];
-  const n=g.dados.length,fala=g.quem+" "+({ataque:"rolou um ataque",dano:"rolou o dano",iniciativa:"rolou a Iniciativa"}[g.acao]||"rolou");
+  const n=g.dados.length,fala=g.quem+" "+(g.fala||{ataque:"rolou um ataque",dano:"rolou o dano",iniciativa:"rolou a Iniciativa"}[g.acao]||"rolou");
   el.innerHTML="<span class=\"rgdica\">toque para fechar</span><div class=\"rgquem\">"+esc(fala)+"<small>"+esc(g.expr)+(g.mod?" "+(g.mod>0?"+":"")+g.mod:"")+"</small></div>"+
     "<div class=\"rgmesa\">"+g.dados.map((d,i)=>"<div class=\"d10 girando\" style=\"--d:"+(i*0.09).toFixed(2)+"s\" data-i=\""+i+"\">"+D10_SVG+"<b>"+(1+Math.floor(Math.random()*10))+"</b></div>").join("")+"</div>"+
-    "<div class=\"rgtotal\">ficam "+g.dados.filter(d=>d.mantido).length+" dados ·<b>"+g.total+"</b>"+({ataque:"no ataque",dano:"Ferimentos",iniciativa:"de Iniciativa"}[g.acao]||"")+"</div>";
+    "<div class=\"rgtotal\">ficam "+g.dados.filter(d=>d.mantido).length+" dados ·<b>"+g.total+"</b>"+esc(g.suf||{ataque:"no ataque",dano:"Ferimentos",iniciativa:"de Iniciativa"}[g.acao]||"")+"</div>";
   el.className="";el.hidden=false;
   const reduz=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
   const dies=[...el.querySelectorAll(".d10")];
@@ -3736,7 +3908,7 @@ function renderAssistente(){
   b.classList.toggle("criando",on);if(!box)return;
   if(!on){delete b.dataset.passo;box.innerHTML="";return;}
   const n=S.criacao;b.dataset.passo=String(n);
-  if(["estacoes","batalha","combate","casa"].includes(typeof abaPrincipal!=="undefined"?abaPrincipal:""))setTimeout(()=>setAbaPrincipal("familia"),0);
+  if(["estacoes","batalha","combate","casa","inimigos"].includes(typeof abaPrincipal!=="undefined"?abaPrincipal:""))setTimeout(()=>setAbaPrincipal("familia"),0);
   document.querySelectorAll("#viewFamilia details.grupo").forEach(d=>d.open=true);
   const P=PASSOS_CRIACAO[n-1],falta=P.falta();
   const passos=PASSOS_CRIACAO.map((x,i)=>{const k=i+1,feito=k<n&&!x.falta().length,lib=passoLiberado(k);
@@ -3763,7 +3935,7 @@ function renderAssistente(){
    catálogo.) A cada estação sai um acontecimento da estação, bom ou ruim. A família rola o Anel ligado a ele
    (Nível k Nível) contra 5 × Nível + 5, mais 5 a cada 10 de sobrecarga. Cada efeito escala pelo
    resultado:
-   - efeito bom: falhou por 10+ = nada; falhou = metade; passou = cheio, +¼ por Raise (até o dobro);
+   - efeito bom: falhou por 10+ = nada; falhou = metade; passou = cheio, +¼ por Raise (até +50%);
    - efeito ruim: falhou por 10+ = 1,5×; falhou = cheio; passou = ¾, −¼ por Raise (3 Raises anulam).
    A graça dos kami dá Raises grátis no sucesso. Um acontecimento pode ter os dois lados (o
    empréstimo traz Riqueza e uma dívida), e cada lado escala pela sua regra.
@@ -3865,10 +4037,10 @@ function tipoAcontecimento(c){const p=c.ef.some(e=>e.v>0),n=c.ef.some(e=>e.v<0);
    ações dos jogadores sobem ou descem o resultado; o Mestre fecha e aplica quando a história
    terminar, ou descarta se os jogadores evitaram tudo.
    Grau do resultado: -2 falhou por 10 ou mais, -1 falhou, 0 passou, 1 a 4 = Raises.
-   - efeito bom:  -2 nada; -1 metade; 0 cheio; +¼ por grau, até o dobro;
+   - efeito bom:  -2 nada; -1 metade; 0 cheio; +¼ por grau, até +50%;
    - efeito ruim: -2 1,5×; -1 cheio; 0 ¾; −¼ por grau, 3 anulam. */
 const GRAUS_ACONT=[[-2,"Desastre (falhou por 10 ou mais)"],[-1,"Falhou"],[0,"Passou"],[1,"Passou com 1 Raise"],[2,"Passou com 2 Raises"],[3,"Passou com 3 Raises"],[4,"Passou com 4 Raises"]];
-function multBomG(g){return g<=-2?0:(g===-1?0.5:Math.min(2,1+0.25*g));}
+function multBomG(g){return g<=-2?0:(g===-1?0.5:Math.min(1.5,1+0.25*g));} /* 2026-11-10 (balanceamento): teto de +50% (2 Raises); com o dobro, uma casa Nível 6 ganhava ~28 pontos de temporários por ano */
 function multRuimG(g){return g<=-2?1.5:(g===-1?1:Math.max(0,0.75-0.25*g));}
 function grauDoTeste(rol){return !rol?0:(rol.margem<=-10?-2:(rol.margem<0?-1:Math.min(4,rol.raises)));}
 function grauFinal(a){const g=a.grauMestre!=null?a.grauMestre:grauDoTeste(a.rol)+(Number(a.ajuste)||0);return Math.max(-2,Math.min(4,g));}
@@ -5198,7 +5370,7 @@ function renderTesteFamilia(){
       (u.ok?"<b class=\"good\">sucesso"+(u.raises?" com "+u.raises+" Raise"+(u.raises===1?"":"s"):"")+"</b>":"<b class=\"bad\">falhou por "+(-u.margem)+"</b>")+
       "<div class=\"dados\">"+u.dados.map(d=>"<span class=\""+(d.mantido?"k":"")+"\">"+d.chain.join("+")+"</span>").join("")+"</div></div>";
   }
-  box.innerHTML="<div class=\"tag\" style=\"font-size:11px\">Teste da Família</div>"+
+  box.innerHTML="<div class=\"tag\" style=\"font-size:12px\">Teste da Família</div>"+
     "<div class=\"tfl\"><select onchange=\"setTesteFam('attr',this.value)\">"+optsAttr+"</select>"+
     "<select onchange=\"setTesteFam('tn',this.value)\">"+optsTn+"</select>"+ap+rec+
     "<label class=\"tag\" data-dica=\"Pontos de Vazio da família: tantos quanto o Nível do Vazio, a cada estação. Cada um vale +1k1 num Teste da Família ou na tendência de um acontecimento.\"><input type=\"checkbox\" "+(t.pv?"checked":"")+" "+(pvFamiliaRestantes()?"":"disabled")+" onchange=\"setTesteFam('pv',this.checked)\"> +1k1 (Ponto de Vazio: "+pvFamiliaRestantes()+" de "+pvFamiliaMax()+")</label>"+
@@ -5417,7 +5589,7 @@ function custoTxtP(p){const c=personagemCustoClasse(p),t=personagemCustoTitulo(p
   return (tot?tot+" de Influência":"sem custo")+(!p.categoria?" · falta a classe":"");}
 function custoDicaP(p){const c=personagemCustoClasse(p),t=personagemCustoTitulo(p);
   return "classe "+(p.categoria||"a escolher")+": "+c+(p.posicao?"; título "+p.posicao+": "+t:"")+(p.doado?". Dado pela origem: o que veio de graça não custa, subir paga só a diferença. Não pode ser apagado.":"");}
-function abrirFichaPersonagem(id){personagemAtivoId=id;setAbaPrincipal("personagens");}
+function abrirFichaPersonagem(id){personagemAtivoId=id;fichaAberta=true;setAbaPrincipal("personagens");}
 const ENSINO_EXEMPLO={bushi:"ex.: o velho Akodo Genzo, aposentado, e os pergaminhos do avô",cortesao:"ex.: uma cortesã emprestada pela família principal",shugenja:"ex.: o shugenja do templo do vale"};
 function setEscolaSensei(tipo,v){if(bloqueadoLeitura())return;if(!S.escolas[tipo])return;S.escolas[tipo].sensei=v;salvar();render();}
 function renderEscolas(){
@@ -5605,6 +5777,7 @@ function setAbaPrincipal(a){
   document.getElementById("tabBtnCombate").className="tabbtn"+(a==="combate"?" on":"");
   if(a==="combate")renderCombate();
   document.getElementById("viewEstacoes").style.display=(a==="estacoes")?"":"none";
+  {const vi=document.getElementById("viewInimigos"),bi=document.getElementById("tabBtnInimigos");if(vi)vi.style.display=(a==="inimigos")?"":"none";if(bi)bi.className="tabbtn so-mestre"+(a==="inimigos"?" on":"");if(a==="inimigos")renderBestiario();}
   {const vc=document.getElementById("viewCasa"),bc=document.getElementById("tabBtnCasa");if(vc)vc.style.display=(a==="casa")?"":"none";if(bc)bc.className="tabbtn"+(a==="casa"?" on":"");if(a==="casa")renderLivro(true);}
   document.getElementById("tabBtnEstacoes").className="tabbtn"+(a==="estacoes"?" on":"");
   document.getElementById("tabBtnFamilia").className="tabbtn"+(a==="familia"?" on":"");
@@ -6067,12 +6240,83 @@ function renderMapaLista(){
    simplesmente troca entre as abas deles. */
 let personagemAtivoId=null;
 function setPersonagemAtivo(id){personagemAtivoId=id;renderCharTabs();}
+/* 2026-11-10 (Thiago: a ficha inteira na aba "soa confuso"). A aba mostra um cartão por
+   personagem com o que se usa na mesa: números de combate, perícias e armas, cada uma com o seu
+   botão de rolar, e uma barra para rolar qualquer perícia com outro Traço. A ficha completa abre
+   numa janela por cima (fichaAberta). Jogador também rola: nada aqui passa por bloqueadoLeitura. */
+let fichaAberta=false,pcBarra={};
+const TRACO_ROL={reflexes:"Reflexos",awareness:"Consciência",stamina:"Vigor",willpower:"Força de Vontade",agility:"Agilidade",intelligence:"Inteligência",strength:"Força",perception:"Percepção",vazio:"Vazio"};
+function abrirFicha(id){if(id)personagemAtivoId=id;fichaAberta=true;renderCharTabs();const m=document.getElementById("fichaModal");if(m&&m.scrollTo)m.scrollTo(0,0);}
+function fecharFicha(){fichaAberta=false;renderCharTabs();}
+function tracoValor(p,k){return Math.max(1,Number(p.traits&&p.traits[k])||0);}
+/* regra dos dez dados (Livro Básico): além de 10 rolados, cada 2 viram 1 mantido; além de 10 mantidos, cada um vira +2 */
+function rolarL5R(x,y,mod,explode){x=Math.max(1,x);y=Math.max(1,Math.min(x,y));mod=mod||0;if(x>10){y+=Math.floor((x-10)/2);x=10;}if(y>10){mod+=2*(y-10);y=10;}return rolarDadosL5R(x,y,mod,explode!==false);}
+function pcPenalidade(p){const fs=feridasNiveis(p),d=Number(p.danoAtual)||0;let i=fs.findIndex(f=>d<=f.total);if(i<0)i=fs.length-1;return{f:fs[i],i,d,max:fs[fs.length-1].total};}
+function rolarPericiaP(pid,skillId,tracoK,vazio,mod){const p=S.personagens.find(x=>x.id===pid);if(!p)return;fichaBase(p);
+  const sk=skillId?skill4e(skillId):null,tem=skillId?(p.pericias||[]).find(s=>s.skill===skillId):null,rk=tem?Number(tem.rank)||0:0;
+  const tk=tracoK||(sk?chaveTraco4e(sk.traco):"agility"),tv=tracoValor(p,tk),v=vazio?1:0;
+  const x=tv+rk+v,y=tv+v,semTreino=!!skillId&&!rk;
+  const r=rolarL5R(x,y,parseInt(mod)||0,!semTreino),pen=pcPenalidade(p);
+  const nome=sk?sk.nome:"Traço",rot=(sk?sk.nome+" / ":"")+TRACO_ROL[tk]+(v?" + Vazio":"")+(semTreino?" (sem treino)":"");
+  registrarRolagem({nome:p.nome||"Personagem"},"pericia",x+"k"+y,r,{rotulo:rot,fala:"rolou "+(sk?sk.nome:TRACO_ROL[tk]),suf:rot,
+    nota:(semTreino?"sem treino: o 10 não explode":"")+(pen.f.penalidade?(semTreino?" · ":"")+pen.f.nome.toLowerCase()+": +"+pen.f.penalidade+" no TN":"")});
+  salvar();renderCharTabs();}
+function rolarBarraP(pid){const b=pcBarra[pid]||{};rolarPericiaP(pid,b.skill||"",b.traco||"",!!b.vazio,b.mod||0);}
+function setBarraP(pid,campo,v){const b=pcBarra[pid]=pcBarra[pid]||{};b[campo]=v;if(campo==="skill")b.traco="";renderPcCards();}
+function rolarArmaP(pid,armaId,qual){const p=S.personagens.find(x=>x.id===pid);if(!p)return;fichaBase(p);const a=(p.armas||[]).find(x=>x.id===armaId),w=a&&armaInfo(a.catalogo);if(!w)return;
+  const rr=rolagemArma(p,w),ex=qual==="dano"?rr.dano:rr.ataque,r=rolarTexto(ex);if(!r){flashHint("Sem rolagem para esta arma.");return;}
+  registrarRolagem({nome:p.nome||"Personagem"},qual,ex,r,{rotulo:(qual==="dano"?"Dano":"Ataque")+" · "+w.nome});salvar();renderCharTabs();}
+function rolarIniP(pid){const p=S.personagens.find(x=>x.id===pid);if(!p)return;fichaBase(p);const ex=iniciativaPersonagem(p).split(" ")[0],r=rolarTexto(ex,efeitosPersonagem(p).ini);if(!r)return;
+  const c=S.combate&&S.combate.lista?S.combate.lista.find(k=>k.pid===pid):null;if(c)c.ini=r.total;
+  registrarRolagem({nome:p.nome||"Personagem"},"iniciativa",ex,r,{nota:c?"lançada no combate":""});salvar();render();}
+function limparRolagens(){if(bloqueadoLeitura())return;S.rolagens=[];salvar();renderCharTabs();}
+function renderPcRegistro(){const box=document.getElementById("pcRegistro");if(!box)return;const L=S.rolagens||[];
+  box.innerHTML=L.length?L.map(g=>"<div class=\"pcrol\"><b class=\"t\">"+g.total+"</b><b>"+esc(g.quem)+"</b> · "+esc(g.oque)+" <span class=\"dd\">"+esc(g.expr)+"</span>"+
+      "<small><span class=\"dd\">"+esc((g.fica||[]).join(", "))+((g.sai||[]).length?" <i>"+esc(g.sai.join(", "))+"</i>":"")+"</span> · "+esc(quandoTxt(new Date(g.ts).toISOString()))+(g.nota?" · "+esc(g.nota):"")+"</small></div>").join("")+
+      "<button class=\"ghost so-mestre\" style=\"margin-top:8px;font-size:12.5px\" onclick=\"limparRolagens()\">limpar o registro</button>"
+    :"<div class=\"hint\" style=\"margin:0\">As rolagens de todos aparecem aqui: perícias, ataques, dano e Iniciativa. Guarda as últimas 40.</div>";}
+function renderPcCards(){const box=document.getElementById("pcCards");if(!box)return;
+  if(!S.personagens.length){box.innerHTML="<div class=\"hint\">Nenhum personagem ainda. O Mestre cria em Família → painel \"Personagens\" (gasta Influência).</div>";return;}
+  const todas=l5r4ePronto()?L5R4E.skills.slice().sort((a,b)=>a.nome.localeCompare(b.nome)):[];
+  box.innerHTML=S.personagens.map(p=>{fichaBase(p);
+    const pronta=!!(p.escola4e||p.semEscola||(p.pericias||[]).length);
+    const esc4=p.escola4e&&l5r4ePronto()?L5R4E.escolas.find(e=>e.id===p.escola4e):null;
+    const sub=[p.categoria,esc4?esc4.nome:"",pronta?"Rank "+rankPersonagem(p):"",p.jogador?"joga "+p.jogador:""].filter(Boolean).join(" · ");
+    const mon=p.cla4e&&CLAS.some(c=>c.id===claIdParaMon(p.cla4e))?"<img src=\""+monSrc(claIdParaMon(p.cla4e))+"\" alt=\"\">":"";
+    let h="<div class=\"pccard"+(p.estado&&p.estado!=="Vivo"?" fora":"")+"\"><div class=\"pctopo\">"+mon+"<div class=\"pcn\"><b>"+esc(p.nome||"(sem nome)")+"</b><small>"+esc(sub||"ficha em branco")+(p.estado&&p.estado!=="Vivo"?" · "+esc(p.estado):"")+"</small></div>"+
+      "<button class=\"ghost\" onclick=\"abrirFicha('"+p.id+"')\">ficha</button></div>";
+    if(!pronta)return h+"<div class=\"pcvazia\">Abra a ficha para escolher clã, família e escola. As perícias e as rolagens aparecem aqui depois.</div></div>";
+    const a=aneisPersonagem(p),pen=pcPenalidade(p),ini=iniciativaPersonagem(p);
+    h+="<div class=\"pcnums\"><div><small>TN para ser atingido</small><b>"+tnAtualPersonagem(p)+"</b></div><div><small>Redução</small><b>"+reducaoPersonagem(p)+"</b></div>"+
+      "<div><small>Iniciativa</small><b>"+esc(ini)+"</b> <button title=\"rolar a Iniciativa\" aria-label=\"rolar a Iniciativa\" onclick=\"rolarIniP('"+p.id+"')\">🎲</button></div><div><small>Vazio</small><b>"+a.vazio+"</b></div></div>"+
+      "<div class=\"pcaneis\">"+[["Terra",a.terra],["Ar",a.ar],["Água",a.agua],["Fogo",a.fogo]].map(x=>"<span>"+x[0]+" <b>"+x[1]+"</b></span>").join("")+"</div>"+
+      "<div class=\"pcferida"+(pen.f.penalidade||pen.f.penalidade===null?" mal":"")+"\">"+esc(pen.f.nome)+(pen.f.penalidade?" · +"+pen.f.penalidade+" no TN de tudo":"")+" · "+pen.d+" de "+pen.max+" Ferimentos</div>";
+    const ps=(p.pericias||[]).filter(s=>s.skill).slice().sort((x,y)=>(Number(y.rank)||0)-(Number(x.rank)||0));
+    h+="<div class=\"pcsec\">Perícias</div>"+(ps.length?ps.map(s=>{const i=skill4e(s.skill),tk=i?chaveTraco4e(i.traco):"agility",tv=tracoValor(p,tk),r=Number(s.rank)||0;
+      return "<div class=\"pclin\"><span class=\"nm\">"+esc(i?i.nome:s.skill)+" <small>"+r+(s.enfase?" · "+esc(s.enfase):"")+" · "+esc(TRACO_ROL[tk])+"</small></span><span class=\"dd\">"+(tv+r)+"k"+tv+"</span>"+
+        "<button class=\"ghost\" title=\"rolar com "+esc(TRACO_ROL[tk])+"\" aria-label=\"rolar "+esc(i?i.nome:s.skill)+"\" onclick=\"rolarPericiaP('"+p.id+"','"+esc(i?i.id:s.skill)+"')\">🎲</button></div>";}).join(""):"<div class=\"pcvazia\">Sem perícias na ficha.</div>");
+    const ws=(p.armas||[]).map(x=>({x,w:armaInfo(x.catalogo)})).filter(k=>k.w&&!(k.w.tags||[]).includes("arrow"));
+    if(ws.length)h+="<div class=\"pcsec\">Armas</div>"+ws.map(k=>{const rr=rolagemArma(p,k.w);return "<div class=\"pclin\"><span class=\"nm\">"+esc(k.w.nome)+"</span>"+
+      "<button class=\"ghost\" onclick=\"rolarArmaP('"+p.id+"','"+k.x.id+"','ataque')\">ataque "+esc(rr.ataque)+"</button><button class=\"ghost\" onclick=\"rolarArmaP('"+p.id+"','"+k.x.id+"','dano')\">dano "+esc(rr.dano)+"</button></div>";}).join("");
+    const b=pcBarra[p.id]||{},bs=b.skill?skill4e(b.skill):null,btk=b.traco||(bs?chaveTraco4e(bs.traco):"agility"),tem=b.skill?(p.pericias||[]).find(s=>s.skill===b.skill):null,brk=tem?Number(tem.rank)||0:0,btv=tracoValor(p,btk),bv=b.vazio?1:0;
+    const tenho=new Set(ps.map(s=>s.skill));
+    h+="<div class=\"pcbarra\"><select aria-label=\"perícia\" onchange=\"setBarraP('"+p.id+"','skill',this.value)\"><option value=\"\">só o Traço</option>"+
+        "<optgroup label=\"da ficha\">"+ps.map(s=>{const i=skill4e(s.skill);return i?"<option value=\""+i.id+"\""+(b.skill===i.id?" selected":"")+">"+esc(i.nome)+" "+(Number(s.rank)||0)+"</option>":"";}).join("")+"</optgroup>"+
+        "<optgroup label=\"sem treino (o 10 não explode)\">"+todas.filter(i=>!tenho.has(i.id)).map(i=>"<option value=\""+i.id+"\""+(b.skill===i.id?" selected":"")+">"+esc(i.nome)+"</option>").join("")+"</optgroup></select>"+
+      "<select aria-label=\"Traço\" title=\"o Traço padrão da perícia vem escolhido; troque quando o Mestre pedir outro\" onchange=\"setBarraP('"+p.id+"','traco',this.value)\">"+Object.keys(TRACO_ROL).map(k=>"<option value=\""+k+"\""+(btk===k?" selected":"")+">"+TRACO_ROL[k]+" "+tracoValor(p,k)+"</option>").join("")+"</select>"+
+      "<label title=\"gastar 1 Ponto de Vazio: +1k1\"><input type=\"checkbox\""+(b.vazio?" checked":"")+" onchange=\"setBarraP('"+p.id+"','vazio',this.checked)\"> Vazio +1k1</label>"+
+      "<label>mod <input type=\"number\" value=\""+(parseInt(b.mod)||0)+"\" onchange=\"setBarraP('"+p.id+"','mod',this.value)\"></label>"+
+      "<button class=\"primary\" onclick=\"rolarBarraP('"+p.id+"')\">🎲 rolar "+(btv+brk+bv)+"k"+(btv+bv)+((parseInt(b.mod)||0)?((parseInt(b.mod)>0?" +":" ")+parseInt(b.mod)):"")+"</button></div>";
+    return h+"</div>";}).join("");}
 function renderCharTabs(){
   document.getElementById("tabPersonagensCount").textContent=S.personagens.length?("("+S.personagens.length+")"):"";
-  const box=document.getElementById("charTabs");
-  if(!S.personagens.length){
+  renderPcCards();renderPcRegistro();
+  const box=document.getElementById("charTabs"),modal=document.getElementById("fichaModal");
+  if(!S.personagens.length)fichaAberta=false;
+  if(modal){modal.hidden=!fichaAberta;if(document.body&&document.body.classList)document.body.classList.toggle("ficha-aberta",fichaAberta);}
+  if(!S.personagens.length||!fichaAberta){
     box.innerHTML="";
-    document.getElementById("charSheet").innerHTML="<div class=\"hint\">Nenhum personagem criado ainda. Vá em Família → painel \"Personagens\" e adicione um (isso gasta Influência).</div>";
+    document.getElementById("charSheet").innerHTML="";
     return;
   }
   if(!personagemAtivoId||!S.personagens.some(p=>p.id===personagemAtivoId))personagemAtivoId=S.personagens[0].id;
@@ -6256,8 +6500,9 @@ function personagemClaDivergeDaFamilia(p){const fam=claFamiliaId4e();return!!(fa
    acima da base (traço da família/escola incluído) é comprado com XP:
    traço 4 × nível novo, Vazio 6 × nível novo, perícia o nível novo (as da escola vêm de
    graça no nível dela), ênfase fora da escola 2, vantagem pelo custo, desvantagem devolve
-   até 10. O personagem começa com 40 XP e soma o que ganha em jogo. */
+   até 15 (regra da mesa; o livro dá 10). O personagem começa com 40 XP e soma o que ganha em jogo. */
 const XP_INICIAL=40;
+const XP_DESV_MAX=15; /* 2026-11-10 (Thiago): o livro devolve até 10 XP por desvantagens; nesta mesa, até 15 */
 /* 2026-11-05: nível de experiência na criação (parâmetro nosso; o livro só fixa os 40 do iniciante).
    Calibrado sorteando 300 personagens por nível: com 125 XP, 80% chegam ao Rank 2; com 210, 79%
    chegam ao Rank 3 (o resto fica um rank abaixo, conforme gasta em perícia ou vantagem). */
@@ -6286,7 +6531,7 @@ function xpPersonagem(p){fichaBase(p);const linhas=[];let tr=0,vz=0,pe=0,en=0;
   (p.pericias||[]).forEach(s=>{const b=rankEscolaPericia(p,s.skill),x=custoPericiaXp(b,Number(s.rank)||0),y=custoEnfasesXp(p,s);pe+=x;en+=y;
     if(x||y){const i=skill4e(s.skill);linhas.push([(i?i.nome:s.skill||"perícia")+" "+b+"→"+(Number(s.rank)||0)+(y?" e ênfases":""),x+y]);}});
   const va=(p.vantagens||[]).reduce((s,v)=>s+(Number(v.custo)||0),0);if(va)linhas.push(["Vantagens",va]);
-  const dsRaw=(p.desvantagens||[]).reduce((s,v)=>s+(Number(v.custo)||0),0),ds=Math.min(10,dsRaw);if(ds)linhas.push(["Desvantagens (devolvem até 10)",-ds]);
+  const dsRaw=(p.desvantagens||[]).reduce((s,v)=>s+(Number(v.custo)||0),0),ds=Math.min(XP_DESV_MAX,dsRaw);if(ds)linhas.push(["Desvantagens (devolvem até "+XP_DESV_MAX+")",-ds]);
   const inicial=p.xpInicial===undefined?(XP_NIVEIS[p.nivelXp]||XP_NIVEIS.iniciante).xp:(Number(p.xpInicial)||0);
   const gasto=tr+vz+pe+en+va-ds,total=inicial+(Number(p.xp)||0);
   if(!linhas.length)linhas.push(["Nada comprado ainda",0]);
@@ -6554,6 +6799,7 @@ function setVantagemCampo(lista,id,itemId,campo,val){
     const catalogo=lista==="vantagens"?L5R4E.vantagens:L5R4E.desvantagens;
     const m=l5r4ePronto()?catalogo.find(c=>c.nome.toLowerCase()===val.toLowerCase()):null;
     if(m)it.custo=m.custo;
+  }else if(campo==="nota"){it.nota=val;salvar();return;
   }else{
     it.custo=parseFloat(val)||0;
   }
@@ -6794,12 +7040,13 @@ function renderVantDesv(p){
   const col=(lista,titulo,sing)=>{const itens=p[lista];const soma=itens.reduce((s,v)=>s+(Number(v.custo)||0),0);
     const cat=catalogoVD(lista).slice().sort((a,b)=>a.nome.localeCompare(b.nome));
     const tipos=[...new Set(cat.map(c=>c.tipo))];
-    return "<div class=\"vdcol\"><div class=\"vdcab\"><b>"+titulo+"</b> <span class=\"tag\">"+soma+" XP"+(lista==="desvantagens"&&soma>10?" (devolve 10)":"")+"</span></div>"+
+    return "<div class=\"vdcol\"><div class=\"vdcab\"><b>"+titulo+"</b> <span class=\"tag\">"+soma+" XP"+(lista==="desvantagens"?(soma>XP_DESV_MAX?" (devolve "+XP_DESV_MAX+")":" de até "+XP_DESV_MAX):"")+"</span></div>"+
       (itens.map(v=>{const m=itemVD(lista,v.nome);
         return "<div class=\"vditem\"><div class=\"linha\"><input class=\"campo-nome\" list=\""+lista+"Sugestoes\" placeholder=\""+sing+"\" value=\""+esc(v.nome)+"\" onchange=\"setVantagemCampo('"+lista+"','"+p.id+"','"+v.id+"','nome',this.value)\">"+
           (m?"<span class=\"tag\">"+esc(TIPO_VD_PT[m.tipo]||m.tipo)+"</span>":"")+
           "<input class=\"campo-curto\" type=\"number\" title=\"custo em XP\" value=\""+(Number(v.custo)||0)+"\" onchange=\"setVantagemCampo('"+lista+"','"+p.id+"','"+v.id+"','custo',this.value)\">"+
           "<button class=\"ghost del\" onclick=\"delVantagemCampo('"+lista+"','"+p.id+"','"+v.id+"')\">✕</button></div>"+
+          "<input class=\"vdnota\" type=\"text\" placeholder=\""+(lista==="desvantagens"?"como isso aparece neste personagem":"de onde vem, como se aplica")+"\" value=\""+esc(v.nota||"")+"\" onchange=\"setVantagemCampo('"+lista+"','"+p.id+"','"+v.id+"','nota',this.value)\">"+
           (m&&m.tipo==="ancestral"&&m.cla4e&&p.cla4e&&m.cla4e!==p.cla4e?"<div class=\"vlore bad\" style=\"color:var(--bad)\">Ancestral de outro clã: no livro, só quem é do clã dele o tem.</div>":"")+
           (m&&m.descricao?"<details class=\"vdesc\"><summary>"+esc(m.descricao.slice(0,110))+(m.descricao.length>110?"…":"")+"</summary><div>"+esc(m.descricao)+"<div class=\"ref\">"+esc(refLivro(m.id,m))+"</div></div></details>":"")+
           "</div>";}).join("")||"<div class=\"linha-vazia\">Nenhuma ainda.</div>")+
@@ -6871,7 +7118,7 @@ function renderCharSheet(){
     "<div class=\"grp\" style=\"display:block\">História e notas<br><textarea rows=\"6\" style=\"width:100%;font-family:var(--font-body);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px;color:var(--ink)\" onchange=\"setPersonagem('"+p.id+"','notas',this.value)\">"+esc(p.notas||"")+"</textarea></div>"+
     "<button class=\"ghost\" style=\"margin-top:10px\" onclick=\"delPersonagemAtivo()\">✕ remover este personagem</button>";
 }
-function delPersonagemAtivo(){if(!personagemAtivoId)return;delPersonagem(personagemAtivoId);personagemAtivoId=null;}
+function delPersonagemAtivo(){if(!personagemAtivoId)return;const n=S.personagens.length;delPersonagem(personagemAtivoId);if(S.personagens.length<n){personagemAtivoId=null;fichaAberta=false;renderCharTabs();}}
 function opcoesOrigemConversao(sel){
   return "<option value=\"\">—</option>"+ATRIBUTOS.filter(([k])=>(CONVERSAO_REGRAS[k]&&CONVERSAO_REGRAS[k].destinos.length))
     .map(([k,l])=>"<option value=\""+k+"\" "+(sel===k?"selected":"")+">"+l+"</option>").join("");
@@ -7296,7 +7543,7 @@ function renderBatalha(){
 
   const op=document.getElementById("oportunidadesBox");
   if(op&&!op.dataset.filled){
-    op.innerHTML=OPORTUNIDADES_HEROICAS.map(o=>"<div class=\"linha\" style=\"align-items:flex-start\"><b style=\"min-width:170px\">"+esc(o.nome)+" <span class=\"hint\" style=\"font-size:11px\">("+(o.modo==="comando"?"Comando":"Pessoal")+")</span></b><span style=\"font-size:12.5px;color:var(--ink2)\">"+esc(o.efeito)+"</span></div>").join("");
+    op.innerHTML=OPORTUNIDADES_HEROICAS.map(o=>"<div class=\"linha\" style=\"align-items:flex-start\"><b style=\"min-width:170px\">"+esc(o.nome)+" <span class=\"hint\" style=\"font-size:12px\">("+(o.modo==="comando"?"Comando":"Pessoal")+")</span></b><span style=\"font-size:12.5px;color:var(--ink2)\">"+esc(o.efeito)+"</span></div>").join("");
     op.dataset.filled="1";
   }
 }
@@ -7321,6 +7568,222 @@ const COMBATE_PERFIS=[
  {id:"ninja",nome:"Ninja",tn:30,red:0,terra:2,ini:"6k4",ataque:"6k4",dano:"3k2"},
  {id:"goblin",nome:"Goblin",tn:15,red:1,terra:1,ini:"3k2",ataque:"3k2",dano:"3k2"},
  {id:"oni",nome:"Oni menor",tn:20,red:8,terra:4,ini:"4k3",ataque:"6k3",dano:"6k3"}];
+/* ============ BESTIÁRIO (aba Inimigos, só do Mestre) ============
+   2026-11-10 (Thiago): inimigos do Império para consultar a ficha e mandar para o Combate, e um
+   gerador por arquétipo para criar novos.
+   De onde vêm os números: "LB" = Livro Básico da 4ª ed., capítulo Criaturas de Rokugan (Livro do
+   Vazio); "IdI p. N" = Inimigos do Império, página impressa N. Os dois foram lidos dos PDFs do
+   Thiago em 2026-11-10. Só os números e os nomes das habilidades vêm dos livros; os resumos das
+   habilidades são do app, curtos de propósito: o texto completo está na página citada.
+   "app" = ficha montada aqui com as regras da 4ª ed. (Anéis, perícia, arma), não copiada de livro.
+   Campos: an=[Ar,Terra,Fogo,Água(,Vazio)]; atq=[nome,rolagem,ação S|C|L,dano]; fer=[[limite,
+   penalidade]...] com null = morto, ou "h" = Ferimentos de humano (Terra×5, depois Terra×2). */
+const BEST_TIPOS=[["humano","Gente","人"],["goblin","Goblins","鬼"],["ogro","Ogros e trolls","巨"],["oni","Oni","魔"],["morto","Mortos-vivos","屍"],["espirito","Espíritos e metamorfos","霊"],["povo","Outros povos","族"],["fera","Feras","獣"]];
+const HAB_PADRAO={
+ "medo":"Quem o enfrenta testa Força de Vontade contra TN 5 + 5 × o nível; quem falha luta abalado (regra de Medo, Livro da Terra).",
+ "veloz":"Move-se como se o Anel de Água fosse maior no valor indicado.",
+ "imenso":"Muito maior que um homem; confira a regra de Imenso no Livro do Vazio antes de derrubar ou agarrar.",
+ "invulnerável":"Golpe comum causa só 1 Ferimento, aplicado depois da Redução. Jade, cristal e obsidiana ferem normalmente.",
+ "invulnerabilidade":"Golpe comum causa só 1 Ferimento, aplicado depois da Redução. Jade, cristal e obsidiana ferem normalmente.",
+ "espírito":"Sofre metade do dano de armas sem jade, cristal ou obsidiana, e de magia sem a qualidade Jade ou Cristal.",
+ "morto-vivo":"Não sente dor nem cansaço e ignora penalidades de Ferimento; confira a regra no Livro do Vazio.",
+ "aquático":"Respira e luta debaixo d'água sem penalidade.",
+ "imune à mácula":"As Terras Sombrias não o corrompem."};
+const BESTIARIO=[
+ /* ---- gente ---- */
+ {id:"bandido",n:"Bandido",tipo:"humano",fonte:"app",an:[2,2,2,2,2],tr:"",ini:"3k2",atq:[["Lança ou porrete","4k2","C","4k2"]],tn:15,red:0,fer:"h",per:"Lanças 2, Furtividade 1, Intimidação 1",hab:[],nota:"Camponês desesperado ou soldado sem senhor. Foge quando a metade do bando cai."},
+ {id:"ashigaru",n:"Ashigaru",tipo:"humano",fonte:"app",an:[2,2,2,2,2],tr:"",ini:"3k2",atq:[["Yari","4k2","C","4k2"]],tn:18,red:1,fer:"h",per:"Lanças 2, Defesa 1",hab:[],nota:"Soldado camponês com armadura de ashigaru. Luta em fileira e obedece a um samurai."},
+ {id:"samurai",n:"Bushi de clã",tipo:"humano",fonte:"app",an:[2,3,3,3,2],tr:"Reflexos 3, Agilidade 3, Força 3",ini:"5k3",atq:[["Katana","6k3","C","6k2"],["Yumi","5k3","C","4k2"]],tn:25,red:3,fer:"h",per:"Kenjutsu 3, Kyujutsu 2, Defesa 2, Etiqueta 1",hab:[],nota:"Samurai de Rank 2 com armadura leve. Não recua sem ordem."},
+ {id:"ronin",n:"Rōnin veterano",tipo:"humano",fonte:"app",an:[3,3,3,3,2],tr:"Reflexos 3, Agilidade 3, Força 3",ini:"6k3",atq:[["Katana","7k3","C","6k2"]],tn:25,red:3,fer:"h",per:"Kenjutsu 4, Defesa 3, Caça 2, Intimidação 2",hab:[],nota:"Homem de onda de Rank 3, com mais cicatrizes que escrúpulos. Luta para sobreviver, não por honra."},
+ {id:"duelista",n:"Duelista",tipo:"humano",fonte:"app",an:[3,2,4,2,3],tr:"Reflexos 4, Agilidade 4, Força 2",ini:"7k4",atq:[["Katana","8k4","C","5k2"]],tn:25,red:0,fer:"h",per:"Iaijutsu 5, Kenjutsu 4, Etiqueta 3",hab:[["Primeiro golpe","No duelo de iaijutsu rola 9k4 no saque (Reflexos + Iaijutsu)."]],nota:"Sem armadura, de quimono. Resolve a questão em um corte ou perde."},
+ {id:"oficial",n:"Oficial veterano",tipo:"humano",fonte:"app",an:[3,4,4,3,3],tr:"Reflexos 4, Agilidade 4, Força 3",ini:"8k4",atq:[["Katana","9k4","C","6k2"]],tn:35,red:5,fer:"h",per:"Kenjutsu 5, Batalha 4, Defesa 4, Intimidação 3",hab:[],nota:"Rank 4 em armadura pesada. Comanda outros; derrubá-lo abala a tropa."},
+ {id:"ninja",n:"Ninja",tipo:"humano",fonte:"app",an:[3,2,3,2,2],tr:"Reflexos 4, Agilidade 4, Força 2",ini:"6k4",atq:[["Ninja-tō","6k4","C","4k2"],["Shuriken","6k4","C","3k1"]],tn:25,red:0,fer:"h",per:"Ninjutsu 2, Furtividade 4, Esportes 3, Venenos 2",hab:[["Emboscada","Ataca de onde ninguém olhava: o primeiro golpe costuma pegar o alvo sem postura de defesa."]],nota:"Assassino de aluguel. Some ao primeiro sinal de derrota."},
+ {id:"cultista",n:"Cultista de sangue",tipo:"humano",fonte:"app",an:[2,2,2,2,2],tr:"Força de Vontade 3",ini:"3k2",atq:[["Tantō","4k2","C","3k1"]],tn:15,red:0,fer:"h",mac:2,per:"Facas 2, Sabedoria (Maho) 2, Sinceridade (Ardil) 2",hab:[["Maho","Conjura feitiços de sangue de Domínio 1 e 2 pagando com Ferimentos (os próprios ou os de uma vítima)."]],nota:"Vizinho, criado ou monge de fachada. Perigoso pelo que sabe, não pelo braço."},
+ {id:"perdido",n:"Samurai Perdido",tipo:"humano",fonte:"app",an:[2,4,3,4,2],tr:"Reflexos 3, Agilidade 4, Força 5",ini:"5k3",atq:[["Katana","8k4","C","8k2"]],tn:25,red:3,fer:"h",mac:4,per:"Kenjutsu 4, Defesa 3, Intimidação 3",hab:[["Medo 1",""],["Poder das Terras Sombrias","A Mácula lhe deu um dom: escolha um (força descomunal, pele dura com Redução +3, ou não sentir dor)."]],nota:"Samurai que a Mácula tomou. Ainda luta com a escola que aprendeu."},
+ {id:"retornado",n:"Samurai retornado",tipo:"humano",fonte:"app",an:[3,3,3,3,3],tr:"Reflexos 3, Agilidade 4, Força 3",ini:"6k3",atq:[["Katana","8k4","C","6k2"]],tn:25,red:3,fer:"h",per:"Kenjutsu 4, Iaijutsu 3, Defesa 3, Etiqueta 3, Sabedoria (História) 3",hab:[["Brilho do além","Um halo tênue denuncia quem voltou pelo Portão do Esquecimento. No jogo, é de carne e osso."]],nota:"Ancestral de outra era, de volta desde 1133. Fala e luta à moda antiga e acha que as terras ainda são dele."},
+ {id:"kolat_direto",n:"Assassino kolat (ataque direto)",tipo:"humano",fonte:"IdI p. 46",an:[4,3,4,3,2],tr:"Força 4",ini:"9k4",atq:[["Katana","8k4","C","7k2"],["Tantō","9k4","C","5k1"]],tn:30,red:3,fer:"h",per:"Atuação 3, Esportes 5, Defesa 4, Kenjutsu 4, Facas 5, Kyujutsu 3, Furtividade (Emboscada) 5",hab:[],nota:"Armadura leve. Treinado para entrar, matar e sair."},
+ {id:"kolat_infiltrador",n:"Assassino kolat (infiltrador)",tipo:"humano",fonte:"IdI p. 46",an:[4,3,4,2,2],tr:"Percepção 4",ini:"9k4",atq:[["Faca","6k4","C","3k1"]],tn:25,red:0,fer:"h",per:"Atuação 5, Cortesão 2, Etiqueta 4, Facas 2, Sinceridade (Ardil) 5, Venenos 4, Furtividade 4",hab:[],nota:"Passa meses como criado ou escriba antes de agir. A arma dele é o veneno."},
+ /* ---- goblins ---- */
+ {id:"goblin",n:"Goblin (bakemono)",tipo:"goblin",fonte:"LB",an:[1,2,1,1],tr:"Reflexos 2, Agilidade 2, Força 2",ini:"3k2",atq:[["Faca ou pau afiado","4k2","S","4k2"]],tn:15,red:3,fer:[[9,5],[18,null]],mac:2,per:"Furtividade 2",hab:[["Veloz 2",""]],nota:"Sozinho é covarde; em bando ataca qualquer coisa."},
+ {id:"goblin_berserker",n:"Berserker goblin",tipo:"goblin",fonte:"IdI p. 221",an:[1,2,1,2],tr:"Reflexos 3, Agilidade 3",ini:"4k3",atq:[["Faca ou pau afiado","4k3","S","4k2"],["Mordida","4k3","S","2k1"]],tn:20,red:3,fer:[[10,5],[20,null]],mac:3,per:"",hab:[["Fúria","Nas duas primeiras rodadas: +1k1 no ataque e Redução +5."],["Veloz 2",""]],nota:"Corre na frente da horda."},
+ {id:"goblin_atirador",n:"Atirador goblin",tipo:"goblin",fonte:"IdI p. 221",an:[1,2,1,1],tr:"Reflexos 4, Agilidade 2, Força 2",ini:"5k4",atq:[["Atiradeira","6k4","C","3k1"],["Objeto arremessado","6k4","S","1k1"],["Faca","3k2","C","4k2"]],tn:25,red:3,fer:[[9,5],[18,null]],mac:3,per:"Esportes (Arremesso) 2, Furtividade 2",hab:[["Veloz 2",""]],nota:"Fica atrás dos outros e atira pedra."},
+ {id:"goblin_xama",n:"Xamã goblin",tipo:"goblin",fonte:"IdI p. 222",an:[1,2,2,1],tr:"Reflexos 2, Percepção 2",ini:"3k2",atq:[["Faca","4k2","S","4k2"]],tn:15,red:4,fer:[[9,5],[18,null]],mac:4,per:"",hab:[["Invocador","Conjura maho como shugenja de Nível 1; conhece feitiços de Domínio 1 e 2."],["Veloz 2",""]],nota:"O único da horda que os outros obedecem sem apanhar."},
+ {id:"goblin_furtivo",n:"Goblin furtivo",tipo:"goblin",fonte:"IdI p. 223",an:[1,2,2,1],tr:"Reflexos 3, Percepção 3",ini:"4k3",atq:[["Faca","4k2","S","3k2"]],tn:20,red:3,fer:[[9,5],[18,null]],mac:3,per:"Defesa 2, Sinceridade (Ardil) 2, Furtividade 4",hab:[["Fingir de morto","Cai e fica imóvel; passa por cadáver a quem não examinar."],["Veloz 3",""]],nota:"Batedor e ladrão da horda."},
+ {id:"goblin_chefe",n:"Chefe de guerra goblin",tipo:"goblin",fonte:"IdI p. 223",an:[2,3,2,2],tr:"Reflexos 3, Agilidade 3, Força 3",ini:"6k3",atq:[["Katana","6k3","S","6k2"]],tn:25,red:7,fer:[[15,5],[30,10],[45,null]],mac:4,per:"Batalha 3, Defesa 3, Kenjutsu 3, Intimidação 3, Furtividade 3",hab:[["Líder de massas","Com uma Ação Complexa e um teste de Intimidação, empurra a horda para a frente; detalhes na página."],["Veloz 2",""]],nota:"Armadura leve em mau estado, tirada de um morto. Enquanto vive, a horda não foge."},
+ {id:"goblin_montanha",n:"Goblin da montanha",tipo:"goblin",fonte:"IdI p. 228",an:[1,3,2,1],tr:"Reflexos 3, Agilidade 3, Força 3",ini:"4k3",atq:[["Garras","4k3","C","4k2"],["Arma","4k3","C","dano da arma"]],tn:20,red:5,fer:[[10,5],[20,10],[35,null]],mac:3,per:"Furtividade 4",hab:[["Visão noturna","Enxerga no escuro sem penalidade."],["Regeneração","Recupera 5 Ferimentos por rodada."]],nota:"Maior e mais duro que o primo do sul. Caça de noite."},
+ {id:"goblin_pantano",n:"Goblin do pântano",tipo:"goblin",fonte:"IdI p. 233",an:[2,2,1,1],tr:"Inteligência 3, Percepção 2",ini:"3k2",atq:[["Mordida","4k2","C","2k1"],["Clava","5k1","C","1k1"]],tn:10,red:8,fer:[[15,10],[30,null]],mac:2,per:"",hab:[["Aquático",""],["Visão noturna","Enxerga no escuro sem penalidade."],["Fraqueza: fogo","Fogo causa +1k1 de dano."]],nota:"Vive na lama e puxa a presa para baixo."},
+ /* ---- ogros e trolls ---- */
+ {id:"ogro",n:"Ogro",tipo:"ogro",fonte:"LB",an:[1,3,3,2],tr:"Reflexos 3, Vigor 6, Força 6",ini:"4k3",atq:[["Clava","5k4","C","8k2"]],tn:25,red:10,fer:[[20,5],[40,10],[60,15],[80,null]],mac:3,per:"",hab:[["Medo 2",""]],nota:"Três metros de músculo a serviço das Terras Sombrias."},
+ {id:"ogro_livre",n:"Guerreiro ogro livre",tipo:"ogro",fonte:"IdI p. 230",an:[2,3,3,2],tr:"Reflexos 3, Vigor 6, Força 6",ini:"4k3",atq:[["Clava","8k4","C","8k2"],["Tetsubo","8k4","C","9k3"]],tn:30,red:15,fer:[[20,5],[40,10],[60,15],[80,null]],mac:3,per:"Armas Pesadas 4, Defesa 2, Jiujutsu 2",hab:[["Imenso",""]],nota:"Ogro que escapou do jugo de Fu Leng. Armadura pesada (5 da Redução vêm dela). Pensa, negocia e guarda rancor."},
+ {id:"ogro_lider",n:"Líder de bando ogro",tipo:"ogro",fonte:"IdI p. 230",an:[3,4,3,4],tr:"Vigor 6, Força 6",ini:"6k3",atq:[["Clava","9k4","C","8k2"],["Tetsubo","9k4","C","9k3"]],tn:30,red:15,fer:[[30,5],[50,10],[70,15],[90,null]],mac:3,per:"Armas Pesadas 5, Defesa 3, Jiujutsu 4",hab:[["Medo 2",""],["Imenso",""]],nota:"O maior e o mais esperto do bando."},
+ {id:"ogro_mago",n:"Ogro mago",tipo:"ogro",fonte:"IdI p. 231",an:[2,4,4,3],tr:"Reflexos 3, Vigor 6, Força 6",ini:"6k3",atq:[["Clava","7k5","C","8k2"]],tn:25,red:10,fer:[[20,5],[40,10],[60,15],[80,null]],mac:3,per:"Feitiçaria 5",hab:[["Conjurador","Lança feitiços de Fogo e de Terra como shugenja de Nível 2."],["Medo 2",""],["Imenso",""]],nota:"Raro. Costuma mandar em goblins e em ogros menores."},
+ {id:"troll",n:"Troll",tipo:"ogro",fonte:"IdI p. 234",an:[1,3,3,3],tr:"Reflexos 3, Vigor 5, Força 5",ini:"5k3",atq:[["Garras","6k3","S","6k3"],["Clava grande","5k3","C","8k3"]],tn:20,red:5,fer:[[20,5],[40,10],[65,15],[90,null]],mac:5,per:"Jiujutsu 3, Furtividade (Emboscada) 4",hab:[["Aquático","Fica submerso por horas (igual ao Vigor) esperando a presa."],["Visão na penumbra","Enxerga com pouca luz sem penalidade."]],nota:"Embosca em rios e pântanos. Há mais habilidades na página do livro."},
+ /* ---- oni ---- */
+ {id:"oni_nairu",n:"Nairu no Oni",tipo:"oni",fonte:"IdI p. 162",an:[3,2,2,2],tr:"Agilidade 4, Força 4",ini:"4k3",atq:[["Garras","6k4","S","4k4"]],tn:20,red:4,fer:[[20,5],[40,10],[60,15],[80,null]],mac:5,per:"",hab:[["Ataque rasante","Mergulhando de longe (uns 12 m), ganha +1k1 no ataque."],["Medo 2",""],["Invulnerável",""],["Veloz 3","Voando."]],nota:"Oni alado, batedor dos exércitos das Terras Sombrias."},
+ {id:"oni_tasu",n:"Tasu no Oni",tipo:"oni",fonte:"IdI p. 171",an:[1,3,1,3],tr:"Reflexos 3, Agilidade 4",ini:"3k3",atq:[["Perna","4k4","S","3k2"],["Mandíbulas","4k4","C","5k3"]],tn:25,red:5,fer:[[20,5],[40,10],[60,null]],mac:4,per:"",hab:[["Medo 3",""],["Cria","Ao morrer, solta 2k2 filhotes que fogem para crescer em outro lugar."]],nota:"Parece uma aranha do tamanho de um boi."},
+ {id:"oni_wanizame",n:"Wanizame no Oni",tipo:"oni",fonte:"IdI p. 173",an:[2,2,1,4],tr:"Reflexos 4, Agilidade 4",ini:"4k4",atq:[["Mordida","6k4","C","4k4"]],tn:25,red:3,fer:[[15,5],[30,10],[45,15],[60,null]],mac:4,per:"",hab:[["Preso à água","Não sai dela."],["Fareja sangue","Sente sangue na água a grande distância."],["Medo 2",""],["Fúria voraz","+2k2 no ataque contra quem já perdeu mais de um nível de Ferimento."]],nota:"Tubarão demoníaco. Problema de quem viaja por mar."},
+ {id:"oni_ugulu",n:"Ugulu no Oni",tipo:"oni",fonte:"LB",an:[1,6,2,2],tr:"Agilidade 4, Força 8",ini:"3k1",atq:[["Garras","7k4","S","9k3"]],tn:10,red:24,redN:"12 contra jade, cristal e obsidiana",fer:[[32,5],[64,10],[96,15],[124,null]],mac:6,per:"",hab:[["Medo 3",""],["Invulnerabilidade superior","Além do normal, é imune a flechas (salvo as perfurantes)."],["Imunidade a feitiços","Dois feitiços, escolhidos pelo Mestre, não o afetam."]],nota:"O oni de exemplo do Livro Básico: lento, enorme, quase impossível de ferir sem jade."},
+ {id:"oni_muduro",n:"Muduro no Oni, a Montanha",tipo:"oni",fonte:"IdI p. 160",an:[3,7,2,4],tr:"Agilidade 3, Força 8",ini:"6k3",atq:[["Garras","7k3","S","10k3"],["Mordida","8k3","C","10k5"]],tn:15,red:20,fer:[[100,5],[150,10],[200,null]],mac:5,per:"",hab:[["Medo 4",""],["Imenso",""],["Invulnerável",""],["Engolir inteiro","Uma mordida que acerta bem engole a vítima; a regra está na página."]],nota:"Um flagelo: pede um exército ou um plano, não um duelo."},
+ {id:"oni_genso",n:"Genso no Oni",tipo:"oni",fonte:"IdI p. 157",an:[3,4,4,4],tr:"Reflexos 5",ini:"5k5",atq:[["Katana de obsidiana","9k4","S","7k2"],["Garras","8k4","S","4k4"]],tn:30,red:4,fer:[[40,5],[80,10],[120,15],[160,20],[240,null]],mac:7,per:"Kenjutsu 5, Iaijutsu 5, Defesa 5, Intimidação 5",hab:[["Medo 3",""],["Daishō de obsidiana","As lâminas não quebram; quem é ferido por elas corre risco de Mácula."],["Provocações","Zomba do adversário para tirá-lo do sério."]],nota:"Oni espadachim, único. Chefe de aventura."},
+ {id:"oni_akuma_cria",n:"Cria de Akuma",tipo:"oni",fonte:"IdI p. 163",an:[5,5,4,5],tr:"Inteligência 5",ini:"9k5",atq:[["Garras","8k4","S","7k3"],["Línguas flamejantes","8k4","L","2k2"]],tn:40,red:10,fer:[[25,5],[50,10],[75,15],[100,null]],mac:5,per:"",hab:[["Medo 4",""],["Imenso",""],["Invulnerabilidade",""],["Três línguas","Atacam como Ação Livre, a até 6 m; a saliva queima."]],nota:"Descendente de um Senhor Oni. Para o fim de uma campanha."},
+ {id:"oni_arugai",n:"Arugai no Oni",tipo:"oni",fonte:"IdI p. 153",an:[4,7,2,6],tr:"Vigor 8, Agilidade 5, Força 8",ini:"9k4",atq:[["Garras","10k5","S","10k4"],["Cauda","10k5","S","10k3"],["Chifres","10k5","S","10k3"]],tn:25,red:20,fer:[[50,5],[100,10],[150,15],[200,null]],mac:6,per:"",hab:[["Medo 5",""],["Imenso",""],["Quase imortal","Regenera 10 Ferimentos por rodada, mesmo depois de morto; só o método da página o destrói."],["Invulnerabilidade superior","Também contra fogo."],["Veloz 2",""]],nota:"Uma catástrofe com nome."},
+ /* ---- mortos-vivos ---- */
+ {id:"zumbi",n:"Zumbi",tipo:"morto",fonte:"LB",an:[0,3,0,1],tr:"Reflexos 1, Agilidade 2, Força 3",ini:"1k1",atq:[["Punho","4k2","C","3k1"],["Clava","4k2","C","3k2"]],tn:10,red:5,fer:[[72,null]],mac:3,per:"",hab:[["Decapitação","Um Golpe Localizado na cabeça que cause 18 Ferimentos ou mais o destrói."],["Medo 3",""],["Morto-vivo",""]],nota:"Cadáver erguido por maho. Lento, incansável, em bando."},
+ {id:"ressurgido",n:"Morto ressurgido",tipo:"morto",fonte:"LB",an:[0,3,1,2],tr:"Reflexos 3, Agilidade 3, Força 3",ini:"3k3",atq:[["Punho","5k3","C","3k1"],["Espada","5k3","C","5k2"]],tn:15,red:5,fer:[[72,null]],mac:3,per:"",hab:[["Decapitação","Um Golpe Localizado na cabeça que cause 18 Ferimentos ou mais o destrói."],["Medo 3",""],["Morto-vivo",""]],nota:"Guerreiro morto que ainda sabe usar a arma."},
+ {id:"zumbi_praga",n:"Zumbi da praga",tipo:"morto",fonte:"IdI p. 272",an:[0,3,0,1],tr:"Reflexos 1, Agilidade 2, Força 3",ini:"1k1",atq:[["Punho","4k2","C","3k1"],["Clava","4k2","C","3k2"]],tn:10,red:5,fer:[[72,null]],mac:4,per:"",hab:[["Decapitação","Um Golpe Localizado na cabeça que cause 18 Ferimentos ou mais o destrói."],["Medo 3",""],["Morto-vivo",""],["Vetor da praga","Quem é ferido por ele pode pegar a doença (1 chance em 5, pela página)."]],nota:"O zumbi comum, mais a doença que carrega."},
+ {id:"ghul",n:"Ghul",tipo:"morto",fonte:"IdI p. 268",an:[1,2,1,2],tr:"Reflexos 3, Vigor 4, Agilidade 3, Força 4",ini:"4k3",atq:[["Garras","4k3","C","5k2"]],tn:20,red:5,fer:[[72,null]],per:"",hab:[["Ataque à garganta","Se causar 15 Ferimentos ou mais num golpe, faz na hora um ataque extra como Ação Livre."],["Morto-vivo",""]],nota:"Devorador de cadáveres vindo das Areias Ardentes."},
+ {id:"hyakuhei",n:"Hyakuhei",tipo:"morto",fonte:"IdI p. 269",an:[1,4,2,3],tr:"Reflexos 3, Agilidade 3, Força 4",ini:"4k3",atq:[["Arma","5k3","C","dano da arma"],["Garras","4k3","C","4k1"]],tn:20,red:5,fer:[[80,null]],mac:5,per:"",hab:[["Medo 4",""],["Morto-vivo",""]],nota:"Soldado morto que não aceitou a derrota. Se usa armadura, some o bônus ao TN."},
+ {id:"nukekubi",n:"Nukekubi",tipo:"morto",fonte:"IdI p. 270",an:[1,2,1,2],tr:"Reflexos 4, Agilidade 3",ini:"3k3",atq:[["Punho ou arma","3k3","C","dano da arma"],["Mordida (cabeça solta)","4k3","S","3k2"]],tn:25,red:5,fer:[[36,null]],mac:3,per:"",hab:[["Medo 3",""],["Cabeça voadora","De noite a cabeça se solta do corpo e caça sozinha (Veloz 2)."],["Invulnerável","O corpo deixa de ser enquanto a cabeça está fora."],["Morto-vivo",""]],nota:"De dia, passa por gente."},
+ {id:"gaki",n:"Gaki",tipo:"morto",fonte:"LB",an:[2,2,2,3],tr:"Reflexos 4, Agilidade 4, Força 4",ini:"4k4",atq:[["Garra","4k4","C","3k3"]],tn:25,red:5,fer:[[12,5],[24,10],[36,null]],per:"",hab:[["Garra que atravessa","O ataque ignora a armadura."],["Dreno de sangue","Em vez do dano, pode causar 12 Ferimentos e curar o mesmo tanto."],["Medo 3",""],["Imortal","Destruído, refaz-se em Gaki-dō."],["Invisível","Fica invisível e atravessa paredes como Ação Livre; pode tomar a forma de um inseto."]],nota:"Morto faminto. Só aparece para se alimentar."},
+ {id:"gakimushi",n:"Gakimushi",tipo:"morto",fonte:"IdI p. 273",an:[2,5,3,3],tr:"Reflexos 4, Vigor 4, Agilidade 5, Força 5",ini:"6k4",atq:[["Ferrão","6k6","C","5k3"]],tn:25,red:10,redN:"5 contra jade e cristal",fer:[[25,5],[60,10],[95,null]],mac:5,per:"Furtividade 3",hab:[["Medo 4",""],["Ferrão venenoso","Cada acerto tira 1 de Força; em 0, a vítima fica paralisada."],["Forma de inseto","Encolhe até o tamanho de um inseto."]],nota:"Gaki em forma de inseto gigante."},
+ {id:"mare_caveiras",n:"Maré de caveiras",tipo:"morto",fonte:"IdI p. 275",an:[1,1,3,3],tr:"Reflexos 3, Vigor 5, Força 6",ini:"3k3",atq:[["Mordida","8k4","S","6k3"]],tn:20,red:5,fer:[[25,5],[50,10],[75,15],[100,null]],mac:4,per:"",hab:[["Presa à água","Não deixa o mar ou o rio onde nasceu."],["Medo 5",""]],nota:"Os afogados de um naufrágio, juntos numa onda só."},
+ {id:"espirito_assassino",n:"Espírito assassino",tipo:"morto",fonte:"IdI p. 276",an:[1,1,1,2],tr:"Reflexos 4, Vigor 4, Agilidade 4, Força 4",ini:"5k4",atq:[["Arma","8k4","C","dano da arma"],["Desarmado","8k4","C","4k1"]],tn:25,red:0,fer:[[30,5],[60,10],[90,null]],per:"",hab:[["Veloz 3",""],["Sem mente","Imune a medo, ilusão e efeitos mentais."],["Só ataca","Usa apenas as posturas de Ataque e Ataque Total."],["Espírito",""]],nota:"Morto que volta com um nome na cabeça e nada mais."},
+ /* ---- espíritos e metamorfos ---- */
+ {id:"kappa",n:"Kappa",tipo:"espirito",fonte:"LB",an:[3,2,2,3],tr:"",ini:"4k3",atq:[["Garras","4k2","S","3k2"]],tn:20,red:15,fer:[[12,5],[24,10],[36,15],[48,null]],per:"",hab:[["Aquático",""],["Ilusões","Cria ilusões visuais algumas vezes por dia."],["Veloz 2",""],["Água da vida","Se a água da cuia no alto da cabeça derramar, perde a Redução e todos os Anéis e Traços caem para 1."]],nota:"Espírito de rio que bebe sangue. Dá para vencê-lo num enigma ou fazê-lo se curvar."},
+ {id:"bruxa_pantano",n:"Bruxa do pântano",tipo:"espirito",fonte:"LB",an:[3,3,3,2],tr:"Força 3",ini:"5k3",atq:[["Garras","5k3","S","3k2"]],tn:20,red:5,fer:[[16,5],[32,10],[48,15],[72,null]],mac:4,per:"Atuação 4, Sinceridade (Ardil) 4, Furtividade 3, Tentação (Sedução) 4",hab:[["Aquático",""],["Doença","Quem é ferido pelas garras tem 1 chance em 5 de pegar uma doença que tira 1 de Vigor por semana."],["Invulnerável","As mais fracas nem sempre são."],["Vestir a pele","Usa a pele de quem matou: fica igual à vítima e herda memórias dela, por semanas iguais à Terra da vítima."]],nota:"Infiltra-se no Império na pele de uma moça bonita. O exemplo do livro é dos mais fortes."},
+ {id:"kitsune",n:"Kitsune",tipo:"espirito",fonte:"IdI p. 245",an:[2,2,2,1],tr:"Reflexos 5, Percepção 4",ini:"6k5",atq:[["Garras","2k2","C","2k1"]],tn:25,red:0,fer:[[15,10],[30,20],[45,null]],per:"",hab:[["Metamorfose","Toma forma humana."],["Espírito",""],["Veloz 3",""]],nota:"Raposa-espírito de Chikushudo. Prega peças; raramente quer briga."},
+ {id:"hannya",n:"Hannya",tipo:"espirito",fonte:"IdI p. 248",an:[3,3,3,3],tr:"Reflexos 5, Força de Vontade 4, Agilidade 6, Força 5",ini:"6k5",atq:[["Garras ou arma","8k6","S","7k2"]],tn:30,red:4,fer:[[15,5],[30,10],[45,15],[60,20],[75,null]],mac:4,per:"",hab:[["Alterar a forma","Muda de aparência à vontade."],["Imitar a rival","Toma o rosto de quem lhe causou ciúme."],["Medo 2",""],["Espírito",""]],nota:"Mulher que o ciúme transformou em demônio."},
+ {id:"bakeneko",n:"Bakeneko",tipo:"espirito",fonte:"IdI p. 250",an:[2,2,2,2],tr:"",ini:"3k2",atq:[["Garras","3k2","C","2k2"]],tn:10,red:5,fer:[[10,5],[20,10],[30,null]],per:"Defesa 4, Jiujutsu 3, Kenjutsu 4",hab:[["Metamorfo","Toma a forma da pessoa que matou."],["Espírito",""]],nota:"Gato que viveu demais e aprendeu a ser gente."},
+ {id:"onibaba",n:"Onibaba",tipo:"espirito",fonte:"IdI p. 230",an:[3,3,4,3],tr:"Reflexos 4, Força 4",ini:"7k4",atq:[["Garras","7k4","C","4k3"],["Faca","6k4","S","5k1"],["Cabelo","7k4","S","3k2"]],tn:25,red:5,fer:[[15,5],[35,10],[55,15],[75,null]],mac:4,per:"",hab:[["Cabelo demoníaco","Ataca e agarra a até 12 m."],["Invulnerabilidade",""],["Metamorfose","Aparece como uma jovem bonita."],["Conjuradora","Maho e feitiços de Ar, como shugenja de Nível 3."]],nota:"A velha da cabana no fim da estrada."},
+ {id:"kumo",n:"Kumo",tipo:"espirito",fonte:"IdI p. 224",an:[3,3,3,4],tr:"Reflexos 4, Agilidade 4, Força 5",ini:"6k4",atq:[["Mordida","7k4","C","6k2"],["Veneno cuspido","5k4","C","veneno"],["Teia","6k4","C","prende"]],tn:30,red:5,fer:[[16,5],[32,10],[48,15],[64,null]],mac:3,per:"Esportes 3, Furtividade 5",hab:[["Camuflagem","+2k0 em Furtividade."],["Medo 2",""],["Veneno e teia","Cospe veneno a 5 m e lança teia a 6 m; os efeitos estão na página."]],nota:"Aranha gigante que fala e mente."},
+ {id:"obake",n:"Obake",tipo:"espirito",fonte:"IdI p. 228",an:[2,3,4,1],tr:"Reflexos 6, Força 3",ini:"6k6",atq:[["Bengala","7k4","S","3k2"]],tn:35,red:5,fer:[[10,5],[30,10],[50,null]],mac:5,per:"",hab:[["Regeneração","Recupera 2 Ferimentos por rodada."],["Veloz 3",""],["Enxame de vespas","Ação Complexa: até três alvos a 18 m; o dano está na página."]],nota:"Velho curvado com uma bengala. Não é um velho."},
+ {id:"onikage",n:"Onikage",tipo:"morto",fonte:"IdI p. 231",an:[0,4,1,4],tr:"Reflexos 3, Agilidade 3, Força 6",ini:"3k3",atq:[["Cascos com garras","4k3","C","6k3"]],tn:20,red:10,fer:[[40,null]],mac:6,per:"",hab:[["Imenso",""],["Veloz 3",""],["Morto-vivo",""]],nota:"Cavalo morto-vivo das Terras Sombrias, montaria dos Perdidos."},
+ {id:"cria_sombra",n:"Cria da Sombra",tipo:"espirito",fonte:"IdI p. 146",an:[3,5,3,4],tr:"Reflexos 4, Agilidade 4, Força 5",ini:"6k4",atq:[["Garras","6k4","S","5k2"],["Arma","6k4","C","dano da arma"]],tn:25,red:10,redN:"0 contra cristal",fer:[[96,null]],per:"Atuação 4, Sinceridade (Ardil) 4, Furtividade 5",hab:[["Medo 3","Só quando se revela."],["Sem rosto","Copia a aparência de quem quiser."],["Não sente dor","Imune a Medo e a efeitos mentais; armas sem cristal causam metade do dano."]],nota:"Resto da Escuridão Viva, derrotada no Portão do Esquecimento em 1133. Rara em 1137, e por isso ninguém espera."},
+ /* ---- outros povos ---- */
+ {id:"nezumi",n:"Nezumi (homem-rato)",tipo:"povo",fonte:"LB",an:[1,2,2,2],tr:"Reflexos 3, Agilidade 3 · Nome 1",ini:"4k3",atq:[["Lança rústica","4k3","C","4k2"]],tn:20,red:0,fer:"h",per:"Esportes 3, Furtividade 3",hab:[["Veloz 2",""],["Imune à Mácula","As Terras Sombrias não o corrompem."]],nota:"Aliado dos Caranguejo, ladrão para os demais."},
+ {id:"nezumi_guerreiro",n:"Guerreiro nezumi",tipo:"povo",fonte:"IdI p. 125",an:[2,3,3,3],tr:"Reflexos 3, Agilidade 4 · Nome 3",ini:"5k3",atq:[["Yari","7k4","C","5k2"]],tn:25,red:3,fer:"h",per:"Lanças 3, Defesa 4, Esportes 3, Furtividade 3",hab:[["Veloz 2",""],["Imune à Mácula",""]],nota:"Armadura leve feita de sobras."},
+ {id:"nezumi_xama",n:"Xamã nezumi",tipo:"povo",fonte:"IdI p. 126",an:[3,3,3,2],tr:"Nome 5",ini:"7k4",atq:[["Yari","7k3","C","5k2"]],tn:30,red:3,fer:"h",per:"",hab:[["Magia de Nome","Feitiçaria própria dos nezumi; a lista está na página."],["Imune à Mácula",""]],nota:"Lembra o que a tribo esqueceu."},
+ {id:"tsuno",n:"Tsuno",tipo:"povo",fonte:"LB",an:[2,4,2,3],tr:"Reflexos 4, Agilidade 3",ini:"5k4",atq:[["Lâmina tsuno","7k3","C","6k3"],["Desarmado","6k3","C","3k2"]],tn:30,red:8,fer:"h",mac:4,per:"Kenjutsu 4, Jiujutsu 3",hab:[["Medo 2",""],["Lâmina tsuno","+1k0 contra Maculados e Espíritos."],["Espírito",""],["Veloz 3",""]],nota:"Guerreiros de chifres vindos dos reinos dos mortos. Em 1137 quase ninguém em Rokugan viu um."},
+ {id:"tsuno_devastador",n:"Devastador tsuno",tipo:"povo",fonte:"IdI p. 191",an:[3,5,3,3],tr:"Reflexos 5, Agilidade 4, Força 4",ini:"8k5",atq:[["Lâmina tsuno","10k4","S","7k3"],["Desarmado","8k4","S","4k2"]],tn:35,red:8,fer:"h",mac:4,per:"",hab:[["Medo 2",""],["Lâmina tsuno","+1k0 contra Maculados e Espíritos."],["Espírito",""],["Veloz 3",""]],nota:"A elite deles."},
+ {id:"zokujin",n:"Zokujin",tipo:"povo",fonte:"IdI p. 193",an:[3,3,2,4],tr:"Reflexos 4, Agilidade 3",ini:"5k4",atq:[["Garras","5k3","C","4k1"]],tn:25,red:10,fer:[[18,5],[36,10],[64,null]],per:"Esportes 3, Furtividade 3",hab:[["Escavar","Atravessa terra e pedra."],["Moldar a terra","Fala com os kami da Terra e muda a rocha em volta."]],nota:"Povo das minas, escravizado em mais de uma. Não é inimigo até ser tratado como um."},
+ {id:"ningyo",n:"Ningyo feroz",tipo:"povo",fonte:"IdI p. 182",an:[2,3,3,3],tr:"Reflexos 3",ini:"4k3",atq:[["Mordida","5k3","C","4k1"]],tn:20,red:2,fer:[[16,5],[32,10],[48,null]],per:"",hab:[["Aquático",""]],nota:"Povo do mar que voltou ao estado selvagem."},
+ /* ---- feras ---- */
+ {id:"lobo",n:"Lobo",tipo:"fera",fonte:"LB",an:[1,3,2,3],tr:"Reflexos 3, Agilidade 3, Percepção 4",ini:"4k3",atq:[["Mordida","4k3","C","5k2"]],tn:20,red:3,fer:[[18,10],[36,null]],per:"Furtividade 2",hab:[["Faro","+2k1 em testes de Percepção ligados a cheiro."]],nota:"Caça em matilha; no inverno desce até as aldeias."},
+ {id:"cao_guerra",n:"Cão de guerra",tipo:"fera",fonte:"LB",an:[2,3,2,3],tr:"Reflexos 4, Agilidade 4",ini:"5k4",atq:[["Mordida","5k4","S","3k2"]],tn:25,red:3,fer:[[18,10],[36,null]],per:"Caça (Rastrear) 4, Intimidação 2",hab:[["Veloz 2",""],["Faro","+2k1 em testes de Percepção ligados a cheiro."]],nota:"Criado para a guerra. Obedece a um tratador."},
+ {id:"leao",n:"Leão",tipo:"fera",fonte:"LB",an:[2,4,1,3],tr:"Reflexos 3, Vigor 4, Agilidade 3, Força 6",ini:"4k3",atq:[["Garras","5k3","S","4k3"],["Mordida","6k3","C","4k4"]],tn:20,red:3,fer:[[12,5],[24,10],[36,15],[48,null]],per:"Caça 3, Furtividade 3",hab:[["Medo","O nível saiu ilegível na leitura do PDF; confira no Livro Básico."]],nota:"Raro fora das planícies do Leão."},
+ {id:"tigre",n:"Tigre",tipo:"fera",fonte:"IdI p. 16",an:[2,3,2,3],tr:"Reflexos 4, Vigor 4, Agilidade 4, Força 4",ini:"5k4",atq:[["Garras","6k4","C","5k2"],["Mordida","4k4","C","3k3"]],tn:25,red:4,fer:[[24,10],[48,null]],per:"Caça 4, Furtividade 4",hab:[["Medo 2",""],["Veloz 1",""]],nota:"Caçador solitário de floresta."},
+ {id:"urso",n:"Urso",tipo:"fera",fonte:"IdI p. 17",an:[1,6,1,2],tr:"Reflexos 3, Agilidade 4, Força 7",ini:"4k3",atq:[["Garras","6k4","S","7k3"],["Mordida","5k4","C","4k3"]],tn:20,red:9,fer:[[30,5],[60,10],[90,null]],per:"",hab:[["Veloz 3","Exceto em descida."],["Imenso",""]],nota:"Só ataca acuado, faminto ou com filhote."},
+ {id:"javali",n:"Javali",tipo:"fera",fonte:"IdI p. 14",an:[1,5,1,2],tr:"Reflexos 3, Agilidade 3, Força 4",ini:"4k3",atq:[["Presas","5k3","C","5k2"]],tn:20,red:12,fer:[[30,5],[75,null]],per:"Jiujutsu 3",hab:[["Eviscerar","Pode prender a vítima nas presas; enquanto a controla, causa 4k4 por rodada."],["Investida atroz","Em Ataque Total ataca como Ação Simples, com +1k1 no ataque e no dano."],["Imenso",""]],nota:"A caça preferida dos Caranguejo. Mata mais caçador que lobo."},
+ {id:"crocodilo",n:"Crocodilo",tipo:"fera",fonte:"IdI p. 12",an:[1,3,2,2],tr:"Reflexos 3, Vigor 4, Agilidade 4, Percepção 4",ini:"4k3",atq:[["Mordida","5k4","C","4k4"]],tn:20,red:5,fer:[[24,5],[36,10],[64,null]],per:"Furtividade 2",hab:[["Aquático",""],["Medo 2",""],["Veloz 2","Nadando."],["Mandíbulas","Prende a vítima (teste disputado de Força); cada turno preso dá +2k2, e na água ela começa a se afogar."]],nota:"Rios e mangues do sul."}];
+
+/* ---- arquétipos: moldes para sortear um inimigo novo ----
+   Cada um diz de onde saem os Anéis, a arma e as habilidades. A ameaça (1 a 4) empurra tudo para
+   cima. Gente segue as contas da 4ª ed. (TN = 5×Reflexos+5+armadura; Iniciativa = Rank+Reflexos
+   k Reflexos; ataque = Agilidade+perícia k Agilidade; dano = Força+arma). Criatura usa a escala
+   dos monstros do livro que servem de modelo (campo "modelo"). */
+const AMEACAS=[[1,"Fraca","um a um, os personagens ganham"],[2,"Comum","páreo para um samurai"],[3,"Perigosa","pede dois ou três personagens"],[4,"Terrível","chefe de aventura"]];
+const NOMES_GENTE=["Goro","Jiro","Kenta","Daisuke","Hachi","Tatsuo","Masaru","Shinji","Kaede","Ayame","Noboru","Rokuro","Isamu","Yuki","Tomoe","Benkei","Genzo","Haru","Sadao","Katsu"];
+const SIL_ONI=["Ka","Zu","Mo","Ge","Shi","Ra","Tsu","Bo","Go","Yo","Mu","Ku","Ha","Na","Ro","Ji"];
+const ARQUETIPOS=[
+ {id:"a_bandido",n:"Bandido",tipo:"humano",gente:true,modelo:"Bandido",an:[2,2,2,2],sk:1,armas:[["Lança","Lanças",[2,2]],["Porrete","Armas Pesadas",[1,2]],["Faca","Facas",[1,1]],["Arco curto","Kyujutsu",[2,2]]],arm:[["sem armadura",0,0]],per:["Furtividade","Intimidação","Caça"],habs:[["Golpe sujo","Areia nos olhos, rasteira, dois contra um: +1k0 no ataque quando luta em vantagem."],["Conhece o terreno","+1k1 em Furtividade e em fuga no próprio território."]],nomes:t=>["Bandido","Salteador","Capanga","Chefe de bando"][t-1],frase:"Quer a bolsa, não a morte de ninguém. Foge quando a metade do bando cai."},
+ {id:"a_ashigaru",n:"Soldado (ashigaru)",tipo:"humano",gente:true,modelo:"Ashigaru",an:[2,2,2,2],sk:1,armas:[["Yari","Lanças",[2,2]],["Yumi","Kyujutsu",[2,2]]],arm:[["armadura de ashigaru",3,1]],per:["Defesa","Batalha"],habs:[["Fileira","Lado a lado com outro soldado, +3 no TN para ser atingido."]],nomes:t=>["Recruta","Ashigaru","Ashigaru veterano","Sargento (gunsō)"][t-1],frase:"Obedece a um samurai. Sem comando, vacila."},
+ {id:"a_bushi",n:"Bushi de clã",tipo:"humano",gente:true,modelo:"Bushi de clã",an:[2,3,3,2],sk:2,armas:[["Katana","Kenjutsu",[3,2]],["Yari","Lanças",[2,2]],["Tetsubo","Armas Pesadas",[3,3]]],arm:[["armadura leve",5,3],["armadura pesada",10,5]],per:["Defesa","Kyujutsu","Etiqueta","Batalha"],habs:[["Técnica de escola","Uma vez por rodada, +1k0 no ataque ou no dano (à escolha do Mestre, conforme o clã)."],["Não recua","Imune a intimidação comum enquanto o senhor ou o oficial dele estiver de pé."]],nomes:t=>["Bushi novato","Bushi de clã","Bushi veterano","Campeão do senhor"][t-1],frase:"Luta pelo nome do senhor. Aceita desafio e espera o mesmo."},
+ {id:"a_duelista",n:"Duelista",tipo:"humano",gente:true,modelo:"Duelista",an:[3,2,3,2],sk:3,armas:[["Katana","Kenjutsu",[3,2]]],arm:[["sem armadura",0,0]],per:["Iaijutsu","Etiqueta","Cortesão"],habs:[["Primeiro golpe","No duelo de iaijutsu rola um dado a mais no saque."],["Leitura","Antes do duelo, avalia o adversário: fica sabendo se o Rank dele é maior ou menor."]],nomes:t=>["Aprendiz de duelista","Duelista","Mestre do saque","Kenshinzen"][t-1],frase:"Um corte. Se errar, não tem armadura para o segundo."},
+ {id:"a_ronin",n:"Rōnin",tipo:"humano",gente:true,modelo:"Rōnin veterano",an:[2,3,3,3],sk:2,armas:[["Katana","Kenjutsu",[3,2]],["Nodachi","Kenjutsu",[3,3]],["Yari","Lanças",[2,2]]],arm:[["sem armadura",0,0],["armadura leve",5,3]],per:["Defesa","Caça","Intimidação","Comércio"],habs:[["Sobrevivente","Com metade dos Ferimentos, ganha +5 no TN para ser atingido: luta para sair vivo."],["Sem senhor","Não se rende por honra; rende-se por dinheiro ou pela vida."]],nomes:t=>["Homem de onda","Rōnin","Rōnin veterano","Espada de aluguel famosa"][t-1],frase:"Sem senhor e sem ilusão. Pode ser comprado, e sabe disso."},
+ {id:"a_ninja",n:"Ninja / assassino",tipo:"humano",gente:true,modelo:"Ninja",an:[3,2,3,2],sk:2,armas:[["Ninja-tō","Ninjutsu",[2,2]],["Shuriken","Ninjutsu",[1,1]],["Kusarigama","Armas de Corrente",[2,2]]],arm:[["sem armadura",0,0]],per:["Furtividade","Esportes","Venenos","Atuação"],habs:[["Emboscada","O primeiro ataque, vindo do escondido, ganha +2k0."],["Veneno","A lâmina vem untada: quem perde Ferimentos testa Vigor (TN 15) ou sofre −1k0 em tudo por uma hora."],["Sumir","Ação Complexa: bomba de fumaça e some da vista (Furtividade contra a Percepção de quem olha)."]],nomes:t=>["Olheiro","Ninja","Assassino","Mestre das sombras"][t-1],frase:"Vem para um alvo. Cumprido ou perdido, some."},
+ {id:"a_cultista",n:"Cultista / maho-tsukai",tipo:"humano",gente:true,modelo:"Cultista de sangue",an:[2,2,2,2],sk:1,armas:[["Tantō","Facas",[1,1]],["Bastão","Bastões",[1,2]]],arm:[["sem armadura",0,0]],per:["Sabedoria (Maho)","Sinceridade (Ardil)","Feitiçaria"],mac:[1,3],habs:[["Maho","Conjura feitiços de sangue de Domínio até o dobro da ameaça, pagando com Ferimentos."],["Fanático","Não se rende; preso, tenta se matar ou amaldiçoar."],["Protegido","Um morto-vivo ou um capanga se põe na frente: o primeiro golpe da luta acerta o protetor."]],nomes:t=>["Iniciado","Cultista","Maho-tsukai","Sacerdote do sangue"][t-1],frase:"De dia é o vizinho. O perigo é o que ele sabe e quem ele serve."},
+ {id:"a_perdido",n:"Perdido (samurai Maculado)",tipo:"humano",gente:true,modelo:"Samurai Perdido",an:[2,3,3,4],sk:2,armas:[["Katana","Kenjutsu",[3,2]],["Tetsubo","Armas Pesadas",[3,3]],["Ono","Armas Pesadas",[0,4]]],arm:[["armadura leve",5,3],["armadura pesada",10,5]],per:["Defesa","Intimidação","Batalha"],mac:[3,6],forca:1,habs:[["Medo 1",""],["Pele de couro","A Mácula endureceu o corpo: Redução +3."],["Não sente dor","Ignora as penalidades de Ferimento."],["Garra","Uma das mãos virou garra: ataque extra 2k2 de dano como Ação Simples."]],nomes:t=>["Maculado","Perdido","Cavaleiro Perdido","Campeão das Terras Sombrias"][t-1],frase:"Foi samurai. A escola ainda está lá; a honra, não."},
+ {id:"a_horda",n:"Horda (tipo goblin)",tipo:"goblin",modelo:"Goblin",an:[1,2,1,1],refl:[2,3],agi:[2,3],forca:[2,2],atqB:2,danoK:2,tnB:5,red:[3,4],fer:t=>e=>t>=3?[[e*5,5],[e*10,10],[e*15,null]]:[[e*5,5],[e*10,null]],mac:[2,4],armasN:["Faca","Pau afiado","Lança torta","Mordida"],habs:[["Veloz 2",""],["Fúria","Nas duas primeiras rodadas: +1k1 no ataque e Redução +5."],["Fingir de morto","Cai e fica imóvel; passa por cadáver."],["Covarde","Se o chefe cai, testa para não fugir."]],fixas:1,nomes:t=>["Goblin magro","Goblin","Goblin brigão","Chefe goblin"][t-1],frase:"Sozinho foge. Em vinte, come o cavalo e o cavaleiro."},
+ {id:"a_bruto",n:"Bruto (tipo ogro ou troll)",tipo:"ogro",modelo:"Ogro",an:[1,3,3,2],refl:[3,3],agi:[3,4],forca:[5,6],atqB:2,danoK:2,tnB:10,red:[5,10],fer:t=>e=>[[e*7,5],[e*13,10],[e*20,15],[e*27,null]],mac:[3,5],armasN:["Clava","Tetsubo","Tronco arrancado","Punhos"],habs:[["Medo 2",""],["Imenso",""],["Arremesso","Atira uma pedra ou um homem: 6 m, dano igual ao da clava."],["Regeneração","Recupera 5 Ferimentos por rodada, menos os de fogo."]],fixas:1,nomes:t=>["Ogro jovem","Ogro","Ogro de guerra","Senhor ogro"][t-1],frase:"Três metros de músculo. Mais esperto do que parece, o que não é difícil."},
+ {id:"a_oni",n:"Oni",tipo:"oni",modelo:"Nairu no Oni e Ugulu no Oni",an:[2,3,2,3],refl:[3,4],agi:[4,4],forca:[4,6],atqB:2,danoK:3,tnB:5,red:[4,12],fer:t=>e=>[[e*7,5],[e*14,10],[e*21,15],[e*28,null]],mac:[4,7],armasN:["Garras","Mandíbulas","Cauda","Chifres"],habs:[["Medo 2",""],["Invulnerável",""],["Imenso",""],["Asas","Veloz 3 voando; ataque rasante com +1k1."],["Hálito","Ação Complexa: cone de 6 m, 4k3 de dano (fogo, ácido ou gelo)."],["Nome roubado","Carrega o nome de quem o invocou; ferir o invocador o enfraquece."]],fixas:2,nomes:()=>SIL_ONI[Math.floor(Math.random()*SIL_ONI.length)]+SIL_ONI[Math.floor(Math.random()*SIL_ONI.length)].toLowerCase()+(Math.random()<.4?SIL_ONI[Math.floor(Math.random()*SIL_ONI.length)].toLowerCase():"")+" no Oni",frase:"Demônio de Jigoku. Jade, cristal ou um bom plano."},
+ {id:"a_morto",n:"Morto-vivo",tipo:"morto",modelo:"Zumbi e Morto ressurgido",an:[0,3,1,2],refl:[1,3],agi:[2,3],forca:[3,4],atqB:2,danoK:1,tnB:0,red:[5,5],fer:t=>e=>[[e*(18+t*3),null]],mac:[3,5],armasN:["Punho","Arma enferrujada","Garras","Mordida"],habs:[["Morto-vivo",""],["Medo 3",""],["Decapitação","Um Golpe Localizado na cabeça que cause 18 Ferimentos ou mais o destrói."],["Agarrar","Se acertar dois ataques seguidos no mesmo alvo, prende-o."],["Vetor de doença","Quem é ferido por ele pode adoecer."]],fixas:3,nomes:t=>["Cadáver erguido","Zumbi","Guerreiro morto","Capitão dos mortos"][t-1],frase:"Não cansa, não foge, não negocia."},
+ {id:"a_espirito",n:"Espírito enganador",tipo:"espirito",modelo:"Kitsune, Bakeneko e Hannya",an:[3,2,3,2],refl:[4,5],agi:[3,5],forca:[2,4],atqB:1,danoK:2,tnB:5,red:[0,5],fer:t=>e=>[[e*7,5],[e*14,10],[e*21,null]],armasN:["Garras","Mordida","Leque de ferro","Cabelo"],habs:[["Espírito",""],["Metamorfose","Toma forma humana; um detalhe a trai (a sombra, a cauda, o reflexo)."],["Ilusão","Ação Complexa: cria uma imagem falsa; Percepção contra TN 20 para desconfiar."],["Medo 2","Só na forma verdadeira."],["Dívida","Cumpre à risca uma promessa feita, e cobra as que recebeu."]],fixas:2,nomes:t=>["Espírito brincalhão","Metamorfo","Espírito vingativo","Senhor de um bosque"][t-1],frase:"Quer alguma coisa, e raramente é uma luta."},
+ {id:"a_fera",n:"Fera predadora",tipo:"fera",modelo:"Lobo, Tigre e Urso",an:[2,3,2,3],refl:[3,4],agi:[3,4],forca:[3,6],atqB:1,danoK:2,tnB:5,red:[3,6],fer:t=>e=>t>=3?[[e*8,5],[e*16,10],[e*24,null]]:[[e*6,10],[e*12,null]],armasN:["Mordida","Garras","Presas","Chifres"],habs:[["Faro","+2k1 em Percepção ligada a cheiro."],["Veloz 2",""],["Medo 1",""],["Matilha","Com outro da espécie no mesmo alvo, +1k0 no ataque."],["Investida","Em Ataque Total, +1k1 no dano."]],fixas:1,nomes:t=>["Animal acuado","Predador","Fera velha","Rei da montanha"][t-1],frase:"Ataca por fome, por medo ou pelo filhote."}];
+function bestInfo(id){return BESTIARIO.find(b=>b.id===id)||(S.bestiario||[]).find(b=>b.id===id)||null;}
+function bestFeridas(b){if(!b||b.fer==="h"||!Array.isArray(b.fer)){const t=Math.max(1,Number(b&&b.an&&b.an[1])||2);return FERIDAS_DEF.map(([nome,pen],i)=>({nome,penalidade:pen,total:t*5+i*t*2}));}
+  return ferTabela(b.fer);}
+/* [[20,5],[40,10],[80,null]] quer dizer: com 20 Ferimentos começa o +5, com 40 o +10, com 80 morre */
+function ferTabela(fer){const out=[];let ant=0;fer.forEach(([lim,pen],i)=>{out.push({nome:i===0?"Sadio":"+"+ant+" no TN",penalidade:ant,total:lim-1});ant=pen;});
+  const ult=fer[fer.length-1];out.push({nome:"Morto",penalidade:null,total:ult[0]});return out;}
+function ferTxt(b){if(b.fer==="h"||!Array.isArray(b.fer)){const f=bestFeridas(b);return "como gente: "+f.map(x=>x.total).join(" / ");}return b.fer.map(([l,p])=>l+": "+(p===null?"morto":"+"+p)).join("; ");}
+function habTexto(h){return h[1]||HAB_PADRAO[String(h[0]).toLowerCase().replace(/\s+\d+$/,"").trim()]||"";}
+const bR=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),bPick=a=>a[Math.floor(Math.random()*a.length)];
+function gerarInimigo(arqId,ameaca){const A=ARQUETIPOS.find(a=>a.id===arqId)||ARQUETIPOS[0],t=Math.max(1,Math.min(4,Number(ameaca)||2)),up=[-1,0,1,1][t-1],tb=[0,0,1,2][t-1];
+  const jit=()=>t>=2&&Math.random()<.25?1:0,an=A.an.map((v,i)=>Math.max(i===0&&A.tipo==="morto"?0:1,v+up+jit()));
+  if(A.tipo==="morto")an[0]=Math.min(an[0],1);
+  let o={id:"x_"+uid(),custom:true,arq:A.id,ameaca:t,tipo:A.tipo,fonte:"criado no app · molde: "+A.modelo,an,mac:A.mac?bR(A.mac[0],Math.min(A.mac[1],A.mac[0]+t)):0,nota:A.frase};
+  const nm=A.nomes(t);
+  if(A.gente){const refl=an[0]+jit(),agi=an[2]+jit(),forca=an[3]+(A.forca||0),rank=t,sk=Math.min(7,A.sk+t),w=bPick(A.armas),arm=A.arm[Math.min(A.arm.length-1,t>=3?A.arm.length-1:bR(0,A.arm.length-1))];
+    o.n=nm+(Math.random()<.6?" "+bPick(NOMES_GENTE):"");o.an=an.concat([Math.max(2,t)]);
+    o.tr="Reflexos "+refl+", Agilidade "+agi+", Força "+forca;o.ini=(rank+refl)+"k"+refl;
+    o.atq=[[w[0],(agi+sk)+"k"+agi,"C",(forca+w[2][0])+"k"+w[2][1]]];o.tn=5*refl+5+arm[1];o.red=arm[2];o.fer="h";
+    o.per=[w[1]+" "+sk].concat(A.per.slice().sort(()=>Math.random()-.5).slice(0,2+Math.min(2,t-1)).map(p=>p+" "+Math.max(1,sk-bR(1,2)))).join(", ");
+    o.nota=A.frase+" Rank "+rank+", "+arm[0]+".";
+  }else{const refl=bR(A.refl[0],A.refl[1])+tb,agi=bR(A.agi[0],A.agi[1])+tb,forca=bR(A.forca[0],A.forca[1])+tb;
+    o.n=nm;o.tr="Reflexos "+refl+", Agilidade "+agi+", Força "+forca;o.ini=(refl+1)+"k"+Math.max(1,refl);
+    const nA=t>=3?2:1,as=A.armasN.slice().sort(()=>Math.random()-.5).slice(0,nA);
+    o.atq=as.map((n,i)=>[n,(agi+A.atqB+(i?-1:0))+"k"+agi,i||t<3?"C":"S",(forca+(i?0:1))+"k"+Math.min(forca,A.danoK+(t>=4?1:0)+(i?0:0))]);
+    o.tn=5*refl+5+A.tnB;o.red=Math.round(A.red[0]+(A.red[1]-A.red[0])*(t-1)/3);o.fer=A.fer(t)(Math.max(1,an[1]));o.per="";}
+  const fix=A.gente?0:(A.fixas||0),pool=A.habs.slice(fix).sort(()=>Math.random()-.5),qt=A.gente?Math.min(pool.length,t>=3?2:(t===2?1:0)):Math.min(pool.length,Math.max(0,t-1));
+  o.hab=A.habs.slice(0,fix).concat(pool.slice(0,qt)).map(h=>[h[0],h[1]]);
+  if(A.tipo==="oni"||A.tipo==="ogro"||A.tipo==="morto")o.hab=o.hab.map(h=>/^Medo \d/.test(h[0])?["Medo "+Math.min(5,Number(h[0].slice(5))+Math.max(0,t-2)),h[1]]:h);
+  return o;}
+
+/* ---- tela do bestiário ---- */
+let bestFiltro="",bestBusca="",bestSel=null,bestEdit=false,bestArq="a_bandido",bestAme=2;
+function bestTodos(){return(S.bestiario||[]).concat(BESTIARIO);}
+function bestListaHtml(){const q=bestBusca.trim().toLowerCase();
+  const L=bestTodos().filter(b=>(!bestFiltro||(bestFiltro==="meus"?b.custom:b.tipo===bestFiltro))&&(!q||(b.n+" "+(b.per||"")+" "+(b.nota||"")).toLowerCase().includes(q)));
+  return L.length?L.map(b=>{const t=BEST_TIPOS.find(x=>x[0]===b.tipo)||BEST_TIPOS[0];
+    return "<div class=\"bsitem"+(bestSel===b.id?" on":"")+"\" onclick=\"bestVer('"+b.id+"')\"><span class=\"k\" aria-hidden=\"true\">"+t[2]+"</span><div><b>"+esc(b.n)+"</b><small>TN "+b.tn+" · "+esc(b.atq&&b.atq[0]?b.atq[0][1]:"—")+" · "+(b.custom?"criado por você":esc(b.fonte))+"</small></div></div>";}).join("")
+    :"<div class=\"hint\" style=\"margin:10px\">Nada com esse filtro.</div>";}
+function bestBuscar(v){bestBusca=v;const el=document.getElementById("bestLista");if(el)el.innerHTML=bestListaHtml();}
+function bestFiltrar(t){bestFiltro=t;renderBestiario();}
+function bestVer(id){bestSel=id;bestEdit=false;renderBestiario();const f=document.getElementById("bestFicha");if(f&&f.scrollIntoView&&window.innerWidth<860)f.scrollIntoView({behavior:"smooth",block:"start"});}
+function bestGerar(){if(bloqueadoLeitura())return;const o=gerarInimigo(bestArq,bestAme);S.bestiario=S.bestiario||[];S.bestiario.unshift(o);bestSel=o.id;bestEdit=false;bestFiltro="";salvar();renderBestiario();}
+function bestSortearDeNovo(id){if(bloqueadoLeitura())return;const L=S.bestiario||[],i=L.findIndex(b=>b.id===id);if(i<0||!L[i].arq)return;const o=gerarInimigo(L[i].arq,L[i].ameaca);o.id=id;L[i]=o;salvar();renderBestiario();}
+function bestCopiar(id){if(bloqueadoLeitura())return;const b=bestInfo(id);if(!b)return;const o=JSON.parse(JSON.stringify(b));o.id="x_"+uid();o.custom=true;o.n=b.n+" (cópia)";o.fonte="copiado de "+b.n+(b.custom?"":" ("+b.fonte+")");delete o.arq;
+  S.bestiario=S.bestiario||[];S.bestiario.unshift(o);bestSel=o.id;bestEdit=true;salvar();renderBestiario();}
+function bestApagar(id){if(bloqueadoLeitura())return;const b=(S.bestiario||[]).find(x=>x.id===id);if(!b||!confirm("Apagar \""+b.n+"\" do bestiário?"))return;S.bestiario=S.bestiario.filter(x=>x.id!==id);bestSel=null;salvar();renderBestiario();}
+function bestSalvarForm(id){if(bloqueadoLeitura())return;const b=(S.bestiario||[]).find(x=>x.id===id);if(!b)return;const g=k=>{const e=document.getElementById("bf_"+k);return e?e.value:"";};
+  b.n=g("n").trim()||"Sem nome";b.tipo=g("tipo")||b.tipo;b.an=[0,1,2,3].map(i=>Math.max(0,parseInt(g("an"+i))||0));b.tr=g("tr");b.ini=/^\d+k\d+$/.test(g("ini").trim())?g("ini").trim():b.ini;
+  b.tn=parseInt(g("tn"))||0;b.red=parseInt(g("red"))||0;b.mac=parseInt(g("mac"))||0;b.per=g("per");b.nota=g("nota");
+  b.atq=g("atq").split("\n").map(l=>l.split("|").map(x=>x.trim())).filter(a=>a[0]&&/^\d+k\d+$/.test(a[1]||"")).map(a=>[a[0],a[1],/^[SCL]$/i.test(a[2]||"")?a[2].toUpperCase():"C",a[3]||"—"]);
+  if(!b.atq.length)b.atq=[["Ataque","2k2","C","2k2"]];
+  const ft=g("fer").trim();if(/^gente/i.test(ft)||!ft)b.fer="h";else{const f=ft.split(/[;\n]/).map(x=>/^\s*(\d+)\s*:\s*(\+?\d+|morto)/i.exec(x)).filter(Boolean).map(m=>[parseInt(m[1]),/morto/i.test(m[2])?null:parseInt(m[2])]).sort((x,y)=>x[0]-y[0]);
+    if(f.length){if(f[f.length-1][1]!==null)f.push([f[f.length-1][0]*2,null]);b.fer=f;}}
+  b.hab=g("hab").split("\n").map(l=>l.trim()).filter(Boolean).map(l=>{const i=l.indexOf(":");return i<0?[l,""]:[l.slice(0,i).trim(),l.slice(i+1).trim()];});
+  bestEdit=false;salvar();renderBestiario();}
+function bestFichaHtml(b,curta){const t=BEST_TIPOS.find(x=>x[0]===b.tipo)||BEST_TIPOS[0],A=["Ar","Terra","Fogo","Água","Vazio"];
+  return (curta?"":"<h3>"+esc(b.n)+"</h3>")+"<div class=\"bsfonte\">"+t[1]+" · "+(b.fonte==="LB"?"Livro Básico, Criaturas de Rokugan":b.fonte==="app"?"ficha montada no app com as regras da 4ª ed.":esc(String(b.fonte).replace(/^IdI/,"Inimigos do Império,")))+"</div>"+
+    (b.nota?"<p class=\"bsnota\">"+esc(b.nota)+"</p>":"")+
+    "<div class=\"bsaneis\">"+b.an.map((v,i)=>"<span>"+A[i]+"<b>"+v+"</b></span>").join("")+"</div>"+(b.tr?"<div class=\"bstr\">"+esc(b.tr)+"</div>":"")+
+    "<div class=\"bsnums\"><div><small>Iniciativa</small><b>"+esc(b.ini)+"</b></div><div><small>TN para ser atingido</small><b>"+b.tn+"</b></div><div><small>Redução</small><b>"+b.red+"</b>"+(b.redN?"<i>"+esc(b.redN)+"</i>":"")+"</div>"+
+      (b.mac?"<div><small>Mácula</small><b>"+b.mac+"</b></div>":"")+"<div style=\"grid-column:span 2\"><small>Ferimentos</small><i style=\"font-size:13.5px;color:var(--ink)\">"+esc(ferTxt(b))+"</i></div></div>"+
+    "<table class=\"bsatq\"><tr><th>Ataque</th><th>Rolagem</th><th>Ação</th><th>Dano</th></tr>"+b.atq.map(a=>"<tr><td>"+esc(a[0])+"</td><td class=\"d\">"+esc(a[1])+"</td><td>"+({S:"Simples",C:"Complexa",L:"Livre"}[a[2]]||"")+"</td><td class=\"d\">"+esc(a[3])+"</td></tr>").join("")+"</table>"+
+    (b.per?"<p class=\"bshab\"><b>Perícias.</b> "+esc(b.per)+"</p>":"")+
+    (b.hab||[]).map(h=>"<p class=\"bshab\"><b>"+esc(h[0])+".</b> "+esc(habTexto(h))+"</p>").join("");}
+function renderBestiario(){const box=document.getElementById("bestBox");if(!box)return;
+  const b=bestSel?bestInfo(bestSel):null;if(bestSel&&!b)bestSel=null;
+  const chips=[["","todos"]].concat(BEST_TIPOS.map(t=>[t[0],t[1]])).concat((S.bestiario||[]).length?[["meus","criados por você"]]:[]);
+  let ficha;
+  if(!b)ficha="<div class=\"hint\" style=\"margin:0\">Escolha um inimigo na lista para ver a ficha, ou gere um novo por arquétipo. Daqui ele vai direto para a aba Combate.<br><br>Os números marcados como Livro Básico e Inimigos do Império foram lidos dos seus PDFs. Os resumos das habilidades são curtos de propósito: o texto completo está na página citada.</div>";
+  else if(bestEdit&&b.custom){const v=x=>esc(x==null?"":String(x));
+    ficha="<div class=\"bsform\"><h3>Editar</h3><label>Nome<input type=\"text\" id=\"bf_n\" value=\""+v(b.n)+"\"></label>"+
+      "<label>Tipo<select id=\"bf_tipo\">"+BEST_TIPOS.map(t=>"<option value=\""+t[0]+"\""+(b.tipo===t[0]?" selected":"")+">"+t[1]+"</option>").join("")+"</select></label>"+
+      "<label>Anéis: Ar, Terra, Fogo, Água</label><div class=\"l4\">"+[0,1,2,3].map(i=>"<input type=\"number\" min=\"0\" id=\"bf_an"+i+"\" value=\""+(b.an[i]||0)+"\">").join("")+"</div>"+
+      "<label>Traços que fogem do Anel<input type=\"text\" id=\"bf_tr\" value=\""+v(b.tr)+"\"></label>"+
+      "<label>Iniciativa, TN, Redução, Mácula</label><div class=\"l4\"><input type=\"text\" id=\"bf_ini\" value=\""+v(b.ini)+"\"><input type=\"number\" id=\"bf_tn\" value=\""+b.tn+"\"><input type=\"number\" id=\"bf_red\" value=\""+b.red+"\"><input type=\"number\" id=\"bf_mac\" value=\""+(b.mac||0)+"\"></div>"+
+      "<label>Ataques, um por linha: nome | rolagem | S, C ou L | dano<textarea id=\"bf_atq\">"+v(b.atq.map(a=>a.join(" | ")).join("\n"))+"</textarea></label>"+
+      "<label>Ferimentos: \"gente\" (usa a Terra) ou a tabela, como 20: +5; 40: +10; 80: morto<input type=\"text\" id=\"bf_fer\" value=\""+v(b.fer==="h"||!Array.isArray(b.fer)?"gente":b.fer.map(f=>f[0]+": "+(f[1]===null?"morto":"+"+f[1])).join("; "))+"\"></label>"+
+      "<label>Perícias<input type=\"text\" id=\"bf_per\" value=\""+v(b.per)+"\"></label>"+
+      "<label>Habilidades, uma por linha: nome: o que faz<textarea id=\"bf_hab\">"+v((b.hab||[]).map(h=>h[0]+(h[1]?": "+h[1]:"")).join("\n"))+"</textarea></label>"+
+      "<label>Descrição<textarea id=\"bf_nota\">"+v(b.nota)+"</textarea></label>"+
+      "<div class=\"bsacoes\"><button class=\"primary\" onclick=\"bestSalvarForm('"+b.id+"')\">salvar</button><button class=\"ghost\" onclick=\"bestEdit=false;renderBestiario()\">cancelar</button></div></div>";}
+  else ficha=bestFichaHtml(b)+"<div class=\"bsacoes\"><input type=\"number\" id=\"bestQtd\" min=\"1\" max=\"12\" value=\"1\" aria-label=\"quantos\"><button class=\"primary\" onclick=\"cbAddBest('inimigo','"+b.id+"',document.getElementById('bestQtd').value,true)\">+ no combate como inimigo</button>"+
+      "<button class=\"ghost\" onclick=\"cbAddBest('aliado','"+b.id+"',document.getElementById('bestQtd').value,true)\">como aliado</button>"+
+      (b.custom?(b.arq?"<button class=\"ghost\" onclick=\"bestSortearDeNovo('"+b.id+"')\">🎲 sortear de novo</button>":"")+"<button class=\"ghost\" onclick=\"bestEdit=true;renderBestiario()\">editar</button><button class=\"ghost\" onclick=\"bestApagar('"+b.id+"')\">apagar</button>"
+        :"<button class=\"ghost\" onclick=\"bestCopiar('"+b.id+"')\">copiar para editar</button>")+"</div>";
+  const arq=ARQUETIPOS.find(a=>a.id===bestArq)||ARQUETIPOS[0];
+  box.innerHTML="<div class=\"bsgrid\"><div class=\"bsesq\">"+
+    "<div class=\"bsgerar\"><div class=\"secao\">Criar por arquétipo</div>"+
+      "<select aria-label=\"arquétipo\" onchange=\"bestArq=this.value;renderBestiario()\"><optgroup label=\"Gente\">"+ARQUETIPOS.filter(a=>a.gente).map(a=>"<option value=\""+a.id+"\""+(bestArq===a.id?" selected":"")+">"+esc(a.n)+"</option>").join("")+"</optgroup><optgroup label=\"Criaturas\">"+ARQUETIPOS.filter(a=>!a.gente).map(a=>"<option value=\""+a.id+"\""+(bestArq===a.id?" selected":"")+">"+esc(a.n)+"</option>").join("")+"</optgroup></select>"+
+      "<select aria-label=\"ameaça\" onchange=\"bestAme=Number(this.value)\">"+AMEACAS.map(a=>"<option value=\""+a[0]+"\""+(bestAme===a[0]?" selected":"")+">Ameaça "+a[0]+" · "+a[1]+" ("+a[2]+")</option>").join("")+"</select>"+
+      "<button onclick=\"bestGerar()\">🎲 gerar</button><div class=\"hint\" style=\"margin:6px 0 0\">Molde: "+esc(arq.modelo)+". "+esc(arq.frase)+"</div></div>"+
+    "<input type=\"text\" class=\"bsbusca\" placeholder=\"buscar por nome ou perícia\" value=\""+esc(bestBusca)+"\" oninput=\"bestBuscar(this.value)\">"+
+    "<div class=\"bschips\">"+chips.map(c=>"<button class=\"ghost"+(bestFiltro===c[0]?" on":"")+"\" onclick=\"bestFiltrar('"+c[0]+"')\">"+c[1]+"</button>").join("")+"</div>"+
+    "<div class=\"bslista\" id=\"bestLista\">"+bestListaHtml()+"</div></div>"+
+    "<div class=\"bsficha\" id=\"bestFicha\">"+ficha+"</div></div>";}
 let combateSel=null;
 function combate(){if(!S.combate)S.combate={rodada:1,vez:null,lista:[],log:[],fase:"posturas"};if(!S.combate.fase)S.combate.fase=S.combate.vez?"combate":"posturas";return S.combate;}
 /* 4ª ed., Livro Básico pp. 81–84: a postura é escolhida antes de rolar a Iniciativa (uma vez, no
@@ -7334,8 +7797,15 @@ function cbAddPJ(pid){if(bloqueadoLeitura())return;const p=S.personagens.find(x=
 function cbAddNPC(lado,perfilId){if(bloqueadoLeitura())return;const pf=COMBATE_PERFIS.find(x=>x.id===perfilId)||COMBATE_PERFIS[0];
   const n=combate().lista.filter(c=>c.perfil===pf.id).length+1;
   combate().lista.push({id:uid(),lado,perfil:pf.id,nome:pf.nome+" "+n,tn:pf.tn,red:pf.red,terra:pf.terra,iniDados:pf.ini,ataque:pf.ataque,dano:pf.dano,danoAtual:0,postura:"",ini:null,x:null,y:null,notas:""});salvar();render();}
+/* inimigo ou aliado vindo do bestiário: leva os ataques, a tabela de Ferimentos e as habilidades */
+function cbAddBest(lado,bestId,qtd,avisar){if(bloqueadoLeitura())return;const b=bestInfo(bestId);if(!b)return;const C=combate(),n=Math.max(1,Math.min(12,parseInt(qtd)||1));
+  for(let i=0;i<n;i++){const k=C.lista.filter(c=>c.best===b.id).length+1;
+    C.lista.push({id:uid(),lado,best:b.id,nome:b.n+(n>1||k>1?" "+k:""),tn:b.tn,red:b.red,terra:Math.max(1,b.an[1]||1),iniDados:b.ini,atqs:b.atq.map(a=>({n:a[0],r:a[1],a:a[2],d:a[3]})),
+      ataque:b.atq[0][1],dano:b.atq[0][3],fer:Array.isArray(b.fer)?b.fer:null,hab:(b.hab||[]).map(h=>[h[0],habTexto(h)]),mac:b.mac||0,danoAtual:0,postura:"",ini:null,x:null,y:null,notas:""});}
+  cbLog((n>1?n+" × ":"")+b.n+" entra"+(n>1?"m":"")+" no combate ("+COMBATE_LADOS[lado].nome+").");salvar();render();if(avisar)flashHint((n>1?n+" × ":"")+b.n+" no combate.");}
+function cbAtaques(c){return c.atqs&&c.atqs.length?c.atqs:[{n:"Ataque",r:c.ataque||"—",a:"C",d:c.dano||"—"}];}
 function cbDel(id){if(bloqueadoLeitura())return;const C=combate();C.lista=C.lista.filter(c=>c.id!==id);if(C.vez===id)C.vez=null;salvar();render();}
-function cbSet(id,campo,v){if(bloqueadoLeitura())return;const c=cbItem(id);if(!c)return;
+function cbSet(id,campo,v){const c=cbItem(id);if(!c)return;if(!(campo==="postura"&&c.pid)&&bloqueadoLeitura())return; /* o jogador troca a postura do próprio personagem */
   const num=["tn","red","terra","ini","danoAtual"];c[campo]=num.includes(campo)?(v===""?null:Number(v)||0):v;
   if(c.pid&&campo==="postura"){const p=cbPersonagem(c);if(p)p.postura=v;}
   salvar();render();}
@@ -7346,24 +7816,26 @@ function cbDanoCampo(id){const el=document.getElementById("cbdano_"+id);const v=
 /* números de cada combatente, da ficha ou da ficha curta */
 function cbStats(c){const p=cbPersonagem(c);
   if(p){fichaBase(p);const w=(p.armas||[]).map(a=>armaInfo(a.catalogo)).find(x=>x&&!(x.tags||[]).includes("arrow"));const r=w?rolagemArma(p,w):null;
-    return{tn:tnAtualPersonagem(p),red:reducaoPersonagem(p),ini:iniciativaPersonagem(p).split(" ")[0],iniExtra:efeitosPersonagem(p).ini,ataque:r?r.ataque:"—",dano:r?r.dano:"—",arma:w?w.nome:"sem arma do livro",
+    const ws=(p.armas||[]).map(a=>armaInfo(a.catalogo)).filter(x=>x&&!(x.tags||[]).includes("arrow"));
+    return{ataques:ws.map(x=>{const q=rolagemArma(p,x);return{n:x.nome,r:q.ataque,a:"",d:q.dano};}),tn:tnAtualPersonagem(p),red:reducaoPersonagem(p),ini:iniciativaPersonagem(p).split(" ")[0],iniExtra:efeitosPersonagem(p).ini,ataque:r?r.ataque:"—",dano:r?r.dano:"—",arma:w?w.nome:"sem arma do livro",
       feridas:feridasNiveis(p),danoAtual:Number(p.danoAtual)||0,postura:p.postura||""};}
   const terra=Number(c.terra)||2;
-  const feridas=FERIDAS_DEF.map(([nome,pen],i)=>({nome,penalidade:pen,total:terra*5+i*terra*2}));
+  const feridas=Array.isArray(c.fer)&&c.fer.length?ferTabela(c.fer):FERIDAS_DEF.map(([nome,pen],i)=>({nome,penalidade:pen,total:terra*5+i*terra*2}));
   const pb=POSTURA_BASE[c.postura||""];let tn=Number(c.tn)||0,at=c.ataque||"—";
   if(pb&&pb.tn)tn+=pb.tn;if(pb&&pb.ataque)at=somaDado(at,pb.ataque);
-  return{tn,red:Number(c.red)||0,ini:c.iniDados||"2k2",iniExtra:0,ataque:at,dano:c.dano||"—",arma:"",feridas,danoAtual:Number(c.danoAtual)||0,postura:c.postura||""};}
+  const ataques=cbAtaques(c).map(a=>({n:a.n,a:a.a,d:a.d,r:pb&&pb.ataque?somaDado(a.r,pb.ataque):a.r}));
+  return{ataques,tn,red:Number(c.red)||0,ini:c.iniDados||"2k2",iniExtra:0,ataque:at,dano:c.dano||"—",arma:"",feridas,danoAtual:Number(c.danoAtual)||0,postura:c.postura||""};}
 function cbFerida(st){let i=st.feridas.findIndex(f=>st.danoAtual<=f.total);if(i<0)i=st.feridas.length-1;return{i,f:st.feridas[i]};}
 function rolarTexto(txt,extra){const m=/^(\d+)k(\d+)$/.exec(txt||"");if(!m)return null;return rolarAnelL5R(Number(m[1]),Number(m[2]),extra||0);}
 function cbRolarIni(id){if(bloqueadoLeitura())return;const C=combate();
   if(!id&&C.fase==="posturas"){const f=cbSemPostura();if(f.length&&!confirm("Ainda sem postura: "+f.map(c=>c.nome).join(", ")+". Rolar a Iniciativa mesmo assim?"))return;C.fase="combate";cbLog("Posturas declaradas; rola-se a Iniciativa.");}
   (id?[cbItem(id)]:C.lista).forEach(c=>{if(!c)return;const st=cbStats(c);const r=rolarTexto(st.ini,st.iniExtra);if(r){c.ini=r.total;cbLog(c.nome+" rola Iniciativa "+st.ini+": "+r.total+".");if(id)registrarRolagem(c,"iniciativa",st.ini,r);}});
   if(!id){const o=cbOrdem();C.vez=o.length?o[0].id:null;}salvar();render();}
-function cbAtacar(id){const c=cbItem(id);if(!c)return;const st=cbStats(c);const r=rolarTexto(st.ataque);
+function cbAtacar(id,i){const c=cbItem(id);if(!c)return;const st=cbStats(c),a=(st.ataques&&st.ataques[i||0])||{n:"",r:st.ataque};const r=rolarTexto(a.r);
   if(!r){flashHint("Sem rolagem de ataque.");return;}const fe=cbFerida(st);
-  cbLog(c.nome+" ataca ("+st.ataque+"): "+r.total+(fe.f.penalidade?" · lembre: ferido, +"+fe.f.penalidade+" no TN das ações":"")+".");registrarRolagem(c,"ataque",st.ataque,r);salvar();render();}
-function cbRolarDano(id){const c=cbItem(id);if(!c)return;const st=cbStats(c);const r=rolarTexto(st.dano);
-  if(!r){flashHint("Sem rolagem de dano.");return;}cbLog(c.nome+" causa dano ("+st.dano+"): "+r.total+" Ferimentos (antes da Redução do alvo).");registrarRolagem(c,"dano",st.dano,r);salvar();render();}
+  cbLog(c.nome+" ataca"+(a.n?" com "+a.n.toLowerCase():"")+" ("+a.r+"): "+r.total+(fe.f.penalidade?" · lembre: ferido, +"+fe.f.penalidade+" no TN das ações":"")+".");registrarRolagem(c,"ataque",a.r,r,{rotulo:"Ataque"+(a.n?" · "+a.n:"")});salvar();render();}
+function cbRolarDano(id,i){const c=cbItem(id);if(!c)return;const st=cbStats(c),a=(st.ataques&&st.ataques[i||0])||{n:"",d:st.dano};const r=rolarTexto(a.d);
+  if(!r){flashHint(a.d&&a.d!=="—"?"Dano: "+a.d+" (veja a ficha).":"Sem rolagem de dano.");return;}cbLog(c.nome+" causa dano ("+a.d+"): "+r.total+" Ferimentos (antes da Redução do alvo).");registrarRolagem(c,"dano",a.d,r,{rotulo:"Dano"+(a.n?" · "+a.n:"")});salvar();render();}
 function cbOrdem(){return combate().lista.slice().sort((a,b)=>(b.ini==null?-1:b.ini)-(a.ini==null?-1:a.ini));}
 function cbProximo(){if(bloqueadoLeitura())return;const C=combate(),o=cbOrdem().filter(c=>!c.fora);if(!o.length)return;
   const i=o.findIndex(c=>c.id===C.vez);if(i<0||i===o.length-1){if(i===o.length-1){C.rodada++;cbLog("Começa a rodada "+C.rodada+".");}C.vez=o[0].id;}else C.vez=o[i+1].id;salvar();render();}
@@ -7376,56 +7848,88 @@ function cbCasa(x,y){if(!combateSel){const c=combate().lista.find(k=>k.x===x&&k.
   const ocup=combate().lista.find(k=>k.x===x&&k.y===y&&k.id!==c.id);if(ocup){combateSel=ocup.id;renderCombate();return;}
   c.x=x;c.y=y;combateSel=null;salvar();render();}
 function cbTirar(id){if(bloqueadoLeitura())return;const c=cbItem(id);if(!c)return;c.x=null;c.y=null;combateSel=null;salvar();render();}
+/* 2026-11-10 (Thiago: "reveja o combate e o flow, deixe mais simples e organizado").
+   Uma barra no topo diz em que passo se está e tem um botão só, que muda com o passo. Cada
+   combatente é uma linha curta (Iniciativa, nome, estado, TN, Redução, postura, campo de dano);
+   quem está na vez abre sozinho com os ataques; os demais abrem no ▾. O tabuleiro tem tamanho
+   fixo e minimiza (preferência do navegador). */
+let combateAbertos=new Set();
+function cbToggle(id){if(combateAbertos.has(id))combateAbertos.delete(id);else combateAbertos.add(id);renderCombate();}
+function tabMin(){try{return localStorage.getItem("l5r_tab_min")==="1";}catch(e){return false;}}
+function alternarTab(){try{localStorage.setItem("l5r_tab_min",tabMin()?"0":"1");}catch(e){}renderCombate();}
+function cbAddBestSel(lado){const s=document.getElementById("cbBest"),q=document.getElementById("cbQtd");if(!s||!s.value){flashHint("Escolha quem entra.");return;}
+  if(s.value.indexOf("perfil:")===0)cbAddNPC(lado,s.value.slice(7));else cbAddBest(lado,s.value,q?q.value:1);}
 function renderCombate(){
   const box=document.getElementById("combateBox");if(!box)return;const C=combate(),ordem=cbOrdem();
   const sigla=n=>{const w=(n||"?").replace(/[^\p{L}\d\s]/gu," ").split(/\s+/).filter(Boolean);const num=w.find(x=>/^\d+$/.test(x));
     return ((w[0]||"?")[0]+(num||((w[1]||"")[0]||""))).toUpperCase();};
-  const linha=c=>{const st=cbStats(c),fe=cbFerida(st),L=COMBATE_LADOS[c.lado],p=cbPersonagem(c),vez=C.vez===c.id;
-    const pos="<select onchange=\"cbSet('"+c.id+"','postura',this.value)\">"+POSTURAS.map(([v,l])=>"<option value=\""+v+"\" "+(st.postura===v?"selected":"")+">"+l+"</option>").join("")+"</select>";
-    const fer="<div class=\"cbfer\">"+st.feridas.map((f,i)=>"<i class=\""+(i<fe.i?"pas":i===fe.i?"at":"")+"\" title=\""+esc(f.nome+" até "+f.total+(f.penalidade?" · +"+f.penalidade+" no TN":""))+"\"></i>").join("")+"</div>";
-    const ficha=p?"":"<details class=\"cbdet\"><summary>ficha curta</summary><div class=\"cbcurta\">"+
-      "<label>TN <input type=\"number\" value=\""+(c.tn||0)+"\" onchange=\"cbSet('"+c.id+"','tn',this.value)\"></label>"+
-      "<label>Red. <input type=\"number\" value=\""+(c.red||0)+"\" onchange=\"cbSet('"+c.id+"','red',this.value)\"></label>"+
-      "<label title=\"escala dos ferimentos\">Terra <input type=\"number\" min=\"1\" value=\""+(c.terra||2)+"\" onchange=\"cbSet('"+c.id+"','terra',this.value)\"></label>"+
-      "<label>Inic. <input value=\""+esc(c.iniDados||"")+"\" onchange=\"cbSet('"+c.id+"','iniDados',this.value)\"></label>"+
-      "<label>Ataque <input value=\""+esc(c.ataque||"")+"\" onchange=\"cbSet('"+c.id+"','ataque',this.value)\"></label>"+
-      "<label>Dano <input value=\""+esc(c.dano||"")+"\" onchange=\"cbSet('"+c.id+"','dano',this.value)\"></label></div></details>";
+  const linha=c=>{const st=cbStats(c),fe=cbFerida(st),L=COMBATE_LADOS[c.lado],p=cbPersonagem(c),vez=C.vez===c.id,aberto=vez||combateAbertos.has(c.id),fora=fe.f.penalidade===null;
+    const pos="<select aria-label=\"postura\" onchange=\"cbSet('"+c.id+"','postura',this.value)\">"+POSTURAS.map(([v,l])=>"<option value=\""+v+"\" "+(st.postura===v?"selected":"")+">"+l+"</option>").join("")+"</select>";
+    const fer="<div class=\"cbfer\">"+st.feridas.map((f,i)=>"<i class=\""+(i<fe.i?"pas":i===fe.i?"at":"")+"\" title=\""+esc(f.nome+" até "+f.total)+"\"></i>").join("")+"</div>";
     const pedePostura=(C.fase==="posturas"&&!st.postura)||vez;
-    return "<div class=\"cbrow"+(vez?" vez":"")+(pedePostura?" pedepost":"")+(fe.f.penalidade===null?" fora":"")+(combateSel===c.id?" sel":"")+"\" style=\"--lado:"+L.cor+"\">"+
-      "<div class=\"cbtop\"><span class=\"cbtok\" onclick=\"cbSelecionar('"+c.id+"')\" title=\"tocar e depois tocar no tabuleiro\">"+esc(sigla(c.nome))+"</span>"+
-        "<input class=\"cbini\" type=\"number\" title=\"Iniciativa\" value=\""+(c.ini==null?"":c.ini)+"\" onchange=\"cbSet('"+c.id+"','ini',this.value)\">"+
-        (p?"<b class=\"cbnome\">"+esc(c.nome)+"</b>":"<input class=\"cbnome\" value=\""+esc(c.nome)+"\" onchange=\"cbSet('"+c.id+"','nome',this.value)\">")+
-        "<span class=\"tag\">"+L.nome+"</span>"+(vez?"<span class=\"cbtroca\">começo do turno: trocar a postura?</span>":"")+pos+
-        "<button class=\"ghost del\" onclick=\"cbDel('"+c.id+"')\">✕</button></div>"+
-      "<div class=\"cbmeio\"><span>TN <b>"+st.tn+"</b></span><span>Red. <b>"+st.red+"</b></span><span>Inic. <b>"+esc(st.ini)+(st.iniExtra?" +"+st.iniExtra:"")+"</b></span>"+
-        "<span>Ataque <b>"+esc(st.ataque)+"</b></span><span>Dano <b>"+esc(st.dano)+"</b></span>"+(st.arma?"<small>"+esc(st.arma)+"</small>":"")+
-        "<span class=\"cbestado\">"+esc(fe.f.nome)+(fe.f.penalidade?" (+"+fe.f.penalidade+" TN)":"")+" · "+st.danoAtual+"/"+st.feridas[st.feridas.length-1].total+"</span></div>"+fer+
-      "<div class=\"cbacoes\"><button class=\"ghost\" onclick=\"cbRolarIni('"+c.id+"')\">🎲 inic.</button><button class=\"ghost\" onclick=\"cbAtacar('"+c.id+"')\">🎲 ataque</button><button class=\"ghost\" onclick=\"cbRolarDano('"+c.id+"')\">🎲 dano</button>"+
-        "<input id=\"cbdano_"+c.id+"\" type=\"number\" min=\"0\" placeholder=\"ferim.\"><button class=\"ghost\" onclick=\"cbDanoCampo('"+c.id+"')\">+ ferimentos</button><button class=\"ghost\" onclick=\"cbDano('"+c.id+"',-5)\" title=\"curar 5\">−5</button>"+
-        (c.x!=null?"<button class=\"ghost\" onclick=\"cbTirar('"+c.id+"')\">tirar do tabuleiro</button>":"")+"</div>"+ficha+"</div>";};
+    let h="<div class=\"cbrow"+(vez?" vez":"")+(pedePostura?" pedepost":"")+(fora?" fora":"")+(combateSel===c.id?" sel":"")+"\" style=\"--lado:"+L.cor+"\"><div class=\"cbl1\">"+
+      "<span class=\"cbtok\" onclick=\"cbSelecionar('"+c.id+"')\" title=\"tocar aqui e depois numa casa do tabuleiro\">"+esc(sigla(c.nome))+"</span>"+
+      "<span class=\"cbininum\" title=\"Iniciativa\">"+(c.ini==null?"–":c.ini)+"</span>"+
+      "<div class=\"cbnm\"><b>"+esc(c.nome)+"</b><small class=\""+(fe.f.penalidade||fora?"mal":"")+"\">"+L.nome+" · "+esc(fe.f.nome)+" · "+st.danoAtual+"/"+st.feridas[st.feridas.length-1].total+"</small></div>"+
+      "<div class=\"cbnum\"><small>TN</small><b>"+st.tn+"</b></div><div class=\"cbnum\"><small>Red.</small><b>"+st.red+"</b></div>"+pos+
+      "<div class=\"cbdn so-mestre\"><input id=\"cbdano_"+c.id+"\" type=\"number\" min=\"0\" placeholder=\"dano\" aria-label=\"Ferimentos sofridos\" onkeydown=\"if(event.key==='Enter')cbDanoCampo('"+c.id+"')\"><button class=\"ghost\" onclick=\"cbDanoCampo('"+c.id+"')\">ferir</button></div>"+
+      "<button class=\"cbexp\" aria-label=\""+(aberto?"fechar":"abrir")+" os detalhes\" onclick=\"cbToggle('"+c.id+"')\">"+(aberto?"▴":"▾")+"</button></div>"+fer;
+    if(aberto){const ini=esc(st.ini)+(st.iniExtra?" +"+st.iniExtra:"");
+      h+="<div class=\"cbl2\">"+(vez?"<div class=\"cbtroca\" style=\"margin-bottom:6px\">Começo do turno: é a hora de trocar a postura.</div>":"")+
+        (st.ataques&&st.ataques.length?st.ataques.map((a,i)=>"<div class=\"cbatq\"><span class=\"nm\">"+esc(a.n||"Ataque")+(a.a?" <small>ação "+({S:"simples",C:"complexa",L:"livre"}[a.a]||"")+"</small>":"")+"</span>"+
+          "<button onclick=\"cbAtacar('"+c.id+"',"+i+")\">🎲 ataque "+esc(a.r)+"</button><button class=\"ghost\" onclick=\"cbRolarDano('"+c.id+"',"+i+")\">"+(/^\d+k\d+$/.test(a.d)?"🎲 ":"")+"dano "+esc(a.d)+"</button></div>").join("")
+          :"<div class=\"hint\" style=\"margin:0 0 6px\">Sem arma do livro na ficha.</div>")+
+        "<div class=\"cbmini\"><button class=\"ghost\" onclick=\"cbRolarIni('"+c.id+"')\">🎲 Iniciativa "+ini+"</button>"+
+          "<button class=\"ghost so-mestre\" onclick=\"cbDano('"+c.id+"',-5)\">curar 5</button>"+
+          (c.x!=null?"<button class=\"ghost so-mestre\" onclick=\"cbTirar('"+c.id+"')\">tirar do tabuleiro</button>":"")+
+          (p?"<button class=\"ghost\" onclick=\"abrirFichaPersonagem('"+p.id+"')\">ficha</button>":"")+
+          "<button class=\"ghost so-mestre\" onclick=\"cbDel('"+c.id+"')\">remover do combate</button></div>";
+      if(!p)h+="<div class=\"so-mestre\">"+
+        ((c.hab&&c.hab.length)||c.mac?"<div class=\"cbfichain\">"+(c.mac?"<b>Mácula "+c.mac+".</b> ":"")+(c.hab||[]).map(x=>"<b>"+esc(x[0])+".</b> "+esc(x[1]||"")).join(" ")+"</div>":"")+
+        "<details class=\"cbdet\"><summary>ajustar os números deste</summary><div class=\"cbcurta\">"+
+        "<label>Nome <input style=\"width:150px\" value=\""+esc(c.nome)+"\" onchange=\"cbSet('"+c.id+"','nome',this.value)\"></label>"+
+        "<label>Iniciativa <input type=\"number\" value=\""+(c.ini==null?"":c.ini)+"\" onchange=\"cbSet('"+c.id+"','ini',this.value)\"></label>"+
+        "<label>TN <input type=\"number\" value=\""+(c.tn||0)+"\" onchange=\"cbSet('"+c.id+"','tn',this.value)\"></label>"+
+        "<label>Red. <input type=\"number\" value=\""+(c.red||0)+"\" onchange=\"cbSet('"+c.id+"','red',this.value)\"></label>"+
+        (Array.isArray(c.fer)?"":"<label title=\"escala dos Ferimentos\">Terra <input type=\"number\" min=\"1\" value=\""+(c.terra||2)+"\" onchange=\"cbSet('"+c.id+"','terra',this.value)\"></label>")+
+        "<label>Ferimentos <input type=\"number\" min=\"0\" value=\""+st.danoAtual+"\" onchange=\"cbSet('"+c.id+"','danoAtual',this.value)\"></label>"+
+        (c.atqs?"":"<label>Ataque <input value=\""+esc(c.ataque||"")+"\" onchange=\"cbSet('"+c.id+"','ataque',this.value)\"></label><label>Dano <input value=\""+esc(c.dano||"")+"\" onchange=\"cbSet('"+c.id+"','dano',this.value)\"></label>")+
+        "</div></details></div>";
+      else h+="<div class=\"so-mestre\"><details class=\"cbdet\"><summary>corrigir a Iniciativa à mão</summary><div class=\"cbcurta\"><label>Iniciativa <input type=\"number\" value=\""+(c.ini==null?"":c.ini)+"\" onchange=\"cbSet('"+c.id+"','ini',this.value)\"></label></div></details></div>";
+      h+="</div>";}
+    return h+"</div>";};
   const livres=S.personagens.filter(p=>!C.lista.some(c=>c.pid===p.id));
-  const perfis=COMBATE_PERFIS.map(f=>"<option value=\""+f.id+"\">"+esc(f.nome)+"</option>").join("");
-  let tab="<div class=\"shogi\">";
-  for(let y=0;y<9;y++)for(let x=0;x<9;x++){const c=C.lista.find(k=>k.x===x&&k.y===y);
-    tab+="<div class=\"shc"+((x===3||x===6)&&(y===3||y===6)?" ponto":"")+"\" onclick=\"cbCasa("+x+","+y+")\">"+(c?"<span class=\"peca"+(combateSel===c.id?" sel":"")+(C.vez===c.id?" vez":"")+"\" style=\"--lado:"+COMBATE_LADOS[c.lado].cor+"\" title=\""+esc(c.nome)+"\">"+esc(sigla(c.nome))+"</span>":"")+"</div>";}
-  tab+="</div>";
-  const fora=C.lista.filter(c=>c.x==null);
+  const optsBest=((S.bestiario||[]).length?"<optgroup label=\"Criados por você\">"+S.bestiario.map(b=>"<option value=\""+b.id+"\">"+esc(b.n)+"</option>").join("")+"</optgroup>":"")+
+    BEST_TIPOS.map(t=>"<optgroup label=\""+t[1]+"\">"+BESTIARIO.filter(b=>b.tipo===t[0]).map(b=>"<option value=\""+b.id+"\">"+esc(b.n)+"</option>").join("")+"</optgroup>").join("");
+  const min=tabMin();let tab="";
+  if(!min){tab="<div class=\"shogi\">";
+    for(let y=0;y<9;y++)for(let x=0;x<9;x++){const c=C.lista.find(k=>k.x===x&&k.y===y);
+      tab+="<div class=\"shc"+((x===3||x===6)&&(y===3||y===6)?" ponto":"")+"\" onclick=\"cbCasa("+x+","+y+")\">"+(c?"<span class=\"peca"+(combateSel===c.id?" sel":"")+(C.vez===c.id?" vez":"")+"\" style=\"--lado:"+COMBATE_LADOS[c.lado].cor+"\" title=\""+esc(c.nome)+"\">"+esc(sigla(c.nome))+"</span>":"")+"</div>";}
+    tab+="</div>";}
+  const foraTab=C.lista.filter(c=>c.x==null),falta=cbSemPostura(),atual=C.vez?cbItem(C.vez):null;
+  const passo=C.fase==="posturas"?(falta.length?1:2):3;
+  let agora,botao;
+  if(!C.lista.length){agora="Ponha os personagens e os inimigos na lista para começar.";botao="";}
+  else if(passo===1){agora="Antes da Iniciativa, cada um escolhe a postura. Falta: <b>"+esc(falta.map(c=>c.nome).join(", "))+"</b>";botao="<button class=\"so-mestre\" onclick=\"cbRolarIni()\">🎲 rolar a Iniciativa assim mesmo</button>";}
+  else if(passo===2){agora="Posturas escolhidas. A Iniciativa vale para a escaramuça inteira.";botao="<button class=\"primary so-mestre\" onclick=\"cbRolarIni()\">🎲 rolar a Iniciativa de todos</button>";}
+  else{agora=atual?"Vez de <b>"+esc(atual.nome)+"</b>":"Ninguém na vez.";botao="<button class=\"primary so-mestre\" onclick=\"cbProximo()\">próximo ▶</button>";}
   box.innerHTML=
-    (C.fase==="posturas"&&C.lista.length?"<div class=\"cbfase\"><b>1. Posturas.</b> Antes da Iniciativa, cada um escolhe a postura (faltam "+cbSemPostura().length+"). Depois, <b>2.</b> rolar a Iniciativa, que vale para toda a escaramuça; e a cada vez, <b>3.</b> quem age pode trocar de postura no começo do turno.</div>":"")+
-    "<div class=\"cbbarra\"><span>Rodada <b>"+C.rodada+"</b></span>"+(C.vez&&cbItem(C.vez)?"<span>vez de <b>"+esc(cbItem(C.vez).nome)+"</b></span>":"")+
-      "<button class=\"ghost\" onclick=\"alternarVozDados()\" title=\"ler as rolagens em voz alta neste navegador\">"+(rgVoz()?"🔊 voz ligada":"🔇 voz desligada")+"</button><button onclick=\"cbRolarIni()\">🎲 rolar Iniciativa de todos</button><button class=\"primary\" onclick=\"cbProximo()\">próximo ▶</button><button class=\"ghost\" onclick=\"cbNovo()\">novo combate</button></div>"+
+    "<div class=\"cbtopo\"><ol class=\"cbpassos\"><li class=\""+(passo===1?"on":"ok")+"\">1 · Posturas</li><li class=\""+(passo===2?"on":passo>2?"ok":"")+"\">2 · Iniciativa</li><li class=\""+(passo===3?"on":"")+"\">3 · Rodada "+C.rodada+"</li></ol>"+
+      "<div class=\"cbagora\">"+agora+"</div>"+botao+
+      "<details class=\"cbmenu\"><summary>mais</summary><div><button class=\"ghost\" onclick=\"alternarVozDados()\">"+(rgVoz()?"🔊 voz ligada":"🔇 ler as rolagens em voz alta")+"</button>"+
+        (passo===3?"<button class=\"ghost so-mestre\" onclick=\"cbRolarIni()\">🎲 rolar a Iniciativa de novo</button>":"")+
+        "<button class=\"ghost so-mestre\" onclick=\"cbNovo()\">encerrar e começar outro</button></div></details></div>"+
     "<div class=\"cbgrid\"><div>"+
-      "<div class=\"cbadd\"><select onchange=\"cbAddPJ(this.value)\"><option value=\"\">+ personagem da família…</option>"+livres.map(p=>"<option value=\""+p.id+"\">"+esc(p.nome||"sem nome")+"</option>").join("")+"</select>"+
-        "<select id=\"cbPerfilAl\"><option value=\"\" disabled selected>aliado…</option>"+perfis+"</select><button class=\"ghost\" onclick=\"cbAddNPC('aliado',document.getElementById('cbPerfilAl').value)\">+ aliado</button>"+
-        "<select id=\"cbPerfilIn\">"+perfis+"</select><button class=\"ghost\" onclick=\"cbAddNPC('inimigo',document.getElementById('cbPerfilIn').value)\">+ inimigo</button></div>"+
-      (ordem.length?ordem.map(linha).join(""):"<div class=\"linha-vazia\">Ninguém no combate ainda. Os personagens puxam tudo da ficha; aliados e inimigos vêm de um perfil rápido que você ajusta.</div>")+
+      "<div class=\"cbadd so-mestre\"><select aria-label=\"adicionar personagem\" onchange=\"cbAddPJ(this.value)\"><option value=\"\">+ personagem…</option>"+livres.map(p=>"<option value=\""+p.id+"\">"+esc(p.nome||"sem nome")+"</option>").join("")+"</select>"+
+        "<select id=\"cbBest\" aria-label=\"do bestiário\"><option value=\"\">do bestiário…</option>"+optsBest+"</select>"+
+        "<input type=\"number\" id=\"cbQtd\" min=\"1\" max=\"12\" value=\"1\" aria-label=\"quantos\" title=\"quantos\">"+
+        "<button onclick=\"cbAddBestSel('inimigo')\">+ inimigo</button><button class=\"ghost\" onclick=\"cbAddBestSel('aliado')\">+ aliado</button></div>"+
+      (ordem.length?ordem.map(linha).join(""):"<div class=\"linha-vazia\">Ninguém no combate ainda. Os personagens puxam tudo da ficha; inimigos e aliados vêm do bestiário (aba Inimigos).</div>")+
     "</div><div>"+
-      "<div class=\"secao\">Posição</div>"+tab+
-      (fora.length?"<div class=\"cbbandeja\">"+fora.map(c=>"<span class=\"peca"+(combateSel===c.id?" sel":"")+"\" style=\"--lado:"+COMBATE_LADOS[c.lado].cor+"\" onclick=\"cbSelecionar('"+c.id+"')\" title=\""+esc(c.nome)+"\">"+esc(sigla(c.nome))+"</span>").join("")+"<small>fora do tabuleiro: toque numa peça e depois numa casa</small></div>":"")+
-      "<div class=\"hint\">Só para posição, sem regra de movimento. Toque numa peça (ou no círculo ao lado do nome) e depois na casa.</div>"+
-      "<div class=\"secao\">Registro</div><div class=\"cblog\">"+(C.log.length?C.log.map(t=>"<div>"+esc(t)+"</div>").join(""):"<div class=\"hint\">As rolagens aparecem aqui.</div>")+"</div>"+
-    "</div></div>"+
-    "<div class=\"hint\">Os perfis rápidos são do app, não do livro: ponto de partida para você ajustar. A postura de um jogador é a mesma da ficha dele; os ferimentos também.</div>";
+      "<div class=\"cbtab\"><div class=\"cbtabh\"><b>Posição</b><small>"+(min?"tabuleiro minimizado":"toque numa peça e depois na casa")+"</small><button class=\"ghost\" onclick=\"alternarTab()\">"+(min?"abrir o tabuleiro":"minimizar")+"</button></div>"+tab+
+        (!min&&foraTab.length?"<div class=\"cbbandeja\">"+foraTab.map(c=>"<span class=\"peca"+(combateSel===c.id?" sel":"")+"\" style=\"--lado:"+COMBATE_LADOS[c.lado].cor+"\" onclick=\"cbSelecionar('"+c.id+"')\" title=\""+esc(c.nome)+"\">"+esc(sigla(c.nome))+"</span>").join("")+"<small>fora do tabuleiro</small></div>":"")+"</div>"+
+      "<div class=\"secao\" style=\"margin-top:0\">Registro do combate</div><div class=\"cblog\">"+(C.log.length?C.log.map(t=>"<div>"+esc(t)+"</div>").join(""):"<div class=\"hint\">As rolagens e os ferimentos aparecem aqui.</div>")+"</div>"+
+    "</div></div>";
 }
 function irGrupo(g){const d=document.querySelector("details.grupo[data-g='"+g+"']");if(!d)return;d.open=true;d.scrollIntoView({behavior:"smooth",block:"start"});}
 function renderDados(){
@@ -7552,7 +8056,7 @@ function fecharAbertura(){
   try{localStorage.setItem("l5r_abertura_vista","1");}catch(e){}
   el.classList.add("saindo");setTimeout(()=>{el.hidden=true;el.classList.remove("saindo");},800);
 }
-document.addEventListener("keydown",ev=>{if((ev.ctrlKey||ev.metaKey)&&!ev.shiftKey&&(ev.key==="z"||ev.key==="Z")){const t=ev.target,tag=t&&t.tagName;if(!(tag==="INPUT"||tag==="TEXTAREA"||tag==="SELECT"||(t&&t.isContentEditable))){ev.preventDefault();desfazer();return;}}const pg=document.getElementById("pergaminho");if(pg&&!pg.hidden&&(ev.key==="Escape"||ev.key==="Enter"||ev.key===" ")){ev.preventDefault();fecharPergaminho();return;}const el=document.getElementById("abertura");if(!el||el.hidden)return;
+document.addEventListener("keydown",ev=>{if(ev.key==="Escape"&&typeof fichaAberta!=="undefined"&&fichaAberta){fecharFicha();return;}if((ev.ctrlKey||ev.metaKey)&&!ev.shiftKey&&(ev.key==="z"||ev.key==="Z")){const t=ev.target,tag=t&&t.tagName;if(!(tag==="INPUT"||tag==="TEXTAREA"||tag==="SELECT"||(t&&t.isContentEditable))){ev.preventDefault();desfazer();return;}}const pg=document.getElementById("pergaminho");if(pg&&!pg.hidden&&(ev.key==="Escape"||ev.key==="Enter"||ev.key===" ")){ev.preventDefault();fecharPergaminho();return;}const el=document.getElementById("abertura");if(!el||el.hidden)return;
   if(ev.key==="Escape")fecharAbertura();else if(ev.key===" "||ev.key==="Enter"||ev.key==="ArrowRight"){ev.preventDefault();avancarAbertura();}});
 (function(){let vista=false;try{vista=localStorage.getItem("l5r_abertura_vista")==="1";}catch(e){}if(!vista)abrirAbertura();})();
 /* Revelação: o rolo chega lacrado, o selo queima e o pergaminho se desenrola. Toca para quem
