@@ -1088,6 +1088,20 @@
 
 
 
+  .fsecs:not(.sec-tudo)>[data-sec]{display:none}
+  .fsecs.sec-pericias>[data-sec="pericias"],.fsecs.sec-combate>[data-sec="combate"],.fsecs.sec-vantagens>[data-sec="vantagens"],.fsecs.sec-tecnicas>[data-sec="tecnicas"]{display:block}
+  .fichaabas{flex-wrap:wrap;gap:4px}
+  .fichaabas .tabbtn{font-size:14px;padding:7px 12px}
+  details.accat{margin-top:10px}
+  details.accat summary{cursor:pointer;font-size:13.5px;color:var(--ink2)}
+  table.acctab{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:6px;table-layout:fixed}
+  table.acctab th:first-child{width:30%}
+  table.acctab th{text-align:left;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-tx);font-weight:500;padding:2px 6px 2px 0}
+  table.acctab td{padding:5px 8px 5px 8px;border-top:1px dotted var(--line);vertical-align:top;line-height:1.35}
+  table.acctab td small{display:block;color:var(--muted-tx);font-size:11.5px}
+  table.acctab tr.t-bom td:first-child{box-shadow:inset 3px 0 0 var(--good,#3f8a55)}
+  table.acctab tr.t-ruim td:first-child{box-shadow:inset 3px 0 0 var(--bad,#b5352b)}
+  table.acctab tr.t-misto td:first-child{box-shadow:inset 3px 0 0 var(--warn,#c0902a)}
   /* ===== Bestiário (aba Inimigos) ===== */
   .bsgrid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:16px;align-items:start}
   .bsesq{min-width:0}
@@ -1404,6 +1418,36 @@
   #rolagem .rgdica{position:absolute;right:12px;top:10px;font-family:var(--font-body);font-size:12px;color:#8a7d68}
   @media (max-width:640px){#rolagem{bottom:calc(76px + env(safe-area-inset-bottom,0px));padding:12px 12px 14px}#rolagem .rgdica{display:none}#rolagem .d10{width:46px;height:52px}#rolagem .rgquem{font-size:17px}
     .casaacoes .rotx{display:none}}
+
+  /* 2026-11-14: os dados são jogados de verdade (posição e quique em JS); cor muda com a ação */
+  #rolagem{--dfill:#efe2c4;--dface:#fbf3df;--dbor:#7a5a32;--dnum:#1f140c}
+  #rolagem.ac-ataque{--dfill:#8f241c;--dface:#b5352b;--dbor:#3d0d09;--dnum:#fbefd6}
+  #rolagem.ac-dano{--dfill:#2b2622;--dface:#4a423b;--dbor:#0d0b0a;--dnum:#f1e6cd}
+  #rolagem.ac-iniciativa{--dfill:#3f7a5a;--dface:#5a9d78;--dbor:#1d3f2d;--dnum:#f4f8ee}
+  #rolagem .rgmesa{position:relative;display:block;height:176px;margin:12px 0 4px;border-radius:12px;overflow:hidden;
+    background:radial-gradient(120% 140% at 50% 0%,rgba(255,236,190,.10),rgba(0,0,0,.28));box-shadow:inset 0 0 0 1px rgba(233,220,196,.14),inset 0 10px 30px rgba(0,0,0,.35)}
+  #rolagem .rgmesa.alta{height:236px}
+  #rolagem .d10{position:absolute;left:0;top:0;margin:-30px 0 0 -27px;opacity:1;animation:none;will-change:transform}
+  #rolagem .d10 svg{animation:none!important}
+  #rolagem .d10 svg path.o{fill:var(--dfill);stroke:var(--dbor);stroke-width:2;stroke-linejoin:round}
+  #rolagem .d10 svg path.c{fill:var(--dface);stroke:var(--dbor);stroke-width:1.4;stroke-linejoin:round}
+  #rolagem .d10 svg path.l{fill:none;stroke:var(--dbor);stroke-width:1.2;opacity:.75}
+  #rolagem .d10 b{color:var(--dnum);font-size:20px;margin-top:0;text-shadow:0 1px 0 rgba(0,0,0,.18)}
+  #rolagem .d10.pousou b{animation:rgPop .28s ease-out}
+  @keyframes rgPop{0%{transform:scale(1.7)}100%{transform:scale(1)}}
+  #rolagem .d10.explode{animation:none}
+  #rolagem .d10.explode svg path.o{fill:#f6c96b;stroke:#b5352b}
+  #rolagem .d10.explode svg path.c{fill:#ffe6a6;stroke:#b5352b}
+  #rolagem .d10.explode b{color:#5a1a10}
+  #rolagem .d10.fica svg{filter:drop-shadow(0 0 7px rgba(246,201,107,.85)) drop-shadow(0 4px 4px rgba(0,0,0,.45))}
+  #rolagem .d10.fica svg path.o,#rolagem .d10.fica svg path.c{stroke:#f6c96b}
+  #rolagem .d10.sai{opacity:.34!important;filter:grayscale(.7)}
+  #rolagem .d10 .cad{bottom:-15px}
+  #rolagem .fagulha{position:absolute;left:0;top:0;width:6px;height:6px;margin:-3px;border-radius:50%;background:#ffd27a;box-shadow:0 0 8px 2px rgba(255,160,50,.8);pointer-events:none;animation:rgFag .55s ease-out forwards}
+  @keyframes rgFag{to{transform:translate(var(--fx),var(--fy)) scale(.2);opacity:0}}
+  #rolagem .rgsom{position:absolute;left:12px;top:8px;font-family:var(--font-body);font-size:12px;color:#b8a888;background:none;border:1px solid rgba(233,220,196,.25);border-radius:99px;padding:2px 10px;cursor:pointer}
+  #rolagem .rgquem{padding-left:0;text-align:center;margin-top:16px}
+  @media (max-width:640px){#rolagem .rgmesa{height:150px}#rolagem .rgmesa.alta{height:204px}#rolagem .d10{margin:-26px 0 0 -23px}#rolagem .rgquem{margin-top:22px}}
   @media (prefers-reduced-motion:reduce){#rolagem,#rolagem *{animation-duration:.01s!important;animation-delay:0s!important}}
 </style>
 </head>
@@ -3801,7 +3845,7 @@ function concluirInvestimentos(){
    quica, brilha e rola de novo; no fim acendem os dados que ficam e aparece o total. A rolagem fica
    em S.combate.rolagem, então quem estiver com a família aberta vê a mesma cena (cada navegador
    lembra o que já viu). O 🔊 do Combate também lê em voz alta. */
-const D10_SVG='<svg viewBox="0 0 54 60" aria-hidden="true"><path d="M27 2 L52 24 L27 58 L2 24 Z"/><path d="M2 24 L27 33 L52 24 M27 33 L27 58" fill="none"/></svg>';
+const D10_SVG='<svg viewBox="0 0 54 60" aria-hidden="true"><path class="o" d="M27 2 L51 22 L46 46 L27 58 L8 46 L3 22 Z"/><path class="c" d="M27 10 L41 30 L27 44 L13 30 Z"/><path class="l" d="M27 2 L27 10 M51 22 L41 30 M46 46 L41 30 M27 58 L27 44 M8 46 L13 30 M3 22 L13 30"/></svg>';
 let rgTimers=[],rgVistas=new Set(),rgFila=[],rgAtiva=false;
 function rgVoz(){try{return localStorage.getItem("l5r_voz_dados")==="1";}catch(e){return false;}}
 function alternarVozDados(){try{localStorage.setItem("l5r_voz_dados",rgVoz()?"0":"1");}catch(e){}renderCombate();}
@@ -3820,30 +3864,92 @@ function verificarRolagem(){const C=S.combate;const g=C&&C.rolagem;if(!g||rgVist
   let v=[];try{v=JSON.parse(localStorage.getItem("l5r_rolagens_vistas")||"[]");}catch(e){}
   if(v.includes(g.id))return;try{v.push(g.id);localStorage.setItem("l5r_rolagens_vistas",JSON.stringify(v.slice(-60)));}catch(e){}
   if(Date.now()-g.ts<90*1000)mostrarRolagem(g);}
+/* ---- sons: sintetizados na hora (WebAudio), sem arquivo. Desligáveis por navegador. ----
+   O navegador só deixa tocar depois de um toque na página; antes disso os sons ficam mudos. */
+let somCtx=null,somUlt=0;
+function somLigado(){try{return localStorage.getItem("l5r_som")!=="0";}catch(e){return true;}}
+function alternarSom(){try{localStorage.setItem("l5r_som",somLigado()?"0":"1");}catch(e){}if(somLigado())som("madeira");try{renderCombate();renderPcRegistro();}catch(e){}
+  const b=document.querySelector("#rolagem .rgsom");if(b)b.textContent=somLigado()?"🔔 som":"🔕 mudo";}
+function somAC(){if(!somLigado()||typeof window==="undefined")return null;const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;
+  try{if(!somCtx){somCtx=new AC();somCtx._saida=somCtx.createGain();somCtx._saida.gain.value=0.5;somCtx._saida.connect(somCtx.destination);}
+    if(somCtx.state==="suspended")somCtx.resume().catch(()=>{});return somCtx;}catch(e){return null;}}
+function somRuido(ac,dur){const n=Math.max(1,Math.floor(ac.sampleRate*dur)),buf=ac.createBuffer(1,n,ac.sampleRate),d=buf.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;const s=ac.createBufferSource();s.buffer=buf;return s;}
+function somEnv(ac,t,pico,dur,ataque){const g=ac.createGain();g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(0.0002,pico),t+(ataque||0.004));g.gain.exponentialRampToValueAtTime(0.0001,t+dur);g.connect(ac._saida);return g;}
+function somTom(ac,t,tipo,f0,f1,pico,dur,ataque){const o=ac.createOscillator();o.type=tipo;o.frequency.setValueAtTime(f0,t);if(f1&&f1!==f0)o.frequency.exponentialRampToValueAtTime(f1,t+dur);o.connect(somEnv(ac,t,pico,dur,ataque));o.start(t);o.stop(t+dur+0.05);}
+function somChiado(ac,t,dur,f0,f1,q,pico,tipo){const s=somRuido(ac,dur),f=ac.createBiquadFilter();f.type=tipo||"bandpass";f.Q.value=q;f.frequency.setValueAtTime(f0,t);if(f1)f.frequency.exponentialRampToValueAtTime(f1,t+dur);s.connect(f);f.connect(somEnv(ac,t,pico,dur,0.006));s.start(t);s.stop(t+dur+0.02);}
+function som(qual,forca){const ac=somAC();if(!ac)return;const t=ac.currentTime+0.01,v=forca==null?1:forca;
+  try{
+    if(qual==="clique"){if(t-somUlt<0.035)return;somUlt=t;somChiado(ac,t,0.035,2600+Math.random()*2200,0,3,0.5*v);somTom(ac,t,"sine",1500+Math.random()*900,0,0.12*v,0.03);}
+    else if(qual==="madeira"){[0,0.11].forEach(d=>{somTom(ac,t+d,"sine",1250,900,0.5,0.06);somChiado(ac,t+d,0.03,3000,0,2,0.3);});}
+    else if(qual==="espada"){somChiado(ac,t,0.42,1400,7500,5,0.55);[2093,3136,4699,6272].forEach((f,i)=>somTom(ac,t+0.05,"sine",f*(1+(Math.random()-.5)*0.004),0,0.09/(i+1),0.9,0.01));}
+    else if(qual==="golpe"){somTom(ac,t,"sine",150,42,0.9,0.28);somChiado(ac,t,0.12,700,200,0.8,0.5,"lowpass");}
+    else if(qual==="taiko"){[0,0.24].forEach((d,i)=>{somTom(ac,t+d,"sine",i?128:112,52,0.95,0.4);somChiado(ac,t+d,0.05,900,0,0.7,0.35,"lowpass");});}
+    else if(qual==="sino"){[1,2.76,5.4,8.9].forEach((m,i)=>somTom(ac,t,"sine",880*m,0,0.22/(i+1),1.3-i*0.2,0.003));}
+    else if(qual==="koto"){const esc_=[293.7,329.6,392,440,523.3,587.3,659.3],f=esc_[Math.floor(Math.random()*esc_.length)];somTom(ac,t,"triangle",f,0,0.5,0.9,0.003);somTom(ac,t,"sine",f*2,0,0.12,0.5,0.003);somTom(ac,t+0.13,"triangle",f*1.5,0,0.3,0.8,0.003);}
+    else if(qual==="gongo"){[1,1.48,2.09,2.9,4.1].forEach((m,i)=>somTom(ac,t,"sine",98*m,98*m*0.985,0.5/(i+1),2.8-i*0.3,0.01));somChiado(ac,t,0.25,500,0,0.6,0.25,"lowpass");}
+  }catch(e){}}
+/* Os dados entram jogados da esquerda, quicam nas bordas e uns nos outros, perdem força e param.
+   Quem para em 10 (e ainda tem dado na corrente) salta, solta fagulha e rola de novo. No fim os
+   mantidos se alinham e acendem; os descartados apagam. O resultado já veio decidido de quem
+   rolou: a animação só mostra, igual em todas as telas. */
 function mostrarRolagem(g){
   if(rgAtiva){rgFila.push(g);return;}
-  const el=document.getElementById("rolagem");if(!el)return;rgAtiva=true;rgTimers.forEach(clearTimeout);rgTimers=[];
+  const el=document.getElementById("rolagem");if(!el)return;rgAtiva=true;rgTimers.forEach(t=>t&&t.clear?t.clear():clearTimeout(t));rgTimers=[];
   const n=g.dados.length,fala=g.quem+" "+(g.fala||{ataque:"rolou um ataque",dano:"rolou o dano",iniciativa:"rolou a Iniciativa"}[g.acao]||"rolou");
-  el.innerHTML="<span class=\"rgdica\">toque para fechar</span><div class=\"rgquem\">"+esc(fala)+"<small>"+esc(g.expr)+(g.mod?" "+(g.mod>0?"+":"")+g.mod:"")+"</small></div>"+
-    "<div class=\"rgmesa\">"+g.dados.map((d,i)=>"<div class=\"d10 girando\" style=\"--d:"+(i*0.09).toFixed(2)+"s\" data-i=\""+i+"\">"+D10_SVG+"<b>"+(1+Math.floor(Math.random()*10))+"</b></div>").join("")+"</div>"+
+  el.innerHTML="<button class=\"rgsom\" onclick=\"event.stopPropagation();alternarSom()\">"+(somLigado()?"🔔 som":"🔕 mudo")+"</button><span class=\"rgdica\">toque para fechar</span>"+
+    "<div class=\"rgquem\">"+esc(fala)+"<small>"+esc(g.expr)+(g.mod?" "+(g.mod>0?"+":"")+g.mod:"")+"</small></div>"+
+    "<div class=\"rgmesa\">"+g.dados.map((d,i)=>"<div class=\"d10\" data-i=\""+i+"\" style=\"transform:translate(-80px,-80px)\">"+D10_SVG+"<b>"+(1+Math.floor(Math.random()*10))+"</b></div>").join("")+"</div>"+
     "<div class=\"rgtotal\">ficam "+g.dados.filter(d=>d.mantido).length+" dados ·<b>"+g.total+"</b>"+esc(g.suf||{ataque:"no ataque",dano:"Ferimentos",iniciativa:"de Iniciativa"}[g.acao]||"")+"</div>";
-  el.className="";el.hidden=false;
-  const reduz=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const dies=[...el.querySelectorAll(".d10")];
-  const flick=setInterval(()=>dies.forEach(x=>{if(x.classList.contains("girando"))x.querySelector("b").textContent=1+Math.floor(Math.random()*10);}),70);
-  rgTimers.push({clear:()=>clearInterval(flick)});
-  let fimMax=0;
-  g.dados.forEach((d,i)=>{const x=dies[i];let t=reduz?0:550+i*90+Math.random()*250;
-    d.chain.forEach((v,k)=>{const tk=t;
-      rgTimers.push(setTimeout(()=>{x.classList.remove("girando");const soma=d.chain.slice(0,k+1).reduce((a,b)=>a+b,0);x.querySelector("b").textContent=soma;
-        if(k>0){const c=x.querySelector(".cad")||x.appendChild(Object.assign(document.createElement("span"),{className:"cad"}));c.textContent=d.chain.slice(0,k+1).join("+");}
-        if(v===10&&k<d.chain.length-1){const bm=document.createElement("span");bm.className="boom";bm.textContent="explodiu!";x.appendChild(bm);
-          x.classList.remove("explode");void x.offsetWidth;x.classList.add("explode","girando");}},tk));
-      t+=reduz?0:(v===10?650:0);});
-    fimMax=Math.max(fimMax,t);});
-  rgTimers.push(setTimeout(()=>{clearInterval(flick);dies.forEach((x,i)=>{x.classList.remove("girando");x.classList.add(g.dados[i].mantido?"fica":"sai");});el.classList.add("fim");
-    if(rgVoz()&&window.speechSynthesis){try{const u=new SpeechSynthesisUtterance(fala+": "+g.total);u.lang="pt-BR";speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}},fimMax+250));
-  rgTimers.push(setTimeout(fecharRolagem,fimMax+4200));
+  el.className="ac-"+(["ataque","dano","iniciativa"].includes(g.acao)?g.acao:"pericia");el.hidden=false;
+  const mesa=el.querySelector(".rgmesa");if(!mesa||!mesa.children||mesa.children.length<n){rgAtiva=false;return;} /* sem DOM de verdade (testes): nada a animar */
+  const tam=window.innerWidth<=640?46:54,passo=tam+12;
+  let W=mesa.clientWidth||600;const porLinha=Math.max(1,Math.floor((W-12)/passo));if(n>porLinha)mesa.classList.add("alta");
+  const H=mesa.clientHeight||176,R=tam/2;
+  const reduz=(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)||typeof requestAnimationFrame!=="function";
+  som({ataque:"espada",iniciativa:"taiko",dano:"madeira"}[g.acao]||"madeira");
+  const D=g.dados.map((d,i)=>({el:mesa.children[i],svg:mesa.children[i].querySelector("svg"),b:mesa.children[i].querySelector("b"),d,k:0,soma:0,
+    x:-R-10,y:H*(0.25+Math.random()*0.5),vx:560+Math.random()*420,vy:(Math.random()-.5)*560,rot:Math.random()*360,t0:i*0.07,ativo:false,parado:false,fim:false,flick:0,vida:0}));
+  const pinta=o=>{o.el.style.transform="translate("+o.x.toFixed(1)+"px,"+o.y.toFixed(1)+"px)";o.svg.style.transform="rotate("+o.rot.toFixed(0)+"deg) scaleY("+(o.parado?1:(0.86+0.14*Math.cos(o.rot/28))).toFixed(3)+")";};
+  const pousa=o=>{o.parado=true;const v=o.d.chain[o.k];o.soma+=v;o.b.textContent=o.soma;o.el.classList.remove("pousou");void o.el.offsetWidth;o.el.classList.add("pousou");
+    if(o.k>0){const c=o.el.querySelector(".cad")||o.el.appendChild(Object.assign(document.createElement("span"),{className:"cad"}));c.textContent=o.d.chain.slice(0,o.k+1).join("+");}
+    if(v===10&&o.k<o.d.chain.length-1){o.k++;o.el.classList.add("explode");som("sino");
+      const bm=document.createElement("span");bm.className="boom";bm.textContent="explodiu!";o.el.appendChild(bm);
+      for(let q=0;q<9;q++){const f=document.createElement("i");f.className="fagulha";const an=Math.random()*6.283,ds=26+Math.random()*34;f.style.cssText="transform:translate("+o.x+"px,"+o.y+"px);--fx:"+(o.x+Math.cos(an)*ds).toFixed(0)+"px;--fy:"+(o.y+Math.sin(an)*ds).toFixed(0)+"px";
+        f.animate?f.animate([{transform:"translate("+o.x+"px,"+o.y+"px) scale(1)",opacity:1},{transform:"translate("+(o.x+Math.cos(an)*ds)+"px,"+(o.y+Math.sin(an)*ds)+"px) scale(.2)",opacity:0}],{duration:520,easing:"ease-out",fill:"forwards"}):0;f.style.animation="none";mesa.appendChild(f);setTimeout(()=>f.remove(),560);}
+      rgTimers.push(setTimeout(()=>{const an=Math.random()*6.283,ve=420+Math.random()*260;o.vx=Math.cos(an)*ve;o.vy=Math.sin(an)*ve;o.parado=false;o.vida=0;},330));
+    }else o.fim=true;};
+  const arruma=()=>{const ord=D.map((o,i)=>i).sort((a,b)=>(g.dados[b].mantido?1:0)-(g.dados[a].mantido?1:0)||D[b].soma-D[a].soma),linhas=Math.ceil(n/porLinha);
+    ord.forEach((i,pos)=>{const o=D[i],li=Math.floor(pos/porLinha),col=pos%porLinha,nl=li===linhas-1?n-li*porLinha:porLinha;
+      o.x=W/2-(nl-1)*passo/2+col*passo;o.y=linhas===1?H/2-4:(H/(linhas+1))*(li+1)-4;o.rot=0;o.parado=true;o.el.style.transition="transform .38s cubic-bezier(.3,1.3,.5,1)";o.svg.style.transition="transform .38s";pinta(o);
+      o.el.classList.add(g.dados[i].mantido?"fica":"sai");});
+    el.classList.add("fim");som(g.acao==="dano"?"golpe":"koto");
+    if(rgVoz()&&window.speechSynthesis){try{const u=new SpeechSynthesisUtterance(fala+": "+g.total);u.lang="pt-BR";speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}}
+    rgTimers.push(setTimeout(fecharRolagem,4200));};
+  if(reduz){D.forEach(o=>{o.soma=o.d.chain.reduce((a,b)=>a+b,0);o.b.textContent=o.soma;if(o.d.chain.length>1){const c=o.el.appendChild(Object.assign(document.createElement("span"),{className:"cad"}));c.textContent=o.d.chain.join("+");}});arruma();return;}
+  let raf=0,ult=0,ini=0,acabou=false;
+  const quadro=ts=>{if(acabou)return;if(!ini){ini=ts;ult=ts;}const dt=Math.min(0.034,(ts-ult)/1000);ult=ts;const T=(ts-ini)/1000;
+    D.forEach(o=>{if(!o.ativo){if(T>=o.t0)o.ativo=true;else return;}
+      if(o.parado)return;o.vida+=dt;
+      o.x+=o.vx*dt;o.y+=o.vy*dt;const vel=Math.hypot(o.vx,o.vy);o.rot+=(o.vx>=0?1:-1)*vel*dt*0.95;
+      const at=Math.exp(-2.1*dt);o.vx*=at;o.vy*=at;
+      if(o.x>W-R&&o.vx>0){o.x=W-R;o.vx*=-0.62;som("clique",Math.min(1,vel/500));}
+      if(o.x<R&&o.vx<0){o.x=R;o.vx*=-0.62;som("clique",Math.min(1,vel/500));}
+      if(o.y>H-R&&o.vy>0){o.y=H-R;o.vy*=-0.62;som("clique",Math.min(1,vel/500));}
+      if(o.y<R&&o.vy<0){o.y=R;o.vy*=-0.62;som("clique",Math.min(1,vel/500));}
+      o.flick-=dt;if(o.flick<=0){o.b.textContent=1+Math.floor(Math.random()*10);o.flick=0.05+0.22*Math.max(0,1-vel/420);}
+      if((vel<34&&o.vida>0.35)||o.vida>2.2||T>6){o.vx=o.vy=0;if(o.x<R)o.x=R+Math.random()*40;pousa(o);}
+    });
+    for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){const a=D[i],b=D[j];if(!a.ativo||!b.ativo)continue;const dx=b.x-a.x,dy=b.y-a.y,dist=Math.hypot(dx,dy),min=R*1.84;
+      if(dist>0&&dist<min){const nx=dx/dist,ny=dy/dist,so=(min-dist);
+        if(a.parado&&b.parado)continue;
+        if(a.parado){b.x+=nx*so;b.y+=ny*so;const vn=b.vx*nx+b.vy*ny;if(vn<0){b.vx-=1.7*vn*nx;b.vy-=1.7*vn*ny;som("clique",0.6);}}
+        else if(b.parado){a.x-=nx*so;a.y-=ny*so;const vn=a.vx*nx+a.vy*ny;if(vn>0){a.vx-=1.7*vn*nx;a.vy-=1.7*vn*ny;som("clique",0.6);}}
+        else{a.x-=nx*so/2;a.y-=ny*so/2;b.x+=nx*so/2;b.y+=ny*so/2;const va=a.vx*nx+a.vy*ny,vb=b.vx*nx+b.vy*ny;if(va-vb>0){const m=(va-vb)*0.9;a.vx-=m*nx;a.vy-=m*ny;b.vx+=m*nx;b.vy+=m*ny;som("clique",0.7);}}}}
+    D.forEach(o=>{if(o.ativo)pinta(o);});
+    if(D.every(o=>o.fim)){acabou=true;rgTimers.push(setTimeout(arruma,260));return;}
+    raf=requestAnimationFrame(quadro);};
+  raf=requestAnimationFrame(quadro);
+  rgTimers.push({clear:()=>{acabou=true;cancelAnimationFrame(raf);}});
 }
 function fecharRolagem(){const el=document.getElementById("rolagem");if(!el||el.hidden)return;
   rgTimers.forEach(t=>t&&t.clear?t.clear():clearTimeout(t));rgTimers=[];el.classList.add("saindo");
@@ -3901,7 +4007,7 @@ function passoLiberado(n){for(let i=1;i<n;i++){if(PASSOS_CRIACAO[i-1].falta().le
 function irPasso(n){if(bloqueadoLeitura())return;n=Math.max(1,Math.min(PASSOS_CRIACAO.length,n));if(!passoLiberado(n))return;
   if(S.criacao===3&&n===4&&S.eventos.length){cenaHistoria(()=>{S.criacao=4;salvar();render();window.scrollTo&&window.scrollTo({top:0});});return;}
   S.criacao=n;if(n===2&&!S.origem)verTodasOrigens=true;salvar();render();window.scrollTo&&window.scrollTo({top:0,behavior:"smooth"});}
-function concluirFundacao(comCena){if(bloqueadoLeitura())return;const f=()=>{S.criacao="concluida";feedPush("A casa "+(S.nome||"")+" está fundada.");salvar();render();};if(comCena)cenaFundacao(f);else f();}
+function concluirFundacao(comCena){if(bloqueadoLeitura())return;const f=()=>{S.criacao="concluida";feedPush("A casa "+(S.nome||"")+" está fundada.");abrirFundacao();try{som("taiko");}catch(e){}salvar();render();};if(comCena)cenaFundacao(f);else f();}
 function refazerPassoAPasso(){if(bloqueadoLeitura())return;S.criacao=1;setAbaPrincipal("familia");salvar();render();}
 function renderAssistente(){
   const box=document.getElementById("assistente"),b=document.body,on=emCriacao();
@@ -4017,7 +4123,42 @@ const ACONTECIMENTOS=[
  {id:"ancestral_corte",est:3,nome:"Um ancestral na corte de inverno",texto:"Um antepassado retornado aparece na corte de inverno e fala em nome da casa sem que ninguém tenha pedido.",
   im:{anel:"influencia",ef:[{a:"influencia",v:3,d:4}]},re:{anel:"influencia",acao:"Ele abre portas antigas e cria inimigos novos. Apoiá-lo, contê-lo ou mandá-lo de volta para casa com cortesia.",ef:[{a:"influencia",v:4,d:4},{a:"vazio",v:-1,d:4}]}},
  {id:"alianca_desfeita",est:3,nome:"Órfãos da Aliança",texto:"Com o fim da Aliança de Yoritomo, uma família de um clã menor procura um novo protetor e bate à porta da casa.",
-  im:{anel:"influencia",ef:[{a:"influencia",v:3,d:4}]},re:{anel:"autoridade",acao:"Aceitar traz gente, navios e os inimigos deles. Recusar com elegância também é uma arte.",ef:[{a:"dominio",v:4,d:8},{a:"autoridade",v:-2,d:4}]}}
+  im:{anel:"influencia",ef:[{a:"influencia",v:3,d:4}]},re:{anel:"autoridade",acao:"Aceitar traz gente, navios e os inimigos deles. Recusar com elegância também é uma arte.",ef:[{a:"dominio",v:4,d:8},{a:"autoridade",v:-2,d:4}]}},
+ /* ---- 2026-11-14: oito novos, dois por estação ---- */
+ {id:"demarcacao",est:0,nome:"Os agrimensores do senhor",texto:"Com o degelo chegam os agrimensores do daimyō para medir de novo os limites. As estacas deles não caem onde caíam as antigas.",
+  im:{anel:"dominio",ef:[{a:"dominio",v:-3,d:4}]},re:{anel:"influencia",acao:"Provar a posse antiga: achar os registros, trazer testemunhas velhas, agradar o agrimensor ou aceitar a linha nova.",ef:[{a:"dominio",v:5,d:8}]}},
+ {id:"ferreiro_andarilho",est:0,nome:"Um ferreiro andarilho",texto:"Um armeiro sem oficina passa pela estrada e conserta as lâminas da guarnição em troca de teto e arroz.",
+  im:{anel:"autoridade",ef:[{a:"autoridade",v:3,d:4}]},re:{anel:"riqueza",acao:"Convencê-lo a ficar: dar uma forja, casar o homem na aldeia ou descobrir de que senhor ele está fugindo.",ef:[{a:"autoridade",v:4,d:8}]}},
+ {id:"seca",est:1,nome:"Seca",texto:"Semanas sem chuva. O rio encolhe, os canais racham e as aldeias começam a brigar pela água.",
+  im:{anel:"dominio",ef:[{a:"dominio",v:-4,d:4}]},re:{anel:"autoridade",acao:"Dividir a água antes que as aldeias dividam à força: abrir poços, pedir um rito aos kami da água, racionar com justiça.",ef:[{a:"riqueza",v:-4,d:4}]}},
+ {id:"caravana_escolta",est:1,nome:"Uma caravana pede escolta",texto:"Mercadores que cruzam as terras pagam bem por lanças que os levem até a próxima província.",
+  im:{anel:"riqueza",ef:[{a:"riqueza",v:4,d:0}]},re:{anel:"autoridade",acao:"Levar a caravana inteira até o destino. A estrada é longa e alguém sabe o que ela carrega.",ef:[{a:"riqueza",v:4,d:0}]}},
+ {id:"cobrador_imperial",est:2,nome:"O cobrador imperial",texto:"Um cobrador do Imperador chega depois da colheita, com escolta e livros. Ele conta tudo, e conta duas vezes.",
+  im:{anel:"riqueza",ef:[{a:"riqueza",v:-4,d:4}]},re:{anel:"influencia",acao:"Recebê-lo como se deve: livros em ordem, mesa farta e nenhuma surpresa no celeiro dos fundos.",ef:[{a:"dominio",v:4,d:4}]}},
+ {id:"festival_colheita",est:2,nome:"Festival da colheita",texto:"As aldeias querem festejar a colheita no pátio da casa, e os vizinhos já perguntaram se estão convidados.",
+  im:{anel:"influencia",ef:[{a:"influencia",v:3,d:4}]},re:{anel:"dominio",acao:"Organizar a festa: comida, sumô, um sacerdote para abençoar os campos. Cada convite é um recado.",ef:[{a:"dominio",v:4,d:4}]}},
+ {id:"hospede_neve",est:3,nome:"Um general preso pela neve",texto:"Um oficial velho, de volta de uma corte de inverno, fica preso nas terras com a primeira nevasca. Come muito e repara em tudo.",
+  im:{anel:"riqueza",ef:[{a:"riqueza",v:-3,d:4}]},re:{anel:"influencia",acao:"Fazer dele um amigo: ouvir as histórias, pedir que olhe a guarnição, descobrir a quem ele ainda serve.",ef:[{a:"autoridade",v:5,d:4}]}},
+ {id:"lobos_inverno",est:3,nome:"Lobos descem da montanha",texto:"A fome empurra uma matilha até os currais. Os camponeses dizem que o maior deles não deixa pegadas.",
+  im:{anel:"dominio",ef:[{a:"dominio",v:-3,d:4}]},re:{anel:"autoridade",acao:"Organizar a caçada antes que os currais esvaziem. E descobrir se é só um lobo.",ef:[{a:"dominio",v:-4,d:4}]}},
+ /* ---- 2026-11-14 (Thiago): toda casa começa com um acontecimento. est:4 = fundação; não entra no
+    sorteio das estações. São leves de propósito: o primeiro gancho de aventura, não um castigo. ---- */
+ {id:"f_visita_senhor",est:4,nome:"A visita do senhor",texto:"O daimyō que concedeu as terras vem ver com os próprios olhos a casa que criou.",
+  im:{anel:"influencia",ef:[{a:"influencia",v:4,d:4}]},re:{anel:"autoridade",acao:"Recebê-lo com a cerimônia certa, mostrar a guarnição em ordem e escolher bem o que pedir.",ef:[{a:"autoridade",v:4,d:4}]}},
+ {id:"f_vizinhos",est:4,nome:"Os vizinhos medem a casa nova",texto:"Uma casa vizinha manda presentes de boas-vindas. Quem os entrega olha demais para os muros.",
+  im:{anel:"influencia",ef:[{a:"influencia",v:3,d:4}]},re:{anel:"influencia",acao:"Retribuir à altura e descobrir o que eles querem saber, antes que resolvam testar os limites.",ef:[{a:"dominio",v:-4,d:4}]}},
+ {id:"f_primeira_colheita",est:4,nome:"A primeira colheita",texto:"Os campos dão o primeiro arroz sob o nome da casa. Os camponeses esperam para ver o que o novo senhor faz com ele.",
+  im:{anel:"dominio",ef:[{a:"dominio",v:4,d:4}]},re:{anel:"riqueza",acao:"Guardar, vender ou pagar o tributo adiantado. Cada escolha diz que tipo de senhor a casa vai ser.",ef:[{a:"riqueza",v:4,d:0}]}},
+ {id:"f_santuario",est:4,nome:"O santuário esquecido",texto:"Nas terras há um santuário coberto de mato. Ninguém da aldeia sabe, ou quer dizer, a que kami ele pertence.",
+  im:{anel:"dominio",ef:[{a:"dominio",v:3,d:4}]},re:{anel:"vazio",acao:"Limpar, achar um sacerdote e descobrir por que ele foi abandonado antes de acender o primeiro incenso.",ef:[{a:"vazio",v:1,d:4}]}},
+ {id:"f_divida",est:4,nome:"A conta da fundação",texto:"Erguer a casa custou mais do que o previsto. O mercador que adiantou a madeira e o arroz aparece com o papel na mão.",
+  im:{anel:"riqueza",ef:[{a:"riqueza",v:-4,d:4}]},re:{anel:"influencia",acao:"Renegociar o prazo, pagar com um favor ou achar um patrono. Samurai não discute preço, mas alguém tem que discutir.",ef:[{a:"influencia",v:-3,d:4}]}},
+ {id:"f_ronin_porta",est:4,nome:"Rōnin à porta",texto:"Correu a notícia de que há uma casa nova contratando. Meia dúzia de homens sem senhor espera no portão.",
+  im:{anel:"autoridade",ef:[{a:"autoridade",v:4,d:4}]},re:{anel:"autoridade",acao:"Testar cada um, ficar com os que prestam e mandar o resto embora sem criar inimigos.",ef:[{a:"dominio",v:-3,d:4}]}},
+ {id:"f_ancestral",est:4,nome:"Um ancestral vem ver a casa",texto:"Um dos que voltaram pelo Portão do Esquecimento se apresenta: é parente antigo da linhagem e quer saber quem usa o nome dela.",
+  im:{anel:"influencia",ef:[{a:"influencia",v:3,d:4}]},re:{anel:"vazio",acao:"Honrá-lo sem entregar a casa: ouvir, dar um lugar à mesa e decidir que lugar ele tem na família.",ef:[{a:"autoridade",v:4,d:8}]}},
+ {id:"f_julgamento",est:4,nome:"O primeiro julgamento",texto:"Duas aldeias trazem ao novo senhor uma briga velha por um canal. As duas têm razão, e as duas mentem.",
+  im:{anel:"autoridade",ef:[{a:"autoridade",v:3,d:4}]},re:{anel:"dominio",acao:"Julgar de um jeito que as duas aceitem: ir ver o canal, ouvir os velhos, decidir e fazer cumprir.",ef:[{a:"dominio",v:5,d:8}]}}
 ];
 /* 2026-11-05 (Thiago): TN fixo pela gravidade de cada parte, não pelo Nível da casa. Assim o
    Nível do Anel pesa de verdade: uma casa Nível 2 contra TN 20 passa ~12%, uma Nível 6 ~85%.
@@ -4079,6 +4220,10 @@ function aplicarEfeitos(c,efs,g,anel){
   return partes;
 }
 function rolCurto(r){return r?{n:r.n,x:r.x,y:r.y,pv:r.pv,anel:r.anel,tn:r.tn,total:r.total,margem:r.margem,raises:r.raises,dados:r.dados}:null;}
+/* fundação: sorteia um dos de est:4 e deixa selado; uma vez por casa (S.fundacaoAc) */
+function abrirFundacao(){if(S.fundacaoAc)return null;const c=pickPeso(ACONTECIMENTOS.filter(x=>x.est===4));S.fundacaoAc=c.id;const a=abrirAcontecimento(c,"fundacao");
+  feedPush("A casa nasce com um acontecimento selado. O Mestre revela na primeira sessão.");return a;}
+function lancarFundacao(){if(bloqueadoLeitura())return;if(abrirFundacao()){salvar();render();}}
 function sortearAcontecimento(estIdx){const op=ACONTECIMENTOS.filter(c=>c.est===estIdx);return pickPeso(op);}
 /* ---- acontecimentos em aberto ----
    fase "oculto": só o Mestre vê; "resposta": já revelado, a parte imediata aplicada, a
@@ -4979,7 +5124,7 @@ function htmlAcontAberto(a){
     /* jogadores: só o selo. Mestre: tudo, e o botão de revelar. */
     return "<div class=\"acontaberto acselado so-jogador\"><div class=\"selo\">封</div><div><div class=\"tag\">"+esc(a.quando)+"</div>"+
         "<div class=\"an\">Um acontecimento se aproxima</div><div class=\"ad\">O Mestre guarda o que vai acontecer. Ele aparece aqui quando chegar a hora.</div></div></div>"+
-      "<div class=\"acontaberto t-"+tipo+" acoculto so-mestre\"><div class=\"selo\">封</div><div style=\"flex:1;min-width:0\"><div class=\"tag\">"+esc(a.quando)+" · <b>selado</b>: os jogadores ainda não veem"+(a.origem==="mestre"?" · lançado pelo Mestre":"")+"</div>"+
+      "<div class=\"acontaberto t-"+tipo+" acoculto so-mestre\"><div class=\"selo\">封</div><div style=\"flex:1;min-width:0\"><div class=\"tag\">"+esc(a.quando)+" · <b>selado</b>: os jogadores ainda não veem"+(a.origem==="mestre"?" · lançado pelo Mestre":a.origem==="fundacao"?" · acontecimento de fundação":"")+"</div>"+
         "<div class=\"an\">Acontecimento selado</div>"+
         "<details class=\"acespia\"><summary>ver aqui</summary>"+
         "<div class=\"an\">"+esc(c.nome)+" <small>"+({bom:"bom",ruim:"ruim",misto:"bom e ruim"})[tipo]+(raridade(c)!=="comum"?", "+RAR_INFO[raridade(c)].nome:"")+"</small></div>"+
@@ -5059,14 +5204,21 @@ function renderEstacoes(){
   /* ferramentas do Mestre */
   const est=S.estacaoIdx||0;
   const opts="<option value=\"\">sortear um "+({0:"da primavera",1:"do verão",2:"do outono",3:"do inverno"})[est]+"</option>"+
-    ESTACOES.map((e,i)=>"<optgroup label=\""+e+"\">"+ACONTECIMENTOS.filter(c=>c.est===i).map(c=>"<option value=\""+c.id+"\" "+(acontForm.id===c.id?"selected":"")+">"+esc(c.nome)+" ("+tipoAcontecimento(c)+(raridade(c)!=="comum"?", "+RAR_INFO[raridade(c)].nome:"")+")</option>").join("")+"</optgroup>").join("");
+    ESTACOES.map((e,i)=>"<optgroup label=\""+e+"\">"+ACONTECIMENTOS.filter(c=>c.est===i).map(c=>"<option value=\""+c.id+"\" "+(acontForm.id===c.id?"selected":"")+">"+esc(c.nome)+" ("+tipoAcontecimento(c)+(raridade(c)!=="comum"?", "+RAR_INFO[raridade(c)].nome:"")+")</option>").join("")+"</optgroup>").join("")+
+    "<optgroup label=\"Fundação\">"+ACONTECIMENTOS.filter(c=>c.est===4).map(c=>"<option value=\""+c.id+"\" "+(acontForm.id===c.id?"selected":"")+">"+esc(c.nome)+" ("+tipoAcontecimento(c)+")</option>").join("")+"</optgroup>";
   const sel=acontecimentoInfo(acontForm.id);
+  const catalogo="<details class=\"accat\"><summary>ver o catálogo inteiro ("+ACONTECIMENTOS.length+" acontecimentos)</summary>"+
+    ESTACOES.concat(["Fundação"]).map((e,i)=>"<div class=\"secao\">"+e+"</div><table class=\"acctab\"><tr><th>Acontecimento</th><th>Na hora</th><th>Depois</th></tr>"+
+      ACONTECIMENTOS.filter(c=>c.est===i).map(c=>"<tr class=\"t-"+tipoAcontecimento(c)+"\"><td><b>"+esc(c.nome)+"</b><small>"+tipoAcontecimento(c)+(raridade(c)!=="comum"?" · "+RAR_INFO[raridade(c)].nome:"")+"</small></td>"+
+        "<td>"+esc(efTxtCheio(c.im.ef))+"<small>"+rotuloAttr(c.im.anel)+" · TN "+c.im.tn+" ("+gravidadeTxt(c.im.tn)+")</small></td>"+
+        "<td>"+esc(efTxtCheio(c.re.ef))+"<small>"+rotuloAttr(c.re.anel)+" · TN "+c.re.tn+" ("+gravidadeTxt(c.re.tn)+")</small></td></tr>").join("")+"</table>").join("")+"</details>";
   const prev=sel?"<div class=\"hint\" style=\"margin:4px 0 0\">"+esc(sel.texto)+" Na hora ("+esc(testeTxt(sel.im))+"): "+esc(efTxtCheio(sel.im.ef))+". Depois ("+esc(testeTxt(sel.re))+"): "+esc(efTxtCheio(sel.re.ef))+".</div>":"";
   const attrOpts=ATRIBUTOS.map(([k,l])=>"<option value=\""+k+"\" "+(loteForm.attr===k?"selected":"")+">"+l+(k==="vazio"?" (Raises)":"")+"</option>").join("");
   const prazoOpts=PRAZOS_LOTE.map(([v,l])=>"<option value=\""+v+"\" "+(Number(loteForm.prazo)===v?"selected":"")+">"+l+"</option>").join("");
   document.getElementById("estMestre").innerHTML="<div class=\"secao\" style=\"margin-top:0\">Abrir um acontecimento</div><div class=\"hint\" style=\"margin:0 0 4px\">Fora do sorteio da estação. Nasce selado, como os outros: só aparece para os jogadores quando você revelar.</div>"+
     "<div class=\"tfl\"><select onchange=\"acontForm.id=this.value;renderEstacoes()\">"+opts+"</select>"+
     "<button class=\"ghost\" onclick=\"lancarAcontecimento()\">abrir</button></div>"+prev+
+    (!S.fundacaoAc?"<div class=\"tfl\" style=\"margin-top:6px\"><button class=\"ghost\" onclick=\"lancarFundacao()\" title=\"toda casa começa com um acontecimento; esta foi fundada antes de isso existir\">sortear o acontecimento de fundação desta casa</button></div>":"")+catalogo+
     "<div class=\"secao\">Lote livre</div><div class=\"tfl\"><select onchange=\"setLoteForm('attr',this.value)\">"+attrOpts+"</select>"+
     "<input type=\"number\" value=\""+esc(String(loteForm.valor))+"\" style=\"width:64px\" onchange=\"setLoteForm('valor',this.value)\" aria-label=\"valor\">"+
     "<select onchange=\"setLoteForm('prazo',this.value)\">"+prazoOpts+"</select>"+
@@ -6271,10 +6423,10 @@ function rolarIniP(pid){const p=S.personagens.find(x=>x.id===pid);if(!p)return;f
   registrarRolagem({nome:p.nome||"Personagem"},"iniciativa",ex,r,{nota:c?"lançada no combate":""});salvar();render();}
 function limparRolagens(){if(bloqueadoLeitura())return;S.rolagens=[];salvar();renderCharTabs();}
 function renderPcRegistro(){const box=document.getElementById("pcRegistro");if(!box)return;const L=S.rolagens||[];
-  box.innerHTML=L.length?L.map(g=>"<div class=\"pcrol\"><b class=\"t\">"+g.total+"</b><b>"+esc(g.quem)+"</b> · "+esc(g.oque)+" <span class=\"dd\">"+esc(g.expr)+"</span>"+
+  box.innerHTML="<button class=\"ghost\" style=\"font-size:12.5px;padding:3px 10px;margin-bottom:6px\" onclick=\"alternarSom()\" title=\"vale só para este navegador\">"+(somLigado()?"🔔 sons ligados":"🔕 sons desligados")+"</button>"+(L.length?L.map(g=>"<div class=\"pcrol\"><b class=\"t\">"+g.total+"</b><b>"+esc(g.quem)+"</b> · "+esc(g.oque)+" <span class=\"dd\">"+esc(g.expr)+"</span>"+
       "<small><span class=\"dd\">"+esc((g.fica||[]).join(", "))+((g.sai||[]).length?" <i>"+esc(g.sai.join(", "))+"</i>":"")+"</span> · "+esc(quandoTxt(new Date(g.ts).toISOString()))+(g.nota?" · "+esc(g.nota):"")+"</small></div>").join("")+
       "<button class=\"ghost so-mestre\" style=\"margin-top:8px;font-size:12.5px\" onclick=\"limparRolagens()\">limpar o registro</button>"
-    :"<div class=\"hint\" style=\"margin:0\">As rolagens de todos aparecem aqui: perícias, ataques, dano e Iniciativa. Guarda as últimas 40.</div>";}
+    :"<div class=\"hint\" style=\"margin:0\">As rolagens de todos aparecem aqui: perícias, ataques, dano e Iniciativa. Guarda as últimas 40.</div>");}
 function renderPcCards(){const box=document.getElementById("pcCards");if(!box)return;
   if(!S.personagens.length){box.innerHTML="<div class=\"hint\">Nenhum personagem ainda. O Mestre cria em Família → painel \"Personagens\" (gasta Influência).</div>";return;}
   const todas=l5r4ePronto()?L5R4E.skills.slice().sort((a,b)=>a.nome.localeCompare(b.nome)):[];
@@ -6824,7 +6976,11 @@ function setEspacoMagia(id,elemento,val){
   p.espacosMagia[elemento]=Math.max(0,parseInt(val)||0);salvar();render();
 }
 /* --- Sub-abas dentro da ficha do personagem (só estado de tela) --- */
-let fichaSubAba="geral";
+/* 2026-11-14 (Thiago: "organizar as fichas"). A ficha na janela era uma página só, comprida.
+   Agora cada assunto tem a sua aba; o cabeçalho (nome, classe, clã, escola) fica sempre à vista.
+   As seções de renderFichaCompleta levam data-sec e a aba escolhida mostra só as dela. */
+const FICHA_ABAS=[["pericias","Traços e perícias"],["combate","Combate e equipamento"],["vantagens","Vantagens e defeitos"],["tecnicas","Técnicas"],["magia","Kata, kiho e magia"],["historia","História e notas"],["tudo","tudo junto"]];
+let fichaSubAba="pericias";
 function setFichaSubAba(a){fichaSubAba=a;renderCharSheet();}
 const ANEL_ICONE={terra:"img/aneis/terra.png",ar:"img/aneis/ar.png",agua:"img/aneis/agua.png",fogo:"img/aneis/fogo.png",vazio:"img/aneis/vazio.png"};
 function renderFichaCompleta(p){
@@ -6836,7 +6992,7 @@ function renderFichaCompleta(p){
     const tip="base "+base+(bon[campo]?" (família/escola +"+bon[campo]+")":"")+" · subir para "+(cur+1)+" custa "+(mult*(cur+1))+" XP";
     return "<label class=\"trc"+(cur<base?" abaixo":cur>base?" comprado":"")+"\" title=\""+esc(tip)+"\"><span>"+label+"</span><input type=\"number\" min=\"1\" max=\"10\" value=\""+cur+"\" onchange=\"setTraco('"+p.id+"','"+campo+"',this.value)\"><small>base "+base+"</small></label>";};
   const tile=(k,nome,val,tr)=>"<div class=\"aneltile\">"+anelIcon(k)+"<div class=\"anelcab\"><b>"+nome+"</b><span class=\"val\">"+val+"</span></div><div class=\"trcs\">"+tr+"</div></div>";
-  let out="<div class=\"fichapanel\">";
+  let out="<div class=\"fichapanel\" data-sec=\"pericias\">";
   out+="<h2>Anéis e Traços</h2>";
   out+="<div class=\"aneis5\">"+
     tile("terra","Terra",a.terra,tracoInput("stamina","Vigor")+tracoInput("willpower","F. Vontade"))+
@@ -6855,7 +7011,7 @@ function renderFichaCompleta(p){
     "</div>";
   out+="</div>";
 
-  out+="<div class=\"fichapanel\">";
+  out+="<div class=\"fichapanel\" data-sec=\"combate\">";
   out+="<h2>Status e Combate</h2>";
   const sInput=(k,l,tip)=>"<label class=\"saldo\" title=\""+esc(tip)+"\">"+l+" <input type=\"number\" min=\"0\" max=\"10\" step=\"0.1\" value=\""+(Number(p[k])||0).toFixed(1)+"\" onchange=\"setStatusInd('"+p.id+"','"+k+"',this.value)\"></label>";
   out+="<div class=\"saldos compacto\">"+
@@ -6887,7 +7043,7 @@ function renderFichaCompleta(p){
    out+="<div class=\"feridasgrid\">"+feridas.map((f,i)=>"<div class=\"fer"+(i===idx?" atual":"")+"\"><span>"+f.nome+"</span><b>"+(f.penalidade===null?"—":"+"+f.penalidade)+"</b><small>até "+f.total+"</small></div>").join("")+"</div>";}
   out+="</div>";
 
-  out+="<div class=\"fichapanel\">";
+  out+="<div class=\"fichapanel\" data-sec=\"pericias\">";
   out+="<h2>Perícias</h2>";
   out+="<div class=\"linhas\">"+
     (p.pericias.map(s=>{const info=skill4e(s.skill),base=rankEscolaPericia(p,s.skill),r=Number(s.rank)||0;
@@ -6907,14 +7063,14 @@ function renderFichaCompleta(p){
     "<button class=\"ghost\" style=\"margin-top:8px\" onclick=\"addPericia('"+p.id+"')\">+ perícia</button>";
   out+="</div>";
 
-  out+="<div class=\"fichapanel\">";
+  out+="<div class=\"fichapanel\" data-sec=\"vantagens\">";
   out+=renderVantDesv(p);
   out+="</div>";
 
   const escola=l5r4ePronto()?L5R4E.escolas.find(e=>e.id===p.escola4e):null;
   if(escola&&escola.tecnicas.length){
     const caminhos=caminhosElegiveis(p);
-    out+="<div class=\"fichapanel\">";
+    out+="<div class=\"fichapanel\" data-sec=\"tecnicas\">";
     out+="<h2>Técnicas de "+esc(escola.nome)+"</h2>";
     out+=escola.tecnicas.map(t=>{
       const aprendida=p.tecnicasAprendidas.includes(t.id);
@@ -6939,7 +7095,7 @@ function renderFichaCompleta(p){
     out+="</div>";
   }
 
-  out+="<details class=\"fichapanel dobra\"><summary><h2>Técnicas de outras escolas"+(p.tecnicasExtras.length?" ("+p.tecnicasExtras.length+")":"")+"</h2></summary>";
+  out+="<details class=\"fichapanel dobra\" data-sec=\"tecnicas\" open><summary><h2>Técnicas de outras escolas"+(p.tecnicasExtras.length?" ("+p.tecnicasExtras.length+")":"")+"</h2></summary>";
   out+="<div class=\"hint\" style=\"margin-bottom:8px\">Aprendidas fora da progressão normal da própria escola: gaijin, ensinamentos de aliados, recompensas de aventura.</div>";
   const extras=p.tecnicasExtras.map(id=>todasTecnicasComOrigem().find(t=>t.id===id)).filter(Boolean);
   out+=extras.map(t=>"<div style=\"margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--line)\">"+
@@ -6951,7 +7107,7 @@ function renderFichaCompleta(p){
     "</select><button class=\"ghost\" onclick=\"addTecnicaExtra('"+p.id+"',document.getElementById('extraTecSel_"+p.id+"').value)\">+ adicionar técnica</button>";
   out+="</details>";
 
-  out+="<div class=\"fichapanel armaspanel\">";
+  out+="<div class=\"fichapanel armaspanel\" data-sec=\"combate\">";
   out+="<h2>Armas, equipamento e dinheiro</h2>";
   out+="<div class=\"linhas\">"+
     (p.armas.map(a=>{const w=armaInfo(a.catalogo);
@@ -7109,14 +7265,13 @@ function renderCharSheet(){
     "<div class=\"hint\" style=\"margin-bottom:8px\">Custo pago em Influência: <b>"+custo+"</b>"+(efeitoLabel?" · dá +"+(papelInfo?papelInfo.valor:0)+" em "+efeitoLabel:"")+"</div>"+
     renderFicha4e(p)+
     (!p.escola4e&&!p.semEscola&&!(p.pericias||[]).length?"<div class=\"fichapanel travada\">Escolha o clã, a família e a escola (ou \"sem escola\", no fim da lista). Eles dão os traços iniciais, as perícias da escola e a Honra; a ficha abre em seguida.</div>":
-    "<div class=\"tabbar\" style=\"margin-top:12px\">"+
-      "<button class=\"tabbtn "+(fichaSubAba==="geral"?"on":"")+"\" onclick=\"setFichaSubAba('geral')\">Ficha</button>"+
-      "<button class=\"tabbtn "+(fichaSubAba==="magia"?"on":"")+"\" onclick=\"setFichaSubAba('magia')\">Kata, Kiho e Magia</button>"+
-    "</div>"+
-    (fichaSubAba==="magia"?renderKataKihoMagia(p):renderFichaCompleta(p)))+
+    "<div class=\"tabbar fichaabas\" style=\"margin-top:12px\">"+FICHA_ABAS.map(t=>"<button class=\"tabbtn "+(fichaSubAba===t[0]?"on":"")+"\" onclick=\"setFichaSubAba('"+t[0]+"')\">"+t[1]+"</button>").join("")+"</div>"+
+    (fichaSubAba==="magia"?renderKataKihoMagia(p):fichaSubAba==="historia"?"":"<div class=\"fsecs sec-"+fichaSubAba+"\">"+renderFichaCompleta(p)+"</div>")+
+    (fichaSubAba==="tudo"?renderKataKihoMagia(p):""))+
+    (fichaSubAba==="historia"||fichaSubAba==="tudo"||(!p.escola4e&&!p.semEscola&&!(p.pericias||[]).length)?
     "<div class=\"grp\" style=\"display:block;margin-bottom:8px;margin-top:10px\">Marcas de experiência (texto livre)<br><input type=\"text\" style=\"width:100%\" value=\""+esc(p.experiencia)+"\" onchange=\"setPersonagem('"+p.id+"','experiencia',this.value)\"></div>"+
-    "<div class=\"grp\" style=\"display:block\">História e notas<br><textarea rows=\"6\" style=\"width:100%;font-family:var(--font-body);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px;color:var(--ink)\" onchange=\"setPersonagem('"+p.id+"','notas',this.value)\">"+esc(p.notas||"")+"</textarea></div>"+
-    "<button class=\"ghost\" style=\"margin-top:10px\" onclick=\"delPersonagemAtivo()\">✕ remover este personagem</button>";
+    "<div class=\"grp\" style=\"display:block\">História e notas<br><textarea rows=\"10\" style=\"width:100%;box-sizing:border-box;font-family:var(--font-body);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px;color:var(--ink)\" onchange=\"setPersonagem('"+p.id+"','notas',this.value)\">"+esc(p.notas||"")+"</textarea></div>"+
+    "<button class=\"ghost\" style=\"margin-top:10px\" onclick=\"delPersonagemAtivo()\">✕ remover este personagem</button>":"");
 }
 function delPersonagemAtivo(){if(!personagemAtivoId)return;const n=S.personagens.length;delPersonagem(personagemAtivoId);if(S.personagens.length<n){personagemAtivoId=null;fichaAberta=false;renderCharTabs();}}
 function opcoesOrigemConversao(sel){
@@ -7916,7 +8071,7 @@ function renderCombate(){
   box.innerHTML=
     "<div class=\"cbtopo\"><ol class=\"cbpassos\"><li class=\""+(passo===1?"on":"ok")+"\">1 · Posturas</li><li class=\""+(passo===2?"on":passo>2?"ok":"")+"\">2 · Iniciativa</li><li class=\""+(passo===3?"on":"")+"\">3 · Rodada "+C.rodada+"</li></ol>"+
       "<div class=\"cbagora\">"+agora+"</div>"+botao+
-      "<details class=\"cbmenu\"><summary>mais</summary><div><button class=\"ghost\" onclick=\"alternarVozDados()\">"+(rgVoz()?"🔊 voz ligada":"🔇 ler as rolagens em voz alta")+"</button>"+
+      "<details class=\"cbmenu\"><summary>mais</summary><div><button class=\"ghost\" onclick=\"alternarSom()\">"+(somLigado()?"🔔 sons ligados":"🔕 sons desligados")+"</button><button class=\"ghost\" onclick=\"alternarVozDados()\">"+(rgVoz()?"🔊 voz ligada":"🔇 ler as rolagens em voz alta")+"</button>"+
         (passo===3?"<button class=\"ghost so-mestre\" onclick=\"cbRolarIni()\">🎲 rolar a Iniciativa de novo</button>":"")+
         "<button class=\"ghost so-mestre\" onclick=\"cbNovo()\">encerrar e começar outro</button></div></details></div>"+
     "<div class=\"cbgrid\"><div>"+
@@ -8073,7 +8228,7 @@ function verificarRevelacoes(){
 function espiarAcontecimento(id){if(pgAtivo)return;abrirPergaminho(id,true);}
 function abrirPergaminho(id,previa){
   const a=acontAberto(id),c=a&&acontecimentoInfo(a.acId),el=document.getElementById("pergaminho");if(!c||!el)return;
-  pgAtivo=true;pgTimers.forEach(clearTimeout);pgTimers=[];
+  pgAtivo=true;pgTimers.forEach(clearTimeout);pgTimers=[];try{som("gongo");}catch(e){}
   let est=ESTACOES.findIndex(e=>String(a.quando||"").startsWith(e));if(est<0)est=c.est||0;
   document.getElementById("pgConteudo").innerHTML=(previa?"<div class=\"pgprevia\">só o Mestre está vendo</div>":"")+"<div class=\"pgest\"><b>"+PG_KAN[est]+"</b>"+esc(a.quando)+"</div>"+
     "<h3>"+esc(c.nome)+"</h3><p class=\"pgtexto\">"+esc(c.texto)+"</p>"+
