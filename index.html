@@ -7002,13 +7002,37 @@ function pcPenalidade(p){const fs=feridasNiveis(p),d=Number(p.danoAtual)||0;let 
 function rolarPericiaP(pid,skillId,tracoK,vazio,mod){const p=S.personagens.find(x=>x.id===pid);if(!p)return;fichaBase(p);
   const sk=skillId?skill4e(skillId):null,tem=skillId?(p.pericias||[]).find(s=>s.skill===skillId):null,rk=tem?Number(tem.rank)||0:0;
   const tk=tracoK||(sk?chaveTraco4e(sk.traco):"agility"),tv=tracoValor(p,tk),v=vazio?1:0;
-  const x=tv+rk+v,y=tv+v,semTreino=!!skillId&&!rk;
+  const astuto=!!sk&&!rk&&sk.tipo==="low"&&temVantagemNome(p,"Astuto"),rkUso=astuto?1:rk;
+  const x=tv+rkUso+v,y=tv+v,semTreino=!!skillId&&!rkUso;
   const r=rolarL5R(x,y,parseInt(mod)||0,!semTreino),pen=pcPenalidade(p);
-  const nome=sk?sk.nome:"Traço",rot=(sk?sk.nome+" / ":"")+TRACO_ROL[tk]+(v?" + Vazio":"")+(semTreino?" (sem treino)":"");
+  const nome=sk?sk.nome:"Traço",rot=(sk?sk.nome+" / ":"")+TRACO_ROL[tk]+(v?" + Vazio":"")+(semTreino?" (sem treino)":"")+(astuto?" (Astuto: conta como rank 1)":"");
   registrarRolagem({nome:p.nome||"Personagem"},"pericia",x+"k"+y,r,{rotulo:rot,fala:"rolou "+(sk?sk.nome:TRACO_ROL[tk]),suf:rot,
     nota:(semTreino?"sem treino: o 10 não explode":"")+(pen.f.penalidade?(semTreino?" · ":"")+pen.f.nome.toLowerCase()+": +"+pen.f.penalidade+" no TN":"")});
   salvar();renderCharTabs();}
-function rolarBarraP(pid){const b=pcBarra[pid]||{};rolarPericiaP(pid,b.skill||"",b.traco||"",!!b.vazio,b.mod||0);}
+const ANEIS_ROL={terra:"Terra",ar:"Ar",agua:"Água",fogo:"Fogo",vazio:"Vazio"};
+function penalidadeTxt(p){const pen=pcPenalidade(p);return pen.f.penalidade?pen.f.nome.toLowerCase()+": +"+pen.f.penalidade+" no TN":"";}
+/* Teste de Anel (Livro Básico, p. 80+): rola Anel k Anel; o Vazio gasto soma +1k1 */
+function rolarAnelP(pid,anel,vazio,mod){const p=S.personagens.find(x=>x.id===pid);if(!p)return;fichaBase(p);
+  const a=aneisPersonagem(p),v=vazio?1:0,n=Math.max(1,a[anel]||0),x=n+v,y=n+v,r=rolarL5R(x,y,parseInt(mod)||0,true);
+  const rot="Teste de Anel · "+ANEIS_ROL[anel]+(v?" + Vazio":"");
+  registrarRolagem({nome:p.nome||"Personagem"},"anel",x+"k"+y,r,{rotulo:rot,fala:"rolou "+ANEIS_ROL[anel],suf:rot,nota:penalidadeTxt(p)});salvar();renderCharTabs();}
+/* Teste de Honra (regra opcional, p. 92): refaz um teste falho com o Nível de Honra em dados rolados e mantidos; falhar custa 1 Nível de Honra */
+function rolarHonraP(pid,mod){const p=S.personagens.find(x=>x.id===pid);if(!p)return;fichaBase(p);
+  const n=Math.floor(Number(p.honorRank)||0);if(n<1){flashHint("Honra abaixo de 1: não há dados para um Teste de Honra.");return;}
+  const r=rolarL5R(n,n,parseInt(mod)||0,true);
+  registrarRolagem({nome:p.nome||"Personagem"},"honra",n+"k"+n,r,{rotulo:"Teste de Honra",fala:"invocou a Honra",suf:"Teste de Honra",
+    nota:"refaz um teste falho contra o mesmo TN, uma vez por sessão; se falhar de novo, perde 1 Nível de Honra"+(penalidadeTxt(p)?" · "+penalidadeTxt(p):"")});salvar();renderCharTabs();}
+/* Teste de Glória (p. 93): o Mestre rola Conhecimento: Heráldica/Inteligência de quem vê o samurai, contra NA 50 − 5 × Glória */
+function rolarGloriaP(pid,inteligencia,heraldica,mod){const p=S.personagens.find(x=>x.id===pid);if(!p)return;fichaBase(p);
+  const g=Math.floor(Number(p.gloriaRank)||0),tn=Math.max(5,50-5*g),inte=Math.max(1,parseInt(inteligencia)||2),her=Math.max(0,parseInt(heraldica)||0);
+  const x=inte+her,y=inte,r=rolarL5R(x,y,parseInt(mod)||0,her>0),ok=r.total>=tn;
+  registrarRolagem({nome:"Um estranho"},"gloria",x+"k"+y,r,{rotulo:"Teste de Glória de "+(p.nome||"Personagem"),fala:"tentou reconhecer "+(p.nome||"o samurai"),suf:"Glória",
+    nota:"TN "+tn+" (50 − 5 × Glória "+g+") · "+(ok?"reconhece o samurai e reage de acordo":"não o reconhece")+(her?"":" · sem treino em Heráldica: o 10 não explode")});salvar();renderCharTabs();}
+function rolarBarraP(pid){const b=pcBarra[pid]||{},t=b.tipo||"pericia";
+  if(t==="anel")return rolarAnelP(pid,b.anel||"terra",!!b.vazio,b.mod||0);
+  if(t==="honra")return rolarHonraP(pid,b.mod||0);
+  if(t==="gloria")return rolarGloriaP(pid,b.int==null?2:b.int,b.her==null?0:b.her,b.mod||0);
+  rolarPericiaP(pid,b.skill||"",b.traco||"",!!b.vazio,b.mod||0);}
 function setBarraP(pid,campo,v){const b=pcBarra[pid]=pcBarra[pid]||{};b[campo]=v;if(campo==="skill")b.traco="";renderPcCards();}
 function rolarArmaP(pid,armaId,qual){const p=S.personagens.find(x=>x.id===pid);if(!p)return;fichaBase(p);const a=(p.armas||[]).find(x=>x.id===armaId),w=a&&armaInfo(a.catalogo);if(!w)return;
   const rr=rolagemArma(p,w),ex=qual==="dano"?rr.dano:rr.ataque,r=rolarTexto(ex);if(!r){flashHint("Sem rolagem para esta arma.");return;}
@@ -7021,7 +7045,7 @@ function renderPcRegistro(){const box=document.getElementById("pcRegistro");if(!
   box.innerHTML="<button class=\"ghost\" style=\"font-size:12.5px;padding:3px 10px;margin-bottom:6px\" onclick=\"alternarSom()\" title=\"vale só para este navegador\">"+(somLigado()?"🔔 sons ligados":"🔕 sons desligados")+"</button>"+(L.length?L.map(g=>"<div class=\"pcrol\"><b class=\"t\">"+g.total+"</b><b>"+esc(g.quem)+"</b> · "+esc(g.oque)+" <span class=\"dd\">"+esc(g.expr)+"</span>"+
       "<small><span class=\"dd\">"+esc((g.fica||[]).join(", "))+((g.sai||[]).length?" <i>"+esc(g.sai.join(", "))+"</i>":"")+"</span> · "+esc(quandoTxt(new Date(g.ts).toISOString()))+(g.nota?" · "+esc(g.nota):"")+"</small></div>").join("")+
       "<button class=\"ghost so-mestre\" style=\"margin-top:8px;font-size:12.5px\" onclick=\"limparRolagens()\">limpar o registro</button>"
-    :"<div class=\"hint\" style=\"margin:0\">As rolagens de todos aparecem aqui: perícias, ataques, dano e Iniciativa. Guarda as últimas 40.</div>");}
+    :"<div class=\"hint\" style=\"margin:0\">As rolagens de todos aparecem aqui: perícias, Anéis, Honra, Glória, ataques, dano e Iniciativa. Guarda as últimas 40.</div>");}
 function renderPcCards(){const box=document.getElementById("pcCards");if(!box)return;
   if(!S.personagens.length){box.innerHTML="<div class=\"hint\">Nenhum personagem ainda. O Mestre cria em Família → painel \"Personagens\" (gasta Influência).</div>";return;}
   const todas=l5r4ePronto()?L5R4E.skills.slice().sort((a,b)=>a.nome.localeCompare(b.nome)):[];
@@ -7047,13 +7071,32 @@ function renderPcCards(){const box=document.getElementById("pcCards");if(!box)re
       "<button class=\"ghost\" onclick=\"rolarArmaP('"+p.id+"','"+k.x.id+"','ataque')\">ataque "+esc(rr.ataque)+"</button><button class=\"ghost\" onclick=\"rolarArmaP('"+p.id+"','"+k.x.id+"','dano')\">dano "+esc(rr.dano)+"</button></div>";}).join("");
     const b=pcBarra[p.id]||{},bs=b.skill?skill4e(b.skill):null,btk=b.traco||(bs?chaveTraco4e(bs.traco):"agility"),tem=b.skill?(p.pericias||[]).find(s=>s.skill===b.skill):null,brk=tem?Number(tem.rank)||0:0,btv=tracoValor(p,btk),bv=b.vazio?1:0;
     const tenho=new Set(ps.map(s=>s.skill));
-    h+="<div class=\"pcbarra\"><select aria-label=\"perícia\" onchange=\"setBarraP('"+p.id+"','skill',this.value)\"><option value=\"\">só o Traço</option>"+
+    const tipo=b.tipo||"pericia",anelB=b.anel||"terra",gr=Math.floor(Number(p.gloriaRank)||0),hr=Math.floor(Number(p.honorRank)||0);
+    const optT=[["pericia","Perícia ou Traço (inclui sem treino)"],["anel","Anel"],["honra","Honra"],["gloria","Glória (reconhecimento)"]].map(o=>"<option value=\""+o[0]+"\""+(tipo===o[0]?" selected":"")+">"+o[1]+"</option>").join("");
+    const campoMod="<label>mod <input type=\"number\" value=\""+(parseInt(b.mod)||0)+"\" onchange=\"setBarraP('"+p.id+"','mod',this.value)\"></label>";
+    const campoVazio="<label title=\"gastar 1 Ponto de Vazio: +1k1\"><input type=\"checkbox\""+(b.vazio?" checked":"")+" onchange=\"setBarraP('"+p.id+"','vazio',this.checked)\"> Vazio +1k1</label>";
+    const modTxt=(parseInt(b.mod)||0)?((parseInt(b.mod)>0?" +":" ")+parseInt(b.mod)):"";
+    h+="<div class=\"pcbarra\"><select aria-label=\"tipo de teste\" onchange=\"setBarraP('"+p.id+"','tipo',this.value)\">"+optT+"</select>";
+    if(tipo==="anel"){const an=aneisPersonagem(p),nn=Math.max(1,an[anelB]||0)+(b.vazio?1:0);
+      h+="<select aria-label=\"Anel\" onchange=\"setBarraP('"+p.id+"','anel',this.value)\">"+Object.keys(ANEIS_ROL).map(k=>"<option value=\""+k+"\""+(anelB===k?" selected":"")+">"+ANEIS_ROL[k]+" "+(an[k]||0)+"</option>").join("")+"</select>"+campoVazio+campoMod+
+        "<button class=\"primary\" onclick=\"rolarBarraP('"+p.id+"')\">🎲 rolar "+nn+"k"+nn+modTxt+"</button></div>";
+    }else if(tipo==="honra"){
+      h+="<span class=\"hint\" style=\"margin:0\" title=\"Regra opcional do Livro Básico, p. 92\">refaz um teste falho com Honra "+hr+" em dados rolados e mantidos; falhar de novo custa 1 Nível de Honra</span>"+campoMod+
+        "<button class=\"primary\" "+(hr<1?"disabled ":"")+"onclick=\"rolarBarraP('"+p.id+"')\">🎲 rolar "+hr+"k"+hr+modTxt+"</button></div>";
+    }else if(tipo==="gloria"){const inte=b.int==null?2:b.int,her=b.her==null?0:b.her;
+      h+="<span class=\"hint\" style=\"margin:0\" title=\"Livro Básico, p. 93\">quem vê o samurai rola Heráldica/Inteligência contra NA "+Math.max(5,50-5*gr)+" (50 − 5 × Glória "+gr+")</span>"+
+        "<label>Inteligência do estranho <input type=\"number\" min=\"1\" max=\"10\" value=\""+inte+"\" onchange=\"setBarraP('"+p.id+"','int',this.value)\"></label>"+
+        "<label>Heráldica <input type=\"number\" min=\"0\" max=\"10\" value=\""+her+"\" onchange=\"setBarraP('"+p.id+"','her',this.value)\"></label>"+campoMod+
+        "<button class=\"primary\" onclick=\"rolarBarraP('"+p.id+"')\">🎲 rolar "+((parseInt(inte)||2)+(parseInt(her)||0))+"k"+(parseInt(inte)||2)+modTxt+"</button></div>";
+    }else{
+      h+="<select aria-label=\"perícia\" onchange=\"setBarraP('"+p.id+"','skill',this.value)\"><option value=\"\">só o Traço</option>"+
         "<optgroup label=\"da ficha\">"+ps.map(s=>{const i=skill4e(s.skill);return i?"<option value=\""+i.id+"\""+(b.skill===i.id?" selected":"")+">"+esc(i.nome)+" "+(Number(s.rank)||0)+"</option>":"";}).join("")+"</optgroup>"+
         "<optgroup label=\"sem treino (o 10 não explode)\">"+todas.filter(i=>!tenho.has(i.id)).map(i=>"<option value=\""+i.id+"\""+(b.skill===i.id?" selected":"")+">"+esc(i.nome)+"</option>").join("")+"</optgroup></select>"+
-      "<select aria-label=\"Traço\" title=\"o Traço padrão da perícia vem escolhido; troque quando o Mestre pedir outro\" onchange=\"setBarraP('"+p.id+"','traco',this.value)\">"+Object.keys(TRACO_ROL).map(k=>"<option value=\""+k+"\""+(btk===k?" selected":"")+">"+TRACO_ROL[k]+" "+tracoValor(p,k)+"</option>").join("")+"</select>"+
-      "<label title=\"gastar 1 Ponto de Vazio: +1k1\"><input type=\"checkbox\""+(b.vazio?" checked":"")+" onchange=\"setBarraP('"+p.id+"','vazio',this.checked)\"> Vazio +1k1</label>"+
-      "<label>mod <input type=\"number\" value=\""+(parseInt(b.mod)||0)+"\" onchange=\"setBarraP('"+p.id+"','mod',this.value)\"></label>"+
-      "<button class=\"primary\" onclick=\"rolarBarraP('"+p.id+"')\">🎲 rolar "+(btv+brk+bv)+"k"+(btv+bv)+((parseInt(b.mod)||0)?((parseInt(b.mod)>0?" +":" ")+parseInt(b.mod)):"")+"</button></div>";
+        "<select aria-label=\"Traço\" title=\"o Traço padrão da perícia vem escolhido; troque quando o Mestre pedir outro\" onchange=\"setBarraP('"+p.id+"','traco',this.value)\">"+Object.keys(TRACO_ROL).map(k=>"<option value=\""+k+"\""+(btk===k?" selected":"")+">"+TRACO_ROL[k]+" "+tracoValor(p,k)+"</option>").join("")+"</select>"+
+        campoVazio+campoMod+
+        "<button class=\"primary\" onclick=\"rolarBarraP('"+p.id+"')\">🎲 rolar "+(btv+brk+bv)+"k"+(btv+bv)+modTxt+"</button>"+
+        (b.skill&&!brk?"<span class=\"hint\" style=\"margin:0;flex-basis:100%\">sem treino: rola só o Traço, o 10 não explode e Incrementos não valem.</span>":"")+"</div>";
+    }
     return h+"</div>";}).join("");}
 function renderCharTabs(){
   document.getElementById("tabPersonagensCount").textContent=S.personagens.length?("("+S.personagens.length+")"):"";
